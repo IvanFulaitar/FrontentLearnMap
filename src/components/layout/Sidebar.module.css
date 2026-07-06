@@ -1,0 +1,173 @@
+.sidebar {
+  position: sticky;
+  top: 72px;
+  height: calc(100vh - 72px);
+  overflow-y: auto;
+  /* Without this, setting only overflow-y triggers the CSS rule that turns
+     the other axis's default 'visible' into 'auto' too — so any 1px of
+     horizontal overflow (long words, badges, borders) silently gave the
+     sidebar its own horizontal scrollbar on desktop. */
+  overflow-x: hidden;
+  padding: 18px 14px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+.nav {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: var(--radius);
+  padding: 11px 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.navLink:hover,
+.active {
+  background: var(--surface-muted);
+  color: var(--primary);
+}
+
+.sectionTitle {
+  margin: 20px 0 10px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.courseBlock {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  background: var(--surface-raised);
+}
+
+.courseTitle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+}
+
+.courseTitle:hover {
+  color: var(--primary);
+}
+
+.courseTitleText {
+  flex: 1;
+  min-width: 0;
+}
+
+.courseMeta {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.courseOpenLink {
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.courseOpenLink:hover {
+  text-decoration: underline;
+}
+
+.moduleTitle {
+  margin: 8px 0 6px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.lessonLink {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  border-radius: var(--radius);
+  padding: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+}
+
+.lessonLink:hover,
+.lessonActive {
+  background: var(--surface-muted);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.lessonCompleted {
+  color: var(--success);
+}
+
+.progress {
+  margin-top: 2px;
+}
+
+.close {
+  display: none;
+}
+
+.rail {
+  padding: 18px 8px;
+  overflow: visible;
+}
+
+.railExpand {
+  width: 100%;
+  margin-bottom: 12px;
+  justify-content: center;
+}
+
+.railLink {
+  justify-content: center;
+  padding: 11px;
+}
+
+.railLink span {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 30;
+    width: min(88vw, var(--sidebar-width));
+    transform: translateX(-105%);
+    transition: transform 200ms ease;
+  }
+
+  .open {
+    transform: translateX(0);
+  }
+
+  .close {
+    display: inline-flex;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+}

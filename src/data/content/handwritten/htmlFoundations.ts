@@ -1,0 +1,299 @@
+import type { Lesson } from "../../../types/course";
+
+/**
+ * Module "Твій перший HTML-документ" (html-foundations). Hand-authored,
+ * mentor-style content — tight format: what/why/when/when-not/syntax/
+ * mistakes/don't-do-this/best-practice/remember/interview/summary/pro-tip.
+ * No academic language, no walls of text. This is also where the course's
+ * single running project starts: "Кав'ярня «Аромат»".
+ */
+export type LessonOverride = Partial<Lesson>;
+
+export const htmlFoundationsOverrides: Record<string, LessonOverride> = {
+  "Анатомія HTML-документа": {
+    whatIsIt:
+      "Кожен HTML-файл має один обов'язковий скелет: doctype, <html>, <head> і <body>. Це перше, що бачить браузер, і без цього скелета сторінка або не відкриється правильно, або матиме проблеми з кодуванням і доступністю.",
+    whyUseIt:
+      "Браузеру потрібна чітка інструкція, як саме читати твій файл. Без цього скелета він може показати сторінку неправильно, з дивними розмірами блоків або з кракозябрами замість кирилиці.",
+    whenToUse: [
+      "На початку абсолютно кожного .html файлу — без винятків.",
+      "Коли створюєш новий проєкт із нуля.",
+      "Коли перевіряєш чужий код і хочеш зрозуміти, чи він взагалі коректний.",
+    ],
+    whenNotToUse: [
+      "Ніколи не пропускай doctype \"для швидкості\" — це завжди коштує дорожче потім.",
+      "Не клади видимий текст у <head> — браузер його просто не покаже.",
+    ],
+    comparisonTable: {
+      headers: ["Частина", "За що відповідає"],
+      rows: [
+        ["<!DOCTYPE html>", "Вмикає сучасний режим рендерингу"],
+        ["<html lang=\"uk\">", "Корінь документа + мова для скрінрідерів/SEO"],
+        ["<head>", "Метадані — не бачить користувач"],
+        ["<body>", "Весь видимий контент"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "Мінімальний коректний HTML-документ:",
+        code: `<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Моя перша сторінка</title>
+  </head>
+  <body>
+    <h1>Привіт, світ!</h1>
+    <p>Це мій перший HTML-документ.</p>
+  </body>
+</html>`,
+        lineNotes: [
+          "doctype — вмикає стандартний режим рендерингу.",
+          "lang=\"uk\" — критично для скрінрідерів і SEO.",
+          "meta charset=\"UTF-8\" — інакше кирилиця може зламатись.",
+          "h1/p у body — це вже реальний видимий контент.",
+        ],
+        after: "Збережи як index.html і відкрий у браузері — усе, що в head, залишиться «за кадром».",
+      },
+    ],
+    realWorldUsage: [
+      "Кожен сайт — від лендінгу до React-застосунку — зрештою рендериться саме в такий скелет.",
+      "SEO-аудит завжди перевіряє head першим.",
+    ],
+    commonMistakes: [
+      "Забути doctype — сторінка може рендеритись у застарілому \"quirks mode\".",
+      "Писати текст напряму в head — він просто не покажеться.",
+      "Забути lang=\"uk\" — скрінрідер прочитає українську з англійською вимовою.",
+    ],
+    dontDoThis: {
+      code: `<html>
+<head><title>Кав'ярня</title>
+<body><h1>Вітаємо!</h1></body>
+</html>`,
+      explanation: "Тут відразу три проблеми: немає doctype, не закритий </head>, немає lang на <html>. Браузер якось це «розбере», але покладатись на це не варто.",
+    },
+    bestPractices: [
+      "Завжди починай файл із doctype, html[lang], head[charset] і body — навіть у чернетках.",
+      "Тримай head компактним: тільки метадані й підключення стилів.",
+    ],
+    remember: [
+      "Doctype, lang, charset — три речі, які легко забути, але які впливають на все.",
+      "Head — «про сторінку», body — «для користувача».",
+      "Мінімальний коректний документ — це 10 рядків, і їх варто знати напам'ять.",
+    ],
+    interviewQuestions: [
+      {
+        question: "Що станеться, якщо прибрати <!DOCTYPE html>?",
+        answer: "Браузер може перейти в «quirks mode» — застарілий режим сумісності, де CSS-властивості рахуються інакше, ніж очікується.",
+      },
+    ],
+    summary:
+      "HTML-документ завжди починається з doctype, html[lang], head і body. Head — метадані, body — видимий контент. Пропуск будь-якої частини створює реальні проблеми з рендерингом, кодуванням чи доступністю.",
+    proTip: "Встанови сніпет Emmet у своєму редакторі: набери `!` і натисни Tab — весь цей скелет згенерується автоматично.",
+    nextLessonNote: "Далі розберемось, що ще варто класти в <head>: метадані й viewport для мобільних пристроїв.",
+    practiceTask: {
+      title: "Проєкт курсу: перший файл сайту кав'ярні «Аромат»",
+      description: "Створи index.html з мінімальним коректним скелетом для сайту кав'ярні «Аромат».",
+      checklist: [
+        "Є <!DOCTYPE html> першим рядком.",
+        "<html lang=\"uk\"> має атрибут мови.",
+        "У head є charset UTF-8 і title.",
+        "У body є h1 з назвою кав'ярні та один абзац опису.",
+      ],
+      starterFiles: [{ id: "cafe-index-v0", path: "index.html", language: "html", label: "index.html (з нуля)", code: "<!-- Почни з порожнього файлу -->" }],
+      solutionFiles: [
+        {
+          id: "cafe-index-v1",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Кав'ярня «Аромат»</title>
+  </head>
+  <body>
+    <h1>Кав'ярня «Аромат»</h1>
+    <p>Свіжообсмажена кава у центрі Львова щодня з 8:00 до 20:00.</p>
+  </body>
+</html>`,
+          readOnly: true,
+        },
+      ],
+      hints: ["Doctype — найлегше забути під тиском.", "Title і h1 можуть відрізнятись формулюванням."],
+      expectedOutput: "Сторінка з заголовком «Кав'ярня «Аромат»» і коротким описом під ним.",
+    },
+    microExercises: [
+      {
+        id: "html-anatomy-find-bug",
+        kind: "find-the-bug",
+        prompt: "Що не так?\n\n<html>\n<head><title>Кав'ярня</title>\n<body><h1>Вітаємо!</h1></body>\n</html>",
+        solution: "Немає doctype, не закритий </head>, немає lang на <html>.",
+      },
+      {
+        id: "html-anatomy-choice",
+        kind: "choice",
+        prompt: "Який рядок впливає на те, як скрінрідер вимовляє текст?",
+        options: ["<!DOCTYPE html>", "<html lang=\"uk\">", "<title>...</title>", "<meta charset=\"UTF-8\" />"],
+        correctAnswer: "<html lang=\"uk\">",
+        solution: "lang каже допоміжним технологіям, якою мовою озвучувати вміст.",
+      },
+    ],
+    quiz: {
+      id: "html-foundations-anatomy-quiz",
+      title: "Анатомія HTML-документа: перевір себе",
+      questions: [
+        {
+          id: "html-anatomy-doctype",
+          type: "single",
+          question: "Навіщо потрібен рядок <!DOCTYPE html>?",
+          options: [
+            "Вмикає стандартний режим рендерингу HTML5 у браузері",
+            "Це просто коментар для розробників",
+            "Він показується користувачу як заголовок сторінки",
+            "Без нього JavaScript не запуститься",
+          ],
+          correctAnswer: "Вмикає стандартний режим рендерингу HTML5 у браузері",
+          explanation: "Doctype повідомляє браузеру, за яким стандартом рендерити сторінку.",
+          optionExplanations: {
+            "Це просто коментар для розробників": "Doctype — не коментар, а інструкція, яку реально використовує браузер.",
+            "Він показується користувачу як заголовок сторінки": "Заголовок вкладки задає <title>, а не doctype.",
+            "Без нього JavaScript не запуститься": "Doctype не впливає на виконання JavaScript.",
+          },
+        },
+        {
+          id: "html-anatomy-head-body",
+          type: "single",
+          question: "Куди варто помістити <meta charset=\"UTF-8\" />?",
+          options: ["У <head>", "У <body>", "Одразу після </html>", "Не має значення, куди"],
+          correctAnswer: "У <head>",
+          explanation: "charset — метадані про сторінку, тож його місце — у head, і бажано якомога раніше.",
+          optionExplanations: {
+            "У <body>": "У body розміщують видимий контент; метадані там не працюють як слід.",
+            "Одразу після </html>": "Контент після закриття </html> браузер ігнорує.",
+            "Не має значення, куди": "Позиція має значення — щоб уникнути проблем із кодуванням наступного тексту.",
+          },
+        },
+        {
+          id: "html-anatomy-lang",
+          type: "true-false",
+          question: "Атрибут lang=\"uk\" впливає лише на зовнішній вигляд сторінки.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "lang впливає на доступність (вимову скрінрідерів) і SEO, а не на вигляд.",
+        },
+      ],
+    },
+  },
+
+  "Метадані head і viewport": {
+    whatIsIt:
+      "Метадані — це інформація про сторінку, яку не бачить користувач напряму: кодування, заголовок вкладки, опис для пошуковика і налаштування мобільного перегляду (viewport).",
+    whyUseIt: "Без viewport мобільний браузер показує сторінку так, ніби це десктоп, а потім зменшує масштаб — тому текст на телефоні виглядає крихітним.",
+    whenToUse: ["На кожній сторінці сайту, без винятків — viewport і title потрібні завжди.", "Коли готуєш сторінку до публікації в пошуку чи соцмережах."],
+    whenNotToUse: ["Не став user-scalable=no — це забороняє масштабування жестами і шкодить доступності."],
+    comparisonTable: {
+      headers: ["Тег", "Навіщо"],
+      rows: [
+        ["meta charset=\"UTF-8\"", "Кирилиця й символи не ламаються"],
+        ["meta name=\"viewport\"", "Коректний масштаб на мобільних"],
+        ["title", "Заголовок вкладки й Google (до ~60 симв.)"],
+        ["meta name=\"description\"", "Опис під заголовком у пошуку (до ~155 симв.)"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "Типовий head продакшн-сайту:",
+        code: `<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Кав'ярня «Аромат» — свіжообсмажена кава у Львові</title>
+  <meta name="description" content="Кав'ярня в центрі Львова. Власна обсмажувальня, доставка по місту." />
+</head>`,
+        lineNotes: ["viewport — реальна ширина екрана, без штучного масштабування.", "title — до ~60 символів.", "description — до ~155 символів, як речення, а не список слів."],
+        after: "Тепер сторінка однаково добре виглядає на телефоні й привабливо — в результатах пошуку.",
+      },
+    ],
+    realWorldUsage: ["Будь-який адаптивний сайт залежить від коректного viewport.", "SEO-аудит завжди починається з перевірки title, description і viewport."],
+    commonMistakes: [
+      "Забути viewport — найчастіша причина скарг «на телефоні все жахливо».",
+      "Писати title однаковим на всіх сторінках сайту.",
+      "Робити description як список ключових слів через кому.",
+    ],
+    dontDoThis: {
+      code: `<meta name="viewport" content="width=980px, user-scalable=no">`,
+      explanation: "Фіксована ширина 980px знову змушує мобільний браузер масштабувати сторінку, а user-scalable=no забороняє користувачу самому наблизити текст.",
+    },
+    bestPractices: ["Використовуй width=device-width, initial-scale=1.0 як стандарт для 99% сайтів.", "Пиши description як речення для людини, а не для робота."],
+    remember: ["Без viewport мобільний браузер завжди «прикидається» десктопом.", "Title і description — це реклама сторінки в пошуку.", "Метадані не видно, але їх «бачать» боти й месенджери."],
+    interviewQuestions: [
+      { question: "Що робить width=device-width?", answer: "Встановлює ширину сторінки рівною фізичній ширині екрана пристрою в CSS-пікселях." },
+    ],
+    summary: "Метадані описують сторінку для браузера, пошуковика й месенджерів. Viewport — обов'язковий на кожній сторінці. Title і description прямо впливають на клікабельність у пошуку.",
+    proTip: "Перевіряй, як твоя сторінка виглядатиме в Google, через безкоштовні онлайн-симулятори SERP-сніпетів — це займає хвилину і рятує від сюрпризів.",
+    nextLessonNote: "Скелет і метадані готові. Далі — текст, який реально бачить відвідувач.",
+    practiceTask: {
+      title: "Проєкт курсу: додай метадані на сайт кав'ярні",
+      description: "Розшир index.html: додай viewport, description і зроби title інформативнішим.",
+      checklist: ["Додано viewport.", "Додано description (до ~155 символів).", "Title включає назву і уточнення (місто).", "Body лишився без змін."],
+      starterFiles: [
+        {
+          id: "cafe-index-v1-start",
+          path: "index.html",
+          language: "html",
+          label: "index.html (з попереднього уроку)",
+          code: `<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Кав'ярня «Аромат»</title>
+  </head>
+  <body>
+    <h1>Кав'ярня «Аромат»</h1>
+    <p>Свіжообсмажена кава у центрі Львова щодня з 8:00 до 20:00.</p>
+  </body>
+</html>`,
+        },
+      ],
+      solutionFiles: [
+        {
+          id: "cafe-index-v2",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Кав'ярня «Аромат» — свіжообсмажена кава у Львові</title>
+    <meta name="description" content="Кав'ярня «Аромат» у центрі Львова: власна обсмажувальня та затишна атмосфера щодня з 8:00 до 20:00." />
+  </head>
+  <body>
+    <h1>Кав'ярня «Аромат»</h1>
+    <p>Свіжообсмажена кава у центрі Львова щодня з 8:00 до 20:00.</p>
+  </body>
+</html>`,
+          readOnly: true,
+        },
+      ],
+      hints: ["Viewport завжди виглядає однаково — просто запам'ятай його.", "Description — речення для людини, не список слів."],
+      expectedOutput: "Та сама сторінка, але коректно масштабується на телефоні й привабливо виглядає в пошуку.",
+    },
+    microExercises: [
+      {
+        id: "html-meta-find-bug",
+        kind: "find-the-bug",
+        prompt: "У чому проблема?\n\n<meta name=\"viewport\" content=\"width=980px, user-scalable=no\">",
+        solution: "width=980px фіксує десктопну ширину, user-scalable=no забороняє масштабування — проблема доступності.",
+      },
+      {
+        id: "html-meta-rewrite",
+        kind: "rewrite",
+        prompt: "Перепиши як речення: <meta name=\"description\" content=\"кава, львів, кав'ярня, десерти\">",
+        solution: "«Кав'ярня «Аромат» у Львові: свіжообсмажена кава та авторські десерти у центрі міста.»",
+      },
+    ],
+  },
+};

@@ -1,0 +1,48 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  background: rgba(8, 14, 26, 0.48);
+}
+
+.modal,
+.drawer {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.modal {
+  width: min(620px, calc(100vw - 28px));
+  padding: 20px;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(420px, 92vw);
+  padding: 20px;
+}
+
+.tooltip {
+  display: inline-flex;
+  position: relative;
+}
+
+.tooltipContent {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  min-width: 160px;
+  border-radius: var(--radius);
+  padding: 8px;
+  background: var(--text);
+  color: var(--surface);
+  font-size: 0.82rem;
+}

@@ -1,0 +1,45 @@
+.headerCard {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.notes {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+}
+
+.notes textarea {
+  min-height: 150px;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+@media (max-width: 560px) {
+  .nav {
+    display: grid;
+  }
+}

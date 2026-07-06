@@ -1,0 +1,76 @@
+.callout {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  background: var(--surface-muted);
+}
+
+.icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--primary);
+}
+
+.title {
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.body {
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.motivation {
+  border-left-color: var(--primary);
+}
+
+.analogy {
+  border-left-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.analogy .icon {
+  color: var(--primary-strong);
+}
+
+.tip {
+  border-left-color: var(--success);
+}
+
+.tip .icon {
+  color: var(--success);
+}
+
+.warning {
+  border-left-color: var(--warning);
+}
+
+.warning .icon {
+  color: var(--warning);
+}
+
+.note {
+  border-left-color: var(--muted);
+}
+
+.fact {
+  border-left-color: var(--primary);
+}
+
+.bestPractice {
+  border-left-color: var(--success);
+}
+
+.bestPractice .icon {
+  color: var(--success);
+}
+
+.remember {
+  border-left-color: var(--primary);
+  background: var(--primary-soft);
+}

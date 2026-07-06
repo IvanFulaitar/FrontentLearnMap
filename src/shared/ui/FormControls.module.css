@@ -1,0 +1,40 @@
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  font-weight: 850;
+}
+
+.control {
+  min-height: 42px;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 12px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.textarea {
+  min-height: 120px;
+  padding: 12px;
+  resize: vertical;
+}
+
+.helper {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.error {
+  color: var(--danger);
+  font-size: 0.86rem;
+}
+
+.inline {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}

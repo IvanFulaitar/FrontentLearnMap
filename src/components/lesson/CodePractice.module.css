@@ -1,0 +1,45 @@
+.editorWrap {
+  display: grid;
+  gap: 12px;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tab {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.active {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.editor {
+  min-height: 220px;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  background: #0f172a;
+  color: #e5edf8;
+  font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
+  line-height: 1.55;
+}
+
+.result {
+  border-radius: var(--radius);
+  padding: 12px;
+  background: var(--surface-muted);
+  color: var(--text);
+}

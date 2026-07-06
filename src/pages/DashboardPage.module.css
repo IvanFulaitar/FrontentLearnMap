@@ -1,0 +1,223 @@
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
+  gap: 18px;
+}
+
+.panel {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 24px;
+}
+
+.heroTitle {
+  max-width: 760px;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1.02;
+}
+
+.stats,
+.courseProgress {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.stat {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+}
+
+.statIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+}
+
+.accentPrimary {
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.accentSuccess {
+  color: var(--success);
+  background: var(--success-soft);
+}
+
+.accentAmber {
+  color: var(--warning);
+  background: var(--warning-soft);
+}
+
+.accentDanger {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.number {
+  margin-bottom: -2px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.stat p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.lastLesson {
+  display: grid;
+  /* The right hero column stretches to match the taller left column
+     (default grid stretch behavior). Spreading content top/bottom instead
+     of letting it clump at the top turns that stretch into an intentional
+     layout (eyebrow at top, CTA pinned to the bottom) instead of dead
+     whitespace. */
+  align-content: space-between;
+  gap: 14px;
+}
+
+.lastLessonTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lastLessonIcon {
+  color: var(--warning);
+}
+
+.lastLessonBody {
+  display: grid;
+  gap: 6px;
+}
+
+.courseCard {
+  padding: 16px;
+}
+
+.courseCard h3 {
+  margin-bottom: 8px;
+}
+
+.pathPreview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.unlockedPath,
+.lockedPath {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 700;
+}
+
+.unlockedPath {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.lockedPath {
+  background: var(--surface-muted);
+  color: var(--muted);
+  opacity: 0.65;
+}
+
+.challengeList {
+  display: grid;
+  gap: 8px;
+}
+
+.challengeRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.challengeRow:hover {
+  border-color: color-mix(in srgb, var(--primary) 32%, var(--border));
+}
+
+.challengeRowDone {
+  border-color: var(--success);
+  background: var(--success-soft);
+}
+
+.challengeCheckbox {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--success);
+}
+
+.challengeLabel {
+  flex: 1;
+  min-width: 0;
+}
+
+.challengeXp {
+  flex-shrink: 0;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.achievementList {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.achievementRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+}
+
+.achievementUnlocked {
+  color: var(--text);
+  background: var(--surface-muted);
+}
+
+.achievementIconDone {
+  flex-shrink: 0;
+  color: var(--success);
+}
+
+.achievementIconLocked {
+  flex-shrink: 0;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+.achievementText {
+  min-width: 0;
+}
+
+.missionsFooterLink {
+  justify-self: start;
+}
+
+@media (max-width: 860px) {
+  .hero,
+  .stats,
+  .courseProgress {
+    grid-template-columns: 1fr;
+  }
+}

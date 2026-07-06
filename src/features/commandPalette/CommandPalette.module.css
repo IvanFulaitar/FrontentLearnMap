@@ -1,0 +1,52 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  align-items: start;
+  justify-items: center;
+  padding-top: 12vh;
+  background: rgba(8, 14, 26, 0.45);
+}
+
+.panel {
+  display: grid;
+  gap: 10px;
+  width: min(720px, calc(100vw - 28px));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.input {
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 14px;
+  background: var(--surface-muted);
+  color: var(--text);
+}
+
+.list {
+  display: grid;
+  gap: 6px;
+  max-height: 420px;
+  overflow: auto;
+}
+
+.item {
+  border: 0;
+  border-radius: var(--radius);
+  padding: 12px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.item:hover,
+.item:focus-visible {
+  background: var(--surface-muted);
+}

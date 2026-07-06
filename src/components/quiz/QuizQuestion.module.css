@@ -1,0 +1,61 @@
+.question {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.options {
+  display: grid;
+  gap: 8px;
+}
+
+.code {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  padding: 12px;
+  background: #0f172a;
+  color: #e5edf8;
+}
+
+.option {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  cursor: pointer;
+}
+
+.correct {
+  border-color: var(--success);
+  background: rgba(15, 159, 110, 0.1);
+}
+
+.wrong {
+  border-color: var(--danger);
+  background: rgba(220, 38, 38, 0.09);
+}
+
+.explanationGroup {
+  display: grid;
+  gap: 8px;
+}
+
+.explanation {
+  border-radius: var(--radius);
+  padding: 10px;
+  background: var(--surface-muted);
+  color: var(--muted);
+}
+
+.explanationCorrect {
+  border-left: 3px solid var(--success);
+}
+
+.explanationWrong {
+  border-left: 3px solid var(--danger);
+}

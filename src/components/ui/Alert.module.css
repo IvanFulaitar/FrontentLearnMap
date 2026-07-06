@@ -1,0 +1,28 @@
+.alert {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius);
+  padding: 14px;
+  background: var(--surface);
+}
+
+.success {
+  border-left-color: var(--success);
+}
+
+.warning {
+  border-left-color: var(--warning);
+}
+
+.title {
+  margin-bottom: 3px;
+  font-weight: 700;
+}
+
+.message {
+  color: var(--muted);
+  line-height: 1.5;
+}
