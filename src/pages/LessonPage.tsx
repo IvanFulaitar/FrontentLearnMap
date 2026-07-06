@@ -26,11 +26,17 @@ export function LessonPage() {
   const status = getLessonStatus(lesson, lessonProgress, course.id, module.id);
   const neighbors = getNeighborLessons(course.id, module.id, lesson.id);
   const lessonKey = getLessonKey(course.id, module.id, lesson.id);
-  const completeLesson = () => {
-    const wasCompleted = status === "completed";
-    setLessonStatus(course.id, module.id, lesson.id, "completed");
-    if (!wasCompleted) addXp(XP_REWARDS.lessonRead);
-    notify({ title: "Урок завершено", message: `«${lesson.title}» позначено як завершений.`, tone: "success" });
+  const isCompleted = status === "completed";
+  const toggleCompleted = () => {
+    if (isCompleted) {
+      setLessonStatus(course.id, module.id, lesson.id, "in-progress");
+      addXp(-XP_REWARDS.lessonRead);
+      notify({ title: "Позначку знято", message: `«${lesson.title}» більше не позначено як завершений.`, tone: "warning" });
+    } else {
+      setLessonStatus(course.id, module.id, lesson.id, "completed");
+      addXp(XP_REWARDS.lessonRead);
+      notify({ title: "Урок завершено", message: `«${lesson.title}» позначено як завершений.`, tone: "success" });
+    }
   };
 
   return (
@@ -54,8 +60,8 @@ export function LessonPage() {
           <Badge>{lessonDifficultyLabels[lesson.difficulty]}</Badge>
         </div>
         <div className={styles.actions}>
-          <Button onClick={completeLesson}>
-            <CheckCircle2 size={18} /> Позначити як виконано
+          <Button variant={isCompleted ? "success" : "primary"} onClick={toggleCompleted} aria-pressed={isCompleted}>
+            <CheckCircle2 size={18} /> {isCompleted ? "Виконано ✓" : "Позначити як виконано"}
           </Button>
           <Button variant="secondary" onClick={() => toggleBookmark(lessonKey)}>
             <Bookmark size={18} /> {bookmarks.includes(lessonKey) ? "Збережено" : "Додати в закладки"}

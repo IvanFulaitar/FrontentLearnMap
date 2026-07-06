@@ -62,6 +62,7 @@ export const htmlWebBasicsOverrides: Record<string, LessonOverride> = {
     whatIsIt: "HTML — структура і зміст. CSS — вигляд. JavaScript — поведінка й інтерактивність. Кожен вирішує свою окрему задачу.",
     whyUseIt: "Змішування ролей (стилі в HTML-атрибутах, розмітка через JS) — головна причина коду, який важко підтримувати й дебажити.",
     whenToUse: ["HTML — заголовки, текст, форми, зображення, структура.", "CSS — кольори, відступи, розташування, анімації.", "JS — реакція на клік, запити до сервера, зміна даних на льоту."],
+    interactiveDemo: "layer-switcher-demo",
     whenNotToUse: ["Не пиши inline style=\"color: red\" замість класу — стилі важко знайти й перевикористати.", "Не генеруй статичну розмітку через JS, якщо вона могла бути звичайним HTML — це повільніше й гірше для SEO."],
     comparisonTable: {
       headers: ["Технологія", "Відповідає за"],
@@ -121,7 +122,9 @@ button.addEventListener("click", placeOrder);   // JS: що робить`,
       {
         code: `<h1 id="title">Кав'ярня «Аромат»</h1>
 
-document.getElementById("title").textContent = "Ласкаво просимо!";`,
+<script>
+  document.getElementById("title").textContent = "Ласкаво просимо!";
+</script>`,
         lineNotes: ["getElementById знаходить елемент у DOM-дереві.", "textContent змінює те, що бачить користувач, — файл index.html при цьому не змінюється."],
       },
     ],

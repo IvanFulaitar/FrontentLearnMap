@@ -48,7 +48,7 @@ export function PracticePage() {
             </details>
             <details>
               <summary>Рішення</summary>
-              <pre>{task.solution}</pre>
+              <pre className={styles.solutionCode}>{task.solution}</pre>
             </details>
           </Card>
         ))}

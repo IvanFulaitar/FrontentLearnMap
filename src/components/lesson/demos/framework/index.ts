@@ -1,0 +1,13 @@
+export { DemoSection } from "./DemoSection";
+export { DemoControls, DemoSelect, DemoSlider, DemoColorInput } from "./DemoControls";
+export { DemoPreview } from "./DemoPreview";
+export { DemoCodeSnippet } from "./DemoCodeSnippet";
+export { DemoExplanation } from "./DemoExplanation";
+export { DemoKeyTakeaway } from "./DemoKeyTakeaway";
+export { DemoBeforeAfter } from "./DemoBeforeAfter";
+export { DemoHighlight } from "./DemoHighlight";
+export { DemoViewport } from "./DemoViewport";
+export { DemoToolbar } from "./DemoToolbar";
+export { DemoAxis } from "./DemoAxis";
+export { HighlightDemo, HighlightArea } from "./HighlightDemo";
+export type { HighlightRegion } from "./HighlightDemo";

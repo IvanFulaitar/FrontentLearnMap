@@ -19,8 +19,8 @@ export function CoursesPage() {
     <div className="page">
       <PageHeader
         breadcrumbs={[{ label: "Дашборд", href: "/" }, { label: "Курси", href: "/courses" }, ...(selectedCourse ? [{ label: selectedCourse.title }] : [])]}
-        eyebrow="Roadmap / Курси"
-        title={selectedCourse ? selectedCourse.title : "Frontend Roadmap"}
+        eyebrow="Free Frontend / Курси"
+        title={selectedCourse ? selectedCourse.title : "Курси"}
         description={selectedCourse ? selectedCourse.description : "Обери курс, відкрий модуль і рухайся урок за уроком."}
       />
       <div className={styles.controls}>

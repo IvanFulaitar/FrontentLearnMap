@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     isAuthenticated: user.role !== "guest",
     can: (permission) => rolePermissions[user.role].includes(permission),
-    signInAsStudent: () => setUser({ id: "local-student", username: "Студент Frontend Academy", role: "student" }),
+    signInAsStudent: () => setUser({ id: "local-student", username: "Студент Free Frontend", role: "student" }),
     signOut: () => setUser(guestUser),
   }), [user]);
 

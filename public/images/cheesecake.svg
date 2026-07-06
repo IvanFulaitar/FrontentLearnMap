@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Шматок чізкейку з ягодою">
+  <rect width="200" height="200" rx="16" fill="#f9f1e6" />
+  <path d="M40 150 L100 60 L160 150 Z" fill="#f3dca0" stroke="#dcb96f" stroke-width="2" />
+  <path d="M40 150 L100 60 L160 150 Z" fill="none" />
+  <rect x="34" y="148" width="132" height="14" rx="4" fill="#e8c27a" stroke="#c99c53" stroke-width="2" />
+  <path d="M58 138 L100 66 L142 138 Z" fill="#fbeccb" opacity="0.7" />
+  <circle cx="100" cy="82" r="10" fill="#c0374f" />
+  <circle cx="94" cy="78" r="3" fill="#e88a9a" opacity="0.8" />
+</svg>

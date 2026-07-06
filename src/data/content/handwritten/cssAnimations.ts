@@ -1,0 +1,201 @@
+import type { LessonOverride } from "./htmlFoundations";
+
+/**
+ * Module "Анімації" (css-animations). Cheat-sheet format. Continues
+ * styles.css for the café project (v25 → v27).
+ */
+export const cssAnimationsOverrides: Record<string, LessonOverride> = {
+  "Transition і hover-ефекти": {
+    whatIsIt: "transition плавно анімує зміну властивості між двома станами (наприклад, звичайний і :hover), замість миттєвого стрибка. Задається як: властивість, тривалість, функція часу.",
+    whyUseIt: "Кнопка, що миттєво змінює колір без transition, виглядає різко й \"дешево\" — 150-200ms плавного переходу вже відчуваються як якісний, продуманий інтерфейс.",
+    whenToUse: ["transition на background-color, color, transform, box-shadow — для hover/focus ефектів кнопок і карток.", "Тривалість 150-250ms — стандарт для дрібних UI-взаємодій (довше відчувається повільним)."],
+    whenNotToUse: ["Не використовуй transition: all — браузер рахує зміни всіх властивостей, включно з тими, що не змінюються, це дорожче для продуктивності.", "Не став дуже довгу тривалість (1-2 секунди) на звичайні hover-ефекти — це виглядає повільно й дратує."],
+    comparisonTable: {
+      headers: ["Частина transition", "Приклад", "Призначення"],
+      rows: [
+        ["Властивість", "background-color", "Що саме анімується"],
+        ["Тривалість", "200ms", "Як довго триває перехід"],
+        ["Функція часу", "ease", "Як змінюється швидкість переходу"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "Картка меню з плавним підняттям при наведенні:",
+        code: `.menu-card {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.menu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}`,
+        lineNotes: ["transition вказує саме transform і box-shadow — конкретні властивості, не all.", "translateY(-4px) трохи піднімає картку вгору, разом із посиленою тінню це створює ефект \"вилітання\" над сторінкою."],
+        after: "Картка меню плавно \"піднімається\" при наведенні миші замість миттєвої зміни.",
+      },
+    ],
+    commonMistakes: ["transition: all замість конкретних властивостей.", "Занадто довга тривалість (500ms+) для дрібних hover-ефектів.", "transform на властивостях, що впливають на layout (width/height замість transform: scale) — це гірше для продуктивності."],
+    dontDoThis: { code: `.menu-card {\n  transition: all 600ms ease;\n}`, explanation: "all змушує браузер відстежувати зміни кожної властивості без розбору, а 600ms відчувається повільним для звичайного hover-ефекту картки." },
+    bestPractices: ["Вказуй конкретні властивості в transition (transform, background-color, box-shadow), ніколи all.", "Анімуй transform/opacity, коли можливо, — вони найдешевші для продуктивності браузера."],
+    remember: ["transition: властивість тривалість функція-часу.", "150-250ms — комфортна тривалість для UI-взаємодій.", "Конкретні властивості замість all."],
+    interviewQuestions: [{ question: "Чому transform: translateY() зазвичай кращий вибір для анімації \"підняття\" картки, ніж зміна margin-top?", answer: "transform обробляється на рівні композитора браузера й не викликає перерахунку макета (layout/reflow), тоді як зміна margin впливає на розташування сусідніх елементів і змушує браузер перераховувати макет — це дорожче для продуктивності." }],
+    summary: "transition з конкретними властивостями (не all) і тривалістю 150-250ms робить hover-ефекти плавними без шкоди продуктивності.",
+    nextLessonNote: "Далі — keyframe-анімації для складнішого, багатоетапного руху.",
+    practiceTask: {
+      title: "Проєкт курсу: hover-ефект картки меню",
+      description: "Додай плавне підняття й посилену тінь для картки меню при наведенні.",
+      checklist: ["transition з конкретними властивостями.", "Тривалість 150-250ms.", ":hover змінює transform і box-shadow."],
+      starterFiles: [{ id: "cafe-css-v24b-start", path: "styles.css", language: "css", label: "styles.css", code: `.menu-card {\n  box-shadow: 0 4px 12px rgba(0,0,0,0.08);\n}` }],
+      solutionFiles: [
+        {
+          id: "cafe-css-v25",
+          path: "styles.css",
+          language: "css",
+          label: "styles.css",
+          code: `.menu-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.menu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}`,
+          readOnly: true,
+        },
+      ],
+      hints: ["translateY з від'ємним значенням рухає елемент угору."],
+      expectedOutput: "Картки меню плавно \"піднімаються\" при наведенні миші.",
+    },
+    microExercises: [
+      { id: "css-transition-choice", kind: "choice", prompt: "Потрібно анімувати лише колір фону кнопки при hover, максимально ефективно. Що обрати?", options: ["transition: all 300ms;", "transition: background-color 200ms ease;", "animation: color 1s;", "Нічого, це станеться само"], correctAnswer: "transition: background-color 200ms ease;", solution: "Конкретна властивість замість all — точніше й дешевше для браузера." },
+    ],
+  },
+
+  "Keyframe-анімації": {
+    whatIsIt: "@keyframes визначає багатоетапну анімацію (0%, 50%, 100% чи from/to) з конкретними стилями на кожному етапі. animation застосовує цю анімацію до елемента з тривалістю й повторенням.",
+    whyUseIt: "transition анімує лише перехід МІЖ двома станами (hover/не hover); keyframes дозволяють описати самостійний рух (наприклад, плавну появу картки при завантаженні сторінки), що не залежить від hover чи будь-якої взаємодії.",
+    whenToUse: ["Плавна поява елементів при завантаженні сторінки (fade-in, невеликий рух вгору).", "Індикатори завантаження (спінери), що анімуються самостійно й безкінечно."],
+    whenNotToUse: ["Не використовуй keyframes для простого hover-переходу між двома станами — для цього досить transition, це простіше.", "Не роби анімацію нескінченною й агресивною там, де вона відволікає від контенту (наприклад, постійно \"стрибаючий\" заголовок)."],
+    comparisonTable: {
+      headers: ["", "transition", "@keyframes + animation"],
+      rows: [
+        ["Кількість станів", "Два (початок → кінець)", "Багато (0%, 25%, 50%...100%)"],
+        ["Потребує взаємодії (hover)?", "Зазвичай так", "Ні, може йти самостійно"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "Плавна поява картки меню при завантаженні сторінки:",
+        code: `@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-card {
+  animation: fade-in-up 400ms ease-out;
+}`,
+        lineNotes: ["@keyframes описує стан \"from\" (початок) і \"to\" (кінець) — картка з'являється знизу вгору, стаючи видимою.", "animation: fade-in-up 400ms ease-out застосовує цю анімацію один раз при появі елемента."],
+        after: "Картки меню кав'ярні плавно \"з'являються\" при завантаженні сторінки, а не виникають миттєво.",
+      },
+    ],
+    commonMistakes: ["keyframes для простого hover-ефекту, де вистачило б transition.", "Занадто довга чи агресивна анімація появи, що відчувається повільною при повторних відвідуваннях сторінки.", "Анімація, що блокує читання контенту (нескінченний рух великого блоку тексту)."],
+    dontDoThis: { code: `@keyframes shake {\n  0%, 100% { transform: translateX(0); }\n  50% { transform: translateX(10px); }\n}\nh1 { animation: shake 1s infinite; }`, explanation: "Нескінченна тряска головного заголовка сторінки відволікає від контенту і швидко дратує відвідувача — анімація має підсилювати UX, а не заважати читанню." },
+    bestPractices: ["Використовуй короткі (300-500ms), одноразові анімації появи для контенту, що завантажується.", "Тримай keyframes прості: opacity + невеликий transform, без різких чи повторюваних рухів на основному контенті."],
+    remember: ["@keyframes описує етапи анімації, animation застосовує її до елемента.", "keyframes — для самостійного руху, transition — для переходу між двома станами.", "Коротка, одноразова анімація появи — найбезпечніший, найпоширеніший варіант."],
+    interviewQuestions: [{ question: "Коли варто використовувати @keyframes замість transition?", answer: "Коли потрібна анімація з кількома проміжними етапами або яка запускається самостійно (без hover/focus) — наприклад, поява елемента при завантаженні сторінки чи спінер завантаження, що крутиться безкінечно." }],
+    summary: "@keyframes + animation дають багатоетапний, самостійний рух — на відміну від transition, який лише плавно з'єднує два стани. Короткі анімації появи (fade-in-up) — найпоширеніший, безпечний варіант.",
+    nextLessonNote: "Далі — prefers-reduced-motion: повага до користувачів, яким рух заважає.",
+    practiceTask: {
+      title: "Проєкт курсу: поява карток меню",
+      description: "Додай keyframe-анімацію плавної появи для карток меню при завантаженні сторінки.",
+      checklist: ["@keyframes описує from/to.", "animation застосована з розумною тривалістю (300-500ms)."],
+      starterFiles: [{ id: "cafe-css-v25-start", path: "styles.css", language: "css", label: "styles.css", code: `.menu-card {\n}` }],
+      solutionFiles: [
+        {
+          id: "cafe-css-v26a",
+          path: "styles.css",
+          language: "css",
+          label: "styles.css",
+          code: `@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.menu-card {
+  animation: fade-in-up 400ms ease-out;
+}`,
+          readOnly: true,
+        },
+      ],
+      hints: ["from/to — найпростіший запис двоетапної анімації."],
+      expectedOutput: "Картки меню плавно з'являються при завантаженні сторінки.",
+    },
+    microExercises: [
+      { id: "css-keyframes-choice", kind: "choice", prompt: "Потрібен спінер завантаження, що крутиться безкінечно. Що використати?", options: ["transition", "@keyframes + animation: ... infinite;", "hover-ефект", "clamp()"], correctAnswer: "@keyframes + animation: ... infinite;", solution: "Безкінечний самостійний рух — це задача keyframes з infinite, а не transition, який потребує зміни стану." },
+    ],
+  },
+
+  "prefers-reduced-motion": {
+    whatIsIt: "prefers-reduced-motion — медіазапит, що визначає, чи користувач увімкнув у налаштуваннях ОС опцію \"зменшити рух\" (часто через вестибулярні розлади чи чутливість до анімації).",
+    whyUseIt: "Для частини користувачів рух на екрані викликає реальний фізичний дискомфорт (нудоту, запаморочення) — ігнорування цієї системної настройки робить сайт непридатним для використання, а не просто \"менш красивим\".",
+    whenToUse: ["@media (prefers-reduced-motion: reduce) — вимкни чи різко скороти keyframe-анімації появи, автоматичні каруселі, паралакс-ефекти.", "Залиш функціональні (не суто декоративні) transition, але зроби їх миттєвими чи майже миттєвими."],
+    whenNotToUse: ["Не ігноруй цю настройку \"бо анімація виглядає круто\" — це питання доступності, а не лише стилю.", "Не забувай, що це стосується й keyframes, і transition — обидва типи руху можуть заважати."],
+    codeWalkthroughs: [
+      {
+        before: "Повага до налаштування \"зменшити рух\":",
+        code: `@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}`,
+        lineNotes: ["Це правило застосовується до всіх елементів (*) і практично миттєво завершує будь-яку анімацію чи перехід.", "!important тут виправданий — це навмисне, системне перевизначення заради доступності, а не звичайний CSS-хак."],
+        after: "Користувачі з увімкненою опцією \"зменшити рух\" бачать той самий сайт, але без потенційно шкідливої анімації.",
+      },
+    ],
+    commonMistakes: ["Повна відсутність перевірки prefers-reduced-motion на сайті з анімаціями.", "Забутий transition-duration поряд з animation-duration — обидва типи руху потребують уваги.", "Сприйняття цього як \"необов'язкової дрібниці\", хоча для деяких користувачів це питання реального фізичного комфорту."],
+    dontDoThis: { code: `/* Жодного prefers-reduced-motion на сайті з paralax-ефектами й автокаруселями */`, explanation: "Ігнорування цієї настройки означає, що сайт може викликати реальний дискомфорт (нудоту, запаморочення) у частини відвідувачів — це не \"просто дрібниця\", а питання доступності." },
+    bestPractices: ["Додавай перевірку prefers-reduced-motion одразу, коли додаєш першу keyframe-анімацію в проєкт, а не \"колись потім\".", "Тестуй сайт із увімкненою системною опцією \"зменшити рух\", щоб переконатись, що анімації дійсно вимикаються."],
+    remember: ["prefers-reduced-motion: reduce — системна настройка користувача.", "Для декого рух на екрані — не естетика, а реальний дискомфорт.", "animation-duration і transition-duration — обидва потребують перевизначення."],
+    interviewQuestions: [{ question: "Чому prefers-reduced-motion вважається питанням доступності, а не просто налаштуванням стилю?", answer: "Для користувачів із вестибулярними розладами чи підвищеною чутливістю рух на екрані може викликати реальний фізичний дискомфорт (нудоту, запаморочення) — ігнорування цієї системної настройки робить сайт фактично недоступним для них." }],
+    summary: "prefers-reduced-motion: reduce — обов'язкова перевірка для будь-якого сайту з анімаціями. Це питання реальної доступності, а не додаткова дрібниця.",
+    proTip: "Правило з * і !important для anim/transition-duration — швидкий, надійний спосіб покрити всі анімації сайту одним блоком, а не шукати кожну окремо.",
+    nextLessonNote: "Анімації готові. Далі — CSS Modules і зв'язок цього всього з React.",
+    practiceTask: {
+      title: "Проєкт курсу: повага до reduced motion",
+      description: "Додай глобальне правило, що скорочує всі анімації для prefers-reduced-motion: reduce.",
+      checklist: ["@media (prefers-reduced-motion: reduce) додано.", "Правило охоплює і animation-duration, і transition-duration."],
+      starterFiles: [{ id: "cafe-css-v26a-start", path: "styles.css", language: "css", label: "styles.css", code: `.menu-card {\n  animation: fade-in-up 400ms ease-out;\n}` }],
+      solutionFiles: [
+        {
+          id: "cafe-css-v26b",
+          path: "styles.css",
+          language: "css",
+          label: "styles.css",
+          code: `.menu-card {
+  animation: fade-in-up 400ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}`,
+          readOnly: true,
+        },
+      ],
+      hints: ["Це правило зазвичай пишуть один раз глобально для всього сайту."],
+      expectedOutput: "Сайт кав'ярні поважає системну настройку \"зменшити рух\".",
+    },
+    microExercises: [
+      { id: "css-reduced-motion-choice", kind: "choice", prompt: "Навіщо потрібен @media (prefers-reduced-motion: reduce)?", options: ["Щоб анімації виглядали красивіше", "Щоб поважати користувачів, для яких рух викликає дискомфорт", "Щоб прискорити завантаження сторінки", "Це застаріла, непотрібна властивість"], correctAnswer: "Щоб поважати користувачів, для яких рух викликає дискомфорт", solution: "Це питання доступності — для частини користувачів анімація не естетична дрібниця, а реальна проблема." },
+    ],
+  },
+};

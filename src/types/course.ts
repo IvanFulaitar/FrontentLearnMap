@@ -20,10 +20,23 @@ export interface PlaygroundFile {
   readOnly?: boolean;
 }
 
+/** One step of a guided, incremental build — used for bigger practice tasks
+ * (mini-projects) where jumping straight from an empty starter file to the
+ * full final solution is too big a leap. Each step's `code` is cumulative
+ * (it includes everything from earlier steps plus what's new). */
+export interface PracticeStep {
+  title: string;
+  description: string;
+  code: string;
+}
+
 export interface PracticeTask {
   title: string;
   description: string;
   checklist: string[];
+  /** Optional guided walkthrough shown before the starter/solution files —
+   * a numbered sequence building up to the full implementation. */
+  steps?: PracticeStep[];
   starterFiles: PlaygroundFile[];
   solutionFiles?: PlaygroundFile[];
   hints?: string[];
@@ -38,9 +51,9 @@ export interface TheoryStep {
 
 /** A single code example explained mentor-style: setup, the code, and the payoff. */
 export interface CodeWalkthrough {
-  before: string;
+  before?: string;
   code: string;
-  after: string;
+  after?: string;
   lineNotes?: string[];
 }
 
@@ -104,6 +117,16 @@ export interface Lesson {
   proTip?: string;
   /** Quick-reference comparison table (e.g. element -> use case, input type -> purpose). */
   comparisonTable?: { headers: string[]; rows: string[][] };
+  /** An educational diagram built with inline SVG (arrows, labels, boxes) —
+   * never a screenshot or stock image. Used for visual/spatial concepts
+   * (Box Model, Flexbox axes, Grid tracks, DOM tree, browser rendering
+   * pipeline...) where a picture explains the idea faster than a paragraph. */
+  visualExplanation?: { svg: string; caption?: string };
+  /** Id of a live, state-driven React demo registered in
+   * `components/lesson/demos/index.ts` (e.g. "flexbox-demo") — real
+   * HTML/CSS the student can manipulate with controls, never a static
+   * image. Rendered right after `visualExplanation` when present. */
+  interactiveDemo?: string;
   codeExample: string;
   task: string;
   practiceTask: PracticeTask;

@@ -1,12 +1,181 @@
-import type { Lesson } from "../../types/course";
+import { useCallback, useState } from "react";
+import type { SyntheticEvent } from "react";
+import type { CodeWalkthrough, Lesson } from "../../types/course";
 import { MarkdownRenderer } from "../../shared/markdown/MarkdownRenderer";
 import { Card } from "../ui/Card";
 import { Callout } from "./Callout";
 import { LessonPractice } from "./LessonPractice";
+import { lessonDemos } from "./demos";
 import styles from "./LessonContent.module.css";
 
 interface LessonContentProps {
   lesson: Lesson;
+}
+
+const HTML_MARKUP_RE = /^\s*</;
+// A "bare" CSS rule block: starts with a selector-ish string then `{`, no
+// leading `<` (that would make it markup) and not JS/ASCII-diagram noise.
+const CSS_RULE_ONLY_RE = /^[.#a-zA-Z0-9,\-_:()[\]"'=\s]*\{/;
+const NON_CSS_HINT_RE = /[↑→]|^(const|let|var|function|document\.|import|export|async|await)\b/;
+// Tags that never produce visible output in <body> — <head>-only metadata
+// (SEO/Open Graph <meta>, <title>, <link rel="canonical">, favicon <link>...).
+// A snippet made up of only these renders as a blank white box, which looks
+// broken, not "live" — those topics get dedicated preview widgets instead
+// (Google result card, social preview, robots.txt tester), not this frame.
+const INVISIBLE_HEAD_TAGS_RE = /<(meta|title|link|base)\b[^>]*?\/?>(?:<\/\1>)?/gi;
+
+function hasVisibleMarkup(html: string): boolean {
+  return html.replace(INVISIBLE_HEAD_TAGS_RE, "").replace(/<!--[\s\S]*?-->/g, "").trim().length > 0;
+}
+
+/** A later CSS-only block is only worth layering onto an earlier example if
+ * it actually targets a class/id that example uses — otherwise the rule
+ * silently matches nothing and the "live result" would misleadingly look
+ * unchanged (e.g. a `.main-nav` rule shown against a lesson's unrelated
+ * `.row`/`.box` demo markup from an earlier, different walkthrough). */
+function cssTargetsHtml(css: string, html: string): boolean {
+  const selectorNames = Array.from(css.matchAll(/[.#]([a-zA-Z0-9_-]+)/g)).map((match) => match[1]);
+  return selectorNames.length > 0 && selectorNames.some((name) => html.includes(name));
+}
+
+/**
+ * Classifies each `codeWalkthrough.code` in a lesson and, where the snippet
+ * is genuinely renderable, produces the accumulated HTML+CSS document a
+ * `LiveCodeFrame` should show underneath it. Walkthroughs build on each
+ * other within one lesson (first shows full markup, later ones often add
+ * just a CSS rule to that same example) — so a later CSS-only block is
+ * layered on top of the most recent full-markup block instead of shown in
+ * isolation with nothing to render against, but only when its selectors
+ * actually match something in that markup. Snippets with no renderable HTML
+ * context (a bare CSS rule with no earlier markup, one that targets a
+ * different unshown example, an ASCII diagram, a raw JS statement) return
+ * `null` — no live preview is faked for those, they stay copy-only.
+ */
+function buildLivePreviews(walkthroughs: CodeWalkthrough[]): (string | null)[] {
+  let baseHtml: string | null = null;
+  let layeredStyles: string[] = [];
+
+  return walkthroughs.map((walkthrough) => {
+    const code = walkthrough.code;
+    const trimmed = code.trim();
+
+    if (HTML_MARKUP_RE.test(trimmed)) {
+      if (!hasVisibleMarkup(trimmed)) {
+        // Head-only metadata (meta/title/link) — nothing to show in a body
+        // preview. Don't set it as baseHtml either: a later CSS rule has
+        // nothing visible here to attach to.
+        return null;
+      }
+      baseHtml = code;
+      layeredStyles = [];
+      return baseHtml;
+    }
+
+    if (baseHtml && CSS_RULE_ONLY_RE.test(trimmed) && !NON_CSS_HINT_RE.test(trimmed) && cssTargetsHtml(trimmed, baseHtml)) {
+      layeredStyles.push(code);
+      return `${baseHtml}\n<style>${layeredStyles.join("\n")}</style>`;
+    }
+
+    return null;
+  });
+}
+
+/** Renders a code snippet's actual output in a sandboxed iframe — the real
+ * browser result sitting right under the code, not just described in
+ * prose. `allow-same-origin` is included (safe here: content is entirely
+ * hand-authored lesson code, never user input) so the frame can measure and
+ * auto-size itself instead of showing a fixed, possibly-clipped box. */
+function LiveCodeFrame({ html }: { html: string }) {
+  const handleLoad = useCallback((event: SyntheticEvent<HTMLIFrameElement>) => {
+    const frame = event.currentTarget;
+    try {
+      const doc = frame.contentWindow?.document;
+      if (doc) {
+        frame.style.height = `${Math.max(56, doc.documentElement.scrollHeight + 4)}px`;
+      }
+    } catch {
+      /* sandboxed access blocked — frame keeps its default height */
+    }
+  }, []);
+
+  const document_ = `<!doctype html><html><head><meta charset="utf-8"><style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 16px; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #1a1a1a; background: #ffffff; }
+  </style></head><body>${html}</body></html>`;
+
+  return (
+    <iframe
+      srcDoc={document_}
+      className={styles.liveFrame}
+      sandbox="allow-scripts allow-same-origin"
+      title="Живий результат коду"
+      onLoad={handleLoad}
+    />
+  );
+}
+
+/** Code block with a working "copy" button — real interactivity on every
+ * code walkthrough, not just a static, unselectable screenshot-like block. */
+function CopyableCode({ code }: { code: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(code)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1600);
+      })
+      .catch(() => {
+        /* clipboard API unavailable — button simply won't confirm */
+      });
+  };
+
+  return (
+    <div className={styles.codeBlock}>
+      <button type="button" className={styles.copyButton} onClick={handleCopy}>
+        {copied ? "✔ Скопійовано" : "⧉ Копіювати код"}
+      </button>
+      <pre className={styles.code}>
+        <code>{code}</code>
+      </pre>
+    </div>
+  );
+}
+
+/** Comparison table where clicking a row highlights it — a small nudge to
+ * actually compare rows against each other instead of just reading text. */
+function InteractiveComparisonTable({ table }: { table: { headers: string[]; rows: string[][] } }) {
+  const [active, setActive] = useState<number | null>(null);
+
+  return (
+    <table className={styles.table}>
+      <thead>
+        <tr>
+          {table.headers.map((header) => <th key={header}>{header}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {table.rows.map((row, index) => (
+          <tr
+            key={row.join("|")}
+            className={active === index ? styles.tableRowActive : undefined}
+            role="button"
+            tabIndex={0}
+            onClick={() => setActive((current) => (current === index ? null : index))}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                setActive((current) => (current === index ? null : index));
+              }
+            }}
+          >
+            {row.map((cell, cellIndex) => <td key={cellIndex}>{cell}</td>)}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 }
 
 /**
@@ -21,6 +190,7 @@ function CheatSheetLessonContent({ lesson }: LessonContentProps) {
   const sections = [
     ["what", "🎯 Що це?"],
     ["why", "🤔 Навіщо це потрібно"],
+    ["see", "👀 Подивись у дії"],
     ["how", "💻 Як використовувати"],
     ["not", "❌ Чого НЕ робити"],
     ["practice", "🛠 Практика"],
@@ -32,6 +202,8 @@ function CheatSheetLessonContent({ lesson }: LessonContentProps) {
 
   const seniorTips = [...(lesson.bestPractices ?? []), ...(lesson.realWorldUsage ?? [])];
   const rememberTop5 = (lesson.remember ?? []).slice(0, 5);
+  const walkthroughPreviews = lesson.codeWalkthroughs ? buildLivePreviews(lesson.codeWalkthroughs) : [];
+  const Demo = lesson.interactiveDemo ? lessonDemos[lesson.interactiveDemo] : undefined;
 
   return (
     <div className={styles.content}>
@@ -48,6 +220,26 @@ function CheatSheetLessonContent({ lesson }: LessonContentProps) {
           </Card>
         ) : null}
 
+        {lesson.visualExplanation || Demo ? (
+          <Card className={styles.section} id="see">
+            <h2>👀 Подивись у дії</h2>
+            {lesson.visualExplanation ? (
+              <figure className={styles.visual}>
+                <div aria-hidden="true" dangerouslySetInnerHTML={{ __html: lesson.visualExplanation.svg }} />
+                {lesson.visualExplanation.caption ? (
+                  <figcaption>{lesson.visualExplanation.caption}</figcaption>
+                ) : null}
+              </figure>
+            ) : null}
+            {Demo ? (
+              <div className={styles.demoBlock}>
+                <p className={styles.demoLabel}>🕹 Спробуй сам — зміни значення й подивись, що станеться:</p>
+                <Demo />
+              </div>
+            ) : null}
+          </Card>
+        ) : null}
+
         <Card className={styles.section} id="how">
           <h2>💻 Як використовувати</h2>
           {lesson.whenToUse?.length ? (
@@ -55,29 +247,18 @@ function CheatSheetLessonContent({ lesson }: LessonContentProps) {
               {lesson.whenToUse.map((item) => <li key={item}>{item}</li>)}
             </ul>
           ) : null}
-          {lesson.comparisonTable ? (
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  {lesson.comparisonTable.headers.map((header) => <th key={header}>{header}</th>)}
-                </tr>
-              </thead>
-              <tbody>
-                {lesson.comparisonTable.rows.map((row) => (
-                  <tr key={row.join("|")}>
-                    {row.map((cell, cellIndex) => <td key={cellIndex}>{cell}</td>)}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : null}
+          {lesson.comparisonTable ? <InteractiveComparisonTable table={lesson.comparisonTable} /> : null}
           {lesson.codeWalkthroughs?.length ? (
             lesson.codeWalkthroughs.map((walkthrough, index) => (
               <div className={styles.walkthrough} key={index}>
                 {walkthrough.before ? <p>{walkthrough.before}</p> : null}
-                <pre className={styles.code}>
-                  <code>{walkthrough.code}</code>
-                </pre>
+                <CopyableCode code={walkthrough.code} />
+                {walkthroughPreviews[index] ? (
+                  <div className={styles.livePreviewBlock}>
+                    <p className={styles.livePreviewLabel}>▶ Живий результат:</p>
+                    <LiveCodeFrame html={walkthroughPreviews[index] as string} />
+                  </div>
+                ) : null}
                 {walkthrough.lineNotes?.length ? (
                   <ul className={styles.list}>
                     {walkthrough.lineNotes.map((note) => <li key={note}>{note}</li>)}
@@ -161,6 +342,7 @@ function CheatSheetLessonContent({ lesson }: LessonContentProps) {
         {sections
           .filter(([id]) => {
             if (id === "why") return Boolean(lesson.whyUseIt);
+            if (id === "see") return Boolean(lesson.visualExplanation || Demo);
             if (id === "not") return Boolean(lesson.whenNotToUse?.length || lesson.dontDoThis || lesson.commonMistakes?.length);
             if (id === "senior") return Boolean(seniorTips.length || lesson.proTip);
             if (id === "interview") return Boolean(lesson.interviewQuestions?.length);

@@ -66,16 +66,6 @@ export function SettingsPage() {
               <option value="large">Великий</option>
             </select>
           </SettingsRow>
-          <SettingsRow label="Розмір шрифту редактора">
-            <input className={styles.input} type="number" min={12} max={24} value={settings.editorFontSize} onChange={(event) => updateSettings({ editorFontSize: Number(event.target.value) })} />
-          </SettingsRow>
-          <SettingsRow label="Шрифт коду">
-            <select className={styles.select} value={settings.codeFont} onChange={(event) => updateSettings({ codeFont: event.target.value as "Cascadia Code" | "Fira Code" | "Consolas" })}>
-              <option>Cascadia Code</option>
-              <option>Fira Code</option>
-              <option>Consolas</option>
-            </select>
-          </SettingsRow>
           <SettingsRow label="Анімації">
             <input type="checkbox" checked={settings.animations} onChange={(event) => updateSettings({ animations: event.target.checked })} />
           </SettingsRow>

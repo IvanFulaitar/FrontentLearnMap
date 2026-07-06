@@ -2,7 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\data"
+    "\\src\\data",
+    "\\src\\data\\content",
+    "\\src\\data\\content\\handwritten",
+    "\\src\\test"
   ],
   "PreviewInSolutionExplorer": false
 }

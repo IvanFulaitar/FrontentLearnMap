@@ -27,7 +27,7 @@ export function Header({ onMenuClick, theme, onThemeToggle, isSidebarCollapsed, 
         <span className={styles.brandIcon}>
           <BookOpen size={19} />
         </span>
-        <span>Frontend Roadmap Academy</span>
+        <span>Free Frontend</span>
       </div>
       <GlobalSearch />
       <div className={styles.actions}>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Круасан на тарілці">
+  <rect width="200" height="200" rx="16" fill="#f7ecd9" />
+  <ellipse cx="100" cy="140" rx="70" ry="14" fill="#e7d6b8" />
+  <path d="M40 110
+           C 55 70, 90 55, 100 60
+           C 110 55, 145 70, 160 110
+           C 145 100, 130 112, 118 100
+           C 108 112, 92 112, 82 100
+           C 70 112, 55 100, 40 110 Z"
+        fill="#d99a4e" stroke="#b9793a" stroke-width="2" />
+  <g stroke="#8a5a2b" stroke-width="2" stroke-linecap="round" opacity="0.6">
+    <path d="M62 92 C 68 86, 74 86, 80 92" />
+    <path d="M92 86 C 98 80, 104 80, 110 86" />
+    <path d="M122 92 C 128 86, 134 86, 140 92" />
+  </g>
+</svg>

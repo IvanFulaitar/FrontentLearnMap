@@ -1,0 +1,300 @@
+/* Shared visual language for every lesson demo. Individual demos (FlexboxDemo,
+   GridDemo, BoxModelDemo...) compose these primitives instead of rolling
+   their own layout — this file is what makes them "feel like one system". */
+
+.section {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.control {
+  display: grid;
+  gap: 4px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.control select,
+.control input[type="range"] {
+  min-width: 160px;
+}
+
+.control select {
+  min-height: 38px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 500;
+}
+
+.colorInput {
+  min-height: 38px;
+  min-width: 64px !important;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.control select:focus-visible,
+.control input:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.control input[type="range"] {
+  accent-color: var(--primary);
+}
+
+/* Preview */
+.preview {
+  position: relative;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  background: var(--surface);
+  overflow-x: auto;
+}
+
+.previewLabel {
+  margin: 0 0 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+/* Every realistic preview element (nav links, cards, tags...) should
+   transition smoothly instead of snapping when a control changes. */
+.preview * {
+  transition: all 220ms ease;
+}
+
+/* Code snippet */
+.codeSnippet {
+  margin: 0;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: #0f172a;
+  color: #e5edf8;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* Explanation */
+.explanation {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-soft);
+  color: var(--text);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.explanationIcon {
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* Before / After */
+.beforeAfter {
+  display: grid;
+  gap: 10px;
+}
+
+.toolbar {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  width: fit-content;
+}
+
+.toolbarButton {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.84rem;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.toolbarButton:hover {
+  color: var(--text);
+}
+
+.toolbarButtonActive {
+  background: var(--primary);
+  color: white;
+}
+
+.beforeAfterStage {
+  animation: demoFadeIn 220ms ease;
+}
+
+@keyframes demoFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Highlight pulse — used to draw the eye to whatever just changed */
+.highlight {
+  border-radius: var(--radius-sm);
+}
+
+.highlightPulse {
+  animation: demoPulse 600ms ease;
+}
+
+@keyframes demoPulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--primary-soft);
+  }
+  60% {
+    box-shadow: 0 0 0 8px var(--primary-soft);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/* Axis indicator (main axis / cross axis arrows) */
+.axisWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.axisItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.axisArrow {
+  display: inline-block;
+  font-size: 1.1rem;
+  color: var(--primary);
+  transition: transform 260ms ease;
+}
+
+/* Viewport simulator (for responsive-design demos) */
+.viewport {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.viewportFrame {
+  width: 100%;
+  max-width: var(--viewport-width, 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 12px;
+  transition: max-width 260ms ease;
+  overflow: hidden;
+}
+
+.viewportLabel {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* HighlightDemo — hover/click a region, see it highlighted + explained */
+.highlightDemo {
+  display: grid;
+  gap: 10px;
+}
+
+.highlightStage {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: var(--surface);
+}
+
+.highlightCaption {
+  margin: 0;
+  min-height: 20px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  color: var(--text);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.highlightArea {
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color 150ms ease, background 150ms ease;
+}
+
+.highlightArea:hover,
+.highlightArea:focus-visible {
+  background: var(--primary-soft);
+}
+
+.highlightAreaActive {
+  outline-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+@media (max-width: 560px) {
+  .control select,
+  .control input[type="range"] {
+    min-width: 0;
+    width: 100%;
+  }
+}

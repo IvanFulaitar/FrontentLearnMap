@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Чашка лате з піною та парою">
+  <rect width="200" height="200" rx="16" fill="#f5e6d3" />
+  <g stroke="#c9b7a0" stroke-width="3" stroke-linecap="round" opacity="0.8">
+    <path d="M76 40 C 72 30, 82 28, 80 18">
+      <animate attributeName="d" dur="3s" repeatCount="indefinite"
+        values="M76 40 C 72 30, 82 28, 80 18;M76 40 C 80 30, 70 28, 74 18;M76 40 C 72 30, 82 28, 80 18" />
+    </path>
+    <path d="M100 40 C 96 28, 106 26, 104 14">
+      <animate attributeName="d" dur="3.4s" repeatCount="indefinite"
+        values="M100 40 C 96 28, 106 26, 104 14;M100 40 C 104 28, 94 26, 98 14;M100 40 C 96 28, 106 26, 104 14" />
+    </path>
+    <path d="M124 40 C 120 30, 130 28, 128 18">
+      <animate attributeName="d" dur="2.7s" repeatCount="indefinite"
+        values="M124 40 C 120 30, 130 28, 128 18;M124 40 C 128 30, 118 28, 122 18;M124 40 C 120 30, 130 28, 128 18" />
+    </path>
+  </g>
+  <path d="M56 56 h96 l-10 92 a14 14 0 0 1-14 12 h-48 a14 14 0 0 1-14-12 z" fill="#ffffff" stroke="#e2d3bd" stroke-width="2" />
+  <ellipse cx="104" cy="58" rx="48" ry="10" fill="#fff8ef" stroke="#e2d3bd" stroke-width="2" />
+  <path d="M92 54 c4 -10 16 -10 20 0 c6 -6 16 -2 14 6 c-2 6 -34 6 -36 0 c-2 -4 -2 -4 2 -6z" fill="#c68a45" />
+  <path d="M150 70 c16 -4 26 8 22 22 c-4 12 -18 16 -28 12" fill="none" stroke="#e2d3bd" stroke-width="6" stroke-linecap="round" />
+</svg>

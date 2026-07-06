@@ -29,11 +29,32 @@ export function LessonPractice({ practiceTask, microExercises }: { practiceTask:
           {practiceTask.checklist.map((item) => <li key={item}>{item}</li>)}
         </ul>
         {practiceTask.expectedOutput ? <p><strong>Очікуваний результат:</strong> {practiceTask.expectedOutput}</p> : null}
-        {practiceTask.starterFiles.map((file) => (
-          <pre className={styles.codeBlock} key={file.id ?? file.path ?? file.label}>
-            <code>{`// ${file.label}\n${file.code}`}</code>
-          </pre>
-        ))}
+        {practiceTask.steps?.length ? (
+          <ol className={styles.steps}>
+            {practiceTask.steps.map((step, index) => (
+              <li className={styles.step} key={step.title}>
+                <div className={styles.stepHeading}>
+                  <span className={styles.stepNumber}>{index + 1}</span>
+                  <strong>{step.title}</strong>
+                </div>
+                <p>{step.description}</p>
+                <pre className={styles.codeBlock}>
+                  <code>{step.code}</code>
+                </pre>
+              </li>
+            ))}
+          </ol>
+        ) : null}
+        {/* When a step-by-step build guide exists, step 1 already covers the
+            starting point, so the raw starter file (often just an empty
+            placeholder for mini-projects) would be redundant clutter here. */}
+        {!practiceTask.steps?.length
+          ? practiceTask.starterFiles.map((file) => (
+              <pre className={styles.codeBlock} key={file.id ?? file.path ?? file.label}>
+                <code>{`// ${file.label}\n${file.code}`}</code>
+              </pre>
+            ))
+          : null}
         {practiceTask.hints?.length ? (
           <details className={styles.reveal}>
             <summary>Підказки</summary>

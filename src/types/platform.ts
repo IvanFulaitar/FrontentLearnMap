@@ -83,8 +83,6 @@ export interface LearningResource {
 
 export interface PlatformSettings {
   fontSize: "small" | "medium" | "large";
-  editorFontSize: number;
-  codeFont: "Cascadia Code" | "Fira Code" | "Consolas";
   animations: boolean;
   compactMode: boolean;
 }

@@ -55,9 +55,14 @@
 
 .courseTitle {
   display: flex;
+  /* Wrap (not nowrap) so that when a title + badge don't both fit on one
+     line, the badge drops to its own line below the title instead of
+     forcing a mid-word break in the title — much cleaner for long single
+     words like "Продуктивність" than hyphenating the word itself. */
+  flex-wrap: wrap;
   width: 100%;
   align-items: center;
-  gap: 8px;
+  gap: 4px 8px;
   border: none;
   background: none;
   padding: 0;
@@ -73,12 +78,19 @@
 }
 
 .courseTitleText {
-  flex: 1;
-  min-width: 0;
+  flex: 1 1 auto;
+  min-width: fit-content;
+  /* Last-resort safety net for extremely narrow viewports where even the
+     title alone (with the badge already on its own line) doesn't fit. */
+  overflow-wrap: anywhere;
 }
 
 .courseMeta {
   flex-shrink: 0;
+  min-width: 0;
+  max-width: 40%;
+  overflow-wrap: anywhere;
+  text-align: right;
   color: var(--muted);
   font-size: 0.78rem;
 }

@@ -20,8 +20,8 @@ const defaultState: PlatformState = {
   completedProjects: [],
   notes: {},
   bookmarks: [],
-  settings: { fontSize: "medium", editorFontSize: 14, codeFont: "Cascadia Code", animations: true, compactMode: false },
-  profile: { username: "Студент Frontend Academy", avatar: "ФА" },
+  settings: { fontSize: "medium", animations: true, compactMode: false },
+  profile: { username: "Студент Free Frontend", avatar: "ФФ" },
 };
 
 const readState = (): PlatformState => {
@@ -71,7 +71,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const addXp = useCallback((amount: number) => update((current) => ({ ...current, xp: current.xp + amount })), [update]);
+  const addXp = useCallback((amount: number) => update((current) => ({ ...current, xp: Math.max(0, current.xp + amount) })), [update]);
 
   const completeDaily = useCallback((id: string) => {
     update((current) => {

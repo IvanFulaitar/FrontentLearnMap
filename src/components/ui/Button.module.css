@@ -45,3 +45,12 @@
 .ghost:hover {
   background: var(--surface-muted);
 }
+
+.success {
+  background: var(--success);
+  color: white;
+}
+
+.success:hover {
+  filter: brightness(0.93);
+}
