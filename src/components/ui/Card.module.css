@@ -4,6 +4,7 @@
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   transition: border-color var(--transition), box-shadow var(--transition);
+  min-width: 0;
 }
 
 .card:hover {

@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.20.0 — CSS-only lessons now render an actual live example, not just code
+
+### Fixed (user-reported: "Тіні та радіуси" showed only a copyable `.menu-card { ... }` block, no visual)
+- Root cause: `LiveCodeFrame` only renders a walkthrough when its `code` starts with real HTML markup — a CSS-only rule block has nothing to attach to and was silently staying copy-only, even though other lessons already show a live result. Rewrote all 4 `css-real-buttons-cards` walkthroughs (Кнопки та стани :hover/:focus, Тіні та радіуси, Картки меню, Псевдоелементи ::before/::after) into the project's existing self-contained convention — real markup (a `<button>`, a `.menu-card` `<div>`) followed by an embedded `<style>` block with the exact same CSS — so each now shows an actual rendered, interactive result (the button lesson's hover/focus/active states are for-real hoverable/tabbable/clickable in the live frame, not described in prose).
+- Added the café project's real design tokens (`--color-primary`, `--color-bg`, `--color-text`, `--color-surface`, `--space-*`, `--radius`, `--font-*`) as a `:root` block inside `LiveCodeFrame`'s own injected stylesheet. Most lesson snippets reference these via `var(--color-primary)` etc. without redeclaring `:root` every time (it's taught once, early in the course) — without a real value here those snippets would render invisible (an undefined custom property resolves to nothing). This is a one-time, sitewide fix: every other lesson across both courses that references these tokens in a live preview benefits, not just this module.
+- Remaining CSS-only walkthroughs across `css-real-forms-pricing`, `css-responsive`, `css-variables-dark-mode`, and `css-animations` likely have the same gap and are next in line for the same treatment.
+
+## 1.19.0 — Fixed TOC overlap/overflow, console errors, and oversized preview boxes
+
+### Fixed (user-reported, 4 screenshots: TOC sidebar overlapping lesson content + one showing a page-level horizontal scrollbar)
+- Root cause found: CSS Grid items default to `min-width: auto` (their content's min-content size), which silently overrides a parent grid track's `minmax(0, ...)`. A single long unbreakable line buried several levels deep inside `.content`'s left column (a URL, a `srcset` list, a long attribute value in a code block) was forcing that whole column — and therefore the grid — wider than the page, pushing/overlapping the `.toc` sidebar and, in the worst case, opening a page-level scrollbar.
+- Fixed at every level of the chain, not just the symptom: added `min-width: 0` to `.docs`, `.walkthrough`, `.codeBlock`, and `.livePreviewBlock` (each one is a real grid item somewhere in this nesting and each was silently blocking its neighbors from shrinking). Also added `min-width: 0` directly to the shared `Card` component (`src/components/ui/Card.module.css`) since `Card` is used as a grid/flex item all over the app — the same blowout could otherwise resurface anywhere else a `Card` sits in a grid.
+- This is the same bug class as the "код пробиває контейнер" report (a `<meta>` example's code box visibly pushing past its own rounded border) — `.codeBlock` was the missing link: its inner `<pre>` already had `overflow-x: auto`, but `.codeBlock` itself refused to shrink to its column's width, so there was nothing to scroll within.
+
+### Fixed (user-reported console errors: iframe sandbox warning + 404 on `analytics.js`)
+- `LiveCodeFrame`'s sandbox previously combined `allow-scripts` with `allow-same-origin`, which Chrome flags as a sandbox-escape risk. Rewrote the height-measurement approach so `allow-same-origin` is no longer needed at all: instead of the parent reaching into the iframe's DOM, a small script injected into the iframe's own document measures `document.body.scrollHeight` via `ResizeObserver` and reports it out through `postMessage`, which works across origins. Sandbox is now `allow-scripts` only.
+- A lesson snippet illustrating render-blocking scripts (`<head><script src="analytics.js">...`) was still passing the live-preview classifier and causing the sandboxed frame to request a file that doesn't exist. Added `HAS_HEAD_TAG_RE`: any code walkthrough containing a `<head>` tag is now excluded from live rendering entirely, matching the user's earlier instruction that `<head>`-related examples are about non-visual behavior, not something meant to be painted live.
+
+### Fixed (user-reported: live-result box far too tall and mostly empty for short content)
+- Added a hard `max-height: 420px` + `overflow-y: auto` ceiling on `.liveFrame` — no measurement bug can balloon the box past this again; it scrolls instead.
+
 ## 1.18.0 — Consolidated to a 10-component interaction system
 
 ### Strategic shift (per user directive: "8-10 універсальних компонентів, не 70")

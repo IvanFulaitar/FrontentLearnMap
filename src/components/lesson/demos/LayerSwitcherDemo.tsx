@@ -36,7 +36,7 @@ export function LayerSwitcherDemo() {
   };
 
   return (
-    <div>
+    <div className={styles.demoStack}>
       <DemoToolbar
         options={OPTIONS}
         value={layer}

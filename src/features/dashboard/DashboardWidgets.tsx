@@ -118,10 +118,24 @@ export function CourseProgressGrid({ data, lessonProgress }: { data: DashboardDa
 }
 
 export function DashboardMissions({ platform }: { platform: PlatformState }) {
+  const doneToday = dailyChallenges.filter((challenge) => platform.completedDaily.includes(challenge.id)).length;
+  const allDoneToday = doneToday === dailyChallenges.length;
+  const unlockedCount = platform.unlockedAchievements.length;
+
   return (
     <section className={styles.courseProgress}>
       <Card className={styles.panel}>
-        <h2>Щоденні виклики</h2>
+        <div className={styles.missionsHeader}>
+          <h2>Щоденні виклики</h2>
+          <span className={`${styles.missionsBadge} ${allDoneToday ? styles.missionsBadgeDone : ""}`}>
+            {doneToday}/{dailyChallenges.length} сьогодні
+          </span>
+        </div>
+        <p className={styles.missionsSubtitle}>
+          {allDoneToday
+            ? "Усе на сьогодні виконано — нові виклики зʼявляться завтра."
+            : "Список оновлюється щодня о півночі."}
+        </p>
         <div className={styles.challengeList}>
           {dailyChallenges.map((challenge) => {
             const done = platform.completedDaily.includes(challenge.id);
@@ -133,7 +147,10 @@ export function DashboardMissions({ platform }: { platform: PlatformState }) {
                   checked={done}
                   onChange={() => platform.completeDaily(challenge.id)}
                 />
-                <span className={styles.challengeLabel}>{challenge.title}</span>
+                <span className={styles.challengeText}>
+                  <span className={styles.challengeLabel}>{challenge.title}</span>
+                  <span className={styles.challengeDescription}>{challenge.description}</span>
+                </span>
                 <span className={styles.challengeXp}>+{challenge.xpReward} XP</span>
               </label>
             );
@@ -141,7 +158,10 @@ export function DashboardMissions({ platform }: { platform: PlatformState }) {
         </div>
       </Card>
       <Card className={styles.panel}>
-        <h2>Досягнення</h2>
+        <div className={styles.missionsHeader}>
+          <h2>Досягнення</h2>
+          <span className={styles.missionsBadge}>{unlockedCount}/{achievements.length}</span>
+        </div>
         <div className={styles.achievementList}>
           {achievements.slice(0, 6).map((achievement) => {
             const unlocked = platform.unlockedAchievements.includes(achievement.id);
@@ -152,7 +172,11 @@ export function DashboardMissions({ platform }: { platform: PlatformState }) {
                 ) : (
                   <Circle size={18} aria-hidden="true" className={styles.achievementIconLocked} />
                 )}
-                <span className={styles.achievementText}>{achievement.title}</span>
+                <span className={styles.achievementText}>
+                  <span className={styles.achievementTitle}>{achievement.title}</span>
+                  <span className={styles.achievementDescription}>{achievement.description}</span>
+                </span>
+                {unlocked ? <span className={styles.achievementXp}>+{achievement.xpReward} XP</span> : null}
               </div>
             );
           })}

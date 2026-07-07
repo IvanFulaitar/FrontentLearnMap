@@ -20,8 +20,11 @@ export const cssRealButtonsCardsOverrides: Record<string, LessonOverride> = {
     },
     codeWalkthroughs: [
       {
-        before: "Кнопка бронювання з повним набором станів:",
-        code: `.button {
+        before: "Кнопка бронювання з повним набором станів (наведи мишею, натисни Tab, клікни — усе живе нижче):",
+        code: `<button class="button">Забронювати столик</button>
+
+<style>
+.button {
   background: var(--color-primary);
   color: white;
   padding: 12px 24px;
@@ -41,7 +44,8 @@ export const cssRealButtonsCardsOverrides: Record<string, LessonOverride> = {
 
 .button:active {
   transform: scale(0.98);
-}`,
+}
+</style>`,
         lineNotes: ["transition вказує конкретні властивості, а не all — легше для браузера.", "focus-visible дає чіткий, помітний контур для клавіатурної навігації.", "active злегка зменшує кнопку — тактильне відчуття натискання."],
         after: "Кнопка бронювання реагує на наведення, фокус і клік — відчувається \"живою\".",
       },
@@ -103,12 +107,20 @@ export const cssRealButtonsCardsOverrides: Record<string, LessonOverride> = {
     codeWalkthroughs: [
       {
         before: "Картка меню з м'якою тінню і округленими кутами:",
-        code: `.menu-card {
+        code: `<div class="menu-card">
+  <strong>Капучино</strong>
+  <p>Еспресо з молочною пінкою</p>
+  <span>75 грн</span>
+</div>
+
+<style>
+.menu-card {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   background: white;
   padding: 16px;
-}`,
+}
+</style>`,
         lineNotes: ["border-radius: 12px — сучасний, м'який вигляд картки.", "box-shadow з низькою прозорістю (0.08) — легка, не нав'язлива тінь."],
         after: "Картка меню виглядає як окремий, \"піднятий\" елемент над фоном сторінки.",
       },
@@ -155,8 +167,24 @@ export const cssRealButtonsCardsOverrides: Record<string, LessonOverride> = {
     whenNotToUse: ["Не задавай фіксовану height на картках з текстом різної довжини — це або обріже текст, або залишить нерівне порожнє місце.", "Не забувай flex-direction: column усередині картки — інакше назва й ціна підуть у ряд замість колонки."],
     codeWalkthroughs: [
       {
-        before: "Сітка карток меню, де кожна картка однакової висоти автоматично:",
-        code: `.menu-grid {
+        before: "Сітка карток меню, де кожна картка однакової висоти автоматично (зверни увагу — довша назва напою не робить його картку вищою за сусідні):",
+        code: `<div class="menu-grid">
+  <div class="menu-card">
+    <strong>Капучино</strong>
+    <span>75 грн</span>
+  </div>
+  <div class="menu-card">
+    <strong>Фільтр-кава з м'ятним сиропом і корицею</strong>
+    <span>95 грн</span>
+  </div>
+  <div class="menu-card">
+    <strong>Чізкейк</strong>
+    <span>110 грн</span>
+  </div>
+</div>
+
+<style>
+.menu-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 16px;
@@ -169,7 +197,9 @@ export const cssRealButtonsCardsOverrides: Record<string, LessonOverride> = {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 16px;
-}`,
+  background: #ffffff;
+}
+</style>`,
         lineNotes: ["Grid автоматично розтягує картки одного рядка до однакової висоти (align-items: stretch за замовчуванням).", "Flex-колонка всередині картки впорядковує назву, опис і ціну вертикально."],
         after: "Усі картки меню однакової висоти в межах рядка, незалежно від довжини назви напою.",
       },
@@ -225,7 +255,20 @@ export const cssRealButtonsCardsOverrides: Record<string, LessonOverride> = {
     codeWalkthroughs: [
       {
         before: "Значок \"Хіт\" на картці меню без зайвого div у HTML:",
-        code: `.menu-card--popular {
+        code: `<div class="menu-card menu-card--popular">
+  <strong>Капучино</strong>
+  <span>75 грн</span>
+</div>
+
+<style>
+.menu-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  background: #ffffff;
+}
+
+.menu-card--popular {
   position: relative;
 }
 
@@ -239,7 +282,8 @@ export const cssRealButtonsCardsOverrides: Record<string, LessonOverride> = {
   padding: 2px 8px;
   border-radius: 999px;
   font-size: 0.75rem;
-}`,
+}
+</style>`,
         lineNotes: ["content: \"Хіт\" — обов'язковий, це і є текст псевдоелемента.", "position: relative на батьківському .menu-card--popular потрібен, щоб position: absolute на ::after позиціонувався відносно картки, а не всієї сторінки."],
         after: "На картці з'являється значок \"Хіт\" у кутку — без жодного додаткового div у розмітці.",
       },

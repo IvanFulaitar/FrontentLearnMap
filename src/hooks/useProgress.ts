@@ -3,10 +3,13 @@ import type { LessonStatus } from "../types/course";
 import type { ProgressMap, QuizProgressMap } from "../utils/progress";
 import { getLessonKey, getQuizKey } from "../utils/progress";
 
-const LESSON_PROGRESS_KEY = "frontend-academy:lesson-progress";
-const QUIZ_PROGRESS_KEY = "frontend-academy:quiz-progress";
-const ACTIVITY_LOG_KEY = "frontend-academy:activity-log";
-const PROGRESS_SYNC_EVENT = "frontend-academy:progress-sync";
+// Exported so other contexts (e.g. PlatformContext, for real progress-based
+// achievements) can read/subscribe to the same storage without a second,
+// out-of-sync copy of the key/event names.
+export const LESSON_PROGRESS_KEY = "frontend-academy:lesson-progress";
+export const QUIZ_PROGRESS_KEY = "frontend-academy:quiz-progress";
+export const ACTIVITY_LOG_KEY = "frontend-academy:activity-log";
+export const PROGRESS_SYNC_EVENT = "frontend-academy:progress-sync";
 
 const todayKey = () => new Date().toISOString().slice(0, 10);
 
@@ -100,5 +103,3 @@ export function useProgressState() {
 
   return { lessonProgress, quizProgress, activityLog, setLessonStatus, saveQuizScore };
 }
-
-

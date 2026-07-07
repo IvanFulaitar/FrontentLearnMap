@@ -30,7 +30,7 @@ export function Callout({ kind, title, children }: { kind: CalloutKind; title?: 
   return (
     <div className={`${styles.callout} ${styles[kind]}`}>
       <span className={styles.icon} aria-hidden="true">{iconFor[kind]}</span>
-      <div>
+      <div className={styles.content}>
         <div className={styles.title}>{title ?? defaultTitleFor[kind]}</div>
         <div className={styles.body}>{children}</div>
       </div>

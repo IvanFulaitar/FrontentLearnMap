@@ -7,6 +7,15 @@
   background: var(--surface-muted);
 }
 
+/* Plain vertical stack (no border/background) for demos that render their
+   own bordered pieces (toolbar, preview, explanation, takeaway) directly,
+   without the bordered DemoSection card. Without this, siblings sit flush
+   against each other with zero gap. */
+.demoStack {
+  display: grid;
+  gap: 14px;
+}
+
 .controls {
   display: flex;
   flex-wrap: wrap;

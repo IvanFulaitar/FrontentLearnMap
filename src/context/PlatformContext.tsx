@@ -1,12 +1,26 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { achievements, dailyChallenges, levels, XP_REWARDS } from "../constants/gamification";
+import { courses } from "../data/courses";
+import {
+  ACTIVITY_LOG_KEY,
+  LESSON_PROGRESS_KEY,
+  PROGRESS_SYNC_EVENT,
+  QUIZ_PROGRESS_KEY,
+} from "../hooks/useProgress";
+import { getCourseProgress, getLearningStats, type ProgressMap, type QuizProgressMap } from "../utils/progress";
 import type { PlatformSettings, UserProfile } from "../types/platform";
 
 const STORAGE_KEY = "frontend-academy:platform-state";
 
+const todayKey = () => new Date().toISOString().slice(0, 10);
+
 interface PlatformState {
   xp: number;
   completedDaily: string[];
+  // Calendar day (YYYY-MM-DD) the current `completedDaily` list belongs to.
+  // Without this, checked-off daily challenges never uncheck themselves —
+  // they'd stay "done" forever instead of resetting every day.
+  dailyChallengesDate: string;
   completedProjects: string[];
   notes: Record<string, string>;
   bookmarks: string[];
@@ -17,6 +31,7 @@ interface PlatformState {
 const defaultState: PlatformState = {
   xp: 0,
   completedDaily: [],
+  dailyChallengesDate: todayKey(),
   completedProjects: [],
   notes: {},
   bookmarks: [],
@@ -24,10 +39,19 @@ const defaultState: PlatformState = {
   profile: { username: "Студент Free Frontend", avatar: "ФФ" },
 };
 
+/** Drops yesterday's (or older) completed daily challenges so the list
+ * greets the learner fresh every calendar day. */
+const withFreshDailyChallenges = (state: PlatformState): PlatformState => {
+  const today = todayKey();
+  if (state.dailyChallengesDate === today) return state;
+  return { ...state, completedDaily: [], dailyChallengesDate: today };
+};
+
 const readState = (): PlatformState => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? { ...defaultState, ...JSON.parse(raw) } : defaultState;
+    const parsed = raw ? { ...defaultState, ...JSON.parse(raw) } : defaultState;
+    return withFreshDailyChallenges(parsed);
   } catch {
     return defaultState;
   }
@@ -51,8 +75,43 @@ const PlatformContext = createContext<PlatformContextValue | null>(null);
 
 const persist = (state: PlatformState) => localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 
+const readJson = <T,>(key: string, fallback: T): T => {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+interface CourseProgressSnapshot {
+  lessonProgress: ProgressMap;
+  quizProgress: QuizProgressMap;
+  activityLog: string[];
+}
+
+const readCourseProgressSnapshot = (): CourseProgressSnapshot => ({
+  lessonProgress: readJson<ProgressMap>(LESSON_PROGRESS_KEY, {}),
+  quizProgress: readJson<QuizProgressMap>(QUIZ_PROGRESS_KEY, {}),
+  activityLog: readJson<string[]>(ACTIVITY_LOG_KEY, []),
+});
+
 export function PlatformProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<PlatformState>(readState);
+  // Mirrors the lesson/quiz progress and activity log (owned by useProgress)
+  // so achievements reflect real course completion, test results and
+  // consecutive learning days instead of stale, unrelated proxies.
+  const [courseProgress, setCourseProgress] = useState<CourseProgressSnapshot>(readCourseProgressSnapshot);
+
+  useEffect(() => {
+    const syncCourseProgress = () => setCourseProgress(readCourseProgressSnapshot());
+    window.addEventListener("storage", syncCourseProgress);
+    window.addEventListener(PROGRESS_SYNC_EVENT, syncCourseProgress);
+    return () => {
+      window.removeEventListener("storage", syncCourseProgress);
+      window.removeEventListener(PROGRESS_SYNC_EVENT, syncCourseProgress);
+    };
+  }, []);
 
   // These settings previously only updated local state — nothing on screen
   // ever changed when a learner toggled them. Reflect them as attributes on
@@ -65,10 +124,28 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
 
   const update = useCallback((recipe: (current: PlatformState) => PlatformState) => {
     setState((current) => {
-      const next = recipe(current);
+      // Self-heals stale state on every write, not just on page load — so a
+      // tab left open past midnight still gets a fresh daily-challenge list
+      // the moment the learner interacts with anything.
+      const next = recipe(withFreshDailyChallenges(current));
       persist(next);
       return next;
     });
+  }, []);
+
+  // Also self-heal on a timer, so the "Щоденні виклики" card flips to a new
+  // day on its own if the tab is left open overnight instead of staying
+  // stuck on yesterday's checked-off state until the next click.
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setState((current) => {
+        const next = withFreshDailyChallenges(current);
+        if (next === current) return current;
+        persist(next);
+        return next;
+      });
+    }, 60_000);
+    return () => window.clearInterval(id);
   }, []);
 
   const addXp = useCallback((amount: number) => update((current) => ({ ...current, xp: Math.max(0, current.xp + amount) })), [update]);
@@ -135,13 +212,23 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
 
   const unlockedAchievements = useMemo(() => {
     const unlocked = new Set<string>();
+    const { lessonProgress, quizProgress, activityLog } = courseProgress;
+    const stats = getLearningStats(lessonProgress, quizProgress, activityLog);
+    const htmlCourse = courses.find((course) => course.id === "html");
+    const cssCourse = courses.find((course) => course.id === "css");
+
     if (state.xp >= 20) unlocked.add("first-lesson");
-    if (state.completedDaily.length >= 1) unlocked.add("seven-day-streak");
-    if (state.completedDaily.length >= 4) unlocked.add("thirty-day-streak");
+    if (stats.longestStreak >= 7) unlocked.add("seven-day-streak");
+    if (stats.longestStreak >= 30) unlocked.add("thirty-day-streak");
+    if (stats.passedTests >= 10) unlocked.add("ten-tests");
+    if (stats.completedLessons >= 50) unlocked.add("fifty-lessons");
+    if (stats.completedLessons >= 100) unlocked.add("hundred-lessons");
+    if (htmlCourse && getCourseProgress(htmlCourse, lessonProgress).percent === 100) unlocked.add("completed-html");
+    if (cssCourse && getCourseProgress(cssCourse, lessonProgress).percent === 100) unlocked.add("completed-css");
     if (state.completedProjects.length >= 1) unlocked.add("first-project");
     if (document.documentElement.dataset.theme === "dark") unlocked.add("dark-mode-user");
     return achievements.filter((achievement) => unlocked.has(achievement.id)).map((achievement) => achievement.id);
-  }, [state.completedDaily.length, state.completedProjects.length, state.xp]);
+  }, [courseProgress, state.completedProjects.length, state.xp]);
 
   const value = useMemo<PlatformContextValue>(() => ({
     ...state,

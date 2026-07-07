@@ -1,5 +1,4 @@
-import { useCallback, useState } from "react";
-import type { SyntheticEvent } from "react";
+import { useEffect, useState } from "react";
 import type { CodeWalkthrough, Lesson } from "../../types/course";
 import { MarkdownRenderer } from "../../shared/markdown/MarkdownRenderer";
 import { Card } from "../ui/Card";
@@ -23,9 +22,48 @@ const NON_CSS_HINT_RE = /[↑→]|^(const|let|var|function|document\.|import|exp
 // broken, not "live" — those topics get dedicated preview widgets instead
 // (Google result card, social preview, robots.txt tester), not this frame.
 const INVISIBLE_HEAD_TAGS_RE = /<(meta|title|link|base)\b[^>]*?\/?>(?:<\/\1>)?/gi;
+// Structural wrapper tags (<head>, <html>, <body>) are invisible themselves
+// but their CONTENT might not be — strip just the tag markers (not what's
+// inside) before running the invisible-tag check above, so a lesson
+// snippet like `<head><meta ...><title>...</title></head>` correctly comes
+// out empty instead of the wrapper alone counting as "visible".
+const STRUCTURAL_WRAPPER_TAGS_RE = /<\/?(head|html|body)\b[^>]*>/gi;
+// Any snippet that includes a <head> tag is illustrating something about
+// the document's non-visual metadata/loading behaviour (render-blocking
+// scripts, meta tags, favicons...) — the point is never what ends up
+// painted in <body>, so no live preview is shown for these at all, even
+// if a stray visible tag happens to sit alongside the <head> in the same
+// snippet.
+const HAS_HEAD_TAG_RE = /<head\b/i;
+// External script sources never resolve inside the sandboxed preview (no
+// server to fetch them from) — strip these before rendering so lesson
+// snippets that reference an illustrative filename (`analytics.js`,
+// `app.js`...) don't produce a console 404. Inline `<script>` blocks with
+// no `src` are left untouched since those are real, self-contained demo
+// code meant to actually run.
+const EXTERNAL_SCRIPT_TAG_RE = /<script\b[^>]*\ssrc=["'][^"']*["'][^>]*>\s*<\/script>/gi;
 
 function hasVisibleMarkup(html: string): boolean {
-  return html.replace(INVISIBLE_HEAD_TAGS_RE, "").replace(/<!--[\s\S]*?-->/g, "").trim().length > 0;
+  return html
+    .replace(STRUCTURAL_WRAPPER_TAGS_RE, "")
+    .replace(INVISIBLE_HEAD_TAGS_RE, "")
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .trim().length > 0;
+}
+
+/** "Погано / Добре" (bad/good) style comparison snippets often use literal
+ * `...` as a stand-in for omitted content across several sibling tags
+ * (`<div class="header">...</div>` etc.) — that's illustrative pseudocode
+ * about structure, never meant to be taken literally. Rendered live it's
+ * just a meaningless stack of "..." bullets, worse than no preview at all. */
+function isPlaceholderOnlyContent(html: string): boolean {
+  const textOnly = html
+    .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .trim();
+  if (!textOnly) return false;
+  const tokens = textOnly.split(/\s+/).filter(Boolean);
+  return tokens.length > 0 && tokens.every((token) => /^\.{2,}$/.test(token));
 }
 
 /** A later CSS-only block is only worth layering onto an earlier example if
@@ -60,13 +98,14 @@ function buildLivePreviews(walkthroughs: CodeWalkthrough[]): (string | null)[] {
     const trimmed = code.trim();
 
     if (HTML_MARKUP_RE.test(trimmed)) {
-      if (!hasVisibleMarkup(trimmed)) {
-        // Head-only metadata (meta/title/link) — nothing to show in a body
-        // preview. Don't set it as baseHtml either: a later CSS rule has
-        // nothing visible here to attach to.
+      if (HAS_HEAD_TAG_RE.test(trimmed) || !hasVisibleMarkup(trimmed) || isPlaceholderOnlyContent(trimmed)) {
+        // <head>-related snippet, head-only metadata (meta/title/link), or
+        // "..." placeholder pseudocode — nothing meaningful to show in a
+        // body preview. Don't set it as baseHtml either: a later CSS rule
+        // has nothing real to attach to.
         return null;
       }
-      baseHtml = code;
+      baseHtml = code.replace(EXTERNAL_SCRIPT_TAG_RE, "");
       layeredStyles = [];
       return baseHtml;
     }
@@ -80,36 +119,76 @@ function buildLivePreviews(walkthroughs: CodeWalkthrough[]): (string | null)[] {
   });
 }
 
+let liveFrameSeq = 0;
+
 /** Renders a code snippet's actual output in a sandboxed iframe — the real
  * browser result sitting right under the code, not just described in
- * prose. `allow-same-origin` is included (safe here: content is entirely
- * hand-authored lesson code, never user input) so the frame can measure and
- * auto-size itself instead of showing a fixed, possibly-clipped box. */
+ * prose. The sandbox intentionally grants `allow-scripts` only, never
+ * `allow-same-origin` alongside it — that combination lets the framed
+ * content script its way out of the sandbox entirely (a real browser
+ * warning, not a style nitpick), and it's not needed here anyway: instead
+ * of the parent reaching *into* the iframe to measure it, a tiny script
+ * injected into the frame's own document measures itself and reports its
+ * height out via `postMessage`, which works regardless of origin. Height
+ * tracks content changes continuously via `ResizeObserver` running inside
+ * the frame; `.liveFrame`'s CSS `max-height` is a hard cap so a bad
+ * measurement can never balloon the box, it just scrolls instead.
+ */
 function LiveCodeFrame({ html }: { html: string }) {
-  const handleLoad = useCallback((event: SyntheticEvent<HTMLIFrameElement>) => {
-    const frame = event.currentTarget;
-    try {
-      const doc = frame.contentWindow?.document;
-      if (doc) {
-        frame.style.height = `${Math.max(56, doc.documentElement.scrollHeight + 4)}px`;
+  const [frameId] = useState(() => `live-frame-${++liveFrameSeq}`);
+  const [height, setHeight] = useState(56);
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      const data = event.data;
+      if (data && typeof data === "object" && data.source === "lesson-live-frame" && data.frameId === frameId) {
+        setHeight(Math.max(40, Number(data.height) + 4));
       }
-    } catch {
-      /* sandboxed access blocked — frame keeps its default height */
-    }
-  }, []);
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [frameId]);
 
   const document_ = `<!doctype html><html><head><meta charset="utf-8"><style>
+    /* Café project design tokens (see cssFoundations.ts / cssVariablesDarkMode.ts).
+       Most lesson snippets reference these via var(--color-primary) etc.
+       without redeclaring :root every time (it's shown once, early in the
+       course) — without a real value here they'd render invisible/blank
+       (an undefined custom property resolves to nothing, not "unset" back
+       to a sensible default). Declaring the real project values once, here,
+       makes every such snippet across the whole site render correctly. */
+    :root {
+      --color-primary: #b45309;
+      --color-bg: #ffffff;
+      --color-text: #1f2937;
+      --color-surface: #f9fafb;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 2rem;
+      --radius: 8px;
+      --font-base: 1rem;
+      --font-lg: 1.25rem;
+      --font-xl: 1.5rem;
+    }
     * { box-sizing: border-box; }
     body { margin: 0; padding: 16px; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #1a1a1a; background: #ffffff; }
-  </style></head><body>${html}</body></html>`;
+  </style></head><body>${html}<script>
+    (function () {
+      var report = function () {
+        parent.postMessage({ source: "lesson-live-frame", frameId: ${JSON.stringify(frameId)}, height: document.body.scrollHeight }, "*");
+      };
+      report();
+      new ResizeObserver(report).observe(document.body);
+    })();
+  </script></body></html>`;
 
   return (
     <iframe
       srcDoc={document_}
       className={styles.liveFrame}
-      sandbox="allow-scripts allow-same-origin"
+      style={{ height: `${height}px` }}
+      sandbox="allow-scripts"
       title="Живий результат коду"
-      onLoad={handleLoad}
     />
   );
 }

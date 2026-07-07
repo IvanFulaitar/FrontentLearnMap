@@ -8,6 +8,7 @@
 .docs {
   display: grid;
   gap: 18px;
+  min-width: 0;
 }
 
 .toc {
@@ -16,11 +17,13 @@
   display: grid;
   gap: 8px;
   padding: 16px;
+  min-width: 0;
 }
 
 .toc a {
   color: var(--muted);
   font-weight: 600;
+  overflow-wrap: break-word;
 }
 
 .toc a:hover {
@@ -83,6 +86,7 @@
 
 .codeBlock {
   position: relative;
+  min-width: 0;
 }
 
 .copyButton {
@@ -150,6 +154,7 @@
   margin-bottom: 16px;
   padding-bottom: 16px;
   border-bottom: 1px dashed var(--border);
+  min-width: 0;
 }
 
 .walkthrough:last-child {
@@ -161,6 +166,7 @@
 .livePreviewBlock {
   display: grid;
   gap: 6px;
+  min-width: 0;
 }
 
 .livePreviewLabel {
@@ -172,10 +178,13 @@
 
 .liveFrame {
   width: 100%;
-  min-height: 56px;
+  min-height: 40px;
+  max-height: 420px;
+  overflow-y: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: #ffffff;
+  transition: height 120ms ease;
 }
 
 .visual {
