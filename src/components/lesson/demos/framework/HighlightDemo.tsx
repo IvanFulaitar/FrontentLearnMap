@@ -63,7 +63,7 @@ export function HighlightArea({ id, active, onActivate, children, className, as 
       className={`${className ?? ""} ${styles.highlightArea} ${active === id ? styles.highlightAreaActive : ""}`}
       onMouseEnter={() => onActivate(id)}
       onMouseLeave={() => onActivate(null)}
-      onClick={(event: React.MouseEvent) => {
+      onClick={(event: MouseEvent) => {
         // Regions can nest (e.g. <nav> inside <header>) — without this, a
         // click on the inner region would bubble and let the outer
         // region's handler overwrite it a moment later.

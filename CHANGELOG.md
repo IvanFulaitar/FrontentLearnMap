@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.18.0 — Consolidated to a 10-component interaction system
+
+### Strategic shift (per user directive: "8-10 універсальних компонентів, не 70")
+- Replaced the growing list of one-off bespoke demos with a fixed set of 10 reusable primitives: `CodePreview` (= the existing `framework/` controls+preview+code pattern, already used by 9 demos), `ToggleDemo` (= `DemoToolbar`), `BeforeAfter` (= `DemoBeforeAfter`), `DevicePreview` (= `DemoViewport`, built earlier but never actually used in a lesson until now), plus 2 genuinely new ones this pass: `HighlightDemo`/`HighlightArea`, and `BrowserPreview` (planning-stage, `FindMistake`/`MiniQuiz`/`DragDropDemo`/`StepAnimation` still pending).
+- Delivered `interaction-spec-final.md`: all 84 HTML+CSS lessons remapped onto only these 10 types (HTML per the user's own table, CSS remapped by me following the same principle), with a type-distribution summary confirming no single type dominates.
+
+### New primitive: `HighlightDemo` + `HighlightArea`
+- `framework/HighlightDemo.tsx`: generic "hover or click a region, see it highlighted + explained" primitive. `HighlightDemo` owns the active-region state and caption; `HighlightArea` wraps any real markup (a mock `<header>`, a table row, a DOM node) to make it hoverable/clickable/keyboard-focusable with zero per-lesson state code.
+- Regions can nest (e.g. `<nav>` inside `<header>`) — caught and fixed a real bug during review: without `stopPropagation()`, clicking the inner region would bubble up and let the outer region's handler immediately overwrite the selection. Both `onClick` and `onKeyDown` now stop propagation.
+- First instance: `LandmarksHighlightDemo`, wired to `html-semantics`'s "Орієнтири та регіони сторінки" — a real café page skeleton (header/nav/main/footer) where pointing at a region explains that landmark's role. First HTML lesson using this primitive; 7 more HTML/CSS lessons are queued for it per the spec.
+
 ## 1.17.0 — Fixed blank live-preview boxes, added real café photos
 
 ### Fixed (user-reported: empty "Живий результат" box on the SEO/Open Graph lesson)
