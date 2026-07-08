@@ -20,6 +20,13 @@
 }
 
 .codeBlock {
+  /* Same fix as LessonContent.module.css's .code: this <pre> is a direct
+     grid item in several parents here (.taskCard, .step, .exercise — all
+     display: grid). Grid items default to min-width: auto, which for a
+     <pre> with an unbroken long line equals that line's full content
+     width, silently overriding overflow-x: auto and pushing the box past
+     the viewport edge on mobile instead of scrolling internally. */
+  min-width: 0;
   overflow-x: auto;
   border-radius: var(--radius);
   padding: 14px;
@@ -47,6 +54,12 @@
   gap: 8px;
   border-left: 2px solid var(--border);
   padding-left: 14px;
+  /* .step is itself a grid item of .steps AND a grid container for its own
+     children (including .codeBlock below). Without this, its default
+     min-width: auto is derived from its content's min-content size, so a
+     long unbroken code line inside .codeBlock could still force this whole
+     item wider than the viewport on mobile. */
+  min-width: 0;
 }
 
 .stepHeading {
