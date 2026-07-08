@@ -85,6 +85,8 @@ export function DashboardHero({ data, platform }: { data: DashboardData; platfor
               src={topicImage}
               alt=""
               aria-hidden="true"
+              width={200}
+              height={200}
               className={styles.lastLessonArt}
             />
             <Link to={lessonHref}>

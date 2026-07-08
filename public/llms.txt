@@ -1,0 +1,25 @@
+# Free Frontend
+
+> Безкоштовна навчальна платформа для вивчення фронтенд-розробки українською мовою. Понад 300 уроків у форматі cheat-sheet: живі приклади коду, інтерактивні демо й реальні міні-проєкти замість сухої теорії — від HTML і CSS до React, TypeScript і основ backend.
+
+Платформа побудована як SPA (React 19 + TypeScript + Vite) з гейміфікованим дашбордом, трекером прогресу, тестами та практичними завданнями після кожного уроку.
+
+## Курси
+
+- [HTML](https://frontent-learn-map.vercel.app/courses/html): семантика, форми, доступність, SEO, реальні компоненти сторінки (header, hero, картки, footer).
+- [CSS](https://frontent-learn-map.vercel.app/courses/css): box model, типографіка, Flexbox, Grid, адаптивна верстка, змінні, темна тема, анімації.
+- [JavaScript](https://frontent-learn-map.vercel.app/courses/javascript): основи мови, DOM, події, асинхронність та практичні патерни.
+- [TypeScript](https://frontent-learn-map.vercel.app/courses/typescript): типізація, інтерфейси, дженерики поверх JavaScript.
+- [React](https://frontent-learn-map.vercel.app/courses/react): компоненти, хуки, стан, побудова реальних інтерфейсів.
+- [Основи Node.js](https://frontent-learn-map.vercel.app/courses/node-basics): базові поняття серверного JavaScript.
+- [Git](https://frontent-learn-map.vercel.app/courses/git): контроль версій, гілки, командна робота.
+- [Браузер](https://frontent-learn-map.vercel.app/courses/browser): як браузер обробляє й рендерить сторінку.
+- [Доступність](https://frontent-learn-map.vercel.app/courses/accessibility): семантика, ARIA, клавіатурна навігація, скрінрідери.
+- [Продуктивність](https://frontent-learn-map.vercel.app/courses/performance): оптимізація завантаження й рендерингу сайту.
+
+## Інше
+
+- [Дашборд](https://frontent-learn-map.vercel.app/): прогрес навчання, streak, XP та щоденні виклики.
+- [Практика](https://frontent-learn-map.vercel.app/practice): додаткові практичні завдання.
+- [Виклики](https://frontent-learn-map.vercel.app/challenges): короткі коддинг-виклики.
+- [Проєкти](https://frontent-learn-map.vercel.app/projects): міні-проєкти для портфоліо.

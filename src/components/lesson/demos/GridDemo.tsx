@@ -62,7 +62,7 @@ export function GridDemo() {
           >
             {MENU_ITEMS.map((item) => (
               <div className={styles.menuCard} key={item.name}>
-                <img src={item.image} alt={item.name} className={styles.menuCardImage} />
+                <img src={item.image} alt={item.name} width={400} height={300} className={styles.menuCardImage} />
                 <strong>{item.name}</strong>
                 <span>{item.price}</span>
               </div>
