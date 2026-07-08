@@ -1,7 +1,7 @@
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Доступність">
   <rect width="200" height="200" rx="28" fill="#E3F5F4" />
-  <circle cx="164" cy="42" r="10" fill="#0E9594" opacity="0.18" />
-  <circle cx="32" cy="150" r="13" fill="#0E9594" opacity="0.14" />
+  <circle cx="164" cy="36" r="11" fill="#0E9594" opacity="0.16" />
+  <circle cx="36" cy="164" r="11" fill="#0E9594" opacity="0.16" />
   <rect x="44" y="44" width="112" height="112" rx="26" fill="#0E9594" />
   <circle cx="100" cy="76" r="10" fill="#ffffff" />
   <line x1="70" y1="98" x2="130" y2="98" stroke="#ffffff" stroke-width="6" stroke-linecap="round" />
