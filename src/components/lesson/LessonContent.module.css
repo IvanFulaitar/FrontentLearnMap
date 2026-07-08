@@ -207,6 +207,8 @@
 }
 
 .visual svg {
+  display: block;
+  width: 100%;
   max-width: 100%;
   height: auto;
 }
@@ -300,7 +302,4 @@
     grid-template-columns: 1fr;
   }
 
-  .toc {
-    position: static;
-  }
-}
+  .t
