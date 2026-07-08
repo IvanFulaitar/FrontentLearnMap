@@ -331,3 +331,18 @@
   font-weight: 700;
   font-size: 0.8rem;
   white-space: nowrap;
+}
+
+.missionsFooterLink {
+  justify-self: start;
+}
+
+@media (max-width: 860px) {
+  .hero,
+  .stats,
+  .courseProgress,
+  .missionsGrid,
+  .activityGrid {
+    grid-template-columns: 1fr;
+  }
+}
