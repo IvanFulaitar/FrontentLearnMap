@@ -329,6 +329,25 @@ function InteractiveComparisonTable({ table }: { table: { headers: string[]; row
 }
 
 /**
+ * Long hand-written `whatIsIt`/`whyUseIt` copy is authored as one dense
+ * paragraph (easier to write and to keep facts self-contained), but a single
+ * unbroken block of 5-8 sentences reads as a wall of text in the UI. Authors
+ * can opt into paragraph breaks by inserting a blank line ("\n\n") at natural
+ * topic boundaries; this renders each chunk as its own <p> without dropping
+ * or rewriting any content. Text with no blank line renders exactly as
+ * before (a single <p>), so this is fully backward-compatible with every
+ * existing lesson file.
+ */
+function ParagraphText({ text }: { text: string }) {
+  const paragraphs = text.split(/\n\s*\n/).map((part) => part.trim()).filter(Boolean);
+  return (
+    <>
+      {paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+    </>
+  );
+}
+
+/**
  * Cheat-sheet layout used only for lessons with hand-written `whatIsIt`
  * content (currently: the hand-authored HTML modules). No "Теорія" section,
  * no separate "best practices" / "real-world usage" cards — everything a
@@ -360,13 +379,13 @@ function CheatSheetLessonContent({ lesson }: LessonContentProps) {
       <div className={styles.docs}>
         <Card className={styles.section} id="what">
           <h2>🎯 Що це?</h2>
-          <p>{lesson.whatIsIt}</p>
+          <ParagraphText text={lesson.whatIsIt ?? ""} />
         </Card>
 
         {lesson.whyUseIt ? (
           <Card className={styles.section} id="why">
             <h2>🤔 Навіщо це потрібно</h2>
-            <p>{lesson.whyUseIt}</p>
+            <ParagraphText text={lesson.whyUseIt} />
           </Card>
         ) : null}
 
@@ -529,13 +548,13 @@ function LegacyLessonContent({ lesson }: LessonContentProps) {
       <div className={styles.docs}>
         <Card className={styles.section} id="what">
           <h2>Що це?</h2>
-          {lesson.whatIsIt ? <p>{lesson.whatIsIt}</p> : <MarkdownRenderer content={`## ${lesson.title}\n\n${lesson.description}`} />}
+          {lesson.whatIsIt ? <ParagraphText text={lesson.whatIsIt} /> : <MarkdownRenderer content={`## ${lesson.title}\n\n${lesson.description}`} />}
         </Card>
 
         {lesson.whyUseIt || lesson.motivation ? (
           <Card className={styles.section} id="why">
             <h2>Навіщо це потрібно</h2>
-            <Callout kind="motivation">{lesson.whyUseIt ?? lesson.motivation}</Callout>
+            <Callout kind="motivation"><ParagraphText text={lesson.whyUseIt ?? lesson.motivation ?? ""} /></Callout>
           </Card>
         ) : null}
 
