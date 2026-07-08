@@ -24,11 +24,16 @@ export function LessonPage() {
   // Record the actual lesson the learner visited, so the dashboard's
   // "Останній відкритий урок" card reflects real navigation instead of just
   // the next incomplete lesson in catalog order.
+  // NOTE: `location` is deliberately NOT in the dependency array — findLesson()
+  // returns a brand-new object on every render (even for the same lesson),
+  // so depending on it made this effect re-run on every render, which kept
+  // calling recordLessonOpened -> setState -> re-render, in an infinite loop
+  // that froze navigation on whatever lesson was open first.
   useEffect(() => {
     if (courseId && moduleId && lessonId && location) {
       recordLessonOpened(courseId, moduleId, lessonId);
     }
-  }, [courseId, moduleId, lessonId, location, recordLessonOpened]);
+  }, [courseId, moduleId, lessonId, recordLessonOpened]);
 
   if (!location || !courseId || !moduleId || !lessonId) return <Navigate to="/courses" replace />;
 
