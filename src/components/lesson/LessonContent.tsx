@@ -21,7 +21,15 @@ const NON_CSS_HINT_RE = /[↑→]|^(const|let|var|function|document\.|import|exp
 // A snippet made up of only these renders as a blank white box, which looks
 // broken, not "live" — those topics get dedicated preview widgets instead
 // (Google result card, social preview, robots.txt tester), not this frame.
-const INVISIBLE_HEAD_TAGS_RE = /<(meta|title|link|base)\b[^>]*?\/?>(?:<\/\1>)?/gi;
+// `<title>` is the odd one out here: unlike the void meta/link/base tags,
+// it wraps real text (`<title>Ноутбук ASUS TUF A15 | Tech Store</title>`).
+// The `[\s\S]*?` before the closing tag is what actually consumes that
+// text — without it, only the bare `<title>` opening tag got removed and
+// the visible-length check below still saw the title's own text as
+// "content", wrongly treating a title+meta snippet (no wrapping <head>) as
+// renderable and showing an empty "Живий результат" box (the browser
+// never paints <title> text in the body, so the box always came out blank).
+const INVISIBLE_HEAD_TAGS_RE = /<(meta|title|link|base)\b[^>]*?\/?>(?:[\s\S]*?<\/\1>)?/gi;
 // Structural wrapper tags (<head>, <html>, <body>) are invisible themselves
 // but their CONTENT might not be — strip just the tag markers (not what's
 // inside) before running the invisible-tag check above, so a lesson
