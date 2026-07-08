@@ -11,6 +11,29 @@
   padding: 18px 14px;
   background: var(--surface);
   border-right: 1px solid var(--border);
+  /* Thin, theme-matched scrollbar instead of the browser's stark default
+     gray bar — on a tall course list (e.g. CSS course with many modules)
+     that default scrollbar reads as a stray vertical line running down the
+     page rather than a normal, deliberate piece of UI. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
 }
 
 .nav {

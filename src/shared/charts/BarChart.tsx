@@ -11,7 +11,9 @@ export function BarChart({ data }: { data: ChartPoint[] }) {
     <div className={styles.chart} role="img" aria-label="Графік активності">
       {data.map((item) => (
         <div className={styles.barWrap} key={item.label}>
-          <div className={styles.bar} style={{ height: `${Math.max(5, (item.value / max) * 100)}%` }} title={`${item.label}: ${item.value}`} />
+          <div className={styles.barTrack}>
+            <div className={styles.bar} style={{ height: `${Math.max(5, (item.value / max) * 100)}%` }} title={`${item.label}: ${item.value}`} />
+          </div>
           <span className={styles.label}>{item.label}</span>
         </div>
       ))}
