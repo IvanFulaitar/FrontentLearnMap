@@ -89,6 +89,52 @@ function cssTargetsHtml(css: string, html: string): boolean {
  * different unshown example, an ASCII diagram, a raw JS statement) return
  * `null` — no live preview is faked for those, they stay copy-only.
  */
+// Lesson `<img>` tags reference filenames that were never real files
+// (`cat.jpg`, `headphones.jpg`, `logo.svg`...) — they're illustrative
+// examples for reading code, not actual assets sitting anywhere, so the
+// sandboxed preview would just show the browser's broken-image icon (as
+// seen in the "Живий результат" box). A real `http(s)://` URL or an inline
+// `data:` URI might genuinely load, so those are left untouched; anything
+// else is swapped for a self-contained SVG placeholder built from the same
+// `alt` text and `width`/`height` the lesson already wrote, so the live
+// result always shows a real filled photo box instead of a broken icon.
+const IMG_TAG_RE = /<img\b([^>]*)>/gi;
+const attrPattern = (name: string) => new RegExp(`${name}\\s*=\\s*["']([^"']*)["']`, "i");
+const SRC_ATTR_RE = attrPattern("src");
+const ALT_ATTR_RE = attrPattern("alt");
+const WIDTH_ATTR_RE = attrPattern("width");
+const HEIGHT_ATTR_RE = attrPattern("height");
+
+function escapeSvgText(text: string): string {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function placeholderImageDataUri(width: number, height: number, altText: string): string {
+  const label = altText.length > 34 ? `${altText.slice(0, 33)}…` : altText;
+  const caption = label ? escapeSvgText(label) : "";
+  const fontSize = Math.max(10, Math.min(width, height) * 0.075);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">
+    <rect width="${width}" height="${height}" fill="#e0e7ff" />
+    <circle cx="${width * 0.78}" cy="${height * 0.28}" r="${Math.min(width, height) * 0.11}" fill="#c7d2fe" />
+    <path d="M0 ${height} L${width * 0.32} ${height * 0.48} L${width * 0.52} ${height * 0.68} L${width * 0.74} ${height * 0.4} L${width} ${height * 0.85} L${width} ${height} Z" fill="#a5b4fc" />
+    ${caption ? `<text x="${width / 2}" y="${height - 10}" text-anchor="middle" font-family="sans-serif" font-size="${fontSize}" fill="#4338ca">${caption}</text>` : ""}
+  </svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg.replace(/\s+/g, " "))}`;
+}
+
+function replacePlaceholderImages(html: string): string {
+  return html.replace(IMG_TAG_RE, (fullMatch, attrs: string) => {
+    const srcMatch = SRC_ATTR_RE.exec(attrs);
+    const src = srcMatch?.[1] ?? "";
+    if (/^(https?:)?\/\//i.test(src) || src.startsWith("data:")) return fullMatch;
+    const alt = ALT_ATTR_RE.exec(attrs)?.[1] ?? "";
+    const width = Number(WIDTH_ATTR_RE.exec(attrs)?.[1]) || 320;
+    const height = Number(HEIGHT_ATTR_RE.exec(attrs)?.[1]) || 200;
+    const dataUri = placeholderImageDataUri(width, height, alt);
+    return srcMatch ? fullMatch.replace(srcMatch[0], `src="${dataUri}"`) : fullMatch.replace("<img", `<img src="${dataUri}"`);
+  });
+}
+
 function buildLivePreviews(walkthroughs: CodeWalkthrough[]): (string | null)[] {
   let baseHtml: string | null = null;
   let layeredStyles: string[] = [];
@@ -107,12 +153,12 @@ function buildLivePreviews(walkthroughs: CodeWalkthrough[]): (string | null)[] {
       }
       baseHtml = code.replace(EXTERNAL_SCRIPT_TAG_RE, "");
       layeredStyles = [];
-      return baseHtml;
+      return replacePlaceholderImages(baseHtml);
     }
 
     if (baseHtml && CSS_RULE_ONLY_RE.test(trimmed) && !NON_CSS_HINT_RE.test(trimmed) && cssTargetsHtml(trimmed, baseHtml)) {
       layeredStyles.push(code);
-      return `${baseHtml}\n<style>${layeredStyles.join("\n")}</style>`;
+      return replacePlaceholderImages(`${baseHtml}\n<style>${layeredStyles.join("\n")}</style>`);
     }
 
     return null;
