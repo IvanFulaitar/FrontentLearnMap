@@ -62,13 +62,19 @@
     flex-wrap: wrap;
     height: auto;
     min-height: 72px;
-    padding-block: 12px;
+    padding: 14px 20px;
+    gap: 14px;
   }
 }
 
 @media (max-width: 520px) {
   .header {
-    padding: 0 14px;
+    /* Bug: the previous rule here was `padding: 0 14px`, which — being a
+       shorthand — reset top/bottom padding to 0 and wiped out the
+       padding-block set above, leaving the icon row and the wrapped search
+       bar flush against the header's edges on phones. Setting all four
+       sides explicitly here keeps real breathing room at every width. */
+    padding: 14px 16px;
   }
 
   .brand span:last-child {
