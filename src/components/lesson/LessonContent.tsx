@@ -104,6 +104,16 @@ const SRC_ATTR_RE = attrPattern("src");
 const ALT_ATTR_RE = attrPattern("alt");
 const WIDTH_ATTR_RE = attrPattern("width");
 const HEIGHT_ATTR_RE = attrPattern("height");
+const SRCSET_ATTR_RE = /\s(?:srcset|sizes)\s*=\s*["'][^"']*["']/gi;
+// `<source>` (inside `<picture>` for art-direction/format-fallback examples)
+// takes priority over the `<img>` fallback whenever its own `srcset`
+// resolves — since that `srcset` references the same kind of illustrative,
+// non-existent filenames as `src` does, the browser would still show a
+// broken-image icon even after `src` below gets a placeholder. There's no
+// real narrower/format-specific asset to demonstrate here anyway, so these
+// are dropped entirely and the `<img>` fallback (with its own placeholder)
+// is what actually renders.
+const SOURCE_TAG_RE = /<source\b[^>]*\/?>/gi;
 
 function escapeSvgText(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -123,7 +133,7 @@ function placeholderImageDataUri(width: number, height: number, altText: string)
 }
 
 function replacePlaceholderImages(html: string): string {
-  return html.replace(IMG_TAG_RE, (fullMatch, attrs: string) => {
+  return html.replace(SOURCE_TAG_RE, "").replace(IMG_TAG_RE, (fullMatch, attrs: string) => {
     const srcMatch = SRC_ATTR_RE.exec(attrs);
     const src = srcMatch?.[1] ?? "";
     if (/^(https?:)?\/\//i.test(src) || src.startsWith("data:")) return fullMatch;
@@ -131,7 +141,14 @@ function replacePlaceholderImages(html: string): string {
     const width = Number(WIDTH_ATTR_RE.exec(attrs)?.[1]) || 320;
     const height = Number(HEIGHT_ATTR_RE.exec(attrs)?.[1]) || 200;
     const dataUri = placeholderImageDataUri(width, height, alt);
-    return srcMatch ? fullMatch.replace(srcMatch[0], `src="${dataUri}"`) : fullMatch.replace("<img", `<img src="${dataUri}"`);
+    const withPlaceholderSrc = srcMatch
+      ? fullMatch.replace(srcMatch[0], `src="${dataUri}"`)
+      : fullMatch.replace("<img", `<img src="${dataUri}"`);
+    // A fake illustrative `srcset`/`sizes` on the same tag would otherwise
+    // still win over the `src` swap above (the browser picks a candidate
+    // from `srcset` whenever one resolves, ignoring `src` entirely) — same
+    // failure mode as `<source>`, just on the `<img>` tag itself.
+    return withPlaceholderSrc.replace(SRCSET_ATTR_RE, "");
   });
 }
 
