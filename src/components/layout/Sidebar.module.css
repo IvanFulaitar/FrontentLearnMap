@@ -165,8 +165,16 @@
 
 @media (max-width: 900px) {
   .sidebar {
+    /* The base (desktop) rule above sets `height: calc(100vh - 72px)` to sit
+       under the sticky header. That declaration isn't touched by `inset`
+       (which only sets the position offsets, not size), so on mobile — where
+       the sidebar becomes a full-screen fixed drawer — it was still capped
+       72px short of the viewport, leaving a gap at the bottom that exposed
+       the page behind it. Explicit top/height here override that. */
     position: fixed;
     inset: 0 auto 0 0;
+    top: 0;
+    height: 100vh;
     z-index: 30;
     width: min(88vw, var(--sidebar-width));
     transform: translateX(-105%);
