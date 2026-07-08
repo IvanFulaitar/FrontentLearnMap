@@ -1,0 +1,10 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Node.js">
+  <rect width="200" height="200" rx="28" fill="#EAF5E9" />
+  <circle cx="164" cy="42" r="10" fill="#3C873A" opacity="0.18" />
+  <circle cx="32" cy="150" r="13" fill="#3C873A" opacity="0.14" />
+  <rect x="44" y="44" width="112" height="112" rx="26" fill="#3C873A">
+    <animate attributeName="opacity" values="1;0.92;1" dur="3.4s" repeatCount="indefinite" />
+  </rect>
+  <path d="M100 60 L138 82 V124 L100 146 L62 124 V82 Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
+  <text x="100" y="110" font-family="Menlo, Consolas, monospace" font-size="24" font-weight="800" fill="#ffffff" text-anchor="middle">JS</text>
+</svg>

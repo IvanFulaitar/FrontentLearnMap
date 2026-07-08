@@ -1,0 +1,10 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="HTML">
+  <rect width="200" height="200" rx="28" fill="#FDECE6" />
+  <circle cx="164" cy="40" r="10" fill="#E34F26" opacity="0.18" />
+  <circle cx="34" cy="152" r="14" fill="#E34F26" opacity="0.14" />
+  <rect x="150" y="140" width="18" height="18" rx="5" fill="#E34F26" opacity="0.16" />
+  <rect x="44" y="44" width="112" height="112" rx="26" fill="#E34F26">
+    <animate attributeName="opacity" values="1;0.92;1" dur="3.6s" repeatCount="indefinite" />
+  </rect>
+  <text x="100" y="112" font-family="Menlo, Consolas, monospace" font-size="40" font-weight="700" fill="#ffffff" text-anchor="middle">&lt;/&gt;</text>
+</svg>

@@ -102,6 +102,18 @@
   gap: 6px;
 }
 
+.lastLessonArt {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  flex: 1 1 auto;
+  min-height: 100px;
+  max-height: 200px;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
 .courseCard {
   padding: 16px;
 }
@@ -319,18 +331,3 @@
   font-weight: 700;
   font-size: 0.8rem;
   white-space: nowrap;
-}
-
-.missionsFooterLink {
-  justify-self: start;
-}
-
-@media (max-width: 860px) {
-  .hero,
-  .stats,
-  .courseProgress,
-  .missionsGrid,
-  .activityGrid {
-    grid-template-columns: 1fr;
-  }
-}

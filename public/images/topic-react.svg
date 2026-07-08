@@ -1,0 +1,14 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="React">
+  <rect width="200" height="200" rx="28" fill="#E5F6FC" />
+  <circle cx="164" cy="42" r="10" fill="#149ECA" opacity="0.18" />
+  <circle cx="32" cy="150" r="13" fill="#149ECA" opacity="0.14" />
+  <rect x="44" y="44" width="112" height="112" rx="26" fill="#149ECA" />
+  <g transform="translate(100 100)" fill="none" stroke="#ffffff" stroke-width="3.5">
+    <ellipse rx="34" ry="14" />
+    <ellipse rx="34" ry="14" transform="rotate(60)" />
+    <ellipse rx="34" ry="14" transform="rotate(120)">
+      <animateTransform attributeName="transform" type="rotate" from="120" to="480" dur="7s" repeatCount="indefinite" />
+    </ellipse>
+  </g>
+  <circle cx="100" cy="100" r="7" fill="#ffffff" />
+</svg>

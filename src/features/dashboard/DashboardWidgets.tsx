@@ -27,9 +27,23 @@ import styles from "../../pages/DashboardPage.module.css";
 type DashboardData = ReturnType<typeof useDashboardData>;
 type PlatformState = ReturnType<typeof usePlatform>;
 
+const TOPIC_ILLUSTRATIONS: Record<string, string> = {
+  html: "/images/topic-html.svg",
+  css: "/images/topic-css.svg",
+  javascript: "/images/topic-javascript.svg",
+  typescript: "/images/topic-typescript.svg",
+  react: "/images/topic-react.svg",
+  "node-basics": "/images/topic-node.svg",
+  git: "/images/topic-git.svg",
+  browser: "/images/topic-browser.svg",
+  accessibility: "/images/topic-accessibility.svg",
+  performance: "/images/topic-performance.svg",
+};
+
 export function DashboardHero({ data, platform }: { data: DashboardData; platform: PlatformState }) {
   const { overall, lastLesson, allCompleted } = data;
   const lessonHref = `/courses/${lastLesson.course.id}/modules/${lastLesson.module.id}/lessons/${lastLesson.lesson.id}`;
+  const topicImage = TOPIC_ILLUSTRATIONS[lastLesson.course.id] ?? "/images/topic-html.svg";
 
   return (
     <section className={styles.hero}>
@@ -67,6 +81,12 @@ export function DashboardHero({ data, platform }: { data: DashboardData; platfor
               <h2>{lastLesson.lesson.title}</h2>
               <p>{lastLesson.course.title} · {lastLesson.module.title}</p>
             </div>
+            <img
+              src={topicImage}
+              alt=""
+              aria-hidden="true"
+              className={styles.lastLessonArt}
+            />
             <Link to={lessonHref}>
               <Button variant="secondary">Відкрити урок</Button>
             </Link>
