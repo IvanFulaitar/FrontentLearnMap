@@ -80,6 +80,12 @@
 
 @media (max-width: 760px) {
   .search {
+    /* `flex: 1` (from the base rule) lets this item shrink to squeeze into
+       the header's first row instead of wrapping to its own line — on
+       narrow phones that pushed the input past the viewport edge, clipping
+       the placeholder text. `flex: 0 0 100%` forces a dedicated full-width
+       row every time. */
+    flex: 0 0 100%;
     max-width: none;
     order: 3;
     width: 100%;
