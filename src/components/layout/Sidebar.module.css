@@ -95,6 +95,29 @@
   font-size: 0.78rem;
 }
 
+/* Smooth expand/collapse for the module+lesson list. Content stays mounted
+   (see `inert` in Sidebar.tsx) and the outer wrapper animates its single grid
+   row between 0fr and 1fr — the standard trick for transitioning height to/from
+   "auto" for content of variable, unknown length. The inner wrapper clips
+   overflow so the content is invisible (and unreachable, given `inert`)
+   while the row is collapsed to 0fr. */
+.courseDetails {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 220ms ease;
+}
+
+.courseDetailsOpen {
+  grid-template-rows: 1fr;
+}
+
+.courseDetailsInner {
+  display: grid;
+  gap: 10px;
+  overflow: hidden;
+  min-height: 0;
+}
+
 .courseOpenLink {
   color: var(--primary);
   font-size: 0.85rem;

@@ -141,8 +141,14 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onCollapseToggle }: Side
             <div className={styles.progress}>
               <ProgressBar value={getCourseProgress(course, lessonProgress).percent} />
             </div>
-            {isExpanded ? (
-              <>
+            <div
+              className={`${styles.courseDetails} ${isExpanded ? styles.courseDetailsOpen : ""}`}
+              // Content stays mounted (for the smooth height transition below)
+              // even while collapsed, so `inert` removes it from tab order and
+              // assistive tech instead of leaving hidden links reachable.
+              inert={!isExpanded}
+            >
+              <div className={styles.courseDetailsInner}>
                 <NavLink to={`/courses/${course.id}`} className={styles.courseOpenLink} onClick={onClose}>
                   Відкрити курс →
                 </NavLink>
@@ -166,8 +172,8 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onCollapseToggle }: Side
                     })}
                   </div>
                 ))}
-              </>
-            ) : null}
+              </div>
+            </div>
           </div>
         );
       })}
