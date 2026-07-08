@@ -139,7 +139,10 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onCollapseToggle }: Side
               <span className={styles.courseMeta}>{courseLevelLabels[course.level]}</span>
             </button>
             <div className={styles.progress}>
-              <ProgressBar value={getCourseProgress(course, lessonProgress).percent} />
+              <ProgressBar
+                value={getCourseProgress(course, lessonProgress).percent}
+                ariaLabel={`Прогрес курсу «${course.title}»: ${getCourseProgress(course, lessonProgress).percent}%`}
+              />
             </div>
             <div
               className={`${styles.courseDetails} ${isExpanded ? styles.courseDetailsOpen : ""}`}
