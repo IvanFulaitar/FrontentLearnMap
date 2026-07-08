@@ -1,4 +1,5 @@
 import { ArrowLeft, ArrowRight, Bookmark, CheckCircle2, ClipboardCheck } from "lucide-react";
+import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../components/layout/Breadcrumbs";
 import { LessonContent } from "../components/lesson/LessonContent";
@@ -16,9 +17,18 @@ import styles from "./LessonPage.module.css";
 export function LessonPage() {
   const { courseId, moduleId, lessonId } = useParams();
   const location = findLesson(courseId, moduleId, lessonId);
-  const { lessonProgress, setLessonStatus } = useProgressContext();
+  const { lessonProgress, setLessonStatus, recordLessonOpened } = useProgressContext();
   const { addXp, bookmarks, notes, saveNote, toggleBookmark } = usePlatform();
   const { notify } = useToast();
+
+  // Record the actual lesson the learner visited, so the dashboard's
+  // "Останній відкритий урок" card reflects real navigation instead of just
+  // the next incomplete lesson in catalog order.
+  useEffect(() => {
+    if (courseId && moduleId && lessonId && location) {
+      recordLessonOpened(courseId, moduleId, lessonId);
+    }
+  }, [courseId, moduleId, lessonId, location, recordLessonOpened]);
 
   if (!location || !courseId || !moduleId || !lessonId) return <Navigate to="/courses" replace />;
 

@@ -9,7 +9,15 @@ import { getLessonKey, getQuizKey } from "../utils/progress";
 export const LESSON_PROGRESS_KEY = "frontend-academy:lesson-progress";
 export const QUIZ_PROGRESS_KEY = "frontend-academy:quiz-progress";
 export const ACTIVITY_LOG_KEY = "frontend-academy:activity-log";
+export const LAST_LESSON_KEY = "frontend-academy:last-opened-lesson";
 export const PROGRESS_SYNC_EVENT = "frontend-academy:progress-sync";
+
+export type LastOpenedLesson = {
+  courseId: string;
+  moduleId: string;
+  lessonId: string;
+  openedAt: string;
+};
 
 const todayKey = () => new Date().toISOString().slice(0, 10);
 
@@ -34,6 +42,12 @@ export function useProgressState() {
   // proxy formula (`completedLessons + passedTests`, capped at 14) that was
   // labeled "найдовша серія днів" but had nothing to do with actual days.
   const [activityLog, setActivityLog] = useState<string[]>(() => readStorage<string[]>(ACTIVITY_LOG_KEY, []));
+  // The actual last-visited lesson (distinct from "next incomplete lesson" —
+  // a learner may jump ahead or revisit an earlier lesson, and the dashboard
+  // hero should reflect where they really were, not just catalog order).
+  const [lastOpenedLesson, setLastOpenedLessonState] = useState<LastOpenedLesson | null>(() =>
+    readStorage<LastOpenedLesson | null>(LAST_LESSON_KEY, null),
+  );
 
   useEffect(() => {
     localStorage.setItem(LESSON_PROGRESS_KEY, JSON.stringify(lessonProgress));
@@ -52,6 +66,7 @@ export function useProgressState() {
       setLessonProgress(readStorage<ProgressMap>(LESSON_PROGRESS_KEY, {}));
       setQuizProgress(readStorage<QuizProgressMap>(QUIZ_PROGRESS_KEY, {}));
       setActivityLog(readStorage<string[]>(ACTIVITY_LOG_KEY, []));
+      setLastOpenedLessonState(readStorage<LastOpenedLesson | null>(LAST_LESSON_KEY, null));
     };
 
     window.addEventListener("storage", syncProgress);
@@ -70,6 +85,13 @@ export function useProgressState() {
       localStorage.setItem(ACTIVITY_LOG_KEY, JSON.stringify(next));
       return next;
     });
+  }, []);
+
+  const recordLessonOpened = useCallback((courseId: string, moduleId: string, lessonId: string) => {
+    const entry: LastOpenedLesson = { courseId, moduleId, lessonId, openedAt: new Date().toISOString() };
+    localStorage.setItem(LAST_LESSON_KEY, JSON.stringify(entry));
+    setLastOpenedLessonState(entry);
+    window.dispatchEvent(new Event(PROGRESS_SYNC_EVENT));
   }, []);
 
   const setLessonStatus = useCallback(
@@ -101,5 +123,13 @@ export function useProgressState() {
     recordActivity();
   }, [recordActivity]);
 
-  return { lessonProgress, quizProgress, activityLog, setLessonStatus, saveQuizScore };
+  return {
+    lessonProgress,
+    quizProgress,
+    activityLog,
+    lastOpenedLesson,
+    setLessonStatus,
+    saveQuizScore,
+    recordLessonOpened,
+  };
 }

@@ -11,9 +11,9 @@ import {
 import { useDashboardData } from "../features/dashboard/useDashboardData";
 
 export function DashboardPage() {
-  const { lessonProgress, quizProgress, activityLog } = useProgressContext();
+  const { lessonProgress, quizProgress, activityLog, lastOpenedLesson } = useProgressContext();
   const platform = usePlatform();
-  const data = useDashboardData(lessonProgress, quizProgress, activityLog);
+  const data = useDashboardData(lessonProgress, quizProgress, activityLog, lastOpenedLesson);
 
   return (
     <div className="page">
