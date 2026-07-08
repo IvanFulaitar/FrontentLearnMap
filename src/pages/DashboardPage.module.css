@@ -103,13 +103,16 @@
 }
 
 .lastLessonArt {
+  /* Fixed 1:1 aspect-ratio instead of letting flex stretch the box taller
+     than it is wide - the SVGs are all square (viewBox 0 0 200 200), so a
+     non-square box left blank strips above/below the shape inside the img
+     itself (object-fit: contain letterboxing), which looked uneven. A
+     square box always matches the artwork exactly, no gaps. */
   display: block;
   width: 100%;
   max-width: 200px;
+  aspect-ratio: 1 / 1;
   height: auto;
-  flex: 1 1 auto;
-  min-height: 100px;
-  max-height: 200px;
   object-fit: contain;
   margin: 0 auto;
 }
