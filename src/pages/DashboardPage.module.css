@@ -72,19 +72,19 @@
 }
 
 .lastLesson {
-  /* The right hero column stretches to match the taller left column.
-     align-content: space-between used to spread space EQUALLY between every
-     child — eyebrow, body, and button — which put a huge empty gap right
-     under the eyebrow instead of just pinning the button to the bottom.
-     Flex + margin-top: auto on the last child keeps eyebrow+title grouped
-     naturally and only pushes the CTA down into the leftover space. */
+  /* The right hero column stretches to match the taller left column, so this
+     card is usually taller than its content needs. Pinning only the CTA to
+     the bottom (previous approach: margin-top: auto on the last child) left
+     one huge, lopsided gap right above the button once the topic
+     illustration was added — everything else stayed glued to the top and
+     all the leftover space piled up in one spot below the image.
+     justify-content: center instead treats eyebrow+title+image+button as one
+     group and centers it as a whole, so any leftover height is split evenly
+     above and below instead of dumped in a single gap. */
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 10px;
-}
-
-.lastLesson > a:last-child {
-  margin-top: auto;
 }
 
 .lastLessonTop {
