@@ -115,6 +115,42 @@ export const getStreak = (activityLog: string[]): { current: number; longest: nu
   return { current, longest };
 };
 
+const WEEKDAY_LABELS = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+
+/**
+ * Real day-by-day (last 7 days) and week-by-week (last 4 weeks) activity
+ * series derived from the same activity log used for streaks. Replaces the
+ * old dashboard charts, which plotted unrelated metrics (xp/100, streak
+ * length, test count...) against fixed Пн–Нд labels with no connection to
+ * when the learner was actually active.
+ */
+export const getActivitySeries = (activityLog: string[]) => {
+  const activeDays = new Set(activityLog);
+  const today = new Date();
+
+  const daily: { label: string; value: number }[] = [];
+  for (let i = 6; i >= 0; i -= 1) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    const key = date.toISOString().slice(0, 10);
+    daily.push({ label: WEEKDAY_LABELS[date.getDay()], value: activeDays.has(key) ? 1 : 0 });
+  }
+
+  const weekly: { label: string; value: number }[] = [];
+  for (let w = 3; w >= 0; w -= 1) {
+    let count = 0;
+    for (let d = w * 7; d < w * 7 + 7; d += 1) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - d);
+      const key = date.toISOString().slice(0, 10);
+      if (activeDays.has(key)) count += 1;
+    }
+    weekly.push({ label: `Тиж. ${4 - w}`, value: count });
+  }
+
+  return { daily, weekly };
+};
+
 export const getLearningStats = (progress: ProgressMap, quizProgress: QuizProgressMap, activityLog: string[] = []) => {
   const lessons = getAllLessons();
   const completedLessons = lessons.filter(

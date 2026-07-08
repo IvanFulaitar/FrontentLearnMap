@@ -217,7 +217,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     const htmlCourse = courses.find((course) => course.id === "html");
     const cssCourse = courses.find((course) => course.id === "css");
 
-    if (state.xp >= 20) unlocked.add("first-lesson");
+    if (stats.completedLessons >= 1) unlocked.add("first-lesson");
     if (stats.longestStreak >= 7) unlocked.add("seven-day-streak");
     if (stats.longestStreak >= 30) unlocked.add("thirty-day-streak");
     if (stats.passedTests >= 10) unlocked.add("ten-tests");
@@ -228,7 +228,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     if (state.completedProjects.length >= 1) unlocked.add("first-project");
     if (document.documentElement.dataset.theme === "dark") unlocked.add("dark-mode-user");
     return achievements.filter((achievement) => unlocked.has(achievement.id)).map((achievement) => achievement.id);
-  }, [courseProgress, state.completedProjects.length, state.xp]);
+  }, [courseProgress, state.completedProjects.length]);
 
   const value = useMemo<PlatformContextValue>(() => ({
     ...state,

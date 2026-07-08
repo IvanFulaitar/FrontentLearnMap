@@ -12,7 +12,7 @@ import {
   Zap,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { achievements, dailyChallenges, learningPathSteps } from "../../constants/gamification";
+import { achievements, dailyChallenges } from "../../constants/gamification";
 import { Alert } from "../../components/ui/Alert";
 import { Button } from "../../components/ui/Button";
 import { Card } from "../../components/ui/Card";
@@ -21,7 +21,7 @@ import { BarChart } from "../../shared/charts/BarChart";
 import type { usePlatform } from "../../context/PlatformContext";
 import type { useDashboardData } from "./useDashboardData";
 import type { ProgressMap } from "../../utils/progress";
-import { getCourseProgress } from "../../utils/progress";
+import { getActivitySeries, getCourseProgress } from "../../utils/progress";
 import styles from "../../pages/DashboardPage.module.css";
 
 type DashboardData = ReturnType<typeof useDashboardData>;
@@ -36,10 +36,13 @@ export function DashboardHero({ data, platform }: { data: DashboardData; platfor
       <Card className={styles.panel}>
         <span className="eyebrow">Навчальна платформа</span>
         <h1 className={styles.heroTitle}>Привіт! Продовжуй шлях до Frontend Developer</h1>
-        <p>Roadmap веде від HTML і CSS до React, TypeScript та базового backend-контексту. Прогрес зберігається у браузері.</p>
+        <p>
+          Понад 300 уроків у форматі cheat-sheet: живі приклади коду, інтерактивні демо й реальні міні-проєкти
+          замість сухої теорії — від HTML і CSS до React, TypeScript і основ backend.
+        </p>
         <ProgressBar value={overall.percent} label="Загальний прогрес" />
         <ProgressBar value={platform.level.progress} label={`Поточний XP: ${platform.xp} · Наступний рівень: ${platform.level.next?.title ?? "Максимальний рівень"}`} />
-        <Alert title="Навчальний шлях" message="Рухайся модуль за модулем: урок, практика, тест і підсумковий проект." />
+        <Alert title="Як влаштований курс" message="Кожен урок: пояснення мовою наставника, живий приклад у браузері, практика і питання на співбесіді. Модуль за модулем — до підсумкового проєкту." />
         <Link to={lessonHref}>
           <Button>Продовжити навчання</Button>
         </Link>
@@ -123,7 +126,7 @@ export function DashboardMissions({ platform }: { platform: PlatformState }) {
   const unlockedCount = platform.unlockedAchievements.length;
 
   return (
-    <section className={styles.courseProgress}>
+    <section className={styles.missionsGrid}>
       <Card className={styles.panel}>
         <div className={styles.missionsHeader}>
           <h2>Щоденні виклики</h2>
@@ -189,15 +192,24 @@ export function DashboardMissions({ platform }: { platform: PlatformState }) {
   );
 }
 
-export function LearningPathPreview({ progressPercent }: { progressPercent: number }) {
+export function LearningPathPreview({ data, lessonProgress }: { data: DashboardData; lessonProgress: ProgressMap }) {
   return (
-    <section className={styles.courseProgress}>
+    <section className={styles.pathSection}>
       <Card className={styles.panel}>
         <h2>Навчальний шлях</h2>
         <div className={styles.pathPreview}>
-          {learningPathSteps.map((step, index) => {
-            const unlocked = index <= Math.floor(progressPercent / 8);
-            return <span key={step} className={unlocked ? styles.unlockedPath : styles.lockedPath}>{step}</span>;
+          {data.courses.map((course) => {
+            const stats = getCourseProgress(course, lessonProgress);
+            const status = stats.percent === 100 ? "done" : stats.percent > 0 ? "active" : "locked";
+            const statusClass =
+              status === "done" ? styles.pathStepDone : status === "active" ? styles.pathStepActive : styles.pathStepLocked;
+            return (
+              <span key={course.id} className={`${styles.pathStep} ${statusClass}`}>
+                {status === "done" ? <CheckCircle2 size={14} aria-hidden="true" /> : null}
+                {course.title}
+                <span className={styles.pathStepPercent}>{stats.percent}%</span>
+              </span>
+            );
           })}
         </div>
       </Card>
@@ -205,30 +217,17 @@ export function LearningPathPreview({ progressPercent }: { progressPercent: numb
   );
 }
 
-export function ActivityCharts({ data, platform }: { data: DashboardData; platform: PlatformState }) {
-  const { learningStats, overall } = data;
+export function ActivityCharts({ activityLog }: { activityLog: string[] }) {
+  const { daily, weekly } = getActivitySeries(activityLog);
   return (
-    <section className={styles.courseProgress}>
+    <section className={styles.activityGrid}>
       <Card className={styles.panel}>
         <h2>Активність за тиждень</h2>
-        <BarChart data={[
-          { label: "Пн", value: learningStats.completedLessons || 1 },
-          { label: "Вт", value: learningStats.completedPractices + 1 },
-          { label: "Ср", value: learningStats.passedTests + 1 },
-          { label: "Чт", value: platform.xp / 100 + 1 },
-          { label: "Пт", value: overall.percent + 1 },
-          { label: "Сб", value: learningStats.longestStreak + 1 },
-          { label: "Нд", value: learningStats.totalStudyDays + 1 },
-        ]} />
+        <BarChart data={daily} />
       </Card>
       <Card className={styles.panel}>
         <h2>Активність за місяць</h2>
-        <BarChart data={[
-          { label: "Тиж. 1", value: overall.completed + 1 },
-          { label: "Тиж. 2", value: learningStats.completedPractices + 2 },
-          { label: "Тиж. 3", value: learningStats.passedTests + 3 },
-          { label: "Тиж. 4", value: platform.level.current.level + 4 },
-        ]} />
+        <BarChart data={weekly} />
       </Card>
     </section>
   );

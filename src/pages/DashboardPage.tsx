@@ -21,8 +21,8 @@ export function DashboardPage() {
       <DashboardStats data={data} platform={platform} />
       <CourseProgressGrid data={data} lessonProgress={lessonProgress} />
       <DashboardMissions platform={platform} />
-      <LearningPathPreview progressPercent={data.overall.percent} />
-      <ActivityCharts data={data} platform={platform} />
+      <LearningPathPreview data={data} lessonProgress={lessonProgress} />
+      <ActivityCharts activityLog={activityLog} />
     </div>
   );
 }

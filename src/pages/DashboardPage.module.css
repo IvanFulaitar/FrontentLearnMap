@@ -1,20 +1,20 @@
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
-  gap: 18px;
+  gap: 16px;
 }
 
 .panel {
   display: grid;
   align-content: start;
-  gap: 14px;
-  padding: 24px;
+  gap: 12px;
+  padding: 20px;
 }
 
 .heroTitle {
   max-width: 760px;
-  font-size: clamp(2rem, 4vw, 4rem);
-  line-height: 1.02;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  line-height: 1.1;
 }
 
 .stats,
@@ -72,14 +72,19 @@
 }
 
 .lastLesson {
-  display: grid;
-  /* The right hero column stretches to match the taller left column
-     (default grid stretch behavior). Spreading content top/bottom instead
-     of letting it clump at the top turns that stretch into an intentional
-     layout (eyebrow at top, CTA pinned to the bottom) instead of dead
-     whitespace. */
-  align-content: space-between;
-  gap: 14px;
+  /* The right hero column stretches to match the taller left column.
+     align-content: space-between used to spread space EQUALLY between every
+     child — eyebrow, body, and button — which put a huge empty gap right
+     under the eyebrow instead of just pinning the button to the bottom.
+     Flex + margin-top: auto on the last child keeps eyebrow+title grouped
+     naturally and only pushes the CTA down into the leftover space. */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lastLesson > a:last-child {
+  margin-top: auto;
 }
 
 .lastLessonTop {
@@ -105,29 +110,61 @@
   margin-bottom: 8px;
 }
 
+/* Missions (daily challenges + achievements) and activity charts previously
+   reused .courseProgress's 4-column grid meant for the 10 course cards —
+   with only 1-2 real children that squeezed them into a quarter/half of the
+   row instead of a proper 2-column (or full-width) layout. Dedicated classes
+   below fix that. */
+.missionsGrid,
+.activityGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.pathSection {
+  display: grid;
+}
+
 .pathPreview {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.unlockedPath,
-.lockedPath {
+.pathStep {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 8px 12px;
   font-weight: 700;
+  font-size: 0.88rem;
 }
 
-.unlockedPath {
+.pathStepDone {
+  background: var(--success-soft);
+  color: var(--success);
+  border-color: transparent;
+}
+
+.pathStepActive {
   background: var(--primary-soft);
   color: var(--primary);
+  border-color: transparent;
 }
 
-.lockedPath {
+.pathStepLocked {
   background: var(--surface-muted);
   color: var(--muted);
   opacity: 0.65;
+}
+
+.pathStepPercent {
+  font-weight: 600;
+  font-size: 0.78rem;
+  opacity: 0.8;
 }
 
 .missionsHeader {
@@ -291,7 +328,9 @@
 @media (max-width: 860px) {
   .hero,
   .stats,
-  .courseProgress {
+  .courseProgress,
+  .missionsGrid,
+  .activityGrid {
     grid-template-columns: 1fr;
   }
 }

@@ -54,21 +54,3 @@ export const dailyChallenges: DailyChallenge[] = [
   { id: "daily-quiz", title: "Пройти тест", description: "Заверши будь-який тест із результатом 60%+.", xpReward: 50 },
   { id: "daily-js", title: "Написати 20 рядків JS", description: "Виріши маленьку задачу або допиши логіку компонента.", xpReward: 40 },
 ];
-
-export const learningPathSteps = [
-  "HTML",
-  "CSS",
-  "JavaScript",
-  "Git",
-  "React",
-  "TypeScript",
-  "REST API",
-  "Node.js",
-  "Тестування",
-  "Продуктивність",
-  "Архітектура",
-  "Деплоймент",
-  "CI/CD",
-  "Next.js",
-  "Просунуті теми",
-];
