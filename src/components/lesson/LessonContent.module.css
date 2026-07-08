@@ -46,6 +46,14 @@
 }
 
 .code {
+  /* min-width: 0 is required here because .code is a direct grid item of
+     .walkthrough (display: grid): grid items default to min-width: auto,
+     which for a <pre> with an unbroken long line equals that line's full
+     content width — this silently overrides overflow-x: auto above and
+     forces the grid track (and this box) wider than the viewport, so long
+     code lines spilled past the container edge on mobile instead of
+     scrolling internally. */
+  min-width: 0;
   overflow-x: auto;
   border-radius: var(--radius);
   padding: 16px;
