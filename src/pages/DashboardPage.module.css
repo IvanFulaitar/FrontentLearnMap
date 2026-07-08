@@ -171,15 +171,24 @@
 }
 
 .pathStepLocked {
+  /* No opacity here (previously 0.65): applying opacity to the whole badge
+     blends both its text AND background toward the page backdrop, which
+     quietly drops the text below the 4.5:1 contrast ratio required for
+     normal-size text — a real Lighthouse contrast violation. --muted on
+     --surface-muted at full opacity already reads as clearly "inactive"
+     and passes contrast on its own, no opacity trick needed. */
   background: var(--surface-muted);
   color: var(--muted);
-  opacity: 0.65;
 }
 
 .pathStepPercent {
+  /* Same reasoning as .pathStepLocked above: opacity (previously 0.8) here
+     compounded with the parent badge's own color, pushing contrast below
+     4.5:1 for this small (0.78rem) text in the locked-badge case. The
+     smaller font-size and weight already create enough visual hierarchy
+     against the main label without needing to fade it out. */
   font-weight: 600;
   font-size: 0.78rem;
-  opacity: 0.8;
 }
 
 .missionsHeader {

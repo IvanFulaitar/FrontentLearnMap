@@ -8,10 +8,27 @@
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Loaded as preload + swap-to-stylesheet-on-load instead of a plain
+      <link rel="stylesheet">: a normal stylesheet link blocks first paint
+      until the CSS downloads, which Lighthouse flags as a render-blocking
+      request. This lets the page render immediately with fallback fonts,
+      then swaps in the web fonts once they're ready (display=swap on the
+      Google Fonts URL itself also avoids invisible text while the font
+      loads). The <noscript> fallback covers users without JavaScript.
+    -->
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      />
+    </noscript>
     <title>Free Frontend</title>
   </head>
   <body>
