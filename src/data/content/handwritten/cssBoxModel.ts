@@ -7,7 +7,20 @@ import type { LessonOverride } from "./htmlFoundations";
 export const cssBoxModelOverrides: Record<string, LessonOverride> = {
   "Box-модель на практиці": {
     interactiveDemo: "box-model-demo",
-    whatIsIt: "Box-модель — правило, за яким браузер рахує розмір кожного HTML-елемента: content (вміст) → padding (внутрішній відступ) → border (рамка) → margin (зовнішній відступ), шар за шаром зсередини назовні. box-sizing вирішує, чи padding/border входять у заданий width, чи додаються поверх нього.\n\nСхема: [Margin [ Border [ Padding [ Content ] ] ] ] — content це сам текст/картинка/вміст кнопки, padding це простір між вмістом і рамкою, border це сама рамка (товщина + стиль + колір), margin це простір зовні елемента до сусідів.",
+    whatIsIt: "Box-модель — правило, за яким браузер рахує розмір кожного HTML-елемента: content (вміст) → padding (внутрішній відступ) → border (рамка) → margin (зовнішній відступ), шар за шаром зсередини назовні. box-sizing вирішує, чи padding/border входять у заданий width, чи додаються поверх нього.\n\ncontent це сам текст/картинка/вміст кнопки, padding це простір між вмістом і рамкою, border це сама рамка (товщина + стиль + колір), margin це простір зовні елемента до сусідів — дивись схему нижче.",
+    visualExplanation: {
+      svg: `<svg viewBox="0 0 440 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Box-модель: margin, border, padding, content">
+        <rect x="4" y="4" width="432" height="292" rx="10" fill="none" stroke="var(--border)" stroke-width="2" stroke-dasharray="6 5" />
+        <text x="18" y="26" font-size="14" font-weight="700" fill="var(--muted)">margin</text>
+        <rect x="46" y="46" width="348" height="208" rx="6" fill="none" stroke="var(--text)" stroke-width="3" />
+        <text x="60" y="68" font-size="14" font-weight="700" fill="var(--text)">border</text>
+        <rect x="76" y="78" width="288" height="148" rx="4" fill="color-mix(in srgb, var(--primary) 14%, transparent)" />
+        <text x="90" y="100" font-size="14" font-weight="700" fill="var(--primary)">padding</text>
+        <rect x="122" y="122" width="196" height="60" rx="4" fill="var(--primary)" />
+        <text x="220" y="158" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">content</text>
+      </svg>`,
+      caption: "Чотири шари box-моделі: margin → border → padding → content, зсередини назовні.",
+    },
     whyUseIt: "Без розуміння box-моделі незрозуміло, чому блок став ширшим за очікуване, чому кнопка виглядає затісною, чому картки з'їхали, чому з'явився горизонтальний скрол, чому padding збільшує елемент, а margin — ні, і чому фон не поширюється на margin.\n\nBox-модель використовується буквально всюди: кнопки, картки товарів, форми, секції, header/footer, модальні вікна, таблиці, layout, sidebar, навігація, hero-секції, grid і flexbox. Наприклад дизайнер у Figma показує картку 320px завширшки з padding 24px, рамкою 1px і радіусом 16px — без border-box ця картка в браузері вийде фактично на 50px ширшою, ніж задумано.",
     whenToUse: ["box-sizing: border-box — постав раз, глобально (`*, *::before, *::after`), на всі елементи проєкту, з перших рядків CSS.", "padding — простір усередині елемента (між рамкою і вмістом): відступ тексту від країв кнопки чи картки.", "margin — простір зовні елемента (між ним і сусідами): відстань між картками, секціями, елементами списку.", "width: 100% + max-width — для адаптивних блоків, які не повинні створювати горизонтальний скрол на вузькому екрані.", "min-height замість height — коли в блоці є текст, довжина якого може змінитись (переклад, більший шрифт, більше даних).", "margin-inline: auto — для центрування контейнера з обмеженою шириною (max-width) по горизонталі.", "outline (не border) — для стилів :focus, бо він не займає місце в box-моделі і не зсуває сусідні елементи."],
     whenNotToUse: ["Не забувай border-box — без нього розрахунок ширини стає незрозумілим і плутаним, а картка \"розповзається\".", "Не використовуй margin, коли насправді потрібен padding (відступ усередині картки — це padding, не margin).", "Не задавай фіксовану width у px для блоків, які мають адаптуватись під ширину екрана — це створює горизонтальний скрол на мобільних.", "Не став фіксовану height текстовим блокам — якщо тексту стане більше, він вилізе за межі або обріжеться разом з overflow: hidden.", "Не прибирай outline на :focus без візуальної заміни — це ламає навігацію з клавіатури.", "Не забувай, що margin не фарбується фоном елемента — фон покриває лише content + padding + border."],
@@ -130,6 +143,22 @@ body {
 
   "Margin проти padding": {
     interactiveDemo: "margin-padding-demo",
+    visualExplanation: {
+      svg: `<svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Порівняння padding і margin">
+        <text x="105" y="24" font-size="14" font-weight="700" fill="var(--text)" text-anchor="middle">padding</text>
+        <rect x="30" y="40" width="150" height="120" rx="8" fill="var(--primary)" />
+        <rect x="55" y="65" width="100" height="70" rx="4" fill="var(--surface-muted)" stroke="var(--border)" />
+        <text x="105" y="105" font-size="12" fill="var(--text)" text-anchor="middle">текст</text>
+        <text x="105" y="188" font-size="11" fill="var(--muted)" text-anchor="middle">фон заповнює padding</text>
+        <text x="360" y="24" font-size="14" font-weight="700" fill="var(--text)" text-anchor="middle">margin</text>
+        <rect x="300" y="40" width="120" height="55" rx="6" fill="var(--primary)" />
+        <rect x="300" y="125" width="120" height="55" rx="6" fill="var(--primary)" />
+        <line x1="300" y1="105" x2="420" y2="105" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3" />
+        <line x1="300" y1="115" x2="420" y2="115" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3" />
+        <text x="360" y="205" font-size="11" fill="var(--muted)" text-anchor="middle">відступ між сусідами, фон туди не йде</text>
+      </svg>`,
+      caption: "padding — фон заповнює простір до тексту. margin — порожній відступ до сусіда, без фону.",
+    },
     whatIsIt: "padding — простір усередині елемента, між його рамкою і вмістом; він частина \"клікабельної\"/видимої області фону. margin — простір зовні, між елементом і його сусідами; фон елемента туди не поширюється.\n\nОбидва мають короткий (shorthand) запис: одне значення — усі 4 сторони, два значення — верх/низ і ліво/право, три — верх, ліво/право, низ, чотири — за годинниковою стрілкою (верх → право → низ → ліво). Сучасні логічні властивості padding-inline/padding-block і margin-inline/margin-block замінюють пари left/right і top/bottom.",
     whyUseIt: "Плутанина margin/padding — топ-1 помилка новачків: результат виглядає однаково на око, але поводиться по-різному (фон, клікабельність, схлопування).\n\nВідступи є буквально всюди в реальному проєкті: між секціями, між картками, всередині кнопок і форм, між заголовком і текстом, між пунктами меню, навколо зображень, у footer. Неправильний вибір робить сайт неакуратним: кнопка занадто тісна, текст прилипає до рамки, картки стоять одна на одній, або навпаки — секції не мають \"повітря\".",
     whenToUse: ["padding — відступ між текстом і краєм кнопки/картки.", "margin — відстань між двома картками чи секціями.", "padding-block/padding-inline — сучасний логічний запис замість пар padding-top/bottom і padding-left/right.", "margin-inline: auto — центрування блока з обмеженою шириною (max-width) по горизонталі.", "gap (Flexbox/Grid) — коли потрібна однакова відстань між кількома елементами в ряд чи колонку, замість margin на кожному."],
@@ -240,6 +269,26 @@ body {
 
   "Display: block, inline, none": {
     interactiveDemo: "display-demo",
+    visualExplanation: {
+      svg: `<svg viewBox="0 0 460 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Порівняння display: block, inline, inline-block">
+        <text x="10" y="20" font-size="13" font-weight="700" fill="var(--text)">block</text>
+        <rect x="10" y="28" width="440" height="32" rx="6" fill="var(--primary)" />
+        <text x="230" y="49" font-size="12" fill="#ffffff" text-anchor="middle">своя лінія, на всю ширину</text>
+        <rect x="10" y="68" width="440" height="32" rx="6" fill="var(--success)" />
+        <text x="230" y="89" font-size="12" fill="#ffffff" text-anchor="middle">наступний block — знову своя лінія</text>
+        <text x="10" y="128" font-size="13" font-weight="700" fill="var(--text)">inline</text>
+        <text x="10" y="154" font-size="13" fill="var(--muted)">Текст, а це</text>
+        <rect x="112" y="140" width="60" height="20" rx="4" fill="var(--primary)" />
+        <text x="142" y="155" font-size="11" fill="#ffffff" text-anchor="middle">span</text>
+        <text x="178" y="154" font-size="13" fill="var(--muted)">— тече в тому ж рядку.</text>
+        <text x="10" y="198" font-size="13" font-weight="700" fill="var(--text)">inline-block</text>
+        <text x="10" y="224" font-size="13" fill="var(--muted)">Текст і</text>
+        <rect x="72" y="204" width="90" height="32" rx="6" fill="var(--primary)" />
+        <text x="117" y="224" font-size="11" fill="#ffffff" text-anchor="middle">кнопка</text>
+        <text x="170" y="223" font-size="13" fill="var(--muted)">— теж у рядку, з padding.</text>
+      </svg>`,
+      caption: "block завжди зі своєю лінією, inline тече в тексті без width/height, inline-block поєднує обидва.",
+    },
     whatIsIt: "display визначає базову поведінку елемента: block займає весь рядок, починається з нового рядка і поважає width/height/margin/padding; inline тече в рядку тексту, займає лише ширину свого вмісту й ігнорує width/height; inline-block — проміжний варіант: тече в рядку, як inline, але поважає width/height, як block; none повністю прибирає елемент з розмітки (місце не резервується, і зазвичай елемент недоступний для скрінрідера).\n\nЗа замовчуванням block — це div, p, h1-h6, section, article, header, footer, main, nav, ul, ol, li, form; inline — це span, a, strong, em, label, small, code.",
     whyUseIt: "\"Чому мій width не працює?\" — у більшості випадків елемент inline (наприклад, <span>), а inline-елементи ігнорують width/height за задумом.\n\ndisplay — фундамент, без якого важко зрозуміти CSS layout, Flexbox, Grid і адаптивну верстку: від нього залежить, чи заголовок починається з нового рядка, чи посилання можна клацнути по всій області, як показати чи сховати мобільне меню, чому клікабельна зона пункту меню занадто маленька.",
     whenToUse: ["block — секції, картки, div-обгортки, усе, що має бути \"своїм рядком\".", "inline — невеликі фрагменти тексту всередині речення (strong, em, a за замовчуванням).", "inline-block — посилання, що має виглядати як кнопка (текст у рядку, але з padding/width як у блока).", "display: block на пунктах меню (a усередині li) — щоб клікабельною була вся область, а не тільки текст.", "none — приховати елемент повністю (наприклад, мобільне меню, доки не відкрите)."],
