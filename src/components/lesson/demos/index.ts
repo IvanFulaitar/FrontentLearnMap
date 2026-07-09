@@ -9,6 +9,7 @@ import { MarginPaddingDemo } from "./MarginPaddingDemo";
 import { CssAppliedDemo } from "./CssAppliedDemo";
 import { LayerSwitcherDemo } from "./LayerSwitcherDemo";
 import { LandmarksHighlightDemo } from "./LandmarksHighlightDemo";
+import { HeaderHeroDemo } from "./HeaderHeroDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -37,4 +38,5 @@ export const lessonDemos: Record<string, ComponentType> = {
   "css-applied-demo": CssAppliedDemo,
   "layer-switcher-demo": LayerSwitcherDemo,
   "landmarks-highlight-demo": LandmarksHighlightDemo,
+  "header-hero-demo": HeaderHeroDemo,
 };

@@ -399,6 +399,189 @@
   font-size: 0.85rem;
 }
 
+/* Header + Hero demo (sticky header, mobile menu toggle, hero hover + object-fit) */
+.siteFrame {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  max-height: 360px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.siteHeaderDemo {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgb(255 248 239 / 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+.siteLogo {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.siteNavDemo {
+  display: flex;
+  gap: 6px;
+}
+
+.siteNavLink {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 150ms ease, background 150ms ease;
+}
+
+.siteNavLink:hover {
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.siteHeaderButton {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 150ms ease;
+}
+
+.siteHeaderButton:hover {
+  background: var(--primary-dark, var(--primary));
+}
+
+.menuToggleDemo {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.mobileNavDemo {
+  display: grid;
+  gap: 4px;
+  padding: 10px 14px;
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--border);
+  animation: demoFadeIn 180ms ease;
+}
+
+.scrollArea {
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.heroDemo {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  text-align: left;
+  padding-bottom: 12px;
+}
+
+.heroLabelDemo {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.heroTitleDemo {
+  margin: 0;
+  max-width: 16ch;
+  font-size: 1.3rem;
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.heroTextDemo {
+  margin: 0;
+  max-width: 32ch;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.heroActionsDemo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.heroButtonPrimary,
+.heroButtonSecondary {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.heroButtonPrimary {
+  color: white;
+  background: var(--primary);
+}
+
+.heroButtonPrimary:hover {
+  background: var(--primary-dark, var(--primary));
+  transform: translateY(-2px);
+}
+
+.heroButtonSecondary {
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.heroButtonSecondary:hover {
+  transform: translateY(-2px);
+}
+
+.heroImageDemo {
+  width: 100%;
+  max-width: 260px;
+  aspect-ratio: 16 / 7;
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+}
+
+.scrollFiller {
+  display: grid;
+  place-items: center;
+  min-height: 90px;
+  margin-top: 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
 @media (max-width: 560px) {
   .control select,
   .control input[type="range"] {
