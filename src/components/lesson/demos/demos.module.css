@@ -188,7 +188,8 @@
 
 .displayText {
   margin: 0;
-  line-height: 2.4;
+  font-size: 1rem;
+  line-height: 2.7;
   color: var(--text);
 }
 
@@ -197,13 +198,13 @@
 }
 
 .displayTag {
-  margin: 0 2px;
-  padding: 6px 10px;
+  margin: 0 4px;
+  padding: 10px 16px;
   border-radius: var(--radius-sm);
   background: var(--primary-soft);
   color: var(--primary-strong);
-  font-weight: 600;
-  font-size: 0.85rem;
+  font-weight: 700;
+  font-size: 0.95rem;
   text-align: center;
 }
 

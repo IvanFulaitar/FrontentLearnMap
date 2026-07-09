@@ -26,11 +26,11 @@ export function DisplayDemo() {
   const isFlex = display === "flex";
   const showsBoxSize = display === "block" || display === "inline-block" || isFlex;
 
-  const wrapStyle: CSSProperties | undefined = isFlex ? { display: "flex", gap: "8px" } : undefined;
+  const wrapStyle: CSSProperties | undefined = isFlex ? { display: "flex", gap: "12px" } : undefined;
   const tagStyle: CSSProperties = {
     display: isFlex ? undefined : display,
-    width: showsBoxSize ? "120px" : undefined,
-    height: showsBoxSize ? "36px" : undefined,
+    width: showsBoxSize ? "180px" : undefined,
+    height: showsBoxSize ? "46px" : undefined,
   };
 
   return (
@@ -68,8 +68,8 @@ export function DisplayDemo() {
 
       <DemoCodeSnippet
         code={isFlex
-          ? `.tags-wrap {\n  display: flex;\n  gap: 8px;\n}`
-          : `.tag {\n  display: ${display};${showsBoxSize ? "\n  width: 120px;\n  height: 36px;" : ""}\n}`}
+          ? `.tags-wrap {\n  display: flex;\n  gap: 12px;\n}`
+          : `.tag {\n  display: ${display};${showsBoxSize ? "\n  width: 180px;\n  height: 46px;" : ""}\n}`}
       />
 
       <DemoKeyTakeaway>
