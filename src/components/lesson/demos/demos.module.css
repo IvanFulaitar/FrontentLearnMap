@@ -714,6 +714,138 @@
   font-size: 0.88rem;
 }
 
+/* Forms + Pricing demo */
+.fpStage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.fpField {
+  display: grid;
+  gap: 6px;
+  min-width: 220px;
+}
+
+.fpLabel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.fpInput {
+  min-height: 44px;
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.fpInput:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.fpInputError {
+  border-color: #c0392b;
+  background: #fff5f3;
+}
+
+.fpInputSuccess {
+  border-color: #2e7d32;
+  background: #f3fff5;
+}
+
+.fpInputDisabled {
+  color: #9b8b7a;
+  background: var(--surface-muted);
+  cursor: not-allowed;
+}
+
+.fpInputReadonly {
+  background: var(--surface-muted);
+}
+
+.fpHint {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.fpHintNeutral {
+  color: var(--muted);
+}
+
+.fpHintError {
+  color: #c0392b;
+}
+
+.fpHintSuccess {
+  color: #2e7d32;
+}
+
+.fpPriceCard {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.fpPriceCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 0.14);
+}
+
+.fpPriceContent {
+  flex-grow: 1;
+}
+
+.fpPriceTitle {
+  margin: 0 0 4px;
+  color: var(--text);
+}
+
+.fpPriceDescription {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.fpPricePrice {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+.fpPriceButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: background-color 150ms ease;
+}
+
+.fpPriceButton:hover {
+  background: var(--primary-dark, var(--primary));
+}
+
 @media (max-width: 560px) {
   .control select,
   .control input[type="range"] {
