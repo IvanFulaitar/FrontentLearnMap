@@ -94,4 +94,40 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px;
-  /* Same grid-i
+  background: var(--surface);
+  min-width: 0;
+}
+
+.exercise code {
+  overflow-wrap: anywhere;
+}
+
+.exerciseOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.exerciseOptions button {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  background: var(--surface-muted);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.exerciseOptions button:hover,
+.exerciseOptions button:focus-visible {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.solution {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--success-soft);
+  color: var(--text);
+}
