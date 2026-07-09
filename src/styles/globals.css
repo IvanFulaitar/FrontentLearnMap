@@ -2,6 +2,15 @@
   box-sizing: border-box;
 }
 
+/* Without this, an <img>/<iframe> whose intrinsic size (or explicit
+   width/height attributes) is wider than its container can force that
+   container — and potentially the whole page — wider than the viewport
+   on mobile, the same class of overflow bug as unbroken code lines. */
+img,
+iframe {
+  max-width: 100%;
+}
+
 html {
   color-scheme: light;
 }

@@ -320,7 +320,11 @@ function InteractiveComparisonTable({ table }: { table: { headers: string[]; row
               }
             }}
           >
-            {row.map((cell, cellIndex) => <td key={cellIndex}>{cell}</td>)}
+            {row.map((cell, cellIndex) => (
+              <td key={cellIndex} data-label={table.headers[cellIndex]}>
+                {cell}
+              </td>
+            ))}
           </tr>
         ))}
       </tbody>

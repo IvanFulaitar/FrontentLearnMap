@@ -40,6 +40,13 @@
 
 .section {
   padding: 20px;
+  /* .section (the Card wrapping each lesson block) is a grid item of .docs
+     — even though .section itself isn't display: grid, grid items still
+     default to min-width: auto, which resolves to the content's min-content
+     size. A <table> without table-layout: fixed sizes its columns from
+     content width by default, so a wide comparison table could still force
+     this card (and the whole page) wider than the viewport. */
+  min-width: 0;
 }
 
 .section h2 {
@@ -298,6 +305,11 @@
 
 .table {
   width: 100%;
+  /* Fixed layout means column widths come from the CSS/content available
+     width instead of each cell's natural content size — required for
+     overflow-wrap below to actually have room to kick in instead of the
+     browser just growing the column to fit an unbroken word. */
+  table-layout: fixed;
   border-collapse: collapse;
   margin: 10px 0;
   font-size: 0.92rem;
@@ -308,11 +320,60 @@
   border: 1px solid var(--border);
   padding: 8px 12px;
   text-align: left;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .table th {
   background: var(--surface-hover, rgba(127, 127, 127, 0.08));
   font-weight: 600;
+}
+
+@media (max-width: 580px) {
+  /* Below 580px even a fixed-layout table with 2-4 columns gets cramped
+     enough that cells become unreadably narrow. Turn each row into a
+     small card instead: label (first column) bold, every other column
+     prefixed with its header name (via data-label, set in
+     InteractiveComparisonTable) so the meaning of "padding" vs "margin"
+     etc. isn't lost just because the <thead> is hidden. */
+  .table,
+  .table thead,
+  .table tbody,
+  .table tr,
+  .table th,
+  .table td {
+    display: block;
+    width: 100%;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tr {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+  }
+
+  .table td {
+    display: flex;
+    gap: 6px;
+    border: none;
+    padding: 4px 0;
+  }
+
+  .table td:first-child {
+    font-weight: 700;
+  }
+
+  .table td:not(:first-child)::before {
+    content: attr(data-label) ":";
+    flex-shrink: 0;
+    font-weight: 600;
+    color: var(--muted);
+  }
 }
 
 .subheading {
