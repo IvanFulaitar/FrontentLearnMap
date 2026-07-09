@@ -254,7 +254,7 @@ export const cssRealFormsPricingOverrides: Record<string, LessonOverride> = {
       </svg>`,
       caption: "Той самий рядок прайсу стає карткою; товщий border і значок кольору бренду виділяють рекомендований варіант серед решти.",
     },
-    interactiveDemo: "forms-pricing-demo",
+    interactiveDemo: "price-cards-demo",
     codeWalkthroughs: [
       {
         before: "Прайс кав'ярні як картки, з виділеною ціною:",

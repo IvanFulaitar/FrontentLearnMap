@@ -924,3 +924,102 @@
   font-size: 0.85rem;
   transition: color 200ms ease;
 }
+
+/* Price-cards demo ("Прайс-таблиця як картки"): a real grid of price cards
+   with genuine :hover lift (CSS, not JS), a click-driven "рекомендований"
+   badge/border that moves between cards, and a per-card order button that
+   toggles its own label — real, poke-able states, not a static picture. */
+.pcGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.pcCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-radius: var(--radius);
+  border: 3px solid transparent;
+  background: var(--surface-raised);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.pcCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 0.14);
+}
+
+.pcCardRecommended {
+  border-color: var(--primary);
+}
+
+.pcBadge {
+  position: absolute;
+  top: -12px;
+  left: 16px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.pcContent {
+  flex-grow: 1;
+}
+
+.pcTitle {
+  margin: 0 0 4px;
+  color: var(--text);
+}
+
+.pcCardRecommended .pcTitle {
+  padding-right: 60px;
+}
+
+.pcDescription {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.pcPrice {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+.pcButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.pcButton:hover {
+  background: var(--primary-dark, var(--primary));
+}
+
+.pcButton:active {
+  transform: scale(0.97);
+}
+
+.pcButtonOrdered {
+  background: var(--success, #2e7d32);
+}
