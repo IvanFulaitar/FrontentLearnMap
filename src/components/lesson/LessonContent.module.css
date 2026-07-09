@@ -239,6 +239,19 @@
   background: var(--surface-muted);
 }
 
+.visual > div {
+  /* This div (the raw dangerouslySetInnerHTML SVG wrapper) is the actual
+     grid item here, not the <svg> itself. With justify-items: center, a
+     grid item with no explicit width shrinks to its own content size
+     instead of stretching to fill the track — so the svg's `width: 100%`
+     below was resolving against an undefined/content-sized containing
+     block and falling back to the SVG's raw viewBox dimensions (~460-480px)
+     no matter how high max-width was pushed. Giving the wrapper an
+     explicit 100% width fixes the actual bug: the svg now has a real,
+     full-width containing block to size itself against. */
+  width: 100%;
+}
+
 .visual svg {
   display: block;
   width: 100%;
