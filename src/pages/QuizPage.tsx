@@ -15,7 +15,7 @@ import styles from "./QuizPage.module.css";
 
 export function QuizPage() {
   const { courseId, moduleId, quizId } = useParams();
-  const { saveQuizScore } = useProgressContext();
+  const { saveQuizScore, lastOpenedLesson } = useProgressContext();
   const { addXp } = usePlatform();
   const { notify } = useToast();
   const [isQuizDone, setQuizDone] = useState(false);
@@ -25,13 +25,24 @@ export function QuizPage() {
 
   if (!course || !currentModule || !quiz || !courseId || !moduleId || !quizId) return <Navigate to="/courses" replace />;
 
-  // The quiz always sits right after the module's own lessons, so "back to
-  // lesson" returns to the last lesson of this module, and "next lesson"
-  // (shown once the quiz is complete) is whatever comes right after that
-  // lesson in the course-wide sequence — i.e. the first lesson of the next
-  // module, or null if this was the very last lesson of the whole course.
-  const lastLesson = currentModule.lessons[currentModule.lessons.length - 1];
-  const nextLesson = lastLesson ? getNeighborLessons(course.id, currentModule.id, lastLesson.id).next : null;
+  // "Тест модуля" on LessonPage can be reached from ANY lesson in the
+  // module, not just the last one — so "back to lesson" has to return to
+  // wherever the learner actually came from, not assume it's the module's
+  // last lesson (that assumption sent everyone back to the wrong lesson).
+  // lastOpenedLesson is updated by LessonPage every time a lesson is
+  // visited, so if it matches this course+module it's the real referrer;
+  // otherwise (e.g. the quiz was opened directly/bookmarked) fall back to
+  // the module's last lesson as a reasonable default.
+  const referrerLesson =
+    lastOpenedLesson && lastOpenedLesson.courseId === course.id && lastOpenedLesson.moduleId === currentModule.id
+      ? currentModule.lessons.find((item) => item.id === lastOpenedLesson.lessonId)
+      : null;
+  const backLesson = referrerLesson ?? currentModule.lessons[currentModule.lessons.length - 1];
+  // "Next lesson" after finishing the quiz should be whatever comes right
+  // after that same reference lesson in the course-wide sequence — the next
+  // lesson in this module if the learner came from an earlier one, or the
+  // first lesson of the next module if they came from the last one.
+  const nextLesson = backLesson ? getNeighborLessons(course.id, currentModule.id, backLesson.id).next : null;
 
   return (
     <div className="page">
@@ -47,9 +58,9 @@ export function QuizPage() {
         <span className="eyebrow">{course.title} · {currentModule.title}</span>
         <h1>{quiz.title}</h1>
         <p>Дай відповіді на 5 питань. Після перевірки побачиш відсоток і правильні відповіді.</p>
-        {lastLesson ? (
+        {backLesson ? (
           <div className={styles.headerActions}>
-            <Link to={`/courses/${course.id}/modules/${currentModule.id}/lessons/${lastLesson.id}`}>
+            <Link to={`/courses/${course.id}/modules/${currentModule.id}/lessons/${backLesson.id}`}>
               <Button variant="ghost">
                 <ArrowLeft size={18} /> Повернутись до уроку
               </Button>
