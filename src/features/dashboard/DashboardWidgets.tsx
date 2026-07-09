@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import {
+  BarChart3,
   BookOpenCheck,
   CheckCircle2,
   Circle,
@@ -17,7 +18,7 @@ import { Alert } from "../../components/ui/Alert";
 import { Button } from "../../components/ui/Button";
 import { Card } from "../../components/ui/Card";
 import { ProgressBar } from "../../components/progress/ProgressBar";
-import { BarChart } from "../../shared/charts/BarChart";
+import { GradientLineChart } from "../../shared/charts/GradientLineChart";
 import type { usePlatform } from "../../context/PlatformContext";
 import type { useDashboardData } from "./useDashboardData";
 import type { ProgressMap } from "../../utils/progress";
@@ -241,15 +242,55 @@ export function LearningPathPreview({ data, lessonProgress }: { data: DashboardD
 
 export function ActivityCharts({ activityLog }: { activityLog: string[] }) {
   const { daily, weekly } = getActivitySeries(activityLog);
+
+  // Real metrics, not the fabricated "XP" numbers from the original design
+  // mockup: `daily` is a 0/1 active-day flag per weekday, `weekly` is a
+  // 0-7 count of active days in that week — see getActivitySeries().
+  const activeDaysThisWeek = daily.reduce((sum, item) => sum + item.value, 0);
+  const activeDaysThisMonth = weekly.reduce((sum, item) => sum + item.value, 0);
+  const busiestWeek = weekly.reduce((best, item) => (item.value > best.value ? item : best), weekly[0] ?? { label: "-", value: 0 });
+
   return (
     <section className={styles.activityGrid}>
       <Card className={styles.panel}>
-        <h2>Активність за тиждень</h2>
-        <BarChart data={daily} />
+        <div className={styles.chartHeader}>
+          <h2>Активність за тиждень</h2>
+          <span className={styles.chartBadge}>
+            {activeDaysThisWeek} з {daily.length} <TrendingUp size={14} />
+          </span>
+        </div>
+        <GradientLineChart
+          data={daily}
+          ariaLabel="Активність за останні 7 днів"
+          formatValue={(value) => (value >= 1 ? "Активний" : "—")}
+        />
+        <div className={styles.chartFooter}>
+          <span className={styles.chartFooterIcon}>
+            <BarChart3 size={18} />
+          </span>
+          <div>
+            <p className={styles.chartFooterLabel}>Активних днів цього тижня</p>
+            <p className={styles.chartFooterValue}>{activeDaysThisWeek} з {daily.length}</p>
+          </div>
+        </div>
       </Card>
       <Card className={styles.panel}>
-        <h2>Активність за місяць</h2>
-        <BarChart data={weekly} />
+        <div className={styles.chartHeader}>
+          <h2>Активність за місяць</h2>
+          <span className={styles.chartBadge}>
+            {activeDaysThisMonth} днів <TrendingUp size={14} />
+          </span>
+        </div>
+        <GradientLineChart data={weekly} ariaLabel="Активність за останні 4 тижні" />
+        <div className={styles.chartFooter}>
+          <span className={styles.chartFooterIconAlt}>
+            <TrendingUp size={18} />
+          </span>
+          <div>
+            <p className={styles.chartFooterLabel}>Найактивніший тиждень</p>
+            <p className={styles.chartFooterValue}>{busiestWeek.label} · {busiestWeek.value} з 7 днів</p>
+          </div>
+        </div>
       </Card>
     </section>
   );

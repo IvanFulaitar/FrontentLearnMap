@@ -137,6 +137,73 @@
   gap: 14px;
 }
 
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.chartHeader h2 {
+  margin: 0;
+}
+
+.chartBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.chartFooter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+}
+
+.chartFooterIcon,
+.chartFooterIconAlt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.chartFooterIcon {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.chartFooterIconAlt {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.chartFooterLabel {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.chartFooterValue {
+  margin: 2px 0 0;
+  font-weight: 700;
+  color: var(--text);
+}
+
 .pathSection {
   display: grid;
 }

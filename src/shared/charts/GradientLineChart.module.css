@@ -1,0 +1,20 @@
+.chart {
+  overflow: visible;
+}
+
+.gridLabel {
+  font-size: 12px;
+  fill: var(--muted);
+}
+
+.pointLabel {
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--text);
+}
+
+.axisLabel {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--muted);
+}
