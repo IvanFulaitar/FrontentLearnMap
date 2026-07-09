@@ -1,6 +1,17 @@
 .wrap {
   display: grid;
   gap: 16px;
+  /* Plain prose/checklist text (not code) can still contain a long
+     unbroken token with no spaces to wrap at — e.g. a checklist item
+     like `type="date"/type="time"/type="tel"/type="number"/select`
+     joined by slashes. Normal word-wrap only breaks at whitespace, so
+     that single token can push past the card's right edge on narrow
+     screens even though .taskCard/.exercise already have min-width: 0.
+     overflow-wrap: break-word lets the browser break inside the word
+     only when nothing else fits — inherited, so it also reaches
+     .checklist/.hintsList li's and the practiceTask description <p>
+     below without needing a rule on each of them individually. */
+  overflow-wrap: break-word;
 }
 
 .taskCard {
@@ -41,6 +52,27 @@
   font-family: var(--font-mono);
   font-size: 0.88rem;
   line-height: 1.55;
+  /* Code lines intentionally don't wrap (pre preserves whitespace) — a
+     long line scrolls horizontally inside its own box instead of pushing
+     the card wider, which is correct. But the default scrollbar is easy
+     to miss, so a long line can visually look "cut off"/broken rather
+     than "scrollable" at a glance. A visible themed scrollbar makes the
+     affordance obvious, same treatment as the sidebar's scrollbar. */
+  scrollbar-width: thin;
+  scrollbar-color: #475569 transparent;
+}
+
+.codeBlock::-webkit-scrollbar {
+  height: 6px;
+}
+
+.codeBlock::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.codeBlock::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 999px;
 }
 
 .solutionToggle {
@@ -94,40 +126,31 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px;
-  background: var(--surface);
+  /* Same grid-item-and-container chain as .taskCard/.step: .exercise is a
+     grid item of .wrap and hosts its own .codeBlock directly. */
   min-width: 0;
 }
 
-.exercise code {
-  overflow-wrap: anywhere;
-}
-
-.exerciseOptions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.exerciseOptions button {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 8px 10px;
-  background: var(--surface-muted);
-  color: var(--text);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.exerciseOptions button:hover,
-.exerciseOptions button:focus-visible {
-  border-color: var(--primary);
+.exerciseKind {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  padding: 3px 10px;
+  background: var(--primary-soft);
   color: var(--primary);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-.solution {
+.reveal summary {
+  cursor: pointer;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.hintsList {
   margin: 0;
-  padding: 10px 12px;
-  border-radius: var(--radius-sm);
-  background: var(--success-soft);
-  color: var(--text);
+  padding-left: 20px;
+  color: var(--muted);
 }

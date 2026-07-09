@@ -9,6 +9,14 @@
   display: grid;
   gap: 18px;
   min-width: 0;
+  /* Same reasoning as LessonPractice.module.css's .wrap: prose/list text
+     (whenToUse, commonMistakes, interviewQuestions...) can contain a long
+     slash/bracket-joined token with no spaces (e.g. a CSS attribute
+     selector or several `type="..."` values chained together) that
+     normal word-wrap won't break. Inherited, so it reaches every nested
+     <p>/<li> — including inside the "Практика" card's LessonPractice
+     component — without a rule on each list class individually. */
+  overflow-wrap: break-word;
 }
 
 .toc {
@@ -60,6 +68,24 @@
   background: #0f172a;
   color: #e5edf8;
   line-height: 1.55;
+  /* Visible themed scrollbar so a long unwrapped code line reads as
+     "scroll for more" rather than "cut off/broken" — same treatment as
+     LessonPractice.module.css's .codeBlock and the sidebar. */
+  scrollbar-width: thin;
+  scrollbar-color: #475569 transparent;
+}
+
+.code::-webkit-scrollbar {
+  height: 6px;
+}
+
+.code::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.code::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 999px;
 }
 
 .list {
@@ -197,29 +223,24 @@
 
 .visual {
   display: grid;
-  justify-items: stretch;
-  gap: 10px;
+  justify-items: center;
+  gap: 8px;
   margin: 4px 0 16px;
-  padding: 20px;
+  padding: 16px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface-muted);
-}
-
-.visual > div {
-  width: 100%;
 }
 
 .visual svg {
   display: block;
   width: 100%;
   max-width: 100%;
-  max-height: 420px !important;
   height: auto;
 }
 
 .visual figcaption {
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   color: var(--muted);
   text-align: center;
 }
@@ -302,23 +323,12 @@
   letter-spacing: 0.03em;
 }
 
-@media (max-width: 1240px) {
+@media (max-width: 980px) {
   .content {
     grid-template-columns: 1fr;
   }
 
   .toc {
     position: static;
-    order: -1;
-  }
-}
-
-@media (max-width: 640px) {
-  .visual {
-    padding: 14px;
-  }
-
-  .visual svg {
-    max-height: 340px !important;
   }
 }
