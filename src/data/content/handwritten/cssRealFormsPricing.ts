@@ -16,12 +16,12 @@ export const cssRealFormsPricingOverrides: Record<string, LessonOverride> = {
         <rect x="20" y="35" width="190" height="30" rx="2" fill="none" stroke="var(--muted)" stroke-width="1.5" />
         <text x="30" y="55" font-size="12" fill="var(--muted)">Ваше ім'я</text>
         <rect x="20" y="80" width="190" height="30" rx="2" fill="none" stroke="var(--muted)" stroke-width="1.5" />
-        <text x="115" y="130" font-size="11" fill="var(--muted)" text-anchor="middle">свій шрифт, гострі кути, різний вигляд у кожному браузері</text>
+        <text x="115" y="130" font-size="11" fill="var(--muted)" text-anchor="middle">свій вигляд у кожному браузері</text>
         <text x="345" y="20" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle">стилізовано під бренд</text>
         <rect x="250" y="35" width="190" height="34" rx="8" fill="none" stroke="var(--primary)" stroke-width="2" />
         <text x="262" y="57" font-size="12" fill="var(--text)">Ваше ім'я</text>
         <rect x="250" y="82" width="190" height="34" rx="8" fill="none" stroke="var(--border)" stroke-width="2" />
-        <text x="345" y="132" font-size="11" fill="var(--muted)" text-anchor="middle">той самий шрифт, radius і border, що й картки/кнопки</text>
+        <text x="345" y="132" font-size="11" fill="var(--muted)" text-anchor="middle">узгоджено з дизайном сайту</text>
       </svg>`,
       caption: "Той самий <input>, до і після узгодження зі шрифтом, border-radius і кольорами решти сайту.",
     },
