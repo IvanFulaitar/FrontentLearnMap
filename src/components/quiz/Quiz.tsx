@@ -9,9 +9,10 @@ import styles from "./Quiz.module.css";
 interface QuizProps {
   quiz: QuizData;
   onComplete: (score: number) => void;
+  onRetry?: () => void;
 }
 
-export function Quiz({ quiz, onComplete }: QuizProps) {
+export function Quiz({ quiz, onComplete, onRetry }: QuizProps) {
   const [answers, setAnswers] = useState<Record<string, string | string[] | boolean>>({});
   const [isSubmitted, setSubmitted] = useState(false);
 
@@ -36,6 +37,7 @@ export function Quiz({ quiz, onComplete }: QuizProps) {
   const retry = () => {
     setAnswers({});
     setSubmitted(false);
+    onRetry?.();
   };
 
   return (

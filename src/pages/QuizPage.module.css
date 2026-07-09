@@ -1,3 +1,14 @@
 .header {
   padding: 22px;
 }
+
+.headerActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nextLessonNav {
+  display: flex;
+  justify-content: flex-end;
+}
