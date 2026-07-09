@@ -85,6 +85,17 @@
   list-style: none;
   display: grid;
   gap: 14px;
+  /* Missing link in the same chain as .taskCard/.step/.exercise below:
+     .steps (the numbered build-guide <ol>) is a grid item of .taskCard AND
+     a grid container for each .step <li>. Without min-width: 0 here, a long
+     unbroken code line several levels down in .codeBlock could still bubble
+     up through .step (which already has min-width: 0) and be blocked right
+     here, forcing .steps — and therefore .taskCard and the whole card —
+     wider than the viewport. This only showed up in the step-by-step
+     build-guide view (mini-projects), the only place .steps/.step render,
+     which is why the earlier .taskCard/.step/.codeBlock fix alone didn't
+     fully resolve the overflow on real narrow phones. */
+  min-width: 0;
 }
 
 .step {
