@@ -27,6 +27,19 @@
      .step below — without it, a long unbroken code line could still widen
      this whole card past the viewport edge on narrow screens (~500px). */
   min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Belt-and-suspenders catch-all: we've twice missed one specific nested
+   grid container in this chain (.steps was the last one) that still let a
+   long <pre>/<code> line force the card wider than a real narrow phone.
+   Rather than keep auditing every new nested wrapper individually, reset
+   min-width to 0 on EVERY descendant of the two card types that can host a
+   .codeBlock — grid items only grow past this if their content still can't
+   shrink (e.g. an unbroken code line), so this is safe for ordinary text. */
+.taskCard *,
+.exercise * {
+  min-width: 0;
 }
 
 .checklist {
@@ -44,7 +57,12 @@
      width, silently overriding overflow-x: auto and pushing the box past
      the viewport edge on mobile instead of scrolling internally. */
   min-width: 0;
+  max-width: 100%;
   overflow-x: auto;
+  /* Explicit, even though it's the <pre> UA default — pins this down so a
+     future global reset elsewhere can't accidentally turn on wrapping and
+     break code formatting. */
+  white-space: pre;
   border-radius: var(--radius);
   padding: 14px;
   background: #0f172a;
@@ -60,6 +78,11 @@
      affordance obvious, same treatment as the sidebar's scrollbar. */
   scrollbar-width: thin;
   scrollbar-color: #475569 transparent;
+}
+
+.codeBlock code {
+  display: block;
+  min-width: 0;
 }
 
 .codeBlock::-webkit-scrollbar {
@@ -164,4 +187,31 @@
   margin: 0;
   padding-left: 20px;
   color: var(--muted);
+}
+
+@media (max-width: 580px) {
+  .taskCard,
+  .exercise {
+    padding: 12px;
+  }
+
+  .taskCard p,
+  .taskCard li,
+  .exercise p,
+  .exercise li {
+    font-size: 14px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .step {
+    padding-left: 12px;
+  }
+
+  /* Once font-size shrinks, a longer step title can wrap to 2 lines —
+     center-aligned (the default) would leave the number badge floating
+     awkwardly at mid-height instead of next to the first line. */
+  .stepHeading {
+    align-items: flex-start;
+  }
 }
