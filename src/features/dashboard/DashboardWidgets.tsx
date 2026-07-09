@@ -262,7 +262,12 @@ export function ActivityCharts({ activityLog }: { activityLog: string[] }) {
         <GradientLineChart
           data={daily}
           ariaLabel="Активність за останні 7 днів"
-          formatValue={(value) => (value >= 1 ? "Активний" : "—")}
+          // The active/inactive dot fill + the day label below already say
+          // everything — labeling every one of the 7 points "Активний"/"—"
+          // was noisy and, worse, adjacent "Активний" labels could overlap.
+          // Hover still shows the full status via the tooltip.
+          formatPointLabel={() => ""}
+          formatTooltip={(value, label) => `${label}: ${value >= 1 ? "Активний день" : "Немає активності"}`}
         />
         <div className={styles.chartFooter}>
           <span className={styles.chartFooterIcon}>
@@ -281,7 +286,11 @@ export function ActivityCharts({ activityLog }: { activityLog: string[] }) {
             {activeDaysThisMonth} днів <TrendingUp size={14} />
           </span>
         </div>
-        <GradientLineChart data={weekly} ariaLabel="Активність за останні 4 тижні" />
+        <GradientLineChart
+          data={weekly}
+          ariaLabel="Активність за останні 4 тижні"
+          formatTooltip={(value, label) => `${label}: ${value} з 7 днів`}
+        />
         <div className={styles.chartFooter}>
           <span className={styles.chartFooterIconAlt}>
             <TrendingUp size={18} />

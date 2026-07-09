@@ -9,8 +9,15 @@ export interface ChartPoint {
 interface GradientLineChartProps {
   data: ChartPoint[];
   ariaLabel: string;
-  /** How to render the value above each point and on the y-axis gridlines. */
-  formatValue?: (value: number) => string;
+  /**
+   * Text shown above each point. Return an empty string to hide the label for
+   * that specific point — useful for binary/sparse series where labeling
+   * every point would be noisy; the filled/hollow dot plus the hover tooltip
+   * already carry the same information. Defaults to the raw numeric value.
+   */
+  formatPointLabel?: (value: number) => string;
+  /** Text shown in the native hover tooltip for each point. Defaults to "<label>: <value>". */
+  formatTooltip?: (value: number, label: string) => string;
 }
 
 const WIDTH = 600;
@@ -51,9 +58,10 @@ function buildPath(points: { x: number; y: number }[], close: boolean) {
   return d;
 }
 
-export function GradientLineChart({ data, ariaLabel, formatValue }: GradientLineChartProps) {
+export function GradientLineChart({ data, ariaLabel, formatPointLabel, formatTooltip }: GradientLineChartProps) {
   const gradientId = useId();
-  const format = formatValue ?? ((value: number) => String(value));
+  const formatLabel = formatPointLabel ?? ((value: number) => String(value));
+  const formatTip = formatTooltip ?? ((value: number, label: string) => `${label}: ${value}`);
 
   const { points, gridlines, peakIndexes } = useMemo(() => {
     const values = data.map((item) => item.value);
@@ -122,30 +130,49 @@ export function GradientLineChart({ data, ariaLabel, formatValue }: GradientLine
             strokeWidth="1"
             strokeDasharray="4 5"
           />
+          {/* Axis gridlines are always plain numbers, regardless of
+              formatPointLabel — a verbose label like "Активний" doesn't fit
+              in this narrow left margin and used to overflow/clip. */}
           <text x={PLOT_LEFT - 8} y={line.y + 4} textAnchor="end" className={styles.gridLabel}>
-            {format(line.value)}
+            {line.value}
           </text>
         </g>
       ))}
 
       <path d={areaPath} fill={`url(#area-${gradientId})`} stroke="none" />
-      <path d={linePath} fill="none" stroke={`url(#line-${gradientId})`} strokeWidth="3" strokeLinecap="round" />
+      <path
+        d={linePath}
+        fill="none"
+        stroke={`url(#line-${gradientId})`}
+        strokeWidth="3"
+        strokeLinecap="round"
+        className={styles.linePath}
+      />
 
-      {points.map((point, index) => (
-        <g key={point.label}>
-          <text x={point.x} y={point.y - 14} textAnchor="middle" className={styles.pointLabel}>
-            {format(point.value)}
-          </text>
-          <circle
-            cx={point.x}
-            cy={point.y}
-            r={peakIndexes.has(index) ? 5.5 : 4}
-            fill={peakIndexes.has(index) ? "var(--primary)" : "var(--surface)"}
-            stroke="var(--primary)"
-            strokeWidth="2"
-          />
-        </g>
-      ))}
+      {points.map((point, index) => {
+        const label = formatLabel(point.value);
+        const isPeak = peakIndexes.has(index);
+        return (
+          <g key={point.label}>
+            {label ? (
+              <text x={point.x} y={point.y - 14} textAnchor="middle" className={styles.pointLabel}>
+                {label}
+              </text>
+            ) : null}
+            <circle
+              cx={point.x}
+              cy={point.y}
+              r={isPeak ? 5.5 : 4}
+              fill={isPeak ? "var(--primary)" : "var(--surface)"}
+              stroke="var(--primary)"
+              strokeWidth="2"
+              className={isPeak ? styles.pointFilled : styles.pointHollow}
+            >
+              <title>{formatTip(point.value, point.label)}</title>
+            </circle>
+          </g>
+        );
+      })}
 
       {points.map((point) => (
         <text key={`label-${point.label}`} x={point.x} y={LABEL_Y} textAnchor="middle" className={styles.axisLabel}>

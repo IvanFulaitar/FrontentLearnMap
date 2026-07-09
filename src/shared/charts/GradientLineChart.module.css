@@ -18,3 +18,17 @@
   font-weight: 600;
   fill: var(--muted);
 }
+
+.linePath {
+  /* Soft lifted look, matching the shadowed cards elsewhere on the
+     dashboard, instead of a flat/plain stroke. */
+  filter: drop-shadow(0 3px 4px rgba(79, 70, 229, 0.18));
+}
+
+.pointHollow {
+  transition: r 120ms ease;
+}
+
+.pointFilled {
+  filter: drop-shadow(0 1px 3px rgba(79, 70, 229, 0.45));
+}
