@@ -251,7 +251,10 @@
      gap. aspect-ratio keeps it correctly proportioned at any container
      width, and the max-width below stops it from just getting arbitrarily
      large on very wide screens. */
-  max-width: 640px;
+  /* Bumped from 640px so the diagram (and its text) renders bigger and
+     easier to read — aspect-ratio scales width/height together, so this
+     grows the whole diagram proportionally rather than just stretching it. */
+  max-width: 820px;
   height: auto;
 }
 
