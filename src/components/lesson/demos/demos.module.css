@@ -105,6 +105,16 @@
   border: 1px solid var(--border);
   background: var(--surface-raised);
   color: var(--text);
+  /* Real, live hover — the same transform+filter+shadow recipe the
+     "Галерея кав'ярні на Grid" lesson teaches for gallery photos, applied
+     here so the effect is something to actually hover over, not just read
+     about. */
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.menuCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px -12px rgb(0 0 0 / 0.35);
 }
 
 .menuCard span {
@@ -119,6 +129,12 @@
   border-radius: var(--radius-sm);
   margin-bottom: 4px;
   background: var(--surface);
+  transition: transform 200ms ease, filter 200ms ease;
+}
+
+.menuCard:hover .menuCardImage {
+  transform: scale(1.04);
+  filter: brightness(0.94);
 }
 
 .liveCode {
