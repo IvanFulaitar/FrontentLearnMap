@@ -853,3 +853,74 @@
     width: 100%;
   }
 }
+
+/* Theme-switch demo ("Перемикач теми на класі"): a fully self-contained
+   light/dark mini café card. Its colors come ONLY from --tsw-* custom
+   properties set inline by the component (never from the site's own
+   --text/--surface/--border), so toggling light/dark here is exactly the
+   html.theme-light / html.theme-dark class swap taught in the lesson —
+   independent of whatever theme the course site itself is currently in. */
+.themeSwitchStage {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--tsw-bg);
+  border: 1px solid var(--tsw-border);
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.themeSwitchHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.themeSwitchLogo {
+  font-weight: 700;
+  color: var(--tsw-text);
+  transition: color 200ms ease;
+}
+
+.themeSwitchCta {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--tsw-primary);
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  transition: background-color 200ms ease;
+}
+
+.themeSwitchCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--tsw-border);
+  background: var(--tsw-surface);
+  color: var(--tsw-text);
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.themeSwitchPrice {
+  font-weight: 700;
+  color: var(--tsw-primary);
+  transition: color 200ms ease;
+}
+
+.themeSwitchLink {
+  color: var(--tsw-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: color 200ms ease;
+}
+
+.themeSwitchMuted {
+  color: var(--tsw-muted);
+  font-size: 0.85rem;
+  transition: color 200ms ease;
+}

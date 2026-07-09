@@ -12,6 +12,7 @@ import { LandmarksHighlightDemo } from "./LandmarksHighlightDemo";
 import { HeaderHeroDemo } from "./HeaderHeroDemo";
 import { ButtonsCardsDemo } from "./ButtonsCardsDemo";
 import { FormsPricingDemo } from "./FormsPricingDemo";
+import { ThemeSwitchDemo } from "./ThemeSwitchDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -43,4 +44,5 @@ export const lessonDemos: Record<string, ComponentType> = {
   "header-hero-demo": HeaderHeroDemo,
   "buttons-cards-demo": ButtonsCardsDemo,
   "forms-pricing-demo": FormsPricingDemo,
+  "theme-switch-demo": ThemeSwitchDemo,
 };
