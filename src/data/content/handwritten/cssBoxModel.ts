@@ -9,7 +9,7 @@ export const cssBoxModelOverrides: Record<string, LessonOverride> = {
     interactiveDemo: "box-model-demo",
     whatIsIt: "Box-модель — правило, за яким браузер рахує розмір кожного HTML-елемента: content (вміст) → padding (внутрішній відступ) → border (рамка) → margin (зовнішній відступ), шар за шаром зсередини назовні. box-sizing вирішує, чи padding/border входять у заданий width, чи додаються поверх нього.\n\ncontent це сам текст/картинка/вміст кнопки, padding це простір між вмістом і рамкою, border це сама рамка (товщина + стиль + колір), margin це простір зовні елемента до сусідів — дивись схему нижче.",
     visualExplanation: {
-      svg: `<svg viewBox="0 0 440 300" width="100%" height="100%" style="display:block;width:100%;height:auto;max-height:320px" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Box-модель: margin, border, padding, content">
+      svg: `<svg viewBox="0 0 440 300" width="100%" height="100%" style="display:block;width:100%;height:auto;aspect-ratio:440 / 300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Box-модель: margin, border, padding, content">
         <rect x="4" y="4" width="432" height="292" rx="10" fill="none" stroke="var(--border)" stroke-width="2" stroke-dasharray="6 5" />
         <text x="18" y="26" font-size="14" font-weight="700" fill="var(--muted)">margin</text>
         <rect x="46" y="46" width="348" height="208" rx="6" fill="none" stroke="var(--text)" stroke-width="3" />
@@ -144,7 +144,7 @@ body {
   "Margin проти padding": {
     interactiveDemo: "margin-padding-demo",
     visualExplanation: {
-      svg: `<svg viewBox="0 0 480 220" width="100%" height="100%" style="display:block;width:100%;height:auto;max-height:280px" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Порівняння padding і margin">
+      svg: `<svg viewBox="0 0 480 220" width="100%" height="100%" style="display:block;width:100%;height:auto;aspect-ratio:480 / 220" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Порівняння padding і margin">
         <text x="105" y="24" font-size="14" font-weight="700" fill="var(--text)" text-anchor="middle">padding</text>
         <rect x="30" y="40" width="150" height="120" rx="8" fill="var(--primary)" />
         <rect x="55" y="65" width="100" height="70" rx="4" fill="var(--surface-muted)" stroke="var(--border)" />
@@ -270,7 +270,7 @@ body {
   "Display: block, inline, none": {
     interactiveDemo: "display-demo",
     visualExplanation: {
-      svg: `<svg viewBox="0 0 460 250" width="100%" height="100%" style="display:block;width:100%;height:auto;max-height:300px" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Порівняння display: block, inline, inline-block">
+      svg: `<svg viewBox="0 0 460 250" width="100%" height="100%" style="display:block;width:100%;height:auto;aspect-ratio:460 / 250" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Порівняння display: block, inline, inline-block">
         <text x="10" y="20" font-size="13" font-weight="700" fill="var(--text)">block</text>
         <rect x="10" y="28" width="440" height="32" rx="6" fill="var(--primary)" />
         <text x="230" y="49" font-size="12" fill="#ffffff" text-anchor="middle">своя лінія, на всю ширину</text>

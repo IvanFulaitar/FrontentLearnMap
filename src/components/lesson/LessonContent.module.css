@@ -242,7 +242,16 @@
 .visual svg {
   display: block;
   width: 100%;
-  max-width: 100%;
+  /* Each diagram now sets its own `aspect-ratio` inline (matching its
+     viewBox, e.g. 460 / 250) instead of the old fixed `max-height: Npx`.
+     max-height combined with height: auto didn't reliably preserve the
+     SVG's real proportions on a wide container — on a wide desktop lesson
+     column the SVG could end up much taller than its content actually
+     needed (or vice versa on narrow ones), leaving an oddly large blank
+     gap. aspect-ratio keeps it correctly proportioned at any container
+     width, and the max-width below stops it from just getting arbitrarily
+     large on very wide screens. */
+  max-width: 640px;
   height: auto;
 }
 
