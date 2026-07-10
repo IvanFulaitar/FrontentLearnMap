@@ -4,6 +4,12 @@ import styles from "./demos.module.css";
 
 type Property = "color" | "border";
 
+/**
+ * Live demo for "Каскад та успадкування": toggle between an inheriting
+ * property (color) and a non-inheriting one (border) on a real parent/child
+ * pair, and click to force inheritance with the `inherit` keyword on the
+ * child link — the same footer-link scenario from the lesson, but live.
+ */
 export function CascadeInheritanceDemo() {
   const [property, setProperty] = useState<Property>("color");
   const [linkInherits, setLinkInherits] = useState(true);
@@ -57,8 +63,12 @@ export function CascadeInheritanceDemo() {
       <DemoCodeSnippet
         code={
           property === "color"
-            ? `.parent {\n  color: #b45309; /* успадковується дітьми автоматично */\n}`
-            : `.parent {\n  border: 3px solid #b45309; /* НІКОЛИ не успадковується */\n}`
+            ? `.parent {
+  color: #b45309; /* успадковується дітьми автоматично */
+}`
+            : `.parent {
+  border: 3px solid #b45309; /* НІКОЛИ не успадковується */
+}`
         }
       />
 

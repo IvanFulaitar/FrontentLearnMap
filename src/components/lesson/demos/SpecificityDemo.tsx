@@ -43,6 +43,12 @@ const MATCHUPS: Record<Matchup, MatchupConfig> = {
   },
 };
 
+/**
+ * Live demo for "Селектори та специфічність": click a matchup in the
+ * toolbar to see two real, competing CSS rules applied to the same
+ * element — the winning color is computed live from actual specificity
+ * scores, not just described in text.
+ */
 export function SpecificityDemo() {
   const [matchup, setMatchup] = useState<Matchup>("tag-vs-class");
   const config = MATCHUPS[matchup];
