@@ -1664,3 +1664,126 @@
   border-radius: var(--radius);
   margin: 0 auto;
 }
+
+/* Responsive grid demo ("Mobile-first і медіазапити"): a real menu grid
+   whose column count is driven by the same 768px/1200px breakpoints the
+   lesson's code walkthrough uses, live as the viewport slider crosses them. */
+.rgGrid {
+  display: grid;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.rgCard {
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  color: var(--text);
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+}
+
+/* Container query demo ("Container queries"): two real containers
+   (container-type: inline-size) with the SAME card and the SAME
+   @container (min-width: 260px) rule — only one of them is resizable, to
+   prove the layout reacts to its own container, not the browser window. */
+.cqRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.cqBox {
+  display: grid;
+  gap: 6px;
+}
+
+.cqBoxLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.cqContainer {
+  container-type: inline-size;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+}
+
+.cqCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@container (min-width: 260px) {
+  .cqCard {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.cqCardImage {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--primary-soft, #f3e0c8), var(--primary));
+  flex-shrink: 0;
+}
+
+@container (min-width: 260px) {
+  .cqCardImage {
+    width: 72px;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+.cqCardTitle {
+  color: var(--text);
+}
+
+.cqCardPrice {
+  margin: 2px 0 0;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+/* Clamp/min/max demo ("clamp, min і max"): a real clamp() heading and a
+   real min() width bar, both driven by container query units (cqw) tied to
+   the resizable DemoViewport frame via container-type: inline-size. */
+.cmStage {
+  container-type: inline-size;
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+}
+
+.cmHeading {
+  margin: 0;
+  font-size: clamp(1rem, 6cqw, 2.5rem);
+  font-weight: 900;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.cmMinBarTrack {
+  height: 14px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+}
+
+.cmMinBar {
+  height: 100%;
+  width: min(90%, 260px);
+  border-radius: 999px;
+  background: var(--primary);
+  transition: width 120ms ease;
+}
+
+.cmMinBarNote {
+  font-size: 0.78rem;
+  color: var(--muted);
+}

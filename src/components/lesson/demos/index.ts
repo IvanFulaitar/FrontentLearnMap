@@ -29,6 +29,9 @@ import { FooterGridDemo } from "./FooterGridDemo";
 import { MobileMenuDemo } from "./MobileMenuDemo";
 import { HeroLayoutDemo } from "./HeroLayoutDemo";
 import { ObjectFitBackgroundDemo } from "./ObjectFitBackgroundDemo";
+import { ResponsiveGridDemo } from "./ResponsiveGridDemo";
+import { ContainerQueryDemo } from "./ContainerQueryDemo";
+import { ClampMinMaxDemo } from "./ClampMinMaxDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -77,4 +80,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "mobile-menu-demo": MobileMenuDemo,
   "hero-layout-demo": HeroLayoutDemo,
   "object-fit-background-demo": ObjectFitBackgroundDemo,
+  "responsive-grid-demo": ResponsiveGridDemo,
+  "container-query-demo": ContainerQueryDemo,
+  "clamp-min-max-demo": ClampMinMaxDemo,
 };
