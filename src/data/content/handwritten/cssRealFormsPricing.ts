@@ -25,7 +25,7 @@ export const cssRealFormsPricingOverrides: Record<string, LessonOverride> = {
       </svg>`,
       caption: "Той самий <input>, до і після узгодження зі шрифтом, border-radius і кольорами решти сайту.",
     },
-    interactiveDemo: "forms-pricing-demo",
+    interactiveDemo: "field-styling-demo",
     codeWalkthroughs: [
       {
         before: "Поле форми бронювання, узгоджене з рештою дизайну:",
@@ -389,6 +389,7 @@ export const cssRealFormsPricingOverrides: Record<string, LessonOverride> = {
   },
 
   "Footer-макет на Grid": {
+    interactiveDemo: "footer-grid-demo",
     whatIsIt: "Footer з кількома колонками (контакти, посилання, форма підписки) через Grid. На вузьких екранах колонки природно складаються в один стовпчик завдяки auto-fit/minmax — без окремого медіазапиту.",
     whyUseIt: "Footer — це останнє, що бачить відвідувач; розкидані без структури посилання й контакти виглядають недбало саме в кінці сторінки.\n\nДо CSS Grid такий багатоколонковий, але \"складний\" на мобільному layout доводилось збирати на float чи flex з купою допоміжних медіазапитів для кожної колонки окремо. Grid вирішує це одним рядком (auto-fit + minmax), бо він від початку створений саме для 2D-розкладок (рядки й колонки одночасно), а не лише для одного напрямку, як flex.",
     whenToUse: ["Grid з кількома колонками для розділів footer (контакти / посилання / підписка).", "Той самий repeat(auto-fit, minmax(...)) патерн, що й у галереї та картках.", "grid-template-columns: 2fr 1fr 1fr 1fr — коли перша колонка (бренд + опис) логічно ширша за решту.", "<a href=\"tel:...\">/<a href=\"mailto:...\">— для контактів у footer, щоб телефон і email були клікабельними, а не просто текстом.", "<nav aria-label=\"Footer\"> навколо груп посилань — щоб скрінрідер міг оголосити це як окремий навігаційний блок, відмінний від головного меню."],

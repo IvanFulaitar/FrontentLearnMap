@@ -1427,3 +1427,92 @@
   border-radius: var(--radius);
   background: var(--surface-muted);
 }
+
+/* Field-styling demo ("Стилізація форми бронювання"): real input/select/
+   textarea toggled between untouched browser defaults (all: revert) and
+   branded styling — the select is a genuine native dropdown, the textarea a
+   genuinely draggable resize handle. */
+.fsStage {
+  display: grid;
+  gap: 12px;
+  max-width: 300px;
+}
+
+.fsLabel {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.fsUnstyled {
+  all: revert;
+}
+
+.fsBranded {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.fsSelectBranded {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: right 18px center, right 13px center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 32px;
+}
+
+.fsTextareaBranded {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Footer grid demo ("Footer-макет на Grid"): a real multi-column footer
+   inside a resizable viewport, with real (inert) tel:/mailto: links. */
+.fgFooter {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  border-radius: var(--radius);
+  background: #1f2937;
+  color: white;
+}
+
+.fgColumn {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.fgBrandName {
+  font-weight: 800;
+}
+
+.fgBrandText {
+  margin: 0;
+  color: #d1d5db;
+  font-size: 0.85rem;
+}
+
+.fgColumnTitle {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #9ca3af;
+}
+
+.fgLink {
+  color: #e5e7eb;
+  font-size: 0.88rem;
+  text-decoration: none;
+}
+
+.fgLink:hover {
+  color: white;
+  text-decoration: underline;
+}

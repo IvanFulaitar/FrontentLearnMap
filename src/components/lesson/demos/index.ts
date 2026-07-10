@@ -24,6 +24,8 @@ import { CascadeInheritanceDemo } from "./CascadeInheritanceDemo";
 import { UnitsDemo } from "./UnitsDemo";
 import { GridAutoFitDemo } from "./GridAutoFitDemo";
 import { GridGalleryDemo } from "./GridGalleryDemo";
+import { FieldStylingDemo } from "./FieldStylingDemo";
+import { FooterGridDemo } from "./FooterGridDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -67,4 +69,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "units-demo": UnitsDemo,
   "grid-autofit-demo": GridAutoFitDemo,
   "grid-gallery-demo": GridGalleryDemo,
+  "field-styling-demo": FieldStylingDemo,
+  "footer-grid-demo": FooterGridDemo,
 };
