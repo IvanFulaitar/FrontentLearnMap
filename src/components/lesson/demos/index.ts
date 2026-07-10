@@ -19,6 +19,9 @@ import { MenuCardsDemo } from "./MenuCardsDemo";
 import { PseudoElementsDemo } from "./PseudoElementsDemo";
 import { FlexWrapGapDemo } from "./FlexWrapGapDemo";
 import { FlexNavDemo } from "./FlexNavDemo";
+import { SpecificityDemo } from "./SpecificityDemo";
+import { CascadeInheritanceDemo } from "./CascadeInheritanceDemo";
+import { UnitsDemo } from "./UnitsDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -57,4 +60,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "pseudo-elements-demo": PseudoElementsDemo,
   "flex-wrap-gap-demo": FlexWrapGapDemo,
   "flex-nav-demo": FlexNavDemo,
+  "specificity-demo": SpecificityDemo,
+  "cascade-inheritance-demo": CascadeInheritanceDemo,
+  "units-demo": UnitsDemo,
 };

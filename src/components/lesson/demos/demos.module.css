@@ -1279,3 +1279,115 @@
   cursor: pointer;
   white-space: nowrap;
 }
+
+/* Specificity demo ("Селектори та специфічність"): two competing rules
+   rendered as real code chips, with the winning color computed live from
+   actual specificity scores rather than just described in text. */
+.spStage {
+  display: grid;
+  gap: 10px;
+}
+
+.spRule {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.spScore {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-raised);
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.spResult {
+  margin-top: 6px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* Cascade/inheritance demo ("Каскад та успадкування"): a real parent/child
+   pair showing whether a style actually propagates, plus the classic
+   footer-link color: inherit toggle. */
+.ciParent {
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.ciChild {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 0.85rem;
+}
+
+.ciDivider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 4px 0;
+}
+
+.ciFooterText {
+  margin: 0;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: #1f2937;
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.ciFooterLinkInherit {
+  color: inherit;
+  font-weight: 700;
+}
+
+.ciFooterLinkDefault {
+  color: #60a5fa;
+  font-weight: 700;
+}
+
+/* Units demo ("Одиниці виміру та CSS-змінні"): a rem-sized box and a
+   px-sized box side by side, so dragging the root font-size slider makes
+   the size difference real and visible, not just described. */
+.unRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.unBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.unBoxNote {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--muted);
+}
