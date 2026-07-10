@@ -64,6 +64,9 @@ import { FigureDetailsDialogDemo } from "./FigureDetailsDialogDemo";
 import { ButtonVsLinkDemo } from "./ButtonVsLinkDemo";
 import { VariableStateDemo } from "./VariableStateDemo";
 import { NullishVsOrDemo } from "./NullishVsOrDemo";
+import { TypeCoercionDemo } from "./TypeCoercionDemo";
+import { TemplateLiteralDemo } from "./TemplateLiteralDemo";
+import { DevToolsSimulatorDemo } from "./DevToolsSimulatorDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -147,4 +150,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "button-vs-link-demo": ButtonVsLinkDemo,
   "variable-state-demo": VariableStateDemo,
   "nullish-vs-or-demo": NullishVsOrDemo,
+  "type-coercion-demo": TypeCoercionDemo,
+  "template-literal-demo": TemplateLiteralDemo,
+  "devtools-simulator-demo": DevToolsSimulatorDemo,
 };
