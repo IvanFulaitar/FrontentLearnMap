@@ -41,6 +41,8 @@ import { ReducedMotionDemo } from "./ReducedMotionDemo";
 import { CssModulesDemo } from "./CssModulesDemo";
 import { ConditionalClassesDemo } from "./ConditionalClassesDemo";
 import { NamingApproachDemo } from "./NamingApproachDemo";
+import { LandingPreviewDemo } from "./LandingPreviewDemo";
+import { A11yAuditDemo } from "./A11yAuditDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -101,4 +103,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "css-modules-demo": CssModulesDemo,
   "conditional-classes-demo": ConditionalClassesDemo,
   "naming-approach-demo": NamingApproachDemo,
+  "landing-preview-demo": LandingPreviewDemo,
+  "a11y-audit-demo": A11yAuditDemo,
 };

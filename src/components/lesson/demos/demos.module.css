@@ -2095,3 +2095,133 @@
   font-weight: 700;
   cursor: pointer;
 }
+
+/* Landing preview demo ("Фінальний лендінг кав'ярні"): a compact mini
+   landing page combining a real resizable viewport (grid reflow) with a
+   real light/dark theme toggle at the same time, since the capstone
+   lesson's point is that both work together, not just separately. */
+.lpPage {
+  --lp-bg: #fdfaf5;
+  --lp-surface: #ffffff;
+  --lp-text: #1f2937;
+  --lp-muted: #6b7280;
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--lp-bg);
+  color: var(--lp-text);
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.lpPageDark {
+  --lp-bg: #14181a;
+  --lp-surface: #1f2937;
+  --lp-text: #f3f4f6;
+  --lp-muted: #9ca3af;
+}
+
+.lpHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgb(128 128 128 / 0.2);
+}
+
+.lpLogo {
+  font-weight: 800;
+}
+
+.lpNav {
+  display: flex;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: var(--lp-muted);
+}
+
+.lpHero {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+
+.lpHeroTitle {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.lpHeroButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.lpGrid {
+  display: grid;
+  gap: 10px;
+}
+
+.lpCard {
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--lp-surface);
+  color: var(--lp-text);
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+}
+
+.lpFooter {
+  font-size: 0.75rem;
+  color: var(--lp-muted);
+  text-align: center;
+}
+
+/* Accessibility audit demo ("Аудит продуктивності й доступності стилів"):
+   the same subtitle+button pair, toggled between real pre-audit (low
+   contrast, no focus style) and post-audit (WCAG AA contrast, visible
+   focus-visible ring) CSS, with a click-driven focus simulation since a
+   demo can't rely on real Tab navigation. */
+.a11yStage {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border-radius: var(--radius);
+  background: white;
+}
+
+.a11ySubtitleBad {
+  margin: 0;
+  color: #a3a3a3;
+  font-size: 0.95rem;
+}
+
+.a11ySubtitleGood {
+  margin: 0;
+  color: #595959;
+  font-size: 0.95rem;
+}
+
+.a11yButtonBad,
+.a11yButtonGood {
+  justify-self: start;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.a11yFocusRing {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
