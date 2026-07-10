@@ -51,6 +51,8 @@ import { DocAnatomyDemo } from "./DocAnatomyDemo";
 import { ViewportMetaDemo } from "./ViewportMetaDemo";
 import { HeadingHierarchyDemo } from "./HeadingHierarchyDemo";
 import { SemanticTextDemo } from "./SemanticTextDemo";
+import { UrlAnatomyDemo } from "./UrlAnatomyDemo";
+import { SpecialLinksDemo } from "./SpecialLinksDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -121,4 +123,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "viewport-meta-demo": ViewportMetaDemo,
   "heading-hierarchy-demo": HeadingHierarchyDemo,
   "semantic-text-demo": SemanticTextDemo,
+  "url-anatomy-demo": UrlAnatomyDemo,
+  "special-links-demo": SpecialLinksDemo,
 };

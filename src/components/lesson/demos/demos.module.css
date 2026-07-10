@@ -2500,3 +2500,51 @@
   text-decoration-style: dotted;
   cursor: help;
 }
+
+/* URL anatomy demo (click-through segmented URL) */
+.urlLine {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.95rem;
+  word-break: break-all;
+}
+
+.urlSegment {
+  cursor: pointer;
+  padding: 2px 1px;
+  border-radius: 3px;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.urlSegmentActive {
+  background: color-mix(in srgb, var(--primary) 20%, white);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Special links demo (real mailto:/tel:/download links) */
+.specialLinkPreview {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.specialLinkButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.specialLinkButton:hover {
+  filter: brightness(1.08);
+}
