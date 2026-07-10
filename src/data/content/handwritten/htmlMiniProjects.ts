@@ -770,9 +770,117 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
           id: "restaurant-solution",
           path: "index.html",
           language: "html",
-          label: "index.html (орієнтир, не єдине рішення)",
-          code: `<!-- Немає єдиного "правильного" рішення — звір свою структуру
-за чек-листом у полі checklist, а не за точним текстом. -->`,
+          label: "index.html (один із можливих варіантів — звір себе за чек-листом, а не за точним текстом)",
+          code: `<header>
+  <nav aria-label="Основна навігація">
+    <ul>
+      <li><a href="#menu">Меню</a></li>
+      <li><a href="#gallery">Галерея</a></li>
+      <li><a href="#reservation">Бронювання</a></li>
+      <li><a href="#contacts">Контакти</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Кнайпа «Ліс»</h1>
+    <p>Домашня кухня карпатського краю в центрі міста.</p>
+    <a href="#reservation">Забронювати столик</a>
+    <a href="#menu">Переглянути меню</a>
+  </section>
+
+  <section id="benefits">
+    <h2>Чому гості обирають нас?</h2>
+    <ul>
+      <li>Сезонне меню з локальних продуктів</li>
+      <li>Затишна атмосфера в дерев'яному інтер'єрі</li>
+      <li>Бронювання столика онлайн за хвилину</li>
+    </ul>
+  </section>
+
+  <section id="menu">
+    <h2>Меню</h2>
+    <section>
+      <h3>Сніданки</h3>
+      <article>
+        <h4>Сирники зі сметаною</h4>
+        <p>Ніжні сирники з домашнього сиру, сметаною та лісовим варенням.</p>
+        <p>140 грн</p>
+      </article>
+    </section>
+    <section>
+      <h3>Основні страви</h3>
+      <article>
+        <h4>Деруни з грибним соусом</h4>
+        <p>Хрусткі деруни з лісовими грибами у вершковому соусі.</p>
+        <p>210 грн</p>
+      </article>
+    </section>
+  </section>
+
+  <section id="gallery">
+    <h2>Галерея</h2>
+    <figure>
+      <img src="interior.jpg" alt="Дерев'яний зал кнайпи з каміном" width="400" height="300" />
+      <figcaption>Основний зал з каміном.</figcaption>
+    </figure>
+    <figure>
+      <img src="dish.jpg" alt="Деруни з грибним соусом на дерев'яній тарілці" width="400" height="300" />
+      <figcaption>Деруни з грибним соусом.</figcaption>
+    </figure>
+  </section>
+
+  <section id="reviews">
+    <h2>Відгуки</h2>
+    <article>
+      <h3>Марія</h3>
+      <p><time datetime="2026-06-20">20 червня 2026</time></p>
+      <p>Затишно і смачно, повернемось ще.</p>
+    </article>
+  </section>
+
+  <section id="reservation">
+    <h2>Бронювання столика</h2>
+    <form>
+      <label for="r-name">Ім'я</label>
+      <input type="text" id="r-name" required />
+
+      <label for="r-date">Дата</label>
+      <input type="date" id="r-date" required />
+
+      <label for="r-time">Час</label>
+      <input type="time" id="r-time" required />
+
+      <label for="r-guests">Кількість гостей</label>
+      <input type="number" id="r-guests" min="1" value="2" />
+
+      <label for="r-phone">Телефон</label>
+      <input type="tel" id="r-phone" required />
+
+      <button type="submit">Забронювати</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <section id="contacts">
+    <h2>Контакти</h2>
+    <address>
+      <p>м. Ужгород, вул. Корзо, 12</p>
+      <p>Телефон: <a href="tel:+380501234567">+38 050 123 45 67</a></p>
+      <p>Email: <a href="mailto:hello@example.com">hello@example.com</a></p>
+    </address>
+  </section>
+  <section id="hours">
+    <h2>Години роботи</h2>
+    <ul>
+      <li>Понеділок — П'ятниця: 10:00–22:00</li>
+      <li>Субота — Неділя: 10:00–23:00</li>
+    </ul>
+  </section>
+  <p>© 2026 Кнайпа «Ліс»</p>
+</footer>`,
           readOnly: true,
         },
       ],
