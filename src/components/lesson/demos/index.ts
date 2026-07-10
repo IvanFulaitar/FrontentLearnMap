@@ -38,6 +38,9 @@ import { SystemThemeDemo } from "./SystemThemeDemo";
 import { TransitionHoverDemo } from "./TransitionHoverDemo";
 import { KeyframeDemo } from "./KeyframeDemo";
 import { ReducedMotionDemo } from "./ReducedMotionDemo";
+import { CssModulesDemo } from "./CssModulesDemo";
+import { ConditionalClassesDemo } from "./ConditionalClassesDemo";
+import { NamingApproachDemo } from "./NamingApproachDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -95,4 +98,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "transition-hover-demo": TransitionHoverDemo,
   "keyframe-demo": KeyframeDemo,
   "reduced-motion-demo": ReducedMotionDemo,
+  "css-modules-demo": CssModulesDemo,
+  "conditional-classes-demo": ConditionalClassesDemo,
+  "naming-approach-demo": NamingApproachDemo,
 };

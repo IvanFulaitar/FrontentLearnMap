@@ -9,6 +9,7 @@ import type { LessonOverride } from "./htmlFoundations";
  */
 export const cssArchitectureReactOverrides: Record<string, LessonOverride> = {
   "CSS Modules": {
+    interactiveDemo: "css-modules-demo",
     whatIsIt: "CSS Modules — спосіб писати звичайний CSS у файлі виду Button.module.css, де кожен клас автоматично отримує унікальне ім'я (наприклад, .button перетворюється на .Button_button_a1b2c). Це вирішує проблему конфлікту імен класів між компонентами.",
     whyUseIt: "У звичайному CSS усі класи глобальні — якщо два розробники в різних компонентах напишуть .card, останній підключений файл перепише стилі першого. CSS Modules гарантують, що стилі одного компонента ніколи випадково не зламають інший.",
     whenToUse: ["Кожен React-компонент має власний *.module.css файл поруч із собою.", "Імпортуй як об'єкт: import styles from \"./Button.module.css\", використовуй className={styles.button}."],
@@ -88,6 +89,7 @@ export function Button() {
   },
 
   "Умовні класи в React": {
+    interactiveDemo: "conditional-classes-demo",
     whatIsIt: "Умовний клас — клас, який застосовується лише за певної умови (наприклад, .active лише для активної вкладки, .error лише за помилки валідації). У React це звичайний JavaScript-вираз усередині className.",
     whyUseIt: "Стан інтерфейсу (активна вкладка, відкрите меню, помилка форми) змінюється під час роботи застосунку — CSS сам по собі не знає про цей стан, тому потрібен спосіб передати його з React у className.",
     whenToUse: ["Шаблонний рядок: className={`${styles.tab} ${isActive ? styles.active : \"\"}`}.", "Кілька умовних класів одразу — краще винести в невелику функцію cx()/classNames() для читабельності."],
@@ -151,6 +153,7 @@ export function Button() {
   },
 
   "БЕМ проти CSS Modules проти utility-first": {
+    interactiveDemo: "naming-approach-demo",
     whatIsIt: "Три популярні підходи до організації CSS у великому проєкті: БЕМ (Block-Element-Modifier, іменування класів на кшталт card__title--large), CSS Modules (автоматична ізоляція класів на рівні файлу) та utility-first (готові одноцільові класи на кшталт Tailwind: flex, p-4, text-lg).",
     whyUseIt: "Без узгодженого підходу CSS у великому проєкті швидко перетворюється на хаос: однакові класи в різних місцях, незрозуміло, який стиль звідки походить, страшно видаляти старий CSS \"а раптом воно десь використовується\".",
     whenToUse: ["БЕМ — коли проєкт без React/CSS Modules (просто HTML+CSS) і потрібна дисципліна іменування без інструментів збірки.", "CSS Modules — стандартний вибір для React-проєктів середнього й великого розміру (саме цей підхід використовує цей навчальний застосунок).", "Utility-first (Tailwind) — коли команда готова писати стилі прямо в розмітці й цінує швидкість написання над читабельністю JSX."],

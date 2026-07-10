@@ -1995,3 +1995,103 @@
 .kfPop {
   animation: kfPopKeyframes 400ms ease-out;
 }
+
+/* CSS Modules demo ("CSS Modules"): two simulated components share the
+   name .accent — in "global CSS" mode the click on one visibly changes
+   the other too (the collision the lesson warns about), in "CSS Modules"
+   mode each stays independent. */
+.cmDemoRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.cmDemoBox {
+  display: grid;
+  gap: 8px;
+}
+
+.cmDemoLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.cmDemoButton {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.cmDemoCard {
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  border: 3px solid;
+  background: var(--surface-raised);
+  color: var(--text);
+  font-weight: 600;
+  transition: border-color 150ms ease;
+}
+
+/* Conditional classes demo ("Умовні класи в React"): a real clickable tab
+   bar drives real isActive state; three code syntaxes shown are just
+   different ways to express the same click-driven className result. */
+.ccTabBar {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  width: fit-content;
+}
+
+.ccTab {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.ccTabActive {
+  background: var(--primary);
+  color: white;
+}
+
+/* Naming approach demo ("БЕМ проти CSS Modules проти utility-first"): the
+   same card rendered identically regardless of which naming approach the
+   toolbar selects — only the underlying code snippet changes. */
+.naCard {
+  display: grid;
+  gap: 10px;
+  max-width: 220px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+}
+
+.naCardTitle {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.naCardButton {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
