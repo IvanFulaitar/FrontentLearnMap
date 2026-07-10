@@ -91,7 +91,7 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
         },
         {
           title: "Header: фото, ім'я, професія, контакти",
-          description: "Header CV — окремий блок угорі з фото (обов'язково alt), h1 з іменем, професією і клікабельними контактами.",
+          description: "Header CV — окремий блок угорі з фото (обов'язково alt), h1 з іменем, професією і клікабельними контактами. Одразу після header відкривай main — усі розділи нижче (Про мене, Досвід, Освіта, Навички, Мови) підуть усередину нього.",
           code: `<body>
   <header>
     <img src="photo.jpg" alt="Фото Івана Петренка" width="120" height="120" />
@@ -103,6 +103,10 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
       <a href="https://github.com/">GitHub</a>
     </p>
   </header>
+
+  <main>
+    <!-- сюди підуть усі розділи нижче -->
+  </main>
 </body>`,
         },
         {
@@ -161,7 +165,7 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
         },
         {
           title: "Footer",
-          description: "Завершуємо сторінку коротким footer з копірайтом.",
+          description: "Завершуємо сторінку коротким footer з копірайтом — він стоїть поза main, як окремий landmark нарівні з header.",
           code: `  <footer>
     <p>© 2026 Моє CV</p>
   </footer>`,
@@ -193,44 +197,46 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
     </p>
   </header>
 
-  <section>
-    <h2>Про мене</h2>
-    <p>Я навчаюсь Frontend-розробці. Люблю створювати сайти та вивчати сучасні технології.</p>
-  </section>
+  <main>
+    <section>
+      <h2>Про мене</h2>
+      <p>Я навчаюсь Frontend-розробці. Люблю створювати сайти та вивчати сучасні технології.</p>
+    </section>
 
-  <section>
-    <h2>Досвід роботи</h2>
-    <article>
-      <h3>Frontend Developer, ТОВ «Технології»</h3>
-      <p><time datetime="2023-01">Січень 2023</time> — дотепер</p>
-      <p>Розробка інтерфейсів на React і TypeScript.</p>
-    </article>
-  </section>
+    <section>
+      <h2>Досвід роботи</h2>
+      <article>
+        <h3>Frontend Developer, ТОВ «Технології»</h3>
+        <p><time datetime="2023-01">Січень 2023</time> — дотепер</p>
+        <p>Розробка інтерфейсів на React і TypeScript.</p>
+      </article>
+    </section>
 
-  <section>
-    <h2>Освіта</h2>
-    <article>
-      <h3>Львівська політехніка</h3>
-      <p>Комп'ютерні науки, <time datetime="2022">2022</time></p>
-    </article>
-  </section>
+    <section>
+      <h2>Освіта</h2>
+      <article>
+        <h3>Львівська політехніка</h3>
+        <p>Комп'ютерні науки, <time datetime="2022">2022</time></p>
+      </article>
+    </section>
 
-  <section>
-    <h2>Навички</h2>
-    <ul>
-      <li>HTML/CSS</li>
-      <li>JavaScript</li>
-      <li>React</li>
-    </ul>
-  </section>
+    <section>
+      <h2>Навички</h2>
+      <ul>
+        <li>HTML/CSS</li>
+        <li>JavaScript</li>
+        <li>React</li>
+      </ul>
+    </section>
 
-  <section>
-    <h2>Мови</h2>
-    <ul>
-      <li>Українська — рідна</li>
-      <li>English — Pre-Intermediate</li>
-    </ul>
-  </section>
+    <section>
+      <h2>Мови</h2>
+      <ul>
+        <li>Українська — рідна</li>
+        <li>English — Pre-Intermediate</li>
+      </ul>
+    </section>
+  </main>
 
   <footer>
     <p>© 2026 Моє CV</p>
@@ -275,7 +281,7 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
       title: "Проєкт: Лендінг продукту",
       description: "Створи лендінг вигаданого продукту (наприклад, онлайн-курс) з header, hero, картками переваг, програмою, FAQ і формою.",
       checklist: [
-        "header з nav.",
+        "header з nav, і main одразу після нього для всього іншого контенту.",
         "hero з h1, описом і одним CTA.",
         "Секція «Про продукт» з поясненням, що це.",
         "Секція переваг з article-картками або ul.",
@@ -289,21 +295,27 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
       steps: [
         {
           title: "Header",
-          description: "Лого-посилання на головну + nav з якорями на секції нижче.",
+          description: "Лого-посилання на головну + nav з якорями на секції нижче. Одразу після header відкривай main — уся решта сторінки (hero, про продукт, переваги, програма, FAQ, форма) підуть усередину нього.",
           code: `<header>
   <a href="/" class="logo">TaskFlow</a>
   <nav><a href="#features">Можливості</a></nav>
-</header>`,
+</header>
+
+<main>
+  <!-- сюди підуть hero, про продукт, переваги, програма, FAQ, форма -->
+</main>`,
         },
         {
           title: "Hero",
-          description: "Один h1, короткий опис, рівно один CTA — головна дія сторінки.",
+          description: "Один h1, короткий опис, рівно один CTA — головна дія сторінки. Це перша секція всередині main.",
           code: `<header>...</header>
-<section class="hero">
-  <h1>TaskFlow — керуй задачами просто</h1>
-  <p>Плануй день за 2 хвилини щоранку.</p>
-  <a href="#signup">Спробувати безкоштовно</a>
-</section>`,
+<main>
+  <section class="hero">
+    <h1>TaskFlow — керуй задачами просто</h1>
+    <p>Плануй день за 2 хвилини щоранку.</p>
+    <a href="#signup">Спробувати безкоштовно</a>
+  </section>
+</main>`,
         },
         {
           title: "Про продукт",
@@ -358,7 +370,7 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
         },
         {
           title: "Footer",
-          description: "Завершуємо копірайтом.",
+          description: "Завершуємо копірайтом — footer стоїть поза main, як окремий landmark.",
           code: `<footer><p>© 2026 TaskFlow</p></footer>`,
         },
       ],
@@ -373,42 +385,44 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
   <a href="/" class="logo">TaskFlow</a>
   <nav><a href="#features">Можливості</a></nav>
 </header>
-<section class="hero">
-  <h1>TaskFlow — керуй задачами просто</h1>
-  <p>Плануй день за 2 хвилини щоранку.</p>
-  <a href="#signup">Спробувати безкоштовно</a>
-</section>
-<section id="about">
-  <h2>Що таке TaskFlow?</h2>
-  <p>TaskFlow — це застосунок для планування задач, контролю часу та організації робочого дня.</p>
-</section>
-<section aria-labelledby="features-heading" id="features">
-  <h2 id="features-heading">Можливості</h2>
-  <article>
-    <h3>Швидке додавання задач</h3>
-    <p>Один клік — і задача в списку.</p>
-  </article>
-</section>
-<section id="program">
-  <h2>Як це працює</h2>
-  <ol>
-    <li>Реєструєшся за 30 секунд</li>
-    <li>Додаєш перші задачі</li>
-    <li>Отримуєш нагадування щодня</li>
-  </ol>
-</section>
-<section id="faq">
-  <h2>Поширені питання</h2>
-  <details>
-    <summary>Чи є безкоштовний тариф?</summary>
-    <p>Так, базовий функціонал доступний безкоштовно.</p>
-  </details>
-</section>
-<form id="signup">
-  <label for="signup-email">Email</label>
-  <input type="email" id="signup-email" required />
-  <button type="submit">Підписатись</button>
-</form>
+<main>
+  <section class="hero">
+    <h1>TaskFlow — керуй задачами просто</h1>
+    <p>Плануй день за 2 хвилини щоранку.</p>
+    <a href="#signup">Спробувати безкоштовно</a>
+  </section>
+  <section id="about">
+    <h2>Що таке TaskFlow?</h2>
+    <p>TaskFlow — це застосунок для планування задач, контролю часу та організації робочого дня.</p>
+  </section>
+  <section aria-labelledby="features-heading" id="features">
+    <h2 id="features-heading">Можливості</h2>
+    <article>
+      <h3>Швидке додавання задач</h3>
+      <p>Один клік — і задача в списку.</p>
+    </article>
+  </section>
+  <section id="program">
+    <h2>Як це працює</h2>
+    <ol>
+      <li>Реєструєшся за 30 секунд</li>
+      <li>Додаєш перші задачі</li>
+      <li>Отримуєш нагадування щодня</li>
+    </ol>
+  </section>
+  <section id="faq">
+    <h2>Поширені питання</h2>
+    <details>
+      <summary>Чи є безкоштовний тариф?</summary>
+      <p>Так, базовий функціонал доступний безкоштовно.</p>
+    </details>
+  </section>
+  <form id="signup">
+    <label for="signup-email">Email</label>
+    <input type="email" id="signup-email" required />
+    <button type="submit">Підписатись</button>
+  </form>
+</main>
 <footer><p>© 2026 TaskFlow</p></footer>`,
           readOnly: true,
         },
@@ -595,23 +609,77 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
       starterFiles: [{ id: "blog-start", path: "index.html", language: "html", label: "index.html", code: "<!-- Почни зі списку анонсів -->" }],
       solutionFiles: [
         {
-          id: "blog-solution",
+          id: "blog-index-solution",
           path: "index.html",
           language: "html",
-          label: "article.html",
-          code: `<article>
-  <h1>Як я вивчив семантичний HTML за місяць</h1>
-  <p><time datetime="2026-07-03">3 липня 2026</time></p>
-  <h2>З чого я почав</h2>
-  <p>Спершу здавалось, що div вирішує все...</p>
-  <blockquote>
-    <p>Семантика — це не про красу коду, а про людей, які ним користуються.</p>
-  </blockquote>
-  <figure>
-    <img src="semantic-html.jpg" alt="Схема семантичної HTML-структури сторінки" />
-    <figcaption>Приклад семантичної структури HTML-сторінки.</figcaption>
-  </figure>
-</article>`,
+          label: "index.html (головна: список анонсів + sidebar)",
+          code: `<main>
+  <h1>Блог</h1>
+
+  <section aria-label="Останні статті">
+    <article>
+      <h2>Як я вивчив семантичний HTML за місяць</h2>
+      <p><time datetime="2026-07-03">3 липня 2026</time></p>
+      <p>Спершу здавалось, що div вирішує все...</p>
+      <a href="/articles/html-month">Читати далі</a>
+    </article>
+    <article>
+      <h2>Що таке CSS-специфічність</h2>
+      <p><time datetime="2026-06-20">20 червня 2026</time></p>
+      <p>Специфічність визначає, який селектор переможе, коли кілька правил претендують на один елемент...</p>
+      <a href="/articles/css-specificity">Читати далі</a>
+    </article>
+  </section>
+
+  <aside>
+    <section>
+      <h2>Пошук</h2>
+      <form>
+        <label for="search">Пошук по блогу</label>
+        <input id="search" name="search" type="search" />
+        <button type="submit">Шукати</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Категорії</h2>
+      <ul>
+        <li><a href="/blog/category/html">HTML</a></li>
+        <li><a href="/blog/category/css">CSS</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Популярні статті</h2>
+      <ul>
+        <li><a href="/blog/html">HTML для початківців</a></li>
+        <li><a href="/blog/css">Основи CSS</a></li>
+      </ul>
+    </section>
+  </aside>
+</main>`,
+          readOnly: true,
+        },
+        {
+          id: "blog-article-solution",
+          path: "article.html",
+          language: "html",
+          label: "article.html (повна стаття)",
+          code: `<main>
+  <article>
+    <h1>Як я вивчив семантичний HTML за місяць</h1>
+    <p><time datetime="2026-07-03">3 липня 2026</time></p>
+    <h2>З чого я почав</h2>
+    <p>Спершу здавалось, що div вирішує все...</p>
+    <blockquote>
+      <p>Семантика — це не про красу коду, а про людей, які ним користуються.</p>
+    </blockquote>
+    <figure>
+      <img src="semantic-html.jpg" alt="Схема семантичної HTML-структури сторінки" />
+      <figcaption>Приклад семантичної структури HTML-сторінки.</figcaption>
+    </figure>
+  </article>
+</main>`,
           readOnly: true,
         },
       ],
@@ -957,7 +1025,7 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
       title: "Проєкт: Портфоліо",
       description: "Створи сторінку портфоліо з header, коротким описом себе, навичками по групах, 2-3 проєктами і контактами.",
       checklist: [
-        "header з nav і, за бажанням, посиланням на CV (download).",
+        "header з nav і, за бажанням, посиланням на CV (download); main одразу після header для решти контенту.",
         "hero з коротким описом.",
         "Розділ «Про мене» — 2-3 речення, не автобіографія.",
         "Навички згруповані мінімум у 2 категорії (Frontend/Tools/Soft Skills/Languages).",
@@ -969,7 +1037,7 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
       steps: [
         {
           title: "Header з посиланням на CV",
-          description: "Ім'я/лого + nav + необов'язкове посилання на завантаження CV.",
+          description: "Ім'я/лого + nav + необов'язкове посилання на завантаження CV. Одразу після header відкривай main — hero, навички і проєкти йдуть усередину нього.",
           code: `<header>
   <a href="/">Ivan.dev</a>
   <nav aria-label="Основна навігація">
@@ -981,7 +1049,11 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
     </ul>
   </nav>
   <a href="cv.pdf" download>Завантажити CV</a>
-</header>`,
+</header>
+
+<main>
+  <!-- сюди підуть hero, навички, проєкти -->
+</main>`,
         },
         {
           title: "Hero про себе",
@@ -1038,7 +1110,7 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
         },
         {
           title: "Контакти у footer",
-          description: "Клікабельний email — мінімум для контактів.",
+          description: "Клікабельний email — мінімум для контактів. Footer стоїть поза main, як окремий landmark.",
           code: `<footer>
   <p><a href="mailto:ivan@example.com">ivan@example.com</a></p>
 </footer>`,
@@ -1062,36 +1134,38 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
     </ul>
   </nav>
 </header>
-<section class="hero">
-  <h1>Іван Петренко — Frontend Developer</h1>
-  <p>Пишу доступний, семантичний HTML і React-інтерфейси.</p>
-</section>
-<section id="skills">
-  <h2>Навички</h2>
-  <section>
-    <h3>Frontend</h3>
-    <ul>
-      <li>HTML5</li>
-      <li>CSS3</li>
-      <li>JavaScript</li>
-    </ul>
+<main>
+  <section class="hero">
+    <h1>Іван Петренко — Frontend Developer</h1>
+    <p>Пишу доступний, семантичний HTML і React-інтерфейси.</p>
   </section>
-</section>
-<section aria-labelledby="projects-heading">
-  <h2 id="projects-heading">Проєкти</h2>
-  <article>
-    <img src="project1.png" alt="Скріншот застосунку для трекінгу задач TaskFlow" width="400" height="250" />
-    <h3>TaskFlow</h3>
-    <p>Застосунок для керування задачами. React, TypeScript.</p>
-    <ul>
-      <li>HTML5</li>
-      <li>CSS3</li>
-      <li>React</li>
-    </ul>
-    <a href="https://github.com/example/taskflow" target="_blank" rel="noopener noreferrer">Код на GitHub</a>
-    <a href="https://example.github.io/taskflow" target="_blank" rel="noopener noreferrer">Демо</a>
-  </article>
-</section>
+  <section id="skills">
+    <h2>Навички</h2>
+    <section>
+      <h3>Frontend</h3>
+      <ul>
+        <li>HTML5</li>
+        <li>CSS3</li>
+        <li>JavaScript</li>
+      </ul>
+    </section>
+  </section>
+  <section aria-labelledby="projects-heading">
+    <h2 id="projects-heading">Проєкти</h2>
+    <article>
+      <img src="project1.png" alt="Скріншот застосунку для трекінгу задач TaskFlow" width="400" height="250" />
+      <h3>TaskFlow</h3>
+      <p>Застосунок для керування задачами. React, TypeScript.</p>
+      <ul>
+        <li>HTML5</li>
+        <li>CSS3</li>
+        <li>React</li>
+      </ul>
+      <a href="https://github.com/example/taskflow" target="_blank" rel="noopener noreferrer">Код на GitHub</a>
+      <a href="https://example.github.io/taskflow" target="_blank" rel="noopener noreferrer">Демо</a>
+    </article>
+  </section>
+</main>
 <footer>
   <p><a href="mailto:ivan@example.com">ivan@example.com</a></p>
 </footer>`,
@@ -1253,50 +1327,52 @@ export const htmlMiniProjectsOverrides: Record<string, LessonOverride> = {
           id: "product-solution",
           path: "index.html",
           language: "html",
-          label: "index.html",
-          code: `<nav aria-label="Хлібні крихти">
-  <ol>
-    <li><a href="/">Головна</a></li>
-    <li><a href="/catalog">Каталог</a></li>
-    <li>Навушники AirSound</li>
-  </ol>
-</nav>
-<article>
-  <figure>
-    <img src="headphones.jpg" alt="Бездротові навушники AirSound, чорні" width="400" height="400" />
-    <figcaption>AirSound у чорному кольорі.</figcaption>
-  </figure>
-  <h1>Навушники AirSound</h1>
-  <p>1299 грн</p>
-
-  <form>
-    <label for="color">Колір</label>
-    <select id="color" name="color">
-      <option value="black">Чорний</option>
-      <option value="white">Білий</option>
-    </select>
-
-    <label for="quantity">Кількість</label>
-    <input type="number" id="quantity" min="1" value="1" />
-
-    <button type="submit">Додати в кошик</button>
-  </form>
-
-  <table>
-    <caption>Характеристики</caption>
-    <tr><th scope="row">Колір</th><td>Чорний</td></tr>
-    <tr><th scope="row">Тип</th><td>Бездротові, з шумозаглушенням</td></tr>
-  </table>
-</article>
-<section id="reviews">
-  <h2>Відгуки</h2>
+          label: "index.html (фрагмент — усередині main твого сайту, поруч із header/footer з попередніх проєктів)",
+          code: `<main>
+  <nav aria-label="Хлібні крихти">
+    <ol>
+      <li><a href="/">Головна</a></li>
+      <li><a href="/catalog">Каталог</a></li>
+      <li>Навушники AirSound</li>
+    </ol>
+  </nav>
   <article>
-    <h3>Олена</h3>
-    <p><time datetime="2026-07-08">8 липня 2026</time></p>
-    <p>Оцінка: 5 з 5</p>
-    <p>Товар якісний, доставка швидка.</p>
+    <figure>
+      <img src="headphones.jpg" alt="Бездротові навушники AirSound, чорні" width="400" height="400" />
+      <figcaption>AirSound у чорному кольорі.</figcaption>
+    </figure>
+    <h1>Навушники AirSound</h1>
+    <p>1299 грн</p>
+
+    <form>
+      <label for="color">Колір</label>
+      <select id="color" name="color">
+        <option value="black">Чорний</option>
+        <option value="white">Білий</option>
+      </select>
+
+      <label for="quantity">Кількість</label>
+      <input type="number" id="quantity" min="1" value="1" />
+
+      <button type="submit">Додати в кошик</button>
+    </form>
+
+    <table>
+      <caption>Характеристики</caption>
+      <tr><th scope="row">Колір</th><td>Чорний</td></tr>
+      <tr><th scope="row">Тип</th><td>Бездротові, з шумозаглушенням</td></tr>
+    </table>
   </article>
-</section>`,
+  <section id="reviews">
+    <h2>Відгуки</h2>
+    <article>
+      <h3>Олена</h3>
+      <p><time datetime="2026-07-08">8 липня 2026</time></p>
+      <p>Оцінка: 5 з 5</p>
+      <p>Товар якісний, доставка швидка.</p>
+    </article>
+  </section>
+</main>`,
           readOnly: true,
         },
       ],
