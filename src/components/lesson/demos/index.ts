@@ -53,6 +53,8 @@ import { HeadingHierarchyDemo } from "./HeadingHierarchyDemo";
 import { SemanticTextDemo } from "./SemanticTextDemo";
 import { UrlAnatomyDemo } from "./UrlAnatomyDemo";
 import { SpecialLinksDemo } from "./SpecialLinksDemo";
+import { AltTextDemo } from "./AltTextDemo";
+import { ResponsiveImageDemo } from "./ResponsiveImageDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -125,4 +127,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "semantic-text-demo": SemanticTextDemo,
   "url-anatomy-demo": UrlAnatomyDemo,
   "special-links-demo": SpecialLinksDemo,
+  "alt-text-demo": AltTextDemo,
+  "responsive-image-demo": ResponsiveImageDemo,
 };

@@ -2548,3 +2548,57 @@
 .specialLinkButton:hover {
   filter: brightness(1.08);
 }
+
+/* Alt text demo (simulated broken-image box showing the alt fallback text) */
+.brokenImageBox {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 28px 16px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+  text-align: center;
+}
+
+.brokenImageIcon {
+  font-size: 2rem;
+  opacity: 0.5;
+}
+
+.brokenImageAlt {
+  font-size: 0.85rem;
+  color: var(--muted);
+  max-width: 320px;
+}
+
+/* Responsive image demo (viewport-driven srcset candidate picker) */
+.riFrameOuter {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.riFrame {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 18px 12px;
+  border: 2px solid var(--text);
+  border-radius: 10px;
+  background: white;
+  transition: width 200ms ease;
+}
+
+.riFrameLabel {
+  margin: 0;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.riFrameSize {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
