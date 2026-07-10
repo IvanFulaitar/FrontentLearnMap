@@ -15,6 +15,8 @@ import { FormsPricingDemo } from "./FormsPricingDemo";
 import { ThemeSwitchDemo } from "./ThemeSwitchDemo";
 import { PriceCardsDemo } from "./PriceCardsDemo";
 import { ShadowsRadiusDemo } from "./ShadowsRadiusDemo";
+import { MenuCardsDemo } from "./MenuCardsDemo";
+import { PseudoElementsDemo } from "./PseudoElementsDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -49,4 +51,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "theme-switch-demo": ThemeSwitchDemo,
   "price-cards-demo": PriceCardsDemo,
   "shadows-radius-demo": ShadowsRadiusDemo,
+  "menu-cards-demo": MenuCardsDemo,
+  "pseudo-elements-demo": PseudoElementsDemo,
 };

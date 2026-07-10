@@ -1058,3 +1058,151 @@
   font-weight: 800;
   color: var(--primary);
 }
+
+/* Menu-cards demo ("Картки меню"): toggling align-items on the grid
+   container shows the stretch-vs-start difference live, and a per-card
+   order button with a running total gives something genuinely clickable
+   beyond hover. */
+.mcGridStretch,
+.mcGridStart {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.mcGridStretch {
+  align-items: stretch;
+}
+
+.mcGridStart {
+  align-items: start;
+}
+
+.mcCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+}
+
+.mcContent {
+  flex-grow: 1;
+}
+
+.mcTitle {
+  color: var(--text);
+}
+
+.mcDescription {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.mcFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mcPrice {
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.mcButton {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.mcButtonOrdered {
+  background: var(--success, #2e7d32);
+}
+
+.mcTotal {
+  margin: 12px 0 0;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Pseudo-elements demo ("Псевдоелементи ::before/::after"): a ::after badge
+   and a ::before photo overlay that toggle on/off through a single class,
+   so the pseudo-element itself visibly appears/disappears on click. */
+.peRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.peCard {
+  position: relative;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 140px;
+}
+
+.peCardTitle {
+  color: var(--text);
+}
+
+.peCardPrice {
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.peCardPopular::after {
+  content: "Хіт";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: var(--primary);
+  color: white;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.pePhoto {
+  position: relative;
+  width: 160px;
+  height: 110px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--primary-soft, #f3e0c8), var(--primary));
+  overflow: hidden;
+}
+
+.pePhotoOverlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent, rgb(0 0 0 / 0.6));
+}
+
+.pePhotoCaption {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  z-index: 1;
+}
