@@ -2615,3 +2615,62 @@
   cursor: pointer;
   margin-top: 6px;
 }
+
+/* Table semantics demos (div-grid vs real table, scope on/off) */
+.tableDivGrid {
+  display: grid;
+  gap: 4px;
+}
+
+.tableDivHeaderRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 8px 12px;
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.tableDivRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.tableDivRowActive {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, white);
+}
+
+.tableDemoTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tableDemoTable th,
+.tableDemoTable td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.tableDemoTable th {
+  background: var(--surface-muted);
+  font-weight: 700;
+}
+
+.tableDemoTable caption {
+  caption-side: top;
+  text-align: left;
+  padding-bottom: 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}

@@ -57,6 +57,8 @@ import { AltTextDemo } from "./AltTextDemo";
 import { ResponsiveImageDemo } from "./ResponsiveImageDemo";
 import { ListSemanticsDemo } from "./ListSemanticsDemo";
 import { NestedListDemo } from "./NestedListDemo";
+import { TableSemanticsDemo } from "./TableSemanticsDemo";
+import { AccessibleTableDemo } from "./AccessibleTableDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -133,4 +135,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "responsive-image-demo": ResponsiveImageDemo,
   "list-semantics-demo": ListSemanticsDemo,
   "nested-list-demo": NestedListDemo,
+  "table-semantics-demo": TableSemanticsDemo,
+  "accessible-table-demo": AccessibleTableDemo,
 };
