@@ -55,6 +55,8 @@ import { UrlAnatomyDemo } from "./UrlAnatomyDemo";
 import { SpecialLinksDemo } from "./SpecialLinksDemo";
 import { AltTextDemo } from "./AltTextDemo";
 import { ResponsiveImageDemo } from "./ResponsiveImageDemo";
+import { ListSemanticsDemo } from "./ListSemanticsDemo";
+import { NestedListDemo } from "./NestedListDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -129,4 +131,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "special-links-demo": SpecialLinksDemo,
   "alt-text-demo": AltTextDemo,
   "responsive-image-demo": ResponsiveImageDemo,
+  "list-semantics-demo": ListSemanticsDemo,
+  "nested-list-demo": NestedListDemo,
 };
