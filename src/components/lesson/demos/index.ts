@@ -22,6 +22,8 @@ import { FlexNavDemo } from "./FlexNavDemo";
 import { SpecificityDemo } from "./SpecificityDemo";
 import { CascadeInheritanceDemo } from "./CascadeInheritanceDemo";
 import { UnitsDemo } from "./UnitsDemo";
+import { GridAutoFitDemo } from "./GridAutoFitDemo";
+import { GridGalleryDemo } from "./GridGalleryDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -63,4 +65,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "specificity-demo": SpecificityDemo,
   "cascade-inheritance-demo": CascadeInheritanceDemo,
   "units-demo": UnitsDemo,
+  "grid-autofit-demo": GridAutoFitDemo,
+  "grid-gallery-demo": GridGalleryDemo,
 };

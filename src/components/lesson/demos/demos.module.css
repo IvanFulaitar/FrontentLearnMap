@@ -1391,3 +1391,39 @@
   font-weight: 600;
   color: var(--muted);
 }
+
+/* Grid auto-fit/auto-fill demo ("repeat, minmax і auto-fit"): a handful of
+   real cards inside a resizable viewport, toggling between the two modes so
+   the empty-track-vs-stretch difference is genuinely visible, not just
+   described. */
+.gaGrid {
+  display: grid;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.gaCard {
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--text);
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+}
+
+/* Grid gallery demo ("Галерея кав'ярні на Grid"): a single 4:3 test photo
+   with a circle, dropped into a square cell so cover/contain/fill produce
+   an unmistakably different result. */
+.ggStage {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0;
+}
+
+.ggPhoto {
+  width: 220px;
+  height: 220px;
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+}
