@@ -67,6 +67,9 @@ import { NullishVsOrDemo } from "./NullishVsOrDemo";
 import { TypeCoercionDemo } from "./TypeCoercionDemo";
 import { TemplateLiteralDemo } from "./TemplateLiteralDemo";
 import { DevToolsSimulatorDemo } from "./DevToolsSimulatorDemo";
+import { IfElseDemo } from "./IfElseDemo";
+import { SwitchDemo } from "./SwitchDemo";
+import { TruthyFalsyDemo } from "./TruthyFalsyDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -153,4 +156,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "type-coercion-demo": TypeCoercionDemo,
   "template-literal-demo": TemplateLiteralDemo,
   "devtools-simulator-demo": DevToolsSimulatorDemo,
+  "if-else-demo": IfElseDemo,
+  "switch-demo": SwitchDemo,
+  "truthy-falsy-demo": TruthyFalsyDemo,
 };

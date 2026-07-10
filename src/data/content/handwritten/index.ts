@@ -28,6 +28,7 @@ import { cssAnimationsOverrides } from "./cssAnimations";
 import { cssArchitectureReactOverrides } from "./cssArchitectureReact";
 import { cssFinalProjectOverrides } from "./cssFinalProject";
 import { jsLanguageBasicsOverrides } from "./jsLanguageBasics";
+import { jsControlFlowOverrides } from "./jsControlFlow";
 
 /**
  * Registry of fully hand-authored lesson content, keyed by
@@ -69,6 +70,7 @@ const lessonOverridesByModule: Record<string, Record<string, LessonOverride>> = 
   "css-architecture-react": cssArchitectureReactOverrides,
   "css-final-project": cssFinalProjectOverrides,
   "js-language-basics": jsLanguageBasicsOverrides,
+  "js-control-flow": jsControlFlowOverrides,
 };
 
 export const getLessonOverride = (moduleId: string, title: string): LessonOverride | undefined =>
