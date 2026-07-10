@@ -14,6 +14,7 @@ import { ButtonsCardsDemo } from "./ButtonsCardsDemo";
 import { FormsPricingDemo } from "./FormsPricingDemo";
 import { ThemeSwitchDemo } from "./ThemeSwitchDemo";
 import { PriceCardsDemo } from "./PriceCardsDemo";
+import { ShadowsRadiusDemo } from "./ShadowsRadiusDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -47,4 +48,5 @@ export const lessonDemos: Record<string, ComponentType> = {
   "forms-pricing-demo": FormsPricingDemo,
   "theme-switch-demo": ThemeSwitchDemo,
   "price-cards-demo": PriceCardsDemo,
+  "shadows-radius-demo": ShadowsRadiusDemo,
 };

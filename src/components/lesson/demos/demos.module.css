@@ -1023,3 +1023,38 @@
 .pcButtonOrdered {
   background: var(--success, #2e7d32);
 }
+
+/* Shadows & radius demo ("Тіні та радіуси"): a single real card whose
+   box-shadow (via preset) and border-radius (via slider) update live, plus a
+   genuine :hover lift that adds an even deeper shadow on top of whichever
+   preset is currently selected. */
+.srStage {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.srCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 200px;
+  padding: 20px;
+  background: var(--surface, #fff);
+  transition: box-shadow 200ms ease, transform 200ms ease, border-radius 200ms ease;
+}
+
+.srCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgb(0 0 0 / 0.2) !important;
+}
+
+.srCardTitle {
+  color: var(--text);
+}
+
+.srCardPrice {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--primary);
+}
