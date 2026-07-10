@@ -123,6 +123,7 @@ export const htmlSemanticsOverrides: Record<string, LessonOverride> = {
     whatIsIt: "<article> — самодостатній контент, який має сенс окремо (пост, картка товару). <section> — тематична група контенту зі своїм заголовком. <aside> — побічний контент (реклама, related-блок).",
     whyUseIt: "Плутанина div/article/section — найчастіша причина \"каші\" у семантиці: пошуковик і скрінрідер втрачають розуміння, що на сторінці головне, а що додаткове.",
     whenToUse: ["article — картка напою в меню, окремий пост блогу, відгук клієнта.", "section — тематичний блок зі своїм заголовком (наприклад, \"Меню\", \"Про нас\").", "aside — блок \"Рекомендуємо також\", реклама, бічна панель."],
+    interactiveDemo: "article-section-aside-demo",
     comparisonTable: {
       headers: ["Тег", "Тест"],
       rows: [
@@ -236,6 +237,7 @@ export const htmlSemanticsOverrides: Record<string, LessonOverride> = {
     whatIsIt: "<figure>+<figcaption> — зображення (чи графік) з підписом. <details>+<summary> — розкривний блок (FAQ). <dialog> — вбудоване у браузер модальне вікно.",
     whyUseIt: "Ці теги дають безкоштовну поведінку й семантику: <details> відкривається/закривається без жодного JS, <dialog> — модалка з фокус-пасткою з коробки.",
     whenToUse: ["figure — фото з підписом (\"Зал кав'ярні о 8 ранку\").", "details/summary — короткий FAQ, розділ \"показати більше\".", "dialog — спливаюче вікно (форма підтвердження, попап з деталями)."],
+    interactiveDemo: "figure-details-dialog-demo",
     comparisonTable: {
       headers: ["Тег", "Заміняє"],
       rows: [
@@ -351,6 +353,7 @@ export const htmlSemanticsOverrides: Record<string, LessonOverride> = {
     whatIsIt: "<a href> — перехід на іншу сторінку/розділ. <button> — дія на поточній сторінці (відправити форму, відкрити модалку, перемкнути стан). Обидва клікабельні, але означають різне.",
     whyUseIt: "Скрінрідер оголошує їх по-різному (\"посилання\" проти \"кнопка\") і користувач очікує різної поведінки — плутанина ламає інтуїцію взаємодії для всіх, хто покладається на ці підказки.",
     whenToUse: ["a href — перехід на іншу сторінку, розділ, файл, зовнішній сайт.", "button — відправка форми, відкриття модалки, перемикач (наприклад, темна тема), будь-яка дія без переходу."],
+    interactiveDemo: "button-vs-link-demo",
     comparisonTable: {
       headers: ["Питання", "Відповідь"],
       rows: [

@@ -59,6 +59,9 @@ import { ListSemanticsDemo } from "./ListSemanticsDemo";
 import { NestedListDemo } from "./NestedListDemo";
 import { TableSemanticsDemo } from "./TableSemanticsDemo";
 import { AccessibleTableDemo } from "./AccessibleTableDemo";
+import { ArticleSectionAsideDemo } from "./ArticleSectionAsideDemo";
+import { FigureDetailsDialogDemo } from "./FigureDetailsDialogDemo";
+import { ButtonVsLinkDemo } from "./ButtonVsLinkDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -137,4 +140,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "nested-list-demo": NestedListDemo,
   "table-semantics-demo": TableSemanticsDemo,
   "accessible-table-demo": AccessibleTableDemo,
+  "article-section-aside-demo": ArticleSectionAsideDemo,
+  "figure-details-dialog-demo": FigureDetailsDialogDemo,
+  "button-vs-link-demo": ButtonVsLinkDemo,
 };

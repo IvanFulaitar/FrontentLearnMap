@@ -2674,3 +2674,45 @@
   font-size: 0.85rem;
   color: var(--muted);
 }
+
+/* Article/section/aside + button-vs-link "guess the tag" demos */
+.tagGuessRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tagGuessButton {
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.tagGuessCorrect {
+  border-color: var(--success, #2e7d32);
+  background: color-mix(in srgb, var(--success, #2e7d32) 14%, white);
+}
+
+.tagGuessWrong {
+  border-color: var(--danger, #c62828);
+  background: color-mix(in srgb, var(--danger, #c62828) 12%, white);
+}
+
+/* Native <dialog> demo (figure/details/dialog lesson) */
+.demoDialog {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.demoDialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
