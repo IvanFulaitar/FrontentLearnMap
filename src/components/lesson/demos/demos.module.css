@@ -2225,3 +2225,140 @@
   outline: 3px solid var(--primary);
   outline-offset: 2px;
 }
+
+/* Shared horizontal step-pipeline (request/response cycle, render
+   pipeline): a row of clickable-via-toolbar stages where exactly one is
+   highlighted as "current". Used by two different demo components (each
+   with its own data/labels), not duplicated as identical components. */
+.pipelineRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.pipelineStage {
+  flex: 1 1 120px;
+  display: grid;
+  place-items: center;
+  gap: 4px;
+  padding: 14px 10px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--muted);
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+}
+
+.pipelineStageActive {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, white);
+  color: var(--primary);
+}
+
+.pipelineArrow {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 1.1rem;
+  padding: 0 2px;
+}
+
+/* Client-vs-server demo ("Браузер проти сервера"): a single card whose
+   content (title, task list, code) swaps entirely depending on which side
+   of the toolbar is selected. */
+.csCard {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+}
+
+.csCardTitle {
+  margin: 0;
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.csList {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 6px;
+  font-size: 0.88rem;
+}
+
+/* DOM tree demo ("Що таке DOM"): a small clickable tree of nodes on one
+   side, a live-updating "rendered" preview on the other — clicking a node
+   selects it (shown via active state), and a separate button genuinely
+   mutates the previewed text, mirroring textContent in the lesson code. */
+.domLayout {
+  display: grid;
+  grid-template-columns: minmax(140px, 180px) 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 560px) {
+  .domLayout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.domTree {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+
+.domNode {
+  justify-self: start;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.domNodeChild {
+  margin-left: 18px;
+}
+
+.domNodeActive {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, white);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.domPreview {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: white;
+}
+
+.domPreviewButton {
+  justify-self: start;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.domInfo {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-family: var(--font-mono, monospace);
+}

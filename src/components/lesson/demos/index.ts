@@ -43,6 +43,10 @@ import { ConditionalClassesDemo } from "./ConditionalClassesDemo";
 import { NamingApproachDemo } from "./NamingApproachDemo";
 import { LandingPreviewDemo } from "./LandingPreviewDemo";
 import { A11yAuditDemo } from "./A11yAuditDemo";
+import { RequestCycleDemo } from "./RequestCycleDemo";
+import { ClientServerDemo } from "./ClientServerDemo";
+import { RenderPipelineDemo } from "./RenderPipelineDemo";
+import { DomTreeDemo } from "./DomTreeDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -105,4 +109,8 @@ export const lessonDemos: Record<string, ComponentType> = {
   "naming-approach-demo": NamingApproachDemo,
   "landing-preview-demo": LandingPreviewDemo,
   "a11y-audit-demo": A11yAuditDemo,
+  "request-cycle-demo": RequestCycleDemo,
+  "client-server-demo": ClientServerDemo,
+  "render-pipeline-demo": RenderPipelineDemo,
+  "dom-tree-demo": DomTreeDemo,
 };
