@@ -34,6 +34,7 @@ import { ContainerQueryDemo } from "./ContainerQueryDemo";
 import { ClampMinMaxDemo } from "./ClampMinMaxDemo";
 import { LineHeightDemo } from "./LineHeightDemo";
 import { TextStylingDemo } from "./TextStylingDemo";
+import { SystemThemeDemo } from "./SystemThemeDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -87,4 +88,5 @@ export const lessonDemos: Record<string, ComponentType> = {
   "clamp-min-max-demo": ClampMinMaxDemo,
   "line-height-demo": LineHeightDemo,
   "text-styling-demo": TextStylingDemo,
+  "system-theme-demo": SystemThemeDemo,
 };

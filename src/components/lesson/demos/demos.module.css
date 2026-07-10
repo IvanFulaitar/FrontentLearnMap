@@ -1872,3 +1872,38 @@
   font-weight: 900;
   color: var(--primary);
 }
+
+/* System theme demo ("prefers-color-scheme і темна тема"): a toolbar
+   stands in for the OS-level theme setting (distinct from the manual
+   html.theme-* class toggle in ThemeSwitchDemo). Real color-scheme is set
+   on the wrapper so the native checkbox/date input genuinely repaint. */
+.systemThemeStage {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--stm-bg);
+  color: var(--stm-text);
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.systemThemeCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--stm-surface);
+}
+
+.systemThemeRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.systemThemeMuted {
+  font-size: 0.78rem;
+  color: var(--stm-muted);
+}
