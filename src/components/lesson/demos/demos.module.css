@@ -2397,3 +2397,106 @@
   color: var(--muted);
   white-space: nowrap;
 }
+
+/* Heading hierarchy demo (click-through outline: correct vs. skipped-level) */
+.headingTree {
+  display: grid;
+  gap: 4px;
+}
+
+.headingNode {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.headingNodeActive {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, white);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.headingNodeJump {
+  border-color: #d9534f;
+  background: color-mix(in srgb, #d9534f 10%, white);
+}
+
+.headingTag {
+  font-weight: 800;
+}
+
+.headingAnnounce {
+  margin: 0;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  font-size: 0.85rem;
+}
+
+/* Semantic text demo (real rendered blockquote/time/pre+code/mark/del/ins/abbr) */
+.semanticBlock {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: white;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.semanticBlock blockquote {
+  margin: 0;
+  padding-left: 14px;
+  border-left: 3px solid var(--primary);
+  color: var(--text);
+  font-style: italic;
+}
+
+.semanticBlock cite {
+  display: block;
+  margin-top: 6px;
+  font-style: normal;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.semanticBlock pre {
+  margin: 0;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  overflow-x: auto;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+}
+
+.semanticBlock mark {
+  background: color-mix(in srgb, var(--primary) 25%, yellow);
+  padding: 0 2px;
+  border-radius: 3px;
+}
+
+.semanticBlock del {
+  color: var(--muted);
+}
+
+.semanticBlock ins {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.semanticBlock abbr {
+  text-decoration-style: dotted;
+  cursor: help;
+}
