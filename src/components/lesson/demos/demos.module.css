@@ -1787,3 +1787,88 @@
   font-size: 0.78rem;
   color: var(--muted);
 }
+
+/* Line-height demo ("Міжрядковий інтервал і читабельність"): a real long
+   café paragraph whose line-height (discrete presets) and max-width (ch)
+   are controlled independently, to isolate the two separate readability
+   levers the lesson teaches. */
+.lhStage {
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+}
+
+.lhParagraph {
+  margin: 0;
+  color: var(--text);
+  font-size: 1rem;
+  transition: line-height 120ms ease, max-width 120ms ease;
+}
+
+/* Text styling demo ("Стилізація тексту кав'ярні"): the same real h1 +
+   paragraph + link + menu-item price, toggled between raw browser defaults
+   (all: revert) and the full branded typography system from the lesson. */
+.tsUnstyled h1,
+.tsUnstyled p,
+.tsUnstyled a,
+.tsUnstyled strong,
+.tsUnstyled .tsPrice {
+  all: revert;
+}
+
+.tsUnstyled {
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+}
+
+.tsUnstyled .tsMenuItem {
+  display: block;
+  margin-top: 8px;
+}
+
+.tsBranded {
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+}
+
+.tsBranded h1 {
+  margin: 0 0 8px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.tsBranded p {
+  margin: 0 0 12px;
+  line-height: 1.6;
+  max-width: 45ch;
+  color: var(--muted);
+}
+
+.tsBranded a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.tsBranded a:hover {
+  text-decoration: underline;
+}
+
+.tsMenuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 220px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.tsBranded .tsPrice {
+  font-weight: 900;
+  color: var(--primary);
+}

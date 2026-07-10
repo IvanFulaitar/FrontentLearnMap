@@ -32,6 +32,8 @@ import { ObjectFitBackgroundDemo } from "./ObjectFitBackgroundDemo";
 import { ResponsiveGridDemo } from "./ResponsiveGridDemo";
 import { ContainerQueryDemo } from "./ContainerQueryDemo";
 import { ClampMinMaxDemo } from "./ClampMinMaxDemo";
+import { LineHeightDemo } from "./LineHeightDemo";
+import { TextStylingDemo } from "./TextStylingDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -83,4 +85,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "responsive-grid-demo": ResponsiveGridDemo,
   "container-query-demo": ContainerQueryDemo,
   "clamp-min-max-demo": ClampMinMaxDemo,
+  "line-height-demo": LineHeightDemo,
+  "text-styling-demo": TextStylingDemo,
 };
