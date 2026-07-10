@@ -1516,3 +1516,151 @@
   color: white;
   text-decoration: underline;
 }
+
+/* Mobile menu demo ("Мобільне меню без JavaScript"): the real checkbox-hack
+   — a genuine <input type="checkbox"> hidden via clip-rect (not display:
+   none, so it stays in the tab order) toggled by a real <label>, with the
+   nav shown purely through a CSS sibling selector. No React state at all. */
+.mmStage {
+  position: relative;
+  padding: 8px 0;
+}
+
+.mmCheckbox {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.mmLabel {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.mmNav {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+}
+
+.mmNav a {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  padding: 4px 0;
+}
+
+.mmCheckbox:checked ~ .mmNav {
+  display: flex;
+}
+
+/* Hero layout demo ("Hero-секція"): the same real hero content rendered as
+   a centered flex column vs a two-column grid with an image block. */
+.hlCentered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+.hlSplit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+  padding: 20px;
+}
+
+.hlText {
+  display: grid;
+  gap: 8px;
+}
+
+.hlSplit .hlText {
+  text-align: left;
+}
+
+.hlLabel {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.hlTitle {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 900;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.hlDescription {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.hlActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.hlButtonPrimary,
+.hlButtonSecondary {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.hlButtonPrimary {
+  color: white;
+  background: var(--primary);
+}
+
+.hlButtonSecondary {
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.hlImage {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--primary-soft, #f3e0c8), var(--primary));
+}
+
+/* Object-fit / background demo ("Фонові зображення і object-fit"): the same
+   tall test photo (face near the top) shown either as a decorative
+   background-image or a real <img>, with object-position/background-
+   position toggled to rescue (or fail to rescue) the off-center subject. */
+.ofBox {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 140px;
+  border-radius: var(--radius);
+  margin: 0 auto;
+}

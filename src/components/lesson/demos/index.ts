@@ -26,6 +26,9 @@ import { GridAutoFitDemo } from "./GridAutoFitDemo";
 import { GridGalleryDemo } from "./GridGalleryDemo";
 import { FieldStylingDemo } from "./FieldStylingDemo";
 import { FooterGridDemo } from "./FooterGridDemo";
+import { MobileMenuDemo } from "./MobileMenuDemo";
+import { HeroLayoutDemo } from "./HeroLayoutDemo";
+import { ObjectFitBackgroundDemo } from "./ObjectFitBackgroundDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -71,4 +74,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "grid-gallery-demo": GridGalleryDemo,
   "field-styling-demo": FieldStylingDemo,
   "footer-grid-demo": FooterGridDemo,
+  "mobile-menu-demo": MobileMenuDemo,
+  "hero-layout-demo": HeroLayoutDemo,
+  "object-fit-background-demo": ObjectFitBackgroundDemo,
 };
