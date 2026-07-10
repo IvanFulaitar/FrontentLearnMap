@@ -1907,3 +1907,91 @@
   font-size: 0.78rem;
   color: var(--stm-muted);
 }
+
+/* Shared café menu-card used across the css-animations demos (transition
+   hover, keyframe replay, reduced-motion contrast) — one real element,
+   three genuinely different CSS motion mechanisms applied to it. */
+.thCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 220px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+}
+
+.thCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.12);
+}
+
+.thPrice {
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.kfReplayButton {
+  justify-self: start;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.kfReplayButton:hover {
+  background: var(--primary-dark, var(--primary));
+}
+
+@keyframes kfFadeInUpKeyframes {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.kfFadeInUp {
+  animation: kfFadeInUpKeyframes 400ms ease-out;
+}
+
+@keyframes kfSlideInLeftKeyframes {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.kfSlideInLeft {
+  animation: kfSlideInLeftKeyframes 400ms ease-out;
+}
+
+@keyframes kfPopKeyframes {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.kfPop {
+  animation: kfPopKeyframes 400ms ease-out;
+}

@@ -6,6 +6,7 @@ import type { LessonOverride } from "./htmlFoundations";
  */
 export const cssAnimationsOverrides: Record<string, LessonOverride> = {
   "Transition і hover-ефекти": {
+    interactiveDemo: "transition-hover-demo",
     whatIsIt: "transition плавно анімує зміну властивості між двома станами (наприклад, звичайний і :hover), замість миттєвого стрибка. Задається як: властивість, тривалість, функція часу.",
     whyUseIt: "Кнопка, що миттєво змінює колір без transition, виглядає різко й \"дешево\" — 150-200ms плавного переходу вже відчуваються як якісний, продуманий інтерфейс.",
     whenToUse: ["transition на background-color, color, transform, box-shadow — для hover/focus ефектів кнопок і карток.", "Тривалість 150-250ms — стандарт для дрібних UI-взаємодій (довше відчувається повільним)."],
@@ -72,6 +73,7 @@ export const cssAnimationsOverrides: Record<string, LessonOverride> = {
   },
 
   "Keyframe-анімації": {
+    interactiveDemo: "keyframe-demo",
     whatIsIt: "@keyframes визначає багатоетапну анімацію (0%, 50%, 100% чи from/to) з конкретними стилями на кожному етапі. animation застосовує цю анімацію до елемента з тривалістю й повторенням.",
     whyUseIt: "transition анімує лише перехід МІЖ двома станами (hover/не hover); keyframes дозволяють описати самостійний рух (наприклад, плавну появу картки при завантаженні сторінки), що не залежить від hover чи будь-якої взаємодії.",
     whenToUse: ["Плавна поява елементів при завантаженні сторінки (fade-in, невеликий рух вгору).", "Індикатори завантаження (спінери), що анімуються самостійно й безкінечно."],
@@ -142,6 +144,7 @@ export const cssAnimationsOverrides: Record<string, LessonOverride> = {
   },
 
   "prefers-reduced-motion": {
+    interactiveDemo: "reduced-motion-demo",
     whatIsIt: "prefers-reduced-motion — медіазапит, що визначає, чи користувач увімкнув у налаштуваннях ОС опцію \"зменшити рух\" (часто через вестибулярні розлади чи чутливість до анімації).",
     whyUseIt: "Для частини користувачів рух на екрані викликає реальний фізичний дискомфорт (нудоту, запаморочення) — ігнорування цієї системної настройки робить сайт непридатним для використання, а не просто \"менш красивим\".",
     whenToUse: ["@media (prefers-reduced-motion: reduce) — вимкни чи різко скороти keyframe-анімації появи, автоматичні каруселі, паралакс-ефекти.", "Залиш функціональні (не суто декоративні) transition, але зроби їх миттєвими чи майже миттєвими."],

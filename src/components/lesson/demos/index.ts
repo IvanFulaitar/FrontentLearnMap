@@ -35,6 +35,9 @@ import { ClampMinMaxDemo } from "./ClampMinMaxDemo";
 import { LineHeightDemo } from "./LineHeightDemo";
 import { TextStylingDemo } from "./TextStylingDemo";
 import { SystemThemeDemo } from "./SystemThemeDemo";
+import { TransitionHoverDemo } from "./TransitionHoverDemo";
+import { KeyframeDemo } from "./KeyframeDemo";
+import { ReducedMotionDemo } from "./ReducedMotionDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -89,4 +92,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "line-height-demo": LineHeightDemo,
   "text-styling-demo": TextStylingDemo,
   "system-theme-demo": SystemThemeDemo,
+  "transition-hover-demo": TransitionHoverDemo,
+  "keyframe-demo": KeyframeDemo,
+  "reduced-motion-demo": ReducedMotionDemo,
 };
