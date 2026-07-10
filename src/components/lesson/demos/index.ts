@@ -62,6 +62,8 @@ import { AccessibleTableDemo } from "./AccessibleTableDemo";
 import { ArticleSectionAsideDemo } from "./ArticleSectionAsideDemo";
 import { FigureDetailsDialogDemo } from "./FigureDetailsDialogDemo";
 import { ButtonVsLinkDemo } from "./ButtonVsLinkDemo";
+import { VariableStateDemo } from "./VariableStateDemo";
+import { NullishVsOrDemo } from "./NullishVsOrDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -143,4 +145,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "article-section-aside-demo": ArticleSectionAsideDemo,
   "figure-details-dialog-demo": FigureDetailsDialogDemo,
   "button-vs-link-demo": ButtonVsLinkDemo,
+  "variable-state-demo": VariableStateDemo,
+  "nullish-vs-or-demo": NullishVsOrDemo,
 };
