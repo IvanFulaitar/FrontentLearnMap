@@ -47,6 +47,8 @@ import { RequestCycleDemo } from "./RequestCycleDemo";
 import { ClientServerDemo } from "./ClientServerDemo";
 import { RenderPipelineDemo } from "./RenderPipelineDemo";
 import { DomTreeDemo } from "./DomTreeDemo";
+import { DocAnatomyDemo } from "./DocAnatomyDemo";
+import { ViewportMetaDemo } from "./ViewportMetaDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -113,4 +115,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "client-server-demo": ClientServerDemo,
   "render-pipeline-demo": RenderPipelineDemo,
   "dom-tree-demo": DomTreeDemo,
+  "doc-anatomy-demo": DocAnatomyDemo,
+  "viewport-meta-demo": ViewportMetaDemo,
 };

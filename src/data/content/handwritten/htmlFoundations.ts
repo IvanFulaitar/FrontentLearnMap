@@ -11,6 +11,7 @@ export type LessonOverride = Partial<Lesson>;
 
 export const htmlFoundationsOverrides: Record<string, LessonOverride> = {
   "Анатомія HTML-документа": {
+    interactiveDemo: "doc-anatomy-demo",
     whatIsIt:
       "Кожен HTML-файл має один обов'язковий скелет: doctype, <html>, <head> і <body>. Це перше, що бачить браузер, і без цього скелета сторінка або не відкриється правильно, або матиме проблеми з кодуванням і доступністю. Браузер завжди читає документ строго зверху вниз: doctype → html → head → усе, що в head → body.",
     whyUseIt:
@@ -275,6 +276,7 @@ export const htmlFoundationsOverrides: Record<string, LessonOverride> = {
   },
 
   "Метадані head і viewport": {
+    interactiveDemo: "viewport-meta-demo",
     whatIsIt:
       "Метадані — це інформація про сторінку, яку не бачить користувач напряму: кодування, заголовок вкладки, опис для пошуковика і налаштування мобільного перегляду (viewport). Їх використовують браузер, Google, соціальні мережі, скрінрідери й мобільні телефони.",
     whyUseIt: "Без viewport мобільний браузер вважає, що сторінка десктопна (~980px), і просто зменшує її масштаб — тому текст на телефоні виглядає крихітним і його доводиться розтягувати пальцями.",

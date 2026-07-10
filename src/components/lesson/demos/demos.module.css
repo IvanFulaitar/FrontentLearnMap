@@ -2362,3 +2362,38 @@
   color: var(--muted);
   font-family: var(--font-mono, monospace);
 }
+
+/* Viewport meta demo ("Метадані head і viewport"): a fixed-width "phone
+   screen" that clips its content, whose inner content div is genuinely
+   scaled via CSS transform to mirror what a real mobile browser does
+   when width=device-width is missing (assumes a ~980px desktop layout,
+   then squeezes the whole thing into the physical screen). */
+.vmPhoneFrame {
+  width: 170px;
+  min-height: 110px;
+  border: 3px solid var(--text);
+  border-radius: 14px;
+  overflow: hidden;
+  background: white;
+  padding: 10px;
+}
+
+.vmPhoneContent {
+  transform-origin: top left;
+  display: grid;
+  gap: 6px;
+}
+
+.vmPhoneTitle {
+  margin: 0;
+  font-weight: 800;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.vmPhoneText {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
