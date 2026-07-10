@@ -70,6 +70,9 @@ import { DevToolsSimulatorDemo } from "./DevToolsSimulatorDemo";
 import { IfElseDemo } from "./IfElseDemo";
 import { SwitchDemo } from "./SwitchDemo";
 import { TruthyFalsyDemo } from "./TruthyFalsyDemo";
+import { LoopDemo } from "./LoopDemo";
+import { GuardClauseDemo } from "./GuardClauseDemo";
+import { ErrorHandlingDemo } from "./ErrorHandlingDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -159,4 +162,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "if-else-demo": IfElseDemo,
   "switch-demo": SwitchDemo,
   "truthy-falsy-demo": TruthyFalsyDemo,
+  "loop-demo": LoopDemo,
+  "guard-clause-demo": GuardClauseDemo,
+  "error-handling-demo": ErrorHandlingDemo,
 };
