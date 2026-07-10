@@ -27,6 +27,7 @@ import { cssVariablesDarkModeOverrides } from "./cssVariablesDarkMode";
 import { cssAnimationsOverrides } from "./cssAnimations";
 import { cssArchitectureReactOverrides } from "./cssArchitectureReact";
 import { cssFinalProjectOverrides } from "./cssFinalProject";
+import { jsLanguageBasicsOverrides } from "./jsLanguageBasics";
 
 /**
  * Registry of fully hand-authored lesson content, keyed by
@@ -67,6 +68,7 @@ const lessonOverridesByModule: Record<string, Record<string, LessonOverride>> = 
   "css-animations": cssAnimationsOverrides,
   "css-architecture-react": cssArchitectureReactOverrides,
   "css-final-project": cssFinalProjectOverrides,
+  "js-language-basics": jsLanguageBasicsOverrides,
 };
 
 export const getLessonOverride = (moduleId: string, title: string): LessonOverride | undefined =>
