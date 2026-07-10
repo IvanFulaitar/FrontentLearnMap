@@ -1206,3 +1206,76 @@
   font-size: 0.85rem;
   z-index: 1;
 }
+
+/* Flex-wrap + gap demo ("Вирівнювання, перенос і gap"): a row of menu chips
+   inside DemoViewport, so shrinking the width slider makes them genuinely
+   wrap onto new lines (flex-wrap: wrap), not just an illustration. */
+.fwRow {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 12px;
+}
+
+.fwChip {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--primary-soft, #f3e0c8);
+  color: var(--primary-strong, var(--primary));
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* Flex nav demo ("Навігація кав'ярні на Flexbox"): the real café header —
+   logo, clickable nav links with an active state, and a CTA button — inside
+   DemoViewport so the whole header genuinely wraps at narrow widths. */
+.fnHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.fnLogo {
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.fnNav {
+  display: flex;
+  gap: 16px;
+}
+
+.fnLink {
+  border: none;
+  background: none;
+  padding: 4px 2px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.fnLinkActive {
+  color: var(--primary);
+  font-weight: 700;
+  border-bottom-color: var(--primary);
+}
+
+.fnCta {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}

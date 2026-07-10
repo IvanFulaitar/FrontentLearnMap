@@ -17,6 +17,8 @@ import { PriceCardsDemo } from "./PriceCardsDemo";
 import { ShadowsRadiusDemo } from "./ShadowsRadiusDemo";
 import { MenuCardsDemo } from "./MenuCardsDemo";
 import { PseudoElementsDemo } from "./PseudoElementsDemo";
+import { FlexWrapGapDemo } from "./FlexWrapGapDemo";
+import { FlexNavDemo } from "./FlexNavDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -53,4 +55,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "shadows-radius-demo": ShadowsRadiusDemo,
   "menu-cards-demo": MenuCardsDemo,
   "pseudo-elements-demo": PseudoElementsDemo,
+  "flex-wrap-gap-demo": FlexWrapGapDemo,
+  "flex-nav-demo": FlexNavDemo,
 };
