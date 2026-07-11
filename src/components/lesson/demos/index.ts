@@ -77,6 +77,8 @@ import { FunctionHoistingDemo } from "./FunctionHoistingDemo";
 import { ArrowThisDemo } from "./ArrowThisDemo";
 import { DefaultParamsDemo } from "./DefaultParamsDemo";
 import { ReturnValueDemo } from "./ReturnValueDemo";
+import { ClosureScopeDemo } from "./ClosureScopeDemo";
+import { PureFunctionDemo } from "./PureFunctionDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -173,4 +175,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "arrow-this-demo": ArrowThisDemo,
   "default-params-demo": DefaultParamsDemo,
   "return-value-demo": ReturnValueDemo,
+  "scope-closures-demo": ClosureScopeDemo,
+  "pure-function-demo": PureFunctionDemo,
 };
