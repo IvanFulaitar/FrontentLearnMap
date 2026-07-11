@@ -97,6 +97,9 @@ import { UpdateTextAttrsDemo } from "./UpdateTextAttrsDemo";
 import { UpdateClassesStylesDemo } from "./UpdateClassesStylesDemo";
 import { DomPerformanceDemo } from "./DomPerformanceDemo";
 import { EventDelegationDemo } from "./EventDelegationDemo";
+import { ClickEventDemo } from "./ClickEventDemo";
+import { KeyboardEventDemo } from "./KeyboardEventDemo";
+import { FormSubmitDemo } from "./FormSubmitDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -213,4 +216,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "update-classes-styles-demo": UpdateClassesStylesDemo,
   "dom-performance-demo": DomPerformanceDemo,
   "event-delegation-demo": EventDelegationDemo,
+  "click-event-demo": ClickEventDemo,
+  "keyboard-event-demo": KeyboardEventDemo,
+  "form-submit-demo": FormSubmitDemo,
 };

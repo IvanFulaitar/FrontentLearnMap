@@ -33,6 +33,7 @@ import { jsFunctionsOverrides } from "./jsFunctions";
 import { jsArraysOverrides } from "./jsArrays";
 import { jsObjectsOverrides } from "./jsObjects";
 import { jsDomOverrides } from "./jsDom";
+import { jsEventsOverrides } from "./jsEvents";
 
 /**
  * Registry of fully hand-authored lesson content, keyed by
@@ -79,6 +80,7 @@ const lessonOverridesByModule: Record<string, Record<string, LessonOverride>> = 
   "js-arrays": jsArraysOverrides,
   "js-objects": jsObjectsOverrides,
   "js-dom": jsDomOverrides,
+  "js-events": jsEventsOverrides,
 };
 
 export const getLessonOverride = (moduleId: string, title: string): LessonOverride | undefined =>
