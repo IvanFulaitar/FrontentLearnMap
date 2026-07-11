@@ -106,6 +106,9 @@ import { PreventDefaultDemo } from "./PreventDefaultDemo";
 import { CallbackTimerDemo } from "./CallbackTimerDemo";
 import { PromiseDemo } from "./PromiseDemo";
 import { AsyncAwaitDemo } from "./AsyncAwaitDemo";
+import { TryCatchAsyncDemo } from "./TryCatchAsyncDemo";
+import { ParallelRequestsDemo } from "./ParallelRequestsDemo";
+import { AbortControllerDemo } from "./AbortControllerDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -231,4 +234,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "callback-timer-demo": CallbackTimerDemo,
   "promise-demo": PromiseDemo,
   "async-await-demo": AsyncAwaitDemo,
+  "try-catch-async-demo": TryCatchAsyncDemo,
+  "parallel-requests-demo": ParallelRequestsDemo,
+  "abort-controller-demo": AbortControllerDemo,
 };
