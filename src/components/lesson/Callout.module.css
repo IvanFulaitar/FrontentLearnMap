@@ -2,11 +2,20 @@
   display: flex;
   gap: 12px;
   align-items: flex-start;
+  width: 100%;
+  max-width: 100%;
   border: 1px solid var(--border);
   border-left: 4px solid var(--primary);
   border-radius: var(--radius);
   padding: 14px 16px;
   background: var(--surface-muted);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .callout {
+    padding: 12px;
+  }
 }
 
 .icon {
