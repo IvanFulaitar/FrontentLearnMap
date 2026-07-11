@@ -31,6 +31,7 @@ import { jsLanguageBasicsOverrides } from "./jsLanguageBasics";
 import { jsControlFlowOverrides } from "./jsControlFlow";
 import { jsFunctionsOverrides } from "./jsFunctions";
 import { jsArraysOverrides } from "./jsArrays";
+import { jsObjectsOverrides } from "./jsObjects";
 
 /**
  * Registry of fully hand-authored lesson content, keyed by
@@ -75,6 +76,7 @@ const lessonOverridesByModule: Record<string, Record<string, LessonOverride>> = 
   "js-control-flow": jsControlFlowOverrides,
   "js-functions": jsFunctionsOverrides,
   "js-arrays": jsArraysOverrides,
+  "js-objects": jsObjectsOverrides,
 };
 
 export const getLessonOverride = (moduleId: string, title: string): LessonOverride | undefined =>

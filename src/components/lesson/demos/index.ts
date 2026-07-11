@@ -85,6 +85,10 @@ import { FilterSearchDemo } from "./FilterSearchDemo";
 import { ReduceTotalsDemo } from "./ReduceTotalsDemo";
 import { SortDemo } from "./SortDemo";
 import { ImmutableUpdateDemo } from "./ImmutableUpdateDemo";
+import { ObjectLiteralDemo } from "./ObjectLiteralDemo";
+import { PropertyAccessDemo } from "./PropertyAccessDemo";
+import { DestructuringDemo } from "./DestructuringDemo";
+import { ObjectSpreadDemo } from "./ObjectSpreadDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -189,4 +193,8 @@ export const lessonDemos: Record<string, ComponentType> = {
   "reduce-totals-demo": ReduceTotalsDemo,
   "sort-demo": SortDemo,
   "immutable-update-demo": ImmutableUpdateDemo,
+  "object-literal-demo": ObjectLiteralDemo,
+  "property-access-demo": PropertyAccessDemo,
+  "destructuring-demo": DestructuringDemo,
+  "object-spread-demo": ObjectSpreadDemo,
 };
