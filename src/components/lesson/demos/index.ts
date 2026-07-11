@@ -91,6 +91,10 @@ import { DestructuringDemo } from "./DestructuringDemo";
 import { ObjectSpreadDemo } from "./ObjectSpreadDemo";
 import { NestedDataDemo } from "./NestedDataDemo";
 import { ObjectMethodsDemo } from "./ObjectMethodsDemo";
+import { SelectElementsDemo } from "./SelectElementsDemo";
+import { CreateNodeDemo } from "./CreateNodeDemo";
+import { UpdateTextAttrsDemo } from "./UpdateTextAttrsDemo";
+import { UpdateClassesStylesDemo } from "./UpdateClassesStylesDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -201,4 +205,8 @@ export const lessonDemos: Record<string, ComponentType> = {
   "object-spread-demo": ObjectSpreadDemo,
   "nested-data-demo": NestedDataDemo,
   "object-methods-demo": ObjectMethodsDemo,
+  "select-elements-demo": SelectElementsDemo,
+  "create-node-demo": CreateNodeDemo,
+  "update-text-attrs-demo": UpdateTextAttrsDemo,
+  "update-classes-styles-demo": UpdateClassesStylesDemo,
 };
