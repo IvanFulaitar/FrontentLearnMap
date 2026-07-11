@@ -100,6 +100,9 @@ import { EventDelegationDemo } from "./EventDelegationDemo";
 import { ClickEventDemo } from "./ClickEventDemo";
 import { KeyboardEventDemo } from "./KeyboardEventDemo";
 import { FormSubmitDemo } from "./FormSubmitDemo";
+import { InputChangeDemo } from "./InputChangeDemo";
+import { EventBubblingDemo } from "./EventBubblingDemo";
+import { PreventDefaultDemo } from "./PreventDefaultDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -219,4 +222,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "click-event-demo": ClickEventDemo,
   "keyboard-event-demo": KeyboardEventDemo,
   "form-submit-demo": FormSubmitDemo,
+  "input-change-demo": InputChangeDemo,
+  "event-bubbling-demo": EventBubblingDemo,
+  "prevent-default-demo": PreventDefaultDemo,
 };
