@@ -1,0 +1,556 @@
+import type { LessonOverride } from "./htmlFoundations";
+
+/**
+ * Module "Функції" (js-functions). Third JavaScript module — declaring
+ * reusable logic, arrow functions and `this`, default/rest parameters, and
+ * return values. Same deep cheat-sheet lesson format as js-control-flow.
+ */
+export const jsFunctionsOverrides: Record<string, LessonOverride> = {
+  "Оголошення функцій": {
+    whatIsIt: "Функцію можна оголосити двома основними способами: function-declaration (function calculatePrice() {...}) і function-expression (const calculatePrice = function() {...} чи стрілкова). Ключова відмінність — hoisting: оголошення функції піднімається наверх області видимості цілком, з тілом, тому її можна викликати ще ДО рядка визначення в коді; вираз-функція піднімається лише як змінна, без значення, тому виклик до рядка визначення кидає помилку.",
+    whyUseIt: "Утилітарні функції для розрахунку ціни, форматування дати чи валідації форми визначаються один раз і викликаються в багатьох місцях коду. Розуміння різниці між hoisting оголошення й виразу пояснює, чому один стиль дозволяє викликати функцію \"заздалегідь\" у файлі, а інший — ні, і рятує від помилки \"Cannot access before initialization\".",
+    whenToUse: ["Утилітарні функції верхнього рівня файлу, які використовуються в багатьох місцях — function-declaration дає гнучкість порядку виклику завдяки hoisting.", "function-expression (включно зі стрілковими), коли функція — це значення: передається як аргумент, зберігається у властивості обʼєкта чи умовно призначається.", "Іменовані function-declaration для стек-трейсів і читабельності помилок у DevTools.", "Функція, доступна лише всередині блоку (if, for) — обидва стилі підтримують блокову область видимості з let/const."],
+    whenNotToUse: ["Не покладайся на hoisting як на стиль коду \"для зручності\" — визначай функції ДО використання, навіть якщо hoisting технічно дозволяє інакше.", "Не оголошуй одну й ту саму функцію по-різному в різних гілках коду (function у if і function у else з тим самим іменем) — поведінка hoisting у такому випадку залежить від рушія й непередбачувана.", "Не використовуй function-expression, якщо плануєш викликати функцію до її визначення в тому ж файлі — отримаєш ReferenceError."],
+    comparisonTable: {
+      headers: ["Стиль", "Hoisting", "Коли можна викликати"],
+      rows: [
+        ["function decl.", "піднімається ПОВНІСТЮ (з тілом)", "до і після визначення"],
+        ["function expr. (const)", "лише змінна, без значення (TDZ)", "лише ПІСЛЯ рядка визначення"],
+        ["Стрілкова функція (const)", "лише змінна, без значення (TDZ)", "лише ПІСЛЯ рядка визначення"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "function-declaration можна викликати навіть до рядка, де вона визначена у файлі:",
+        code: `console.log(getDiscount(1000)); // працює: 200 — виклик ДО визначення нижче
+
+function getDiscount(cartTotal) {
+  return cartTotal * 0.2;
+}`,
+        lineNotes: ["JavaScript переносить усе тіло function-declaration наверх ще до виконання першого рядка — функція вже повністю готова.", "Це працює лише для function-declaration, не для function-expression чи стрілкових функцій, присвоєних const/let."],
+      },
+      {
+        before: "function-expression — виклик до рядка визначення кидає помилку, бо піднімається лише сама змінна:",
+        code: `// console.log(getTax(1000)); // ReferenceError: Cannot access 'getTax' before initialization
+
+const getTax = function (amount) {
+  return amount * 0.2;
+};
+
+console.log(getTax(1000)); // 200 — працює ПІСЛЯ визначення`,
+        lineNotes: ["const getTax піднімається як \"порожня\" змінна (у тимчасовій мертвій зоні) — звернення до неї до рядка присвоєння кидає помилку.", "Той самий код після рядка визначення працює без проблем."],
+      },
+      {
+        before: "Реальна утиліта для розрахунку суми кошика, визначена один раз і викликана з кількох місць коду:",
+        code: `function calculateCartTotal(items) {
+  return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+}
+
+const cart = [
+  { name: "Книга", price: 300, quantity: 2 },
+  { name: "Ручка", price: 20, quantity: 5 },
+];
+
+console.log(calculateCartTotal(cart)); // 700`,
+        lineNotes: ["calculateCartTotal — function-declaration, тому теоретично могла б викликатись і вище в файлі, хоча так найчастіше не роблять для читабельності.", "Функція визначена ОДИН раз, але може бути викликана з будь-якої кількості місць коду з різними даними."],
+      },
+      {
+        before: "Умовне оголошення тієї самої функції в if/else — заплутана, ненадійна поведінка hoisting:",
+        code: `if (true) {
+  function getLabel() {
+    return "Варіант A";
+  }
+} else {
+  function getLabel() {
+    return "Варіант Б";
+  }
+}
+
+console.log(getLabel()); // поведінка залежить від рушія — НЕ покладайся на це`,
+        lineNotes: ["function-declaration усередині if/else — нестандартна практика; різні рушії JavaScript можуть поводитись по-різному.", "Правильніше: оголосити getLabel як function-expression поза if/else і присвоїти потрібне значення всередині блоків."],
+        after: "Якщо потрібна умовна логіка вибору функції — присвоюй результат const-змінній усередині if/else, а не оголошуй саму функцію умовно.",
+      },
+    ],
+    commonMistakes: ["Виклик function-expression (const/стрілкової) до рядка її визначення — ReferenceError.", "Умовне оголошення function-declaration у if/else з тим самим іменем — ненадійна, залежна від рушія поведінка.", "Плутанина: думати, що hoisting працює однаково для const getFn = () => {} і function getFn() {}.", "Покладання на hoisting як на \"стиль коду\", замість визначення функцій до використання для читабельності."],
+    dontDoThis: { code: `console.log(formatPrice(500)); // ReferenceError\n\nconst formatPrice = (amount) => \`\${amount} грн\`;`, explanation: "formatPrice оголошена через const — стрілкові функції та function-expression НЕ отримують hoisting значення, лише самої змінної. Виклик до рядка визначення кидає ReferenceError: Cannot access 'formatPrice' before initialization, навіть попри те, що змінна formatPrice технічно вже \"існує\" в області видимості." },
+    bestPractices: ["Визначай функції ДО їх використання в коді незалежно від того, чи дозволяє hoisting інакше — так читається природніше зверху вниз.", "Використовуй function-declaration для утиліт верхнього рівня, викликаних у багатьох місцях.", "Використовуй function-expression/стрілкові функції, коли функція — це значення (передається як аргумент, зберігається у властивості).", "Ніколи не оголошуй function-declaration умовно всередині if/else з однаковим іменем."],
+    remember: ["function-declaration піднімається ПОВНІСТЮ — можна викликати до визначення.", "function-expression і стрілкові функції піднімаються лише як змінна (TDZ) — виклик до визначення кидає помилку.", "Обидва стилі підтримують блокову область видимості з let/const.", "Не покладайся на hoisting як на стиль — визначай функції до використання."],
+    interviewQuestions: [
+      { question: "Чим function-declaration відрізняється від function-expression щодо hoisting?", answer: "function-declaration піднімається наверх області видимості ПОВНІСТЮ, разом з тілом — її можна викликати навіть до рядка визначення в коді. function-expression (включно зі стрілковою функцією), присвоєна const чи let, піднімається лише як оголошення змінної без значення (перебуває у тимчасовій мертвій зоні) — виклик до рядка присвоєння кидає ReferenceError." },
+      { question: "Чому виклик стрілкової функції до її визначення кидає помилку?", answer: "Стрілкова функція, присвоєна const/let, — це function-expression. Сама змінна піднімається, але без значення, і перебуває у тимчасовій мертвій зоні (TDZ) до рядка присвоєння. Звернення до змінної в TDZ кидає ReferenceError: Cannot access '...' before initialization — на відміну від function-declaration, чиє тіло доступне одразу." },
+      { question: "Чи можна покладатись на умовне оголошення function-declaration в if/else?", answer: "Ні — це нестандартна, історично неоднозначна конструкція мови, і різні рушії JavaScript можуть по-різному вирішувати, яка версія функції \"переможе\" після hoisting. Надійніший підхід: оголосити змінну (const) поза if/else і присвоїти їй потрібну функцію всередині блоків." },
+      { question: "Навіщо взагалі знати про hoisting, якщо краще завжди визначати функції до використання?", answer: "Розуміння hoisting пояснює конкретні помилки в реальному коді (ReferenceError при виклику стрілкової функції \"занадто рано\", несподівану поведінку функцій в умовних блоках) і допомагає швидко діагностувати їх у код-рев'ю чи під час дебагінгу чужого коду, навіть якщо у власному коді ти цим свідомо не користуєшся." },
+    ],
+    summary: "function-declaration піднімається наверх ПОВНІСТЮ (з тілом) — можна викликати до визначення в файлі. function-expression і стрілкові функції, присвоєні const/let, піднімаються лише як змінна без значення (TDZ) — виклик до визначення кидає ReferenceError. Найнадійніша практика — визначати функції до їх використання незалежно від стилю.",
+    proTip: "Function-declaration усередині if/else з однаковим іменем — одна з найдавніших \"пасток\" JavaScript, залишена ще з часів до ES6 blocks. Якщо бачиш таке в код-рев'ю — попроси переписати через const-змінну з умовним присвоєнням.",
+    nextLessonNote: "Далі — стрілкові функції: короткий синтаксис і найважливіша відмінність — як вони працюють із this.",
+    interactiveDemo: "function-hoisting-demo",
+    practiceTask: {
+      title: "Виправ ReferenceError при виклику функції до визначення",
+      description: "Функція форматування ціни оголошена через const (стрілкова функція), але викликається раніше свого визначення в коді — це кидає ReferenceError. Виправ порядок оголошення.",
+      checklist: ["Код більше не кидає ReferenceError.", "Функція formatPrice викликається й повертає коректний результат.", "Порядок визначення логічний і читабельний."],
+      starterFiles: [
+        {
+          id: "js-fn-decl-start",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<p id="output"></p>
+
+<script>
+  const result = formatPrice(500); // ReferenceError: Cannot access 'formatPrice' before initialization
+
+  const formatPrice = (amount) => amount + " грн";
+
+  document.querySelector("#output").textContent = result;
+</script>
+`,
+        },
+      ],
+      solutionFiles: [
+        {
+          id: "js-fn-decl-solution",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<p id="output"></p>
+
+<script>
+  const formatPrice = (amount) => amount + " грн";
+
+  const result = formatPrice(500);
+
+  document.querySelector("#output").textContent = result;
+  // тепер "500 грн"
+</script>
+`,
+          readOnly: true,
+        },
+      ],
+      hints: ["const formatPrice = ... — це function-expression, вона НЕ піднімається зі значенням, лише сама змінна (TDZ).", "Перенеси визначення formatPrice вище рядка, де вона викликається."],
+      expectedOutput: "\"500 грн\"",
+    },
+    microExercises: [
+      { id: "js-fn-decl-hoisting-predict", kind: "predict", prompt: "Що виведе цей код?", code: `console.log(sum(2, 3));\n\nfunction sum(a, b) {\n  return a + b;\n}`, solution: "5 — function-declaration піднімається повністю з тілом, тому виклик до рядка визначення в коді працює нормально." },
+      { id: "js-fn-expr-tdz-find-bug", kind: "find-the-bug", prompt: "У чому проблема цього коду?", code: `console.log(double(4));\n\nconst double = (n) => n * 2;`, solution: "double викликається до рядка визначення const double — стрілкова функція не отримує hoisting значення, лише сама змінна (TDZ). Код кине ReferenceError: Cannot access 'double' before initialization. Треба перенести визначення double вище виклику." },
+      { id: "js-fn-hoisting-choice", kind: "choice", prompt: "Яка з конструкцій піднімається ПОВНІСТЮ разом з тілом (можна викликати до визначення)?", options: ["const fn = function() {}", "const fn = () => {}", "function fn() {}", "let fn = () => {}"], correctAnswer: "function fn() {}", solution: "Лише function-declaration (function fn() {}) піднімається наверх повністю, з тілом. const/let-присвоєння (включно зі стрілковими функціями) піднімаються лише як оголошення змінної, без значення." },
+      { id: "js-tdz-explain", kind: "explain", prompt: "Поясни своїми словами, що таке тимчасова мертва зона (TDZ) і як вона пов'язана з function-expression.", solution: "TDZ — це проміжок коду від початку області видимості до рядка, де let/const-змінна фактично отримує значення. Змінна вже \"існує\" технічно, але звернення до неї в цьому проміжку кидає ReferenceError. Function-expression, присвоєна const, підпорядковується цьому ж правилу — функція недоступна до рядка присвоєння." },
+      { id: "js-fn-decl-conditional-rewrite", kind: "rewrite", prompt: "Перепиши код так, щоб уникнути залежності від умовного hoisting у if/else.", code: `if (isPremium) {\n  function getLabel() {\n    return "Преміум";\n  }\n} else {\n  function getLabel() {\n    return "Звичайний";\n  }\n}`, solution: `const getLabel = isPremium\n  ? function () { return "Преміум"; }\n  : function () { return "Звичайний"; };\n// одна const-змінна, надійне присвоєння без залежності від hoisting усередині блоків` },
+    ],
+  },
+
+  "Стрілкові функції": {
+    whatIsIt: "Стрілкова функція — коротший синтаксис (param) => вираз чи (param) => { блок }. Головна практична відмінність від звичайної function — стрілкова функція НЕ має власного this: вона \"успадковує\" this з зовнішньої (лексичної) області видимості в момент визначення, а не в момент виклику.",
+    whyUseIt: "Коротший запис ідеальний для callback-ів у map/filter/reduce чи обробників подій, де функція одноразова й проста. А відсутність власного this розв'язує класичну проблему \"this загубився\" всередині вкладених функцій (наприклад, у setTimeout усередині методу обʼєкта) — стрілкова функція автоматично бачить той самий this, що й код навколо неї.",
+    whenToUse: ["Короткі callback-и для array-методів (map, filter, reduce, forEach) — implicit return робить код лаконічним.", "Функції всередині методів обʼєкта чи класу, яким потрібен доступ до того самого this (наприклад, callback у setTimeout, addEventListener всередині методу).", "Однорядкові трансформації даних без побічних ефектів."],
+    whenNotToUse: ["Не використовуй стрілкову функцію як метод обʼєкта, якщо всередині потрібен this, що вказує на сам обʼєкт — стрілкова функція візьме this із зовнішнього контексту.", "Не використовуй стрілкову функцію як конструктор — new arrowFn() кидає помилку, стрілкові функції не можна викликати з new.", "Не використовуй стрілкову функцію, якщо потрібен доступ до arguments — у стрілкових функціях немає власного arguments."],
+    comparisonTable: {
+      headers: ["Характеристика", "Звичайна function", "Стрілкова функція"],
+      rows: [
+        ["this", "своє, залежить від способу виклику", "успадковане з зовнішньої області (лексичне)"],
+        ["arguments", "має власний обʼєкт arguments", "немає власного, бере із зовнішньої функції"],
+        ["Виклик з new", "можна (конструктор)", "не можна — TypeError"],
+        ["Синтаксис для однієї трансформації", "громіздкіший", "коротший, з implicit return"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "Різні форми стрілкового синтаксису — від найкоротшої до блокової:",
+        code: `const double = (n) => n * 2; // implicit return
+const add = (a, b) => a + b; // кілька параметрів — дужки обов'язкові
+const greet = () => "Привіт!"; // без параметрів — порожні дужки обов'язкові
+const logAndDouble = (n) => {
+  console.log("Подвоюємо", n);
+  return n * 2; // блокове тіло — return потрібен явно
+};
+
+console.log(double(5)); // 10
+console.log(add(2, 3)); // 5`,
+        lineNotes: ["(n) => n * 2 — вираз одразу є значенням, що повертається (implicit return), без слова return і без {}.", "Щойно тіло стає блоком у {}, return потрібно писати явно — implicit return працює лише для однорядкового виразу."],
+      },
+      {
+        before: "Реальне використання: .map() для перерахунку цін зі знижкою:",
+        code: `const prices = [1000, 500, 250];
+
+const withDiscount = prices.map((price) => price * 0.9);
+
+console.log(withDiscount); // [900, 450, 225]`,
+        lineNotes: ["(price) => price * 0.9 — короткий callback без return і без {}, читається як \"для кожної ціни поверни ціну * 0.9\".", ".map() створює НОВИЙ масив, не змінюючи prices."],
+      },
+      {
+        before: "this у звичайній function-callback усередині методу обʼєкта \"губиться\":",
+        code: `const cart = {
+  items: ["Книга", "Ручка"],
+  showItemsLater: function () {
+    setTimeout(function () {
+      console.log(this.items); // undefined — this тут НЕ вказує на cart
+    }, 100);
+  },
+};
+
+cart.showItemsLater();`,
+        lineNotes: ["Звичайна function, передана в setTimeout, отримує власний this під час виклику — а викликає її внутрішній механізм таймера, не cart.", "this всередині цього callback вказує на глобальний обʼєкт (чи undefined у строгому режимі), а НЕ на cart."],
+      },
+      {
+        before: "Стрілкова функція вирішує ту саму проблему — успадковує this від showItemsLater:",
+        code: `const cart = {
+  items: ["Книга", "Ручка"],
+  showItemsLater: function () {
+    setTimeout(() => {
+      console.log(this.items); // ["Книга", "Ручка"] — this успадкований від showItemsLater
+    }, 100);
+  },
+};
+
+cart.showItemsLater();`,
+        lineNotes: ["Стрілкова функція не має власного this — вона \"бачить\" той самий this, що й showItemsLater у момент визначення.", "Це найпоширеніша практична причина, чому стрілкові функції обирають для callback-ів усередині методів обʼєктів."],
+        after: "Правило: якщо всередині callback-а потрібен this зовнішнього коду — стрілкова функція; якщо функція сама є методом обʼєкта і потребує власний this — звичайна function.",
+      },
+    ],
+    commonMistakes: ["Стрілкова функція як метод обʼєкта (method: () => { this... }) — this НЕ вказує на обʼєкт.", "Спроба викликати стрілкову функцію з new — TypeError: is not a constructor.", "Звернення до arguments усередині стрілкової функції, очікуючи власний обʼєкт аргументів цієї функції.", "Забутий return у блоковому тілі стрілкової функції ({ ... } без return) — implicit return працює лише без {}."],
+    dontDoThis: { code: `const counter = {\n  count: 0,\n  increment: () => {\n    this.count++; // this НЕ вказує на counter!\n  },\n};\n\ncounter.increment();\nconsole.log(counter.count); // 0 — не збільшилось`, explanation: "increment оголошений як стрілкова функція — вона не має власного this і бере його із зовнішньої (модульної/глобальної) області видимості, а не з counter. this.count++ змінює зовсім не ту властивість, яку очікували. Метод, якому потрібен this поточного обʼєкта, має бути звичайною function: increment() { this.count++; }." },
+    bestPractices: ["Використовуй стрілкові функції для коротких callback-ів у map/filter/reduce/forEach.", "Використовуй стрілкові функції для callback-ів усередині методів обʼєкта, яким потрібен той самий this (setTimeout, addEventListener).", "НЕ використовуй стрілкові функції як методи обʼєкта чи прототипу, яким потрібен this самого обʼєкта.", "Пам'ятай: implicit return працює лише без фігурних дужок; з {} return обов'язковий."],
+    remember: ["Стрілкова функція не має власного this — успадковує його з зовнішньої області визначення.", "Стрілкову функцію не можна викликати з new.", "implicit return — лише для однорядкового виразу без {}.", "Стрілкові функції не мають власного arguments."],
+    interviewQuestions: [
+      { question: "Чим this у стрілковій функції відрізняється від this у звичайній function?", answer: "Звичайна function отримує власний this, значення якого залежить від способу виклику (метод обʼєкта, окремий виклик, new, call/apply/bind). Стрілкова функція взагалі не має власного this — вона бере this лексично, з того коду, де вона була ВИЗНАЧЕНА, і це значення не змінюється незалежно від того, як стрілкову функцію викликають." },
+      { question: "Чому стрілкову функцію не можна використовувати як конструктор?", answer: "Стрілкові функції не мають внутрішнього механізму [[Construct]], потрібного для роботи з new. Спроба new arrowFn() кидає TypeError: arrowFn is not a constructor." },
+      { question: "Наведи практичний приклад, коли стрілкова функція розв'язує реальну проблему з this.", answer: "Класичний приклад — callback у setTimeout чи addEventListener всередині методу обʼєкта: якщо передати звичайну function, вона отримає власний this (не той, що в обʼєкті) під час виклику таймером/браузером. Стрілкова функція замість цього успадковує this методу, у якому вона визначена." },
+      { question: "Що станеться, якщо забути return у стрілковій функції з блоковим тілом?", answer: "Якщо тіло стрілкової функції обгорнуте у {}, JavaScript очікує явний return — implicit return працює ЛИШЕ для однорядкового виразу без {}. Без return функція поверне undefined, навіть якщо всередині обчислюється потрібне значення." },
+    ],
+    summary: "Стрілкові функції дають коротший синтаксис і не мають власного this — вони успадковують this з зовнішньої області визначення, що розв'язує класичну проблему \"загубленого this\" у вкладених callback-ах. Але саме тому їх не можна використовувати як методи обʼєкта, яким потрібен this самого обʼєкта, чи як конструктори.",
+    proTip: "Якщо метод обʼєкта чи класу починає поводитись дивно з this (властивості обʼєкта \"зникають\"), перша підозра — чи не оголошений цей метод стрілковою функцією замість звичайної.",
+    nextLessonNote: "Далі — параметри та значення за замовчуванням: як зробити функції гнучкими без нескінченних перевірок на undefined.",
+    interactiveDemo: "arrow-this-demo",
+    practiceTask: {
+      title: "Виправ метод, що некоректно оновлює властивість через стрілкову функцію",
+      description: "Метод increment лічильника оголошений стрілковою функцією, тому this.count++ не оновлює реальну властивість обʼєкта. Виправ, замінивши на звичайну function.",
+      checklist: ["Виклик counter.increment() реально збільшує counter.count.", "Метод оголошений як звичайна function, а не стрілкова.", "Інша логіка обʼєкта лишається без змін."],
+      starterFiles: [
+        {
+          id: "js-arrow-this-start",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<p id="output"></p>
+
+<script>
+  const counter = {
+    count: 0,
+    increment: () => {
+      this.count++; // this не вказує на counter
+    },
+  };
+
+  counter.increment();
+  counter.increment();
+
+  document.querySelector("#output").textContent = "Лічильник: " + counter.count;
+  // зараз показує "Лічильник: 0" замість "Лічильник: 2"
+</script>
+`,
+        },
+      ],
+      solutionFiles: [
+        {
+          id: "js-arrow-this-solution",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<p id="output"></p>
+
+<script>
+  const counter = {
+    count: 0,
+    increment: function () {
+      this.count++;
+    },
+  };
+
+  counter.increment();
+  counter.increment();
+
+  document.querySelector("#output").textContent = "Лічильник: " + counter.count;
+  // тепер "Лічильник: 2"
+</script>
+`,
+          readOnly: true,
+        },
+      ],
+      hints: ["Стрілкова функція не має власного this — потрібна звичайна function, щоб this вказував на counter.", "Заміни increment: () => { ... } на increment: function () { ... }."],
+      expectedOutput: "\"Лічильник: 2\"",
+    },
+    microExercises: [
+      { id: "js-arrow-implicit-return-predict", kind: "predict", prompt: "Що виведе цей код?", code: `const square = (n) => n * n;\nconsole.log(square(4));`, solution: "16 — implicit return однорядкового виразу n * n, без слова return і без {}." },
+      { id: "js-arrow-method-find-bug", kind: "find-the-bug", prompt: "У чому проблема цього коду?", code: `const user = {\n  name: "Олена",\n  greet: () => {\n    return "Привіт, я " + this.name;\n  },\n};\nconsole.log(user.greet());`, solution: "greet оголошений стрілковою функцією — вона не має власного this і бере його з зовнішньої (модульної) області видимості, а не з user. this.name там undefined, тому результат — \"Привіт, я undefined\" замість \"Привіт, я Олена\". Метод потрібно оголосити звичайною function." },
+      { id: "js-arrow-constructor-choice", kind: "choice", prompt: "Яку з цих дій НЕ можна виконати зі стрілковою функцією?", options: ["Викликати як callback у .map()", "Викликати з new як конструктор", "Використати implicit return", "Передати як аргумент іншій функції"], correctAnswer: "Викликати з new як конструктор", solution: "Стрілкові функції не мають внутрішнього механізму [[Construct]] — спроба new arrowFn() кидає TypeError. Усі інші варіанти — звичне й коректне використання стрілкових функцій." },
+      { id: "js-arrow-arguments-explain", kind: "explain", prompt: "Поясни, чому стрілкові функції не мають власного arguments.", solution: "Стрілкові функції спроєктовані як \"легші\" функції-вирази без власного контексту виконання (this, arguments, super) — вони успадковують ці значення з найближчої звичайної function навколо. Якщо всередині стрілкової функції звернутись до arguments, JavaScript візьме arguments із зовнішньої, найближчої звичайної функції (якщо така є), а не створить власний для стрілкової функції." },
+      { id: "js-arrow-method-rewrite", kind: "rewrite", prompt: "Перепиши метод обʼєкта зі стрілкової функції на звичайну, щоб this коректно вказував на обʼєкт.", code: `const timer = {\n  seconds: 0,\n  tick: () => {\n    this.seconds++;\n  },\n};`, solution: `const timer = {\n  seconds: 0,\n  tick: function () {\n    this.seconds++;\n  },\n};\n// звичайна function отримує власний this, що вказує на timer при викликі timer.tick()` },
+    ],
+  },
+
+  "Параметри та значення за замовчуванням": {
+    whatIsIt: "Параметр за замовчуванням (function f(a = 1)) підставляє значення, якщо аргумент не передано (undefined). Rest-параметр (...args) збирає довільну кількість аргументів у справжній масив у кінці списку параметрів — на відміну від застарілого обʼєкта arguments.",
+    whyUseIt: "Опціональні налаштування функції (розмір сторінки, валюта, ставка податку) отримують розумне значення за замовчуванням без ручної перевірки if (value === undefined). Rest-параметри дозволяють писати функції з довільною кількістю аргументів (наприклад, сума кількох чисел) без незручного arguments.",
+    whenToUse: ["Опціональні параметри конфігурації з розумним значенням за замовчуванням (currency = \"UAH\", pageSize = 10).", "Rest-параметри — коли кількість аргументів наперед невідома (сума чисел, обʼєднання рядків).", "Значення за замовчуванням, що залежить від попереднього параметра (function f(a, b = a * 2))."],
+    whenNotToUse: ["Не використовуй параметр за замовчуванням, щоб мовчки \"замаскувати\" відсутність обовʼязкового аргументу — якщо значення справді обовʼязкове, краще явно кинути помилку.", "Не став rest-параметр не останнім у списку — синтаксично дозволено лише в кінці.", "Не плутай value || default (ламається на легітимному falsy: 0, \"\") з параметром за замовчуванням (спрацьовує лише для undefined)."],
+    comparisonTable: {
+      headers: ["Підхід", "Коли підставляється замовчування", "Проблема"],
+      rows: [
+        ["function f(a = 1)", "лише коли a === undefined", "немає — найнадійніший варіант"],
+        ["value || default", "для БУДЬ-ЯКОГО falsy (0, \"\", null, undefined)", "ламає легітимний 0 чи \"\""],
+        ["value ?? default", "лише для null/undefined", "надійний, але не завжди очевидний для читання"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "Параметр за замовчуванням підставляється лише коли аргумент не передано (undefined):",
+        code: `function getPrice(base, taxRate = 0.2) {
+  return base + base * taxRate;
+}
+
+console.log(getPrice(1000)); // 1200 — taxRate не передано, використано 0.2
+console.log(getPrice(1000, 0)); // 1000 — taxRate = 0 передано явно, замовчування НЕ спрацьовує`,
+        lineNotes: ["taxRate = 0.2 підставляється лише якщо аргумент undefined (не переданий узагалі).", "Другий виклик передає taxRate = 0 явно — це валідне значення, і замовчування коректно НЕ перезаписує його."],
+      },
+      {
+        before: "Класичний баг ідіоми value || default: легітимний 0 сприймається як \"відсутнє\":",
+        code: `function getPriceOld(base, taxRate) {
+  const rate = taxRate || 0.2; // БАГ: 0 теж falsy!
+  return base + base * rate;
+}
+
+console.log(getPriceOld(1000, 0)); // 1200 — мало бути 1000, taxRate=0 проігноровано`,
+        lineNotes: ["taxRate || 0.2 підставляє 0.2, коли taxRate falsy — а 0 теж falsy, хоча це цілком легітимна ставка (\"без податку\").", "Параметр за замовчуванням не має цієї проблеми — перевіряє САМЕ undefined, а не truthy/falsy."],
+        after: "Це найпоширеніша прихована помилка старого коду, написаного до появи параметрів за замовчуванням у мові.",
+      },
+      {
+        before: "Rest-параметр збирає довільну кількість аргументів у справжній масив:",
+        code: `function sum(...numbers) {
+  return numbers.reduce((total, n) => total + n, 0);
+}
+
+console.log(sum(1, 2, 3)); // 6
+console.log(sum(10, 20, 30, 40)); // 100
+console.log(sum()); // 0`,
+        lineNotes: ["...numbers збирає ВСІ передані аргументи у справжній масив — на ньому працюють .reduce(), .map() тощо.", "sum() без аргументів дає numbers = [] (порожній масив), а не undefined — reduce з початковим значенням 0 коректно повертає 0."],
+      },
+      {
+        before: "Значення за замовчуванням може залежати від попереднього параметра:",
+        code: `function createDiscount(price, discountedPrice = price * 0.9) {
+  return { price, discountedPrice };
+}
+
+console.log(createDiscount(1000)); // { price: 1000, discountedPrice: 900 }
+console.log(createDiscount(1000, 700)); // { price: 1000, discountedPrice: 700 }`,
+        lineNotes: ["discountedPrice = price * 0.9 обчислюється на основі значення price, переданого В ЦЕЙ ЖЕ виклик.", "Якщо discountedPrice передано явно (навіть 0), замовчування не застосовується."],
+      },
+    ],
+    commonMistakes: ["value || default замість параметра за замовчуванням — ламається на легітимному 0 чи \"\".", "Rest-параметр не в кінці списку параметрів — синтаксична помилка.", "Очікування, що параметр за замовчуванням підставиться для null — він підставляється лише для undefined, не для null.", "Плутанина між rest-параметром (у визначенні функції) і spread-синтаксисом (у виклику) — схожий синтаксис, різне призначення."],
+    dontDoThis: { code: `function setVolume(level) {\n  const value = level || 50; // БАГ\n  return value;\n}\n\nconsole.log(setVolume(0)); // 50 — мало бути 0 (повністю вимкнений звук)`, explanation: "level || 50 підставляє 50, коли level falsy — а 0 (\"без звуку\") теж falsy, хоча це цілком легітимне, свідомо передане значення. Правильно: function setVolume(level = 50) — параметр за замовчуванням перевіряє САМЕ undefined, тому явно передане 0 не буде замінено." },
+    bestPractices: ["Використовуй параметр за замовчуванням (a = value) замість a || value для опціональних аргументів.", "Використовуй ?? замість || там, де 0 чи \"\" — легітимні значення, а замовчування потрібне лише для null/undefined.", "Rest-параметр завжди останній у списку параметрів.", "Значення за замовчуванням, залежні від інших параметрів, тримай простими й читабельними."],
+    remember: ["Параметр за замовчуванням підставляється ЛИШЕ для undefined, не для null чи інших falsy.", "value || default ламається на легітимному 0/\"\" — використовуй параметр за замовчуванням чи ??.", "Rest-параметр (...args) — справжній масив, завжди останній у списку.", "Значення за замовчуванням може посилатись на попередній параметр цього ж виклику."],
+    interviewQuestions: [
+      { question: "Коли підставляється значення параметра за замовчуванням?", answer: "Лише тоді, коли відповідний аргумент не переданий узагалі АБО переданий явно як undefined. Для будь-якого іншого значення — включно з null, 0, \"\", false — замовчування НЕ підставляється, використовується саме передане значення." },
+      { question: "Чому value || default вважається ненадійною ідіомою для значень за замовчуванням?", answer: "Оператор || перевіряє truthy/falsy значення, а не \"передано чи ні\". Falsy значень шість: false, 0, \"\", null, undefined, NaN — усі вони спричинять підстановку default, навіть якщо, наприклад, 0 чи \"\" були свідомо переданим, легітимним значенням. Параметр за замовчуванням чи оператор ?? перевіряють конкретно undefined (або null для ??), тому надійніші." },
+      { question: "Що таке rest-параметр і чим він відрізняється від arguments?", answer: "Rest-параметр (...args) — це синтаксис у визначенні функції, що збирає всі \"зайві\" передані аргументи у СПРАВЖНІЙ масив, на якому працюють методи масивів. Застарілий обʼєкт arguments схожий на масив, але не є ним по-справжньому, і недоступний у стрілкових функціях." },
+      { question: "Чи може значення за замовчуванням одного параметра залежати від іншого?", answer: "Так — параметри обчислюються зліва направо, тому значення за замовчуванням пізнішого параметра може посилатися на вже отримане значення попереднього параметра того самого виклику (наприклад, function f(price, total = price * 2))." },
+    ],
+    summary: "Параметр за замовчуванням (a = value) підставляється лише для undefined — надійніший за ідіому value || default, яка ламається на легітимному 0 чи \"\". Rest-параметр (...args) збирає довільну кількість аргументів у справжній масив і завжди йде останнім у списку параметрів.",
+    proTip: "Якщо в коді бачиш const x = value || default для параметра, який теоретично може бути 0 чи порожнім рядком (ціна, кількість, пошуковий запит) — це кандидат на прихований баг. Заміни на параметр за замовчуванням чи ??.",
+    nextLessonNote: "Далі — значення, що повертаються: чому забутий return — одна з найчастіших тихих помилок JavaScript.",
+    interactiveDemo: "default-params-demo",
+    practiceTask: {
+      title: "Виправ баг value || default для легітимного нуля",
+      description: "Функція розрахунку знижки використовує rate || 0.1, через що явно передана ставка 0% (0) замінюється на замовчування 10%. Виправ, використавши параметр за замовчуванням.",
+      checklist: ["Виклик getFinalPrice(1000, 0) повертає 1000 (без знижки).", "Виклик getFinalPrice(1000) без другого аргументу повертає 900 (10% знижка за замовчуванням).", "Використовується параметр за замовчуванням, а не ||."],
+      starterFiles: [
+        {
+          id: "js-default-params-start",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<p id="output"></p>
+
+<script>
+  function getFinalPrice(price, rate) {
+    const discountRate = rate || 0.1; // БАГ: 0 теж falsy
+    return price - price * discountRate;
+  }
+
+  const result = getFinalPrice(1000, 0);
+  document.querySelector("#output").textContent = "Ціна: " + result;
+  // зараз показує "Ціна: 900" замість "Ціна: 1000"
+</script>
+`,
+        },
+      ],
+      solutionFiles: [
+        {
+          id: "js-default-params-solution",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<p id="output"></p>
+
+<script>
+  function getFinalPrice(price, rate = 0.1) {
+    return price - price * rate;
+  }
+
+  const result = getFinalPrice(1000, 0);
+  document.querySelector("#output").textContent = "Ціна: " + result;
+  // тепер "Ціна: 1000"
+</script>
+`,
+          readOnly: true,
+        },
+      ],
+      hints: ["rate || 0.1 підставляє 0.1, коли rate falsy — а 0 теж falsy.", "Заміни на параметр за замовчуванням: function getFinalPrice(price, rate = 0.1)."],
+      expectedOutput: "\"Ціна: 1000\"",
+    },
+    microExercises: [
+      { id: "js-default-param-predict", kind: "predict", prompt: "Що виведе цей код?", code: `function greet(name = "Гість") {\n  return "Привіт, " + name;\n}\nconsole.log(greet());\nconsole.log(greet("Марія"));`, solution: "\"Привіт, Гість\", потім \"Привіт, Марія\" — перший виклик без аргументу використовує замовчування, другий передає явне значення, яке перезаписує його." },
+      { id: "js-or-default-find-bug", kind: "find-the-bug", prompt: "У чому проблема цього коду?", code: `function search(query) {\n  const q = query || "усі товари";\n  return q;\n}\nconsole.log(search(""));`, solution: "query || \"усі товари\" підставляє замовчування, коли query falsy — а порожній рядок \"\" (свідомо очищене поле пошуку) теж falsy. Результат — \"усі товари\" замість очікуваного порожнього рядка. Потрібен параметр за замовчуванням search(query = \"усі товари\"), який спрацює лише для undefined." },
+      { id: "js-rest-params-choice", kind: "choice", prompt: "Де в списку параметрів функції може стояти rest-параметр (...args)?", options: ["На будь-якій позиції", "Лише першим", "Лише останнім", "Лише якщо він єдиний параметр"], correctAnswer: "Лише останнім", solution: "Rest-параметр збирає всі \"залишкові\" аргументи, тому синтаксично дозволено ставити його лише останнім у списку параметрів — інакше незрозуміло, скільки аргументів мають потрапити в кожен параметр." },
+      { id: "js-nullish-vs-or-explain", kind: "explain", prompt: "Поясни різницю між value || default і value ?? default для параметра, що може дорівнювати 0.", solution: "value || default підставляє default для БУДЬ-ЯКОГО falsy значення value, включно з 0, \"\", false — тобто легітимний 0 буде замінено. value ?? default підставляє default лише коли value саме null чи undefined, тому легітимний 0 залишиться без змін." },
+      { id: "js-rest-sum-rewrite", kind: "rewrite", prompt: "Перепиши функцію так, щоб вона приймала будь-яку кількість чисел через rest-параметр замість фіксованих a, b, c.", code: `function sumThree(a, b, c) {\n  return a + b + c;\n}`, solution: `function sum(...numbers) {\n  return numbers.reduce((total, n) => total + n, 0);\n}\n// тепер працює для будь-якої кількості аргументів: sum(1, 2), sum(1, 2, 3, 4)` },
+    ],
+  },
+
+  "Значення, що повертаються": {
+    whatIsIt: "return негайно завершує виконання функції й передає вказане значення назад у місце виклику. Функція без return (чи з return без значення) повертає undefined. Функція може повернути лише ОДНЕ значення напряму — для кількох значень повертають обʼєкт чи масив.",
+    whyUseIt: "Функції спілкуються з рештою коду через значення, що повертаються: результат обчислення, знайдений елемент, статус успіху чи помилки. Забутий return — одна з найтихіших помилок JavaScript: код не кидає помилку, просто мовчки повертає undefined там, де очікувалось реальне значення.",
+    whenToUse: ["Функція обчислює значення, яке потрібне викликаючому коду — завжди повертай його явно через return.", "Рання return (guard-конструкція) для виходу з функції за невалідних умов.", "Повернення кількох повʼязаних значень через обʼєкт ({ min, max }) чи масив ([value, error])."],
+    whenNotToUse: ["Не змішуй в одній функції \"чисте\" обчислення значення й побічні ефекти (запис у DOM, мережевий запит) без чіткої причини — це ускладнює тестування й повторне використання.", "Не повертай різні типи значень з різних гілок функції (то число, то null, то обʼєкт) без чіткої, документованої причини.", "Не забувай return у блоковому тілі стрілкової функції — implicit return працює лише без {}."],
+    comparisonTable: {
+      headers: ["Ситуація", "Що повертає функція"],
+      rows: [
+        ["return value;", "value — виконання одразу завершується"],
+        ["return;", "undefined — вихід без значення"],
+        ["немає return узагалі", "undefined — після виконання всього тіла"],
+        ["(a) => a * 2", "a * 2 — implicit return без {}"],
+        ["(a) => { a * 2 }", "undefined — {} вимагає явний return"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "Забутий return — функція виконує обчислення, але не повертає результат:",
+        code: `function calculateTotal(price, quantity) {
+  const total = price * quantity; // забутий return!
+}
+
+const result = calculateTotal(100, 3);
+console.log(result); // undefined — обчислення відбулось, але результат загублено`,
+        lineNotes: ["total обчислюється всередині функції, але без return це значення НІКУДИ не передається — воно існує лише всередині виклику функції й одразу зникає.", "Функція без return завжди повертає undefined, незалежно від того, скільки корисної роботи виконано всередині."],
+      },
+      {
+        before: "Класична пастка стрілкової функції: {} без явного return дає undefined:",
+        code: `const double = (n) => { n * 2 }; // забутий return усередині {}
+
+console.log(double(5)); // undefined — НЕ 10!
+
+const doubleFixed = (n) => n * 2; // без {} — implicit return
+
+console.log(doubleFixed(5)); // 10`,
+        lineNotes: ["(n) => { n * 2 } має блокове тіло — {} вимикає implicit return, і без явного return вираз n * 2 просто обчислюється й одразу забувається.", "Прибравши {}, отримуємо implicit return — значення виразу автоматично стає результатом функції."],
+        after: "Ця помилка особливо підступна, бо синтаксично код виглядає правильним — легко пропустити відсутність return усередині {}.",
+      },
+      {
+        before: "Повернення кількох значень через обʼєкт:",
+        code: `function getMinMax(numbers) {
+  return {
+    min: Math.min(...numbers),
+    max: Math.max(...numbers),
+  };
+}
+
+const { min, max } = getMinMax([5, 2, 9, 1]);
+console.log(min, max); // 1 9`,
+        lineNotes: ["Функція повертає ОДИН обʼєкт, що містить два повʼязаних значення — min і max.", "Деструктуризація { min, max } одразу розкладає обʼєкт на окремі змінні в місці виклику."],
+      },
+      {
+        before: "Рання return (guard-конструкція) для виходу з невалідного стану:",
+        code: `function getDiscountLabel(cartTotal) {
+  if (cartTotal <= 0) return "Кошик порожній";
+
+  if (cartTotal >= 2000) return "Знижка 20%";
+  return "Знижка відсутня";
+}
+
+console.log(getDiscountLabel(0)); // "Кошик порожній"
+console.log(getDiscountLabel(2500)); // "Знижка 20%"`,
+        lineNotes: ["Перший return одразу завершує функцію для невалідного стану (cartTotal <= 0), не доходячи до решти перевірок.", "Кожен return завершує виконання функції одразу в тому місці, де він написаний — код нижче для цієї гілки не виконується."],
+      },
+    ],
+    commonMistakes: ["Обчислення значення всередині функції без return — результат мовчки губиться (undefined).", "Забутий return усередині блокового тіла стрілкової функції ({} без явного return).", "Повернення різних типів значень з різних гілок без чіткої причини.", "Плутанина: return завершує ЛИШЕ найближчу функцію, а не весь скрипт чи зовнішню функцію."],
+    dontDoThis: { code: `function getUserGreeting(name) {\n  if (name) {\n    \`Привіт, \${name}!\`; // забутий return — рядок обчислюється й одразу зникає\n  }\n}\n\nconsole.log(getUserGreeting("Іван")); // undefined, а не "Привіт, Іван!"`, explanation: "Рядок-шаблон обчислюється всередині if, але без return це значення нікуди не передається — функція завершується без явного return і повертає undefined. Правильно: if (name) return `Привіт, ${name}!`;." },
+    bestPractices: ["Завжди явно повертай значення, яке функція має \"віддати\" викликаючому коду.", "Для стрілкових функцій із простим виразом уникай {} — так implicit return убереже від забутого return.", "Використовуй ранню return для guard-умов — код читається зверху вниз як список передумов.", "Документуй чи типізуй (у TypeScript), що саме повертає функція, особливо якщо тип може відрізнятись у різних гілках."],
+    remember: ["Функція без return (чи з return без значення) завжди повертає undefined.", "return негайно завершує виконання функції — код після нього в цій гілці не виконується.", "Стрілкова функція з {} вимагає явний return; без {} — implicit return.", "Кілька значень повертай через обʼєкт чи масив, не намагайся повернути \"два значення напряму\"."],
+    interviewQuestions: [
+      { question: "Що поверне функція, якщо в ній немає жодного return?", answer: "undefined. Незалежно від того, скільки обчислень виконано всередині тіла функції, без явного return значення не передається назовні — виклик функції завжди дасть undefined." },
+      { question: "Чому (n) => { n * 2 } повертає undefined, а (n) => n * 2 — ні?", answer: "Фігурні дужки {} після стрілки перетворюють тіло на блоковий код, який вимагає явного return для повернення значення — без нього n * 2 просто обчислюється і губиться. Без {} тіло — це вираз, і implicit return автоматично робить результат цього виразу значенням, що повертається." },
+      { question: "Як повернути кілька значень з однієї функції?", answer: "JavaScript-функція технічно повертає лише одне значення, тому для кількох повʼязаних значень їх пакують в один обʼєкт ({ min, max }) чи масив ([value, error]), а в місці виклику розкладають через деструктуризацію." },
+      { question: "Що робить return без значення (просто return;)?", answer: "Негайно завершує виконання функції, повертаючи undefined — так само, як і функція без return взагалі. Це часто використовують для ранньої guard-умови, коли немає сенсу продовжувати виконання, а конкретне значення повертати не потрібно." },
+    ],
+    summary: "Функція без явного return завжди повертає undefined, навіть якщо всередині виконано корисні обчислення. Стрілкова функція з блоковим тілом {} вимагає явний return — implicit return працює лише для однорядкового виразу без {}. Для кількох значень повертай обʼєкт чи масив, а рання return — надійний спосіб виходу з невалідних станів.",
+    proTip: "Якщо функція раптово \"повертає undefined\" там, де очікувалось реальне значення — перше, що варто перевірити: чи не забутий return, особливо якщо це стрілкова функція з {}.",
+    nextLessonNote: "Далі — чисті функції: як писати функції без побічних ефектів, які легко тестувати й переносити.",
+    interactiveDemo: "return-value-demo",
+    practiceTask: {
+      title: "Виправ забутий return у розрахунку суми",
+      description: "Функція розрахунку загальної суми кошика обчислює значення, але забуває його повернути — виклик функції завжди дає undefined. Знайди й виправ помилку.",
+      checklist: ["Функція calculateTotal повертає реальне число.", "Результат коректно відображається на сторінці.", "Логіка обчислення (price * quantity) лишається без змін."],
+      starterFiles: [
+        {
+          id: "js-return-value-start",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<p id="output"></p>
+
+<script>
+  function calculateTotal(price, quantity) {
+    const total = price * quantity; // забутий return
+  }
+
+  const result = calculateTotal(150, 3);
+  document.querySelector("#output").textContent = "Сума: " + result;
+  // зараз показує "Сума: undefined"
+</script>
+`,
+        },
+      ],
+      solutionFiles: [
+        {
+          id: "js-return-value-solution",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<p id="output"></p>
+
+<script>
+  function calculateTotal(price, quantity) {
+    const total = price * quantity;
+    return total;
+  }
+
+  const result = calculateTotal(150, 3);
+  document.querySelector("#output").textContent = "Сума: " + result;
+  // тепер "Сума: 450"
+</script>
+`,
+          readOnly: true,
+        },
+      ],
+      hints: ["total обчислюється, але функція не повертає це значення назовні.", "Додай return total; в кінці функції."],
+      expectedOutput: "\"Сума: 450\"",
+    },
+    microExercises: [
+      { id: "js-no-return-predict", kind: "predict", prompt: "Що виведе цей код?", code: `function multiply(a, b) {\n  a * b;\n}\nconsole.log(multiply(4, 5));`, solution: "undefined — функція обчислює a * b, але без return це значення не передається назовні." },
+      { id: "js-arrow-block-find-bug", kind: "find-the-bug", prompt: "У чому проблема цього коду?", code: `const getFullName = (first, last) => {\n  \`\${first} \${last}\`;\n};\nconsole.log(getFullName("Іван", "Петренко"));`, solution: "Стрілкова функція має блокове тіло ({}), тому implicit return не працює — рядок-шаблон обчислюється й одразу забувається без return. Результат — undefined замість \"Іван Петренко\". Потрібно додати return перед рядком-шаблоном або прибрати {}." },
+      { id: "js-return-multiple-choice", kind: "choice", prompt: "Як правильно повернути з функції одразу два повʼязаних значення (наприклад, ім'я та вік)?", options: ["return name, age;", "Повернути обʼєкт { name, age }", "Викликати return двічі", "Це неможливо в JavaScript"], correctAnswer: "Повернути обʼєкт { name, age }", solution: "Функція технічно повертає лише одне значення, тому для кількох повʼязаних значень їх пакують в один обʼєкт (чи масив), який потім розкладають через деструктуризацію в місці виклику." },
+      { id: "js-early-return-explain", kind: "explain", prompt: "Поясни, як рання return допомагає уникнути глибокої вкладеності коду.", solution: "Рання return (guard-конструкція) одразу завершує функцію для невалідного чи крайнього стану на самому початку, без if/else — решта коду продовжує виконуватись на тому самому рівні вкладеності, без потреби обгортати \"основну\" логіку в додатковий блок else." },
+      { id: "js-return-value-rewrite", kind: "rewrite", prompt: "Перепиши функцію, додавши забутий return.", code: `function getAverage(a, b) {\n  const sum = a + b;\n  const avg = sum / 2;\n}`, solution: `function getAverage(a, b) {\n  const sum = a + b;\n  const avg = sum / 2;\n  return avg;\n}\n// тепер функція реально повертає обчислене середнє значення` },
+    ],
+  },
+};

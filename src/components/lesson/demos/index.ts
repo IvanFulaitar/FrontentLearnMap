@@ -73,6 +73,10 @@ import { TruthyFalsyDemo } from "./TruthyFalsyDemo";
 import { LoopDemo } from "./LoopDemo";
 import { GuardClauseDemo } from "./GuardClauseDemo";
 import { ErrorHandlingDemo } from "./ErrorHandlingDemo";
+import { FunctionHoistingDemo } from "./FunctionHoistingDemo";
+import { ArrowThisDemo } from "./ArrowThisDemo";
+import { DefaultParamsDemo } from "./DefaultParamsDemo";
+import { ReturnValueDemo } from "./ReturnValueDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -165,4 +169,8 @@ export const lessonDemos: Record<string, ComponentType> = {
   "loop-demo": LoopDemo,
   "guard-clause-demo": GuardClauseDemo,
   "error-handling-demo": ErrorHandlingDemo,
+  "function-hoisting-demo": FunctionHoistingDemo,
+  "arrow-this-demo": ArrowThisDemo,
+  "default-params-demo": DefaultParamsDemo,
+  "return-value-demo": ReturnValueDemo,
 };
