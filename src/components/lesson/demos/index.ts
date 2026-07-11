@@ -89,6 +89,8 @@ import { ObjectLiteralDemo } from "./ObjectLiteralDemo";
 import { PropertyAccessDemo } from "./PropertyAccessDemo";
 import { DestructuringDemo } from "./DestructuringDemo";
 import { ObjectSpreadDemo } from "./ObjectSpreadDemo";
+import { NestedDataDemo } from "./NestedDataDemo";
+import { ObjectMethodsDemo } from "./ObjectMethodsDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -197,4 +199,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "property-access-demo": PropertyAccessDemo,
   "destructuring-demo": DestructuringDemo,
   "object-spread-demo": ObjectSpreadDemo,
+  "nested-data-demo": NestedDataDemo,
+  "object-methods-demo": ObjectMethodsDemo,
 };

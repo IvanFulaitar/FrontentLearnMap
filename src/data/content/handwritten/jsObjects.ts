@@ -543,4 +543,295 @@ console.log(user.address === copy.address); // true — те саме посил
       { id: "js-spread-deep-rewrite", kind: "rewrite", prompt: "Перепиши код так, щоб зміна вкладеної властивості theme НЕ впливала на оригінальний обʼєкт settings.", code: `const settings = { fontSize: 14, appearance: { theme: "dark" } };\nconst updated = { ...settings };\nupdated.appearance.theme = "light";`, solution: `const settings = { fontSize: 14, appearance: { theme: "dark" } };\nconst updated = { ...settings, appearance: { ...settings.appearance, theme: "light" } };\n// вкладений appearance теж копіюється явно, тому оригінал settings.appearance.theme залишається "dark"` },
     ],
   },
+  "Вкладені дані": {
+    whatIsIt: "Вкладені дані — це обʼєкти, що містять масиви, і масиви, що містять обʼєкти, довільної глибини: { user: { name, orders: [{ id, items: [...] }] } }. Реальні дані з API майже завжди мають таку форму. Читання глибоко вкладеного значення поєднує крапкову/дужкову нотацію з індексацією масиву й опціональним ланцюжком; незмінне ОНОВЛЕННЯ вкладеної структури вимагає копіювання КОЖНОГО рівня на шляху до зміненого значення, а не лише верхнього.",
+    whyUseIt: "Товар з масивом відгуків, користувач зі списком замовлень, замовлення зі списком товарів — реальні предметні області рідко пласкі. Вміння безпечно читати й, головне, ПРАВИЛЬНО незмінно оновлювати глибоко вкладені дані — це те, що відрізняє робочий код на реальному проєкті від навчального прикладу з одним рівнем властивостей.",
+    whenToUse: ["Дані природно мають ієрархію: користувач → замовлення → товари в замовленні.", "Потрібно оновити ОДНЕ значення глибоко всередині великої структури, зберігаючи решту незмінною (React-стан).", "Читання даних з реального API, де вкладеність і відсутність окремих полів — норма, а не виняток."],
+    whenNotToUse: ["Не роби структуру глибшою, ніж потрібно, \"на майбутнє\" — кожен рівень вкладеності ускладнює і читання, і незмінне оновлення.", "Не намагайся оновлювати глибоко вкладене значення мутацією (obj.a.b.c = x) в даних, що впливають на рендер (стан React) — потрібне повне незмінне копіювання шляху.", "Не забувай про ?. на кожній потенційно відсутній ланці при глибокому читанні — інакше один відсутній проміжний рівень ламає весь вираз."],
+    comparisonTable: {
+      headers: ["Дія", "Правильний підхід"],
+      rows: [
+        ["Прочитати глибоко вкладене значення", "a?.b?.[0]?.c — ?. на кожній потенційно відсутній ланці"],
+        ["Оновити властивість на 1 рівні", "{ ...obj, field: x }"],
+        ["Оновити властивість на 2+ рівнях", "{ ...obj, nested: { ...obj.nested, field: x } } — копія КОЖНОГО рівня"],
+        ["Оновити елемент масиву всередині обʼєкта", "{ ...obj, list: obj.list.map((item, i) => i === idx ? {...item, ...} : item) }"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "Реальна вкладена структура: користувач з масивом замовлень, кожне замовлення з масивом товарів:",
+        code: `const user = {
+  name: "Олена",
+  orders: [
+    { id: 1, items: [{ name: "Книга", price: 300 }] },
+    { id: 2, items: [{ name: "Ручка", price: 20 }, { name: "Зошит", price: 45 }] },
+  ],
+};
+
+console.log(user.orders[1].items[0].name); // "Ручка"
+console.log(user.orders.length); // 2`,
+        lineNotes: ["user.orders[1].items[0].name — крапкова нотація для властивостей, квадратні дужки з індексом для елементів масиву, чергуються на кожному рівні вкладеності.", "Кожен .orders[1] крок повертає ОДИН обʼєкт замовлення, з якого далі читається .items — глибина шляху дорівнює кількості рівнів вкладеності в даних."],
+      },
+      {
+        before: "Безпечне читання, коли проміжний рівень може бути відсутнім чи масив може бути порожнім:",
+        code: `const userA = { name: "Іван", orders: [{ id: 1, items: [] }] };
+const userB = { name: "Петро" }; // немає orders взагалі
+
+console.log(userA.orders[0]?.items[0]?.name); // undefined — items порожній, безпечно
+console.log(userB.orders?.[0]?.items[0]?.name); // undefined — orders відсутній, безпечно
+console.log(userB.orders[0]); // TypeError — orders взагалі undefined, без ?. перед [0]`,
+        lineNotes: ["orders?.[0] — опціональний ланцюжок ПЕРЕД дужковою індексацією масиву захищає саме той крок, де orders може бути undefined.", "items[0]?.name захищає читання .name від того, що items[0] може бути undefined (масив порожній чи індекс поза межами)."],
+        after: "Кожна ланка ланцюжка, яка МОЖЕ бути відсутньою за реальними даними, потребує власного ?. — пропуск хоча б однієї ланки повертає ситуацію до звичайного TypeError.",
+      },
+      {
+        before: "Незмінне оновлення властивості на ДРУГОМУ рівні вкладеності:",
+        code: `const settings = {
+  fontSize: 14,
+  appearance: { theme: "dark", contrast: "normal" },
+};
+
+// Незмінно: оновити ЛИШЕ theme, зберігши contrast і fontSize
+const updated = {
+  ...settings,
+  appearance: { ...settings.appearance, theme: "light" },
+};
+
+console.log(settings.appearance.theme); // "dark" — оригінал не змінився
+console.log(updated.appearance); // { theme: "light", contrast: "normal" }`,
+        lineNotes: ["Копіювання ЛИШЕ { ...settings } НЕДОСТАТНЬО — властивість appearance у копії посилалась би на той самий вкладений обʼєкт, що і в оригіналі.", "{ ...settings.appearance, theme: \"light\" } копіює й вкладений рівень, тому зміна theme не впливає на оригінальний settings.appearance."],
+      },
+      {
+        before: "Незмінне оновлення елемента масиву всередині обʼєкта — комбінація spread і map:",
+        code: `const cart = {
+  items: [
+    { name: "Книга", qty: 1 },
+    { name: "Ручка", qty: 3 },
+  ],
+};
+
+// Незмінно: збільшити qty товару з індексом 1, залишивши решту без змін
+const updatedCart = {
+  ...cart,
+  items: cart.items.map((item, index) =>
+    index === 1 ? { ...item, qty: item.qty + 1 } : item
+  ),
+};
+
+console.log(cart.items[1].qty); // 3 — оригінал не змінився
+console.log(updatedCart.items[1].qty); // 4`,
+        lineNotes: ["items: cart.items.map(...) створює НОВИЙ масив items для updatedCart, залишаючи cart.items недоторканим.", "{ ...item, qty: item.qty + 1 } всередині map створює НОВИЙ обʼєкт товару для зміненого елемента — інші елементи повертаються без змін (те саме посилання, і це нормально, бо вони не змінювались)."],
+      },
+    ],
+    commonMistakes: ["Копіювати лише верхній рівень ({ ...obj }) і вважати ВСЮ структуру захищеною від мутації — вкладені рівні лишаються спільними посиланнями.", "Пропускати ?. на одній з кількох потенційно відсутніх ланок глибокого шляху — досить одного пропуску, щоб отримати TypeError.", "Мутувати елемент масиву всередині обʼєкта напряму (obj.list[i].field = x) замість map + spread — це змінює оригінал, навіть якщо зовнішній обʼєкт скопійований.", "Робити структуру даних глибшою, ніж реально потрібно для задачі — ускладнює і читання, і кожне майбутнє оновлення."],
+    dontDoThis: { code: `function updateCity(user, newCity) {\n  const updated = { ...user }; // копія лише ВЕРХНЬОГО рівня\n  updated.address.city = newCity; // БАГ: мутує ВКЛАДЕНИЙ обʼєкт напряму\n  return updated;\n}\n\nconst user = { name: "Ярина", address: { city: "Одеса" } };\nconst updated = updateCity(user, "Харків");\nconsole.log(user.address.city); // "Харків" — оригінал теж змінився!`, explanation: "{ ...user } копіює лише властивості ВЕРХНЬОГО рівня — властивість address у updated посилається на ТОЙ САМИЙ вкладений обʼєкт, що і в user. updated.address.city = newCity мутує цей спільний вкладений обʼєкт напряму, тому зміна \"випливає\" в оригінальний user, хоча ззовні здається, що updated — незалежна копія." },
+    bestPractices: ["Копіюй КОЖЕН рівень вкладеності на шляху до зміненого значення: { ...obj, nested: { ...obj.nested, field: x } }.", "Для оновлення елемента масиву всередині обʼєкта комбінуй spread (для обʼєкта) з map (для масиву), а не мутацію за індексом.", "Додавай ?. на кожній потенційно відсутній ланці глибокого шляху читання, а не лише на першій.", "Тримай структуру даних настільки пласкою, наскільки це розумно для задачі — глибша вкладеність = складніші оновлення."],
+    remember: ["Незмінне оновлення вкладеної структури вимагає копіювання КОЖНОГО рівня на шляху до зміненої властивості, а не лише верхнього.", "a?.b?.[0]?.c — ?. потрібен на кожній ланці, яка окремо може бути null/undefined.", "Оновлення елемента масиву всередині обʼєкта = spread обʼєкта + map масиву, а НЕ мутація за індексом.", "Глибина вкладеності даних напряму впливає на складність КОЖНОГО майбутнього незмінного оновлення цих даних."],
+    interviewQuestions: [
+      { question: "Чому { ...obj } недостатньо для незмінного оновлення властивості на ДРУГОМУ рівні вкладеності?", answer: "{ ...obj } копіює лише властивості ВЕРХНЬОГО рівня. Якщо значення властивості саме обʼєкт (вкладена структура), у копії опиниться ТЕ САМЕ посилання на нього. Щоб справді незалежно оновити вкладену властивість, потрібно скопіювати і вкладений рівень: { ...obj, nested: { ...obj.nested, field: x } }." },
+      { question: "Як незмінно оновити один елемент масиву, що зберігається як властивість обʼєкта?", answer: "Комбінацією spread для зовнішнього обʼєкта і map для масиву: { ...obj, list: obj.list.map((item, i) => i === targetIndex ? { ...item, field: newValue } : item) }. map створює новий масив, а spread всередині нього створює новий обʼєкт лише для зміненого елемента." },
+      { question: "Що станеться, якщо в довгому ланцюжку a.b.c.d пропустити ?. на одній із ланок, яка МОЖЕ бути відсутньою?", answer: "Якщо саме ця ланка виявиться undefined/null за реальними даними, JavaScript кидає TypeError: Cannot read properties of undefined (reading '...'), навіть якщо всі ІНШІ ланки ланцюжка захищені через ?. — достатньо ОДНОГО незахищеного кроку, щоб отримати помилку." },
+      { question: "Чому глибока вкладеність даних ускладнює підтримку коду?", answer: "Кожен додатковий рівень вкладеності означає, що і читання (потрібен довший ланцюжок, більше потенційних ?. ), і незмінне оновлення (потрібно копіювати КОЖЕН рівень на шляху) стають складнішими й більш громіздкими. Це особливо помітно при частих оновленнях глибоко вкладеного стану в React." },
+    ],
+    summary: "Вкладені дані поєднують обʼєкти й масиви на кількох рівнях. Незмінне оновлення вимагає копіювання КОЖНОГО рівня на шляху до зміненого значення ({ ...obj, nested: { ...obj.nested, field: x } }), а безпечне читання — ?. на КОЖНІЙ потенційно відсутній ланці. Оновлення елемента масиву всередині обʼєкта — це spread обʼєкта разом з map масиву.",
+    proTip: "Якщо оновлення глибоко вкладеного поля виглядає громіздким (багато {...} поспіль) — це нормально й очікувано для незмінних оновлень; спокуса \"спростити\" через пряму мутацію майже завжди призводить саме до багу зі спільним посиланням.",
+    nextLessonNote: "Далі — методи обʼєктів: Object.keys(), Object.values(), Object.entries() для перебору властивостей і Object.freeze() для захисту від мутації.",
+    interactiveDemo: "nested-data-demo",
+    practiceTask: {
+      title: "Виправ незмінне оновлення вкладеної адреси",
+      description: "Функція updateCity копіює лише верхній рівень обʼєкта user через { ...user }, а потім мутує вкладений address напряму. Виправ так, щоб оновлення було повністю незмінним.",
+      checklist: ["updateCity повертає новий обʼєкт з оновленим city.", "Оригінальний обʼєкт user (включно з user.address) залишається повністю незміненим.", "Вкладений address теж скопійований через spread перед зміною city."],
+      starterFiles: [
+        {
+          id: "js-nested-data-start",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<p id="output"></p>
+
+<script>
+  function updateCity(user, newCity) {
+    const updated = { ...user };
+    updated.address.city = newCity; // БАГ: мутує вкладений обʼєкт напряму
+    return updated;
+  }
+
+  const user = { name: "Ярина", address: { city: "Одеса" } };
+  const updated = updateCity(user, "Харків");
+
+  document.querySelector("#output").textContent =
+    "Оригінал: " + user.address.city + " | Новий: " + updated.address.city;
+  // зараз показує "Оригінал: Харків | Новий: Харків" — оригінал теж змінився
+</script>
+`,
+        },
+      ],
+      solutionFiles: [
+        {
+          id: "js-nested-data-solution",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<p id="output"></p>
+
+<script>
+  function updateCity(user, newCity) {
+    return {
+      ...user,
+      address: { ...user.address, city: newCity },
+    };
+  }
+
+  const user = { name: "Ярина", address: { city: "Одеса" } };
+  const updated = updateCity(user, "Харків");
+
+  document.querySelector("#output").textContent =
+    "Оригінал: " + user.address.city + " | Новий: " + updated.address.city;
+  // тепер "Оригінал: Одеса | Новий: Харків"
+</script>
+`,
+          readOnly: true,
+        },
+      ],
+      hints: ["{ ...user } копіює лише верхній рівень — address лишається спільним посиланням з оригіналом.", "Потрібно скопіювати і вкладений address: { ...user, address: { ...user.address, city: newCity } }."],
+      expectedOutput: "\"Оригінал: Одеса | Новий: Харків\"",
+    },
+    microExercises: [
+      { id: "js-nested-read-predict", kind: "predict", prompt: "Що виведе цей код?", code: `const data = { user: { orders: [{ id: 1 }, { id: 2 }] } };\nconsole.log(data.user.orders[1].id);`, solution: "2 — data.user.orders[1] читає ДРУГЕ замовлення (індекс 1) з масиву orders, а .id читає його властивість id, яка дорівнює 2." },
+      { id: "js-nested-shallow-find-bug", kind: "find-the-bug", prompt: "У чому проблема цього коду?", code: `const config = { theme: { color: "blue" }, version: 1 };\nconst updated = { ...config };\nupdated.theme.color = "red";\nconsole.log(config.theme.color);`, solution: "{ ...config } копіює лише верхній рівень — властивість theme у updated посилається на ТОЙ САМИЙ вкладений обʼєкт, що і в config. Мутація updated.theme.color змінює цей спільний обʼєкт, тому config.theme.color теж стає \"red\"." },
+      { id: "js-nested-chain-choice", kind: "choice", prompt: "Який вираз безпечно прочитає перший товар першого замовлення, навіть якщо orders може бути відсутнім?", options: ["user.orders[0].items[0]", "user.orders?.[0]?.items[0]", "user?.orders[0].items[0]", "user.orders?.[0].items?.[0]"], correctAnswer: "user.orders?.[0]?.items[0]", solution: "user.orders?.[0]?.items[0] захищає саме ту ланку, де orders може бути undefined (перед індексацією [0]) і ланку, де orders[0] може бути undefined (перед .items) — обидві потенційно проблемні точки покриті ?." },
+      { id: "js-nested-immutable-explain", kind: "explain", prompt: "Поясни, чому { ...obj, nested: { ...obj.nested, field: x } } вважається повністю незмінним оновленням, а { ...obj, nested: obj.nested } — ні.", solution: "{ ...obj, nested: { ...obj.nested, field: x } } створює НОВИЙ обʼєкт і для зовнішнього рівня, і для вкладеного nested — обидва рівні незалежні від оригіналу. { ...obj, nested: obj.nested } копіює зовнішній рівень, але явно ЗБЕРІГАЄ те саме посилання на nested замість копіювання — це технічно теж \"оновлення\" (якщо інші поля змінились), але саме nested лишається спільним посиланням і його подальша мутація вплине на оригінал." },
+      { id: "js-nested-array-rewrite", kind: "rewrite", prompt: "Перепиши функцію, щоб вона незмінно позначала товар з вказаним id як виконаний (done: true), не мутуючи оригінальний масив todos.", code: `function markDone(todos, id) {\n  const todo = todos.find((t) => t.id === id);\n  todo.done = true;\n  return todos;\n}`, solution: `function markDone(todos, id) {\n  return todos.map((t) => t.id === id ? { ...t, done: true } : t);\n}\n// map створює новий масив; spread створює новий обʼєкт лише для зміненого елемента` },
+    ],
+  },
+
+  "Методи обʼєктів": {
+    whatIsIt: "Вбудовані статичні методи Object дозволяють перебирати й трансформувати властивості обʼєкта без ручного for...in. Object.keys(obj) повертає масив ключів, Object.values(obj) — масив значень, Object.entries(obj) — масив пар [ключ, значення], зручний для map/filter чи for...of. Object.freeze(obj) робить обʼєкт незмінним на ПЕРШОМУ рівні — подальші спроби мутації тихо ігноруються (чи кидають помилку в strict mode).",
+    whyUseIt: "Object.keys/values/entries перетворюють обʼєкт у масив, даючи доступ до всієї потужності масивних методів (.map, .filter, .reduce) для роботи з властивостями — наприклад, підрахувати кількість полів, відфільтрувати за значенням чи вивести список у інтерфейсі. Object.freeze() — простий спосіб технічно гарантувати незмінність важливих даних (наприклад, конфігурації) під час розробки.",
+    whenToUse: ["Потрібно перебрати ВСІ властивості обʼєкта в циклі чи трансформувати їх через масивні методи.", "Підрахунок кількості властивостей: Object.keys(obj).length.", "Object.freeze() для обʼєктів-констант/конфігурацій, які НЕ повинні змінюватись під час виконання."],
+    whenNotToUse: ["Не використовуй for...in для перебору власних властивостей обʼєкта — він також перебирає УСПАДКОВАНІ властивості; Object.keys() дає лише власні.", "Не покладайся на Object.freeze() як на ГЛИБОКИЙ захист — він заморожує лише ПЕРШИЙ рівень, вкладені обʼєкти залишаються мутабельними.", "Не перетворюй обʼєкт у масив через Object.entries(), якщо простіше й чіткіше просто звернутись до конкретної властивості напряму."],
+    comparisonTable: {
+      headers: ["Метод", "Що повертає"],
+      rows: [
+        ["Object.keys(obj)", "масив ключів: [\"name\", \"price\"]"],
+        ["Object.values(obj)", "масив значень: [\"Книга\", 300]"],
+        ["Object.entries(obj)", "масив пар: [[\"name\", \"Книга\"], [\"price\", 300]]"],
+        ["Object.freeze(obj)", "той самий обʼєкт, тепер захищений від мутації на 1 рівні"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "Object.keys(), Object.values() і Object.entries() на одному обʼєкті:",
+        code: `const product = { name: "Книга", price: 300, inStock: true };
+
+console.log(Object.keys(product)); // ["name", "price", "inStock"]
+console.log(Object.values(product)); // ["Книга", 300, true]
+console.log(Object.entries(product)); // [["name","Книга"], ["price",300], ["inStock",true]]`,
+        lineNotes: ["Усі три методи повертають масиви В ОДНАКОВОМУ порядку — Object.keys()[0] відповідає Object.values()[0].", "Object.entries() дає масив пар [ключ, значення] — зручно для деструктуризації в циклі: for (const [key, value] of Object.entries(obj))."],
+      },
+      {
+        before: "Перебір властивостей через Object.entries() і деструктуризацію в циклі:",
+        code: `const scores = { math: 90, physics: 85, art: 95 };
+
+for (const [subject, score] of Object.entries(scores)) {
+  console.log(subject + ": " + score);
+}
+// "math: 90"
+// "physics: 85"
+// "art: 95"`,
+        lineNotes: ["const [subject, score] деструктуризує кожну пару [ключ, значення] з масиву, що повертає Object.entries(), прямо в заголовку for...of.", "Це чіткіша альтернатива for...in + obj[key] для читання й ключа, і значення одночасно."],
+      },
+      {
+        before: "Object.keys() + масивні методи для підрахунку й трансформації властивостей:",
+        code: `const inventory = { apples: 5, bananas: 0, oranges: 12 };
+
+const totalItems = Object.values(inventory).reduce((sum, qty) => sum + qty, 0);
+const inStockCount = Object.entries(inventory).filter(([, qty]) => qty > 0).length;
+
+console.log(totalItems); // 17
+console.log(inStockCount); // 2 — apples і oranges, bananas виключено (0)`,
+        lineNotes: ["Object.values(inventory).reduce(...) підсумовує всі значення властивостей — потужність масивних методів застосована до даних обʼєкта.", "filter(([, qty]) => qty > 0) деструктуризує пару, ігноруючи ключ (порожня позиція перед комою) і перевіряючи лише значення qty."],
+      },
+      {
+        before: "Object.freeze() захищає обʼєкт від мутації на ПЕРШОМУ рівні, але не глибше:",
+        code: `const config = Object.freeze({ apiUrl: "https://api.example.com", limits: { maxItems: 10 } });
+
+config.apiUrl = "https://hacked.com"; // тихо ігнорується (не strict) — рівень 1 захищений
+console.log(config.apiUrl); // "https://api.example.com" — не змінилось
+
+config.limits.maxItems = 999; // ПРАЦЮЄ! рівень 2 (вкладений) НЕ захищений
+console.log(config.limits.maxItems); // 999 — змінилось!`,
+        lineNotes: ["Object.freeze(config) захищає лише ВЛАСТИВОСТІ САМОГО config (apiUrl, limits як посилання) — спроба їх перезаписати ігнорується.", "config.limits — це окремий обʼєкт, який Object.freeze() НЕ заморозив; його властивості (maxItems) залишаються повністю мутабельними."],
+        after: "Для глибокого заморожування знадобився б рекурсивний виклик Object.freeze() на кожному вкладеному обʼєкті окремо.",
+      },
+    ],
+    commonMistakes: ["Використовувати for...in для власних властивостей — він також перебирає УСПАДКОВАНІ, що рідко буває бажаним; Object.keys()/entries() безпечніші.", "Вважати Object.freeze() глибоким захистом — він заморожує лише ПЕРШИЙ рівень, вкладені обʼєкти лишаються мутабельними.", "Забувати, що Object.freeze() у нестрогому режимі ТИХО ігнорує спробу мутації, без помилки — легко не помітити, що оновлення \"не спрацювало\".", "Плутати порядок деструктуризації пари в Object.entries(): [key, value], а не [value, key]."],
+    dontDoThis: { code: `const settings = Object.freeze({ theme: "dark", limits: { maxUsers: 5 } });\n\nfunction increaseLimit(settings) {\n  settings.limits.maxUsers += 1; // "працює", бо вкладений обʼєкт НЕ заморожений\n  return settings;\n}\n\nincreaseLimit(settings);\nconsole.log(settings.limits.maxUsers); // 6 — "заморожений" обʼєкт все одно змінився!`, explanation: "Object.freeze(settings) заморожує лише ВЛАСТИВОСТІ settings на верхньому рівні (theme, посилання limits) — сам вкладений обʼєкт limits залишається звичайним, повністю мутабельним обʼєктом. settings.limits.maxUsers += 1 змінює цей вкладений обʼєкт напряму, і ця зміна проходить успішно, попри те, що зовнішній settings технічно \"заморожений\"." },
+    bestPractices: ["Використовуй Object.keys()/values()/entries() замість for...in для перебору власних властивостей обʼєкта.", "Комбінуй Object.entries() з деструктуризацією ([key, value]) для чіткого коду в циклах і масивних методах.", "Якщо потрібен справжній глибокий захист від мутації, заморожуй КОЖЕН вкладений обʼєкт окремо (рекурсивно) чи використовуй готову бібліотечну утиліту для глибокого freeze.", "Object.keys(obj).length — простий і читабельний спосіб підрахувати кількість властивостей обʼєкта."],
+    remember: ["Object.keys(obj) → масив ключів; Object.values(obj) → масив значень; Object.entries(obj) → масив пар [ключ, значення] — усі в однаковому порядку.", "for...in перебирає УСПАДКОВАНІ властивості також; Object.keys()/entries() дають лише власні — зазвичай саме це й потрібно.", "Object.freeze(obj) захищає лише ПЕРШИЙ рівень обʼєкта — вкладені обʼєкти залишаються повністю мутабельними.", "У нестрогому режимі спроба мутації замороженого обʼєкта тихо ігнорується, без явної помилки."],
+    interviewQuestions: [
+      { question: "У чому різниця між Object.keys(), Object.values() і Object.entries()?", answer: "Object.keys(obj) повертає масив імен усіх власних перелічуваних властивостей. Object.values(obj) повертає масив ЗНАЧЕНЬ тих самих властивостей у тому самому порядку. Object.entries(obj) повертає масив пар [ключ, значення] — по суті, обʼєднання результатів keys і values у пари." },
+      { question: "Чому Object.keys() зазвичай надійніший для перебору властивостей, ніж for...in?", answer: "for...in перебирає не лише ВЛАСНІ властивості обʼєкта, а й УСПАДКОВАНІ через прототипний ланцюжок — це може призвести до обробки властивостей, які програміст не очікував побачити. Object.keys() (та values/entries) повертають лише власні перелічувані властивості самого обʼєкта." },
+      { question: "Object.freeze() робить обʼєкт повністю незмінним на всіх рівнях?", answer: "Ні, лише на ПЕРШОМУ рівні. Властивості самого замороженого обʼєкта не можна перезаписати чи видалити, але якщо значенням властивості є ІНШИЙ обʼєкт (вкладена структура), той вкладений обʼєкт залишається повністю мутабельним, якщо не заморозити його окремо." },
+      { question: "Як зручно перебрати пари ключ-значення обʼєкта в циклі з деструктуризацією?", answer: "for (const [key, value] of Object.entries(obj)) { ... } — Object.entries() перетворює обʼєкт у масив пар [ключ, значення], а деструктуризація [key, value] прямо в заголовку циклу дає доступ і до ключа, і до значення на кожній ітерації без додаткового obj[key]." },
+    ],
+    summary: "Object.keys()/values()/entries() перетворюють властивості обʼєкта в масиви для перебору й трансформації масивними методами, повертаючи лише ВЛАСНІ властивості (на відміну від for...in). Object.freeze() захищає обʼєкт від мутації лише на ПЕРШОМУ рівні — вкладені обʼєкти залишаються повністю мутабельними, якщо їх не заморозити окремо.",
+    proTip: "Якщо \"заморожений\" обʼєкт все одно якимось чином змінюється — перевір, чи це не мутація ВКЛАДЕНОГО обʼєкта, який Object.freeze() не торкнувся, оскільки заморожування не рекурсивне.",
+    nextLessonNote: "Це завершує модуль \"Обʼєкти\" — далі DOM: як безпечно читати й оновлювати реальні елементи сторінки з JavaScript.",
+    interactiveDemo: "object-methods-demo",
+    practiceTask: {
+      title: "Виправ підрахунок товарів у наявності через некоректну деструктуризацію",
+      description: "Функція countInStock неправильно деструктуризує пари з Object.entries(), переплутавши порядок [ключ, значення], через що фільтрація за кількістю не працює. Виправ порядок.",
+      checklist: ["countInStock повертає кількість товарів зі значенням більше 0.", "Деструктуризація пари використовує правильний порядок [key, qty], а не [qty, key].", "Функція коректно працює для будь-якого набору товарів."],
+      starterFiles: [
+        {
+          id: "js-object-methods-start",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<p id="output"></p>
+
+<script>
+  function countInStock(inventory) {
+    return Object.entries(inventory).filter(([qty, key]) => qty > 0).length; // БАГ: переплутано порядок
+  }
+
+  const inventory = { apples: 5, bananas: 0, oranges: 12 };
+  document.querySelector("#output").textContent = "У наявності: " + countInStock(inventory);
+  // зараз результат неправильний, бо qty і key переплутані
+</script>
+`,
+        },
+      ],
+      solutionFiles: [
+        {
+          id: "js-object-methods-solution",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<p id="output"></p>
+
+<script>
+  function countInStock(inventory) {
+    return Object.entries(inventory).filter(([key, qty]) => qty > 0).length;
+  }
+
+  const inventory = { apples: 5, bananas: 0, oranges: 12 };
+  document.querySelector("#output").textContent = "У наявності: " + countInStock(inventory);
+  // тепер "У наявності: 2"
+</script>
+`,
+          readOnly: true,
+        },
+      ],
+      hints: ["Object.entries() повертає пари у порядку [ключ, значення], а не [значення, ключ].", "Правильна деструктуризація: ([key, qty]) => qty > 0."],
+      expectedOutput: "\"У наявності: 2\"",
+    },
+    microExercises: [
+      { id: "js-object-methods-keys-predict", kind: "predict", prompt: "Що виведе цей код?", code: `const item = { name: "Ручка", price: 20 };\nconsole.log(Object.keys(item));\nconsole.log(Object.values(item));`, solution: "[\"name\", \"price\"], потім [\"Ручка\", 20] — Object.keys() дає масив імен властивостей, Object.values() дає масив їхніх значень у тому самому порядку." },
+      { id: "js-object-methods-freeze-find-bug", kind: "find-the-bug", prompt: "У чому проблема цього коду?", code: `const config = Object.freeze({ limits: { max: 10 } });\nconfig.limits.max = 999;\nconsole.log(config.limits.max);`, solution: "Object.freeze(config) захищає лише ВЛАСТИВОСТІ config на верхньому рівні — сам вкладений обʼєкт limits НЕ заморожений і залишається повністю мутабельним. config.limits.max = 999 успішно змінює його, тому console.log виведе 999, а не 10, попри те що config технічно \"заморожений\"." },
+      { id: "js-object-methods-entries-choice", kind: "choice", prompt: "Що повертає Object.entries({ a: 1, b: 2 })?", options: ["[\"a\", \"b\"]", "[1, 2]", "[[\"a\", 1], [\"b\", 2]]", "{ a: 1, b: 2 }"], correctAnswer: "[[\"a\", 1], [\"b\", 2]]", solution: "Object.entries() повертає масив пар [ключ, значення] для кожної власної властивості — тому результат [[\"a\", 1], [\"b\", 2]], а не окремо ключі чи окремо значення." },
+      { id: "js-object-methods-forin-explain", kind: "explain", prompt: "Поясни, чому Object.keys(obj) зазвичай безпечніший для перебору властивостей, ніж for...in.", solution: "for...in перебирає ВСІ перелічувані властивості обʼєкта, включно з успадкованими через прототипний ланцюжок — якщо прототип обʼєкта (чи його клас) додав якісь властивості чи методи, вони теж потраплять у перебір, що часто небажано. Object.keys(obj) повертає лише ВЛАСНІ перелічувані властивості самого obj, ігноруючи все успадковане — це передбачуваніше в переважній більшості реальних задач." },
+      { id: "js-object-methods-sum-rewrite", kind: "rewrite", prompt: "Перепиши функцію підрахунку суми значень обʼєкта, використовуючи Object.values() і reduce замість ручного циклу for...in.", code: `function sumValues(obj) {\n  let total = 0;\n  for (const key in obj) {\n    total += obj[key];\n  }\n  return total;\n}`, solution: `function sumValues(obj) {\n  return Object.values(obj).reduce((sum, value) => sum + value, 0);\n}\n// той самий результат, без ризику зачепити успадковані властивості через for...in` },
+    ],
+  },
 };
