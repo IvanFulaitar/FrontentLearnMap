@@ -79,6 +79,10 @@ import { DefaultParamsDemo } from "./DefaultParamsDemo";
 import { ReturnValueDemo } from "./ReturnValueDemo";
 import { ClosureScopeDemo } from "./ClosureScopeDemo";
 import { PureFunctionDemo } from "./PureFunctionDemo";
+import { ArrayAccessDemo } from "./ArrayAccessDemo";
+import { MapRenderDemo } from "./MapRenderDemo";
+import { FilterSearchDemo } from "./FilterSearchDemo";
+import { ReduceTotalsDemo } from "./ReduceTotalsDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -177,4 +181,8 @@ export const lessonDemos: Record<string, ComponentType> = {
   "return-value-demo": ReturnValueDemo,
   "scope-closures-demo": ClosureScopeDemo,
   "pure-function-demo": PureFunctionDemo,
+  "array-access-demo": ArrayAccessDemo,
+  "map-render-demo": MapRenderDemo,
+  "filter-search-demo": FilterSearchDemo,
+  "reduce-totals-demo": ReduceTotalsDemo,
 };
