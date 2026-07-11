@@ -10,12 +10,12 @@ function calcWithReturn(price: number, qty: number): number {
   return total;
 }
 
-function calcWithoutReturn(price: number, qty: number): number | undefined {
+function calcWithoutReturn(price: number, qty: number): undefined {
   const total = price * qty; // computed, but never handed back to the caller
 }
 
 const doubleImplicit = (n: number): number => n * 2;
-const doubleBlockNoReturn = (n: number): number | undefined => {
+const doubleBlockNoReturn = (n: number): undefined => {
   n * 2; // computed, but the block body never returns it
 };
 
