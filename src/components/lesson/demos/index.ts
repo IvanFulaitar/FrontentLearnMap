@@ -109,6 +109,14 @@ import { AsyncAwaitDemo } from "./AsyncAwaitDemo";
 import { TryCatchAsyncDemo } from "./TryCatchAsyncDemo";
 import { ParallelRequestsDemo } from "./ParallelRequestsDemo";
 import { AbortControllerDemo } from "./AbortControllerDemo";
+import { VscodeOverviewDemo } from "./VscodeOverviewDemo";
+import { VscodeInstallDemo } from "./VscodeInstallDemo";
+import { VscodeFilesDemo } from "./VscodeFilesDemo";
+import { VscodeInterfaceDemo } from "./VscodeInterfaceDemo";
+import { VscodeTerminalDemo } from "./VscodeTerminalDemo";
+import { VscodeExtensionsDemo } from "./VscodeExtensionsDemo";
+import { VscodeFormattingDemo } from "./VscodeFormattingDemo";
+import { VscodeFirstPageDemo } from "./VscodeFirstPageDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -237,4 +245,12 @@ export const lessonDemos: Record<string, ComponentType> = {
   "try-catch-async-demo": TryCatchAsyncDemo,
   "parallel-requests-demo": ParallelRequestsDemo,
   "abort-controller-demo": AbortControllerDemo,
+  "vscode-overview-demo": VscodeOverviewDemo,
+  "vscode-install-demo": VscodeInstallDemo,
+  "vscode-files-demo": VscodeFilesDemo,
+  "vscode-interface-demo": VscodeInterfaceDemo,
+  "vscode-terminal-demo": VscodeTerminalDemo,
+  "vscode-extensions-demo": VscodeExtensionsDemo,
+  "vscode-formatting-demo": VscodeFormattingDemo,
+  "vscode-first-page-demo": VscodeFirstPageDemo,
 };

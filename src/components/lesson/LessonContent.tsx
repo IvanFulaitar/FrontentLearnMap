@@ -4,6 +4,7 @@ import { MarkdownRenderer } from "../../shared/markdown/MarkdownRenderer";
 import { Card } from "../ui/Card";
 import { Callout } from "./Callout";
 import { LessonPractice } from "./LessonPractice";
+import { LessonToc } from "./LessonToc";
 import { lessonDemos } from "./demos";
 import styles from "./LessonContent.module.css";
 
@@ -510,19 +511,16 @@ function CheatSheetLessonContent({ lesson }: LessonContentProps) {
           {lesson.nextLessonNote ? <p>{lesson.nextLessonNote}</p> : null}
         </Card>
       </div>
-      <Card className={styles.toc}>
-        <strong>Зміст уроку</strong>
-        {sections
-          .filter(([id]) => {
-            if (id === "why") return Boolean(lesson.whyUseIt);
-            if (id === "see") return Boolean(lesson.visualExplanation || Demo);
-            if (id === "not") return Boolean(lesson.whenNotToUse?.length || lesson.dontDoThis || lesson.commonMistakes?.length);
-            if (id === "senior") return Boolean(seniorTips.length || lesson.proTip);
-            if (id === "interview") return Boolean(lesson.interviewQuestions?.length);
-            return true;
-          })
-          .map(([id, label]) => <a href={`#${id}`} key={id}>{label}</a>)}
-      </Card>
+      <LessonToc
+        sections={sections.filter(([id]) => {
+          if (id === "why") return Boolean(lesson.whyUseIt);
+          if (id === "see") return Boolean(lesson.visualExplanation || Demo);
+          if (id === "not") return Boolean(lesson.whenNotToUse?.length || lesson.dontDoThis || lesson.commonMistakes?.length);
+          if (id === "senior") return Boolean(seniorTips.length || lesson.proTip);
+          if (id === "interview") return Boolean(lesson.interviewQuestions?.length);
+          return true;
+        }) as [string, string][]}
+      />
     </div>
   );
 }
@@ -715,22 +713,19 @@ function LegacyLessonContent({ lesson }: LessonContentProps) {
           <ul className={styles.list}>{lesson.nextSteps.map((item) => <li key={item}>{item}</li>)}</ul>
         </Card>
       </div>
-      <Card className={styles.toc}>
-        <strong>Зміст уроку</strong>
-        {sections
-          .filter(([id]) => {
-            if (id === "why") return Boolean(lesson.whyUseIt || lesson.motivation);
-            if (id === "when") return Boolean(lesson.whenToUse?.length);
-            if (id === "when-not") return Boolean(lesson.whenNotToUse?.length);
-            if (id === "dont") return Boolean(lesson.dontDoThis);
-            if (id === "best-practices") return Boolean(lesson.bestPractices?.length);
-            if (id === "real-world") return Boolean(lesson.realWorldUsage?.length);
-            if (id === "interview") return Boolean(lesson.interviewQuestions?.length);
-            if (id === "pro-tip") return Boolean(lesson.proTip);
-            return true;
-          })
-          .map(([id, label]) => <a href={`#${id}`} key={id}>{label}</a>)}
-      </Card>
+      <LessonToc
+        sections={sections.filter(([id]) => {
+          if (id === "why") return Boolean(lesson.whyUseIt || lesson.motivation);
+          if (id === "when") return Boolean(lesson.whenToUse?.length);
+          if (id === "when-not") return Boolean(lesson.whenNotToUse?.length);
+          if (id === "dont") return Boolean(lesson.dontDoThis);
+          if (id === "best-practices") return Boolean(lesson.bestPractices?.length);
+          if (id === "real-world") return Boolean(lesson.realWorldUsage?.length);
+          if (id === "interview") return Boolean(lesson.interviewQuestions?.length);
+          if (id === "pro-tip") return Boolean(lesson.proTip);
+          return true;
+        }) as [string, string][]}
+      />
     </div>
   );
 }

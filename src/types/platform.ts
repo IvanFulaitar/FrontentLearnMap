@@ -81,6 +81,10 @@ export interface LearningResource {
   tags: string[];
 }
 
+/** Operating system the learner picked for the "Робоче середовище" (VS Code
+ * setup) course — persisted globally so it's remembered across lessons. */
+export type OsChoice = "windows" | "macos";
+
 export interface PlatformSettings {
   fontSize: "small" | "medium" | "large";
   animations: boolean;

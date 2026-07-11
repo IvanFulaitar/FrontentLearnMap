@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { courses } from "./courses";
+import { lessonDemos } from "../components/lesson/demos";
 
 /**
  * Regression coverage for the generated-content pipeline (makeLesson /
@@ -93,6 +94,44 @@ describe("courses data generation", () => {
       if (lessons.length < 4) return;
       const distinctExamples = new Set(lessons.map((lesson) => lesson.codeExample));
       expect(distinctExamples.size).toBeGreaterThan(1);
+    });
+  });
+});
+
+describe("vscode-setup onboarding course", () => {
+  it("is the very first course, so it appears before HTML everywhere course order is used (sidebar, catalog grid...)", () => {
+    expect(courses[0]?.id).toBe("vscode-setup");
+    expect(courses[1]?.id).toBe("html");
+  });
+
+  it("has all 8 lessons of its single module, in the intended order", () => {
+    const course = courses.find((c) => c.id === "vscode-setup");
+    expect(course).toBeDefined();
+    expect(course!.modules).toHaveLength(1);
+    expect(course!.modules[0].lessons.map((lesson) => lesson.title)).toEqual([
+      "Що таке VS Code",
+      "Встановлення VS Code",
+      "Файли й папки",
+      "Інтерфейс VS Code",
+      "Термінал",
+      "Розширення",
+      "Форматування коду",
+      "Запуск першої HTML-сторінки",
+    ]);
+  });
+
+  it("hand-writes whatIsIt for every lesson (renders the beginner-friendly cheat-sheet layout, not the generic generated layout)", () => {
+    const course = courses.find((c) => c.id === "vscode-setup");
+    course!.modules[0].lessons.forEach((lesson) => {
+      expect(lesson.whatIsIt).toBeTruthy();
+    });
+  });
+
+  it("gives every lesson an interactiveDemo id, and every id resolves to a registered component (regression: dangling demo id would render nothing)", () => {
+    const course = courses.find((c) => c.id === "vscode-setup");
+    course!.modules[0].lessons.forEach((lesson) => {
+      expect(lesson.interactiveDemo).toBeTruthy();
+      expect(lessonDemos[lesson.interactiveDemo!]).toBeDefined();
     });
   });
 });

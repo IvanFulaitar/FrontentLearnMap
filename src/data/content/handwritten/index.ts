@@ -35,6 +35,7 @@ import { jsObjectsOverrides } from "./jsObjects";
 import { jsDomOverrides } from "./jsDom";
 import { jsEventsOverrides } from "./jsEvents";
 import { jsAsyncOverrides } from "./jsAsync";
+import { vscodeSetupOverrides } from "./vscodeSetup";
 
 /**
  * Registry of fully hand-authored lesson content, keyed by
@@ -47,6 +48,7 @@ import { jsAsyncOverrides } from "./jsAsync";
  * it into `lessonOverridesByModule` below with its module id.
  */
 const lessonOverridesByModule: Record<string, Record<string, LessonOverride>> = {
+  "vscode-setup-basics": vscodeSetupOverrides,
   "html-web-basics": htmlWebBasicsOverrides,
   "html-foundations": htmlFoundationsOverrides,
   "html-text": htmlTextOverrides,

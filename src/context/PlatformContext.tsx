@@ -8,7 +8,7 @@ import {
   QUIZ_PROGRESS_KEY,
 } from "../hooks/useProgress";
 import { getCourseProgress, getLearningStats, type ProgressMap, type QuizProgressMap } from "../utils/progress";
-import type { PlatformSettings, UserProfile } from "../types/platform";
+import type { OsChoice, PlatformSettings, UserProfile } from "../types/platform";
 
 const STORAGE_KEY = "frontend-academy:platform-state";
 
@@ -26,6 +26,9 @@ interface PlatformState {
   bookmarks: string[];
   settings: PlatformSettings;
   profile: UserProfile;
+  // Learner's OS choice for the "Робоче середовище" (VS Code setup) course —
+  // global and persisted so it's remembered when moving between its lessons.
+  os: OsChoice;
 }
 
 const defaultState: PlatformState = {
@@ -37,6 +40,7 @@ const defaultState: PlatformState = {
   bookmarks: [],
   settings: { fontSize: "medium", animations: true, compactMode: false },
   profile: { username: "Студент Free Frontend", avatar: "ФФ" },
+  os: "windows",
 };
 
 /** Drops yesterday's (or older) completed daily challenges so the list
@@ -67,6 +71,7 @@ interface PlatformContextValue extends PlatformState {
   toggleBookmark: (lessonKey: string) => void;
   updateSettings: (settings: Partial<PlatformSettings>) => void;
   updateProfile: (profile: Partial<UserProfile>) => void;
+  setOs: (os: OsChoice) => void;
   resetPlatform: () => void;
   resetNotes: () => void;
 }
@@ -194,6 +199,10 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     update((current) => ({ ...current, profile: { ...current.profile, ...profile } }));
   }, [update]);
 
+  const setOs = useCallback((os: OsChoice) => {
+    update((current) => (current.os === os ? current : { ...current, os }));
+  }, [update]);
+
   const resetPlatform = useCallback(() => {
     persist(defaultState);
     setState(defaultState);
@@ -241,9 +250,10 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     toggleBookmark,
     updateSettings,
     updateProfile,
+    setOs,
     resetPlatform,
     resetNotes,
-  }), [addXp, completeDaily, completeProject, level, resetNotes, resetPlatform, saveNote, state, toggleBookmark, unlockedAchievements, updateProfile, updateSettings]);
+  }), [addXp, completeDaily, completeProject, level, resetNotes, resetPlatform, saveNote, setOs, state, toggleBookmark, unlockedAchievements, updateProfile, updateSettings]);
 
   return <PlatformContext.Provider value={value}>{children}</PlatformContext.Provider>;
 }

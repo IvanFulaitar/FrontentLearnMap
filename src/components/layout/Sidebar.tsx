@@ -136,7 +136,12 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onCollapseToggle }: Side
             >
               {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
               <span className={styles.courseTitleText}>{course.title}</span>
-              <span className={styles.courseMeta}>{courseLevelLabels[course.level]}</span>
+              {/* vscode-setup is a short onboarding checklist, not a graded
+                  skill-level course — a "Beginner" badge on it reads as
+                  confusing/redundant next to the real courses below it. */}
+              {course.id === "vscode-setup" ? null : (
+                <span className={styles.courseMeta}>{courseLevelLabels[course.level]}</span>
+              )}
             </button>
             <div className={styles.progress}>
               <ProgressBar

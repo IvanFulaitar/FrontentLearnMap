@@ -377,3 +377,145 @@
     text-align: center;
   }
 }
+
+/* Lesson illustrations (diagrams/screenshots) */
+.lessonFigure {
+  margin: 12px 0;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  text-align: center;
+}
+
+.lessonFigureImg {
+  /* width: 100% lets it shrink on narrow viewports; the inline max-width
+     (set from the image's intrinsic width, see LessonFigure.tsx) stops the
+     browser from upscaling small raster screenshots past their real
+     resolution on wide desktop columns — margin: 0 auto centers it once
+     it's narrower than the surrounding card. */
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.lessonFigureCaption {
+  margin: 8px 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.lessonFigureFallback {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: 0.85rem;
+  background: var(--surface-muted);
+}
+
+.lessonFigureButton {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: zoom-in;
+}
+
+.lessonFigureButton:focus-visible .lessonFigureImg {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Fullscreen image lightbox — opened by clicking a lesson screenshot.
+   The close button is deliberately positioned INSIDE the inner container,
+   overlaid on the image's own top-right corner (not floated above it via a
+   negative offset) — a fixed offset above the image can be pushed off the
+   top of the viewport on short/mobile screens when the image is tall,
+   making the button unreachable. Overlaying it on the image itself is safe
+   at every viewport size, including landscape phones and tablets. */
+.lessonFigureLightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(8, 14, 26, 0.86);
+  cursor: zoom-out;
+}
+
+.lessonFigureLightboxInner {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  max-width: min(1200px, 100%);
+  max-height: 100%;
+  cursor: default;
+}
+
+.lessonFigureLightboxImg {
+  display: block;
+  max-width: 100%;
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.lessonFigureLightboxCaption {
+  margin: 0;
+  color: #f1f5f9;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.lessonFigureLightboxClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.6);
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.lessonFigureLightboxClose:hover,
+.lessonFigureLightboxClose:focus-visible {
+  background: rgba(15, 23, 42, 0.85);
+  outline: none;
+}
+
+@media (max-width: 560px) {
+  .lessonFigureLightbox {
+    padding: 10px;
+  }
+
+  .lessonFigureLightboxImg {
+    max-height: 78vh;
+  }
+
+  .lessonFigureLightboxClose {
+    top: 6px;
+    right: 6px;
+    width: 32px;
+    height: 32px;
+  }
+}

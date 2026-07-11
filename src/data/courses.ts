@@ -102,6 +102,10 @@ const validateCatalog = (input: unknown): CatalogCourse[] => {
 const catalog = validateCatalog(courseCatalog);
 
 const resourceMap: Record<string, { label: string; url: string }[]> = {
+  "vscode-setup": [
+    { label: "VS Code Docs", url: "https://code.visualstudio.com/docs" },
+    { label: "VS Code Tips and Tricks", url: "https://code.visualstudio.com/docs/getstarted/tips-and-tricks" },
+  ],
   html: [
     { label: "MDN HTML", url: "https://developer.mozilla.org/en-US/docs/Web/HTML" },
     { label: "WHATWG HTML Standard", url: "https://html.spec.whatwg.org/" },
@@ -145,6 +149,7 @@ const resourceMap: Record<string, { label: string; url: string }[]> = {
 };
 
 const contextMap: Record<string, string> = {
+  "vscode-setup": "робоче середовище розробника: редактор коду, файлову структуру, термінал і базові інструменти",
   html: "структуру документа, доступність і розмітку, зручну для пошукових систем",
   css: "візуальний дизайн, адаптивний макет і масштабовану стилізацію",
   javascript: "інтерактивну поведінку, зміни стану та браузерні API",
@@ -614,7 +619,7 @@ const makeModuleQuiz = (module: CatalogModule, course: CatalogCourse): QuizData 
         "Це варто завчити напам'ять без прикладів.",
       ],
       correctAnswer: module.description,
-      explanation: `Модуль «${module.title}» цінний, бо підтримує ${contextMap[course.id]}.`,
+      explanation: `Модуль «${module.title}» цінний, бо підтримує ${contextMap[course.id] ?? "щоденну frontend-роботу"}.`,
       optionExplanations: {
         "Це не має стосунку до frontend-розробки.": "Кожен модуль курсу підібраний саме тому, що впливає на щоденну frontend-роботу.",
         "Це важливо лише для backend-систем.": "Тема належить до frontend-курсу — вона впливає на те, що бачить і робить користувач у браузері.",
@@ -695,7 +700,7 @@ const makeLesson = (course: CatalogCourse, module: CatalogModule, title: string,
   const difficulty = getDifficulty(course, lessonIndex);
   const estimatedTime = difficulty === "Hard" ? 32 : difficulty === "Medium" ? 26 : 20;
   const codeExample = codeFor(course.id, title);
-  const courseContext = contextMap[course.id];
+  const courseContext = contextMap[course.id] ?? "щоденну frontend-роботу";
   const starterFiles = starterFilesFor(course.id, title, codeExample);
   const solutionFiles = solutionFilesFor(course.id, title, codeExample);
   const previewEnabled = starterFiles.some((file) => file.language === "html");

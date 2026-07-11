@@ -11,3 +11,4 @@ export { DemoToolbar } from "./DemoToolbar";
 export { DemoAxis } from "./DemoAxis";
 export { HighlightDemo, HighlightArea } from "./HighlightDemo";
 export type { HighlightRegion } from "./HighlightDemo";
+export { LessonFigure } from "./LessonFigure";

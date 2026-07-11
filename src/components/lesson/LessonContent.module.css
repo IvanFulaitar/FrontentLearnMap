@@ -1,6 +1,11 @@
 .content {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 260px;
+  /* max-content (rather than a fixed 260px) lets the second column follow
+     whatever explicit width .toc itself sets — 260px normally, 64px when
+     collapsed to an icon rail (see .tocCollapsed) — so the reading column
+     (minmax(0, 1fr)) automatically reclaims the freed space instead of
+     needing its own JS-driven width calculation. */
+  grid-template-columns: minmax(0, 1fr) max-content;
   gap: 18px;
   align-items: start;
 }
@@ -25,7 +30,9 @@
   display: grid;
   gap: 8px;
   padding: 16px;
+  width: 260px;
   min-width: 0;
+  transition: width 200ms ease, padding 200ms ease;
 }
 
 .toc a {
@@ -36,6 +43,49 @@
 
 .toc a:hover {
   color: var(--primary);
+}
+
+.tocHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.tocToggle {
+  flex-shrink: 0;
+  min-height: 30px;
+  width: 30px;
+  padding: 0;
+}
+
+.tocLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tocCollapsed {
+  width: 64px;
+  padding: 12px 6px;
+}
+
+.tocCollapsed .tocHeader {
+  justify-content: center;
+}
+
+/* Icon-rail mode: hide the title and every link's text label, leaving just
+   the toggle button and a centered column of emoji — the full label is
+   still exposed to assistive tech via aria-label/title on each link. */
+.tocCollapsed .tocTitle,
+.tocCollapsed .tocLinkText {
+  display: none;
+}
+
+.tocCollapsed .tocLink {
+  justify-content: center;
+  padding: 8px 0;
+  font-size: 1.05rem;
 }
 
 .section {
@@ -417,8 +467,30 @@
     grid-template-columns: 1fr;
   }
 
-  .toc {
+  /* Below this width the TOC always stacks full-width under the lesson
+     body, ignoring any collapsed-to-rail state saved from a wider screen —
+     the icon-rail layout only makes sense next to a two-column desktop
+     reading view, not as a standalone stacked block on tablet/phone. */
+  .toc,
+  .tocCollapsed {
     position: static;
+    width: 100%;
+    padding: 16px;
+  }
+
+  .tocCollapsed .tocHeader {
+    justify-content: space-between;
+  }
+
+  .tocCollapsed .tocTitle,
+  .tocCollapsed .tocLinkText {
+    display: inline;
+  }
+
+  .tocCollapsed .tocLink {
+    justify-content: flex-start;
+    padding: 0;
+    font-size: inherit;
   }
 }
 
