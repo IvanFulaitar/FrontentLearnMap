@@ -83,6 +83,8 @@ import { ArrayAccessDemo } from "./ArrayAccessDemo";
 import { MapRenderDemo } from "./MapRenderDemo";
 import { FilterSearchDemo } from "./FilterSearchDemo";
 import { ReduceTotalsDemo } from "./ReduceTotalsDemo";
+import { SortDemo } from "./SortDemo";
+import { ImmutableUpdateDemo } from "./ImmutableUpdateDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -185,4 +187,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "map-render-demo": MapRenderDemo,
   "filter-search-demo": FilterSearchDemo,
   "reduce-totals-demo": ReduceTotalsDemo,
+  "sort-demo": SortDemo,
+  "immutable-update-demo": ImmutableUpdateDemo,
 };
