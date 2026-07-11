@@ -1,0 +1,438 @@
+import type { LessonOverride } from "./htmlFoundations";
+
+/**
+ * Module "Асинхронний JavaScript" (js-async). Eighth JavaScript module —
+ * deferred operations, callbacks, timers, Promises, async/await, and
+ * (later lessons) try/catch with async, parallel requests, and request
+ * cancellation. Same deep cheat-sheet lesson format as js-events. First 3
+ * of 6 lessons.
+ */
+export const jsAsyncOverrides: Record<string, LessonOverride> = {
+  "Callback-и та таймери": {
+    whatIsIt: "Callback — функція, передана як аргумент іншій функції, щоб бути викликаною ПІЗНІШЕ. setTimeout(callback, delay) планує один виклик callback через ПРИНАЙМНІ delay мілісекунд; setInterval(callback, delay) викликає callback ПОВТОРЮВАНО кожні delay мс, доки не зупинити через clearInterval. Обидва повертають числовий ID, який передається в clearTimeout/clearInterval для скасування запланованого виклику.",
+    whyUseIt: "JavaScript однопотоковий — він не може \"почекати\" без блокування всього іншого коду. Callback-и й таймери дозволяють відкласти чи повторити дію, не зупиняючи виконання решти програми: рядок коду після setTimeout виконується одразу, а сам callback спрацює пізніше, коли надійде його час у черзі подій.",
+    whenToUse: ["Відкласти дію на певний час (автоматичне закриття повідомлення через кілька секунд).", "Повторювати дію з певним інтервалом (опитування сервера, оновлення годинника на екрані).", "Робота зі старими API, що приймають лише callback-и (не Promise)."],
+    whenNotToUse: ["Не використовуй глибоко вкладені callback-и для послідовних асинхронних кроків (\"callback hell\") — для цього краще підходять Promise чи async/await.", "Не покладайся на setTimeout(fn, 0) як на гарантовано МИТТЄВЕ виконання — воно все одно виконається ПІСЛЯ поточного синхронного коду, і браузер може додати власну мінімальну затримку.", "Не забувай зберігати ID від setInterval і викликати clearInterval, коли повторення більше не потрібне — інакше таймер продовжує працювати \"у фоні\" без потреби."],
+    comparisonTable: {
+      headers: ["Функція", "Поведінка"],
+      rows: [
+        ["setTimeout(fn, delay)", "викликає fn ОДИН РАЗ, через ПРИНАЙМНІ delay мс"],
+        ["setInterval(fn, delay)", "викликає fn ПОВТОРЮВАНО кожні delay мс, доки не зупинити"],
+        ["clearTimeout(id) / clearInterval(id)", "скасовує запланований виклик за ID, повернутим setTimeout/setInterval"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "Базовий setTimeout — код після нього виконується одразу, callback пізніше:",
+        code: `console.log("1: почато");
+
+setTimeout(() => {
+  console.log("3: спрацював callback через 1000мс");
+}, 1000);
+
+console.log("2: код після setTimeout виконується одразу");
+// Порядок у консолі: 1, 2, а потім, через ~1000мс: 3`,
+        lineNotes: ["setTimeout лише ПЛАНУЄ виклик callback — сам виклик setTimeout повертається одразу, не блокуючи виконання рядка \"2\".", "Callback реально спрацьовує лише коли минає щонайменше вказана затримка І поточний синхронний код повністю завершився."],
+      },
+      {
+        before: "setInterval з реальною зупинкою через clearInterval після N повторень:",
+        code: `let count = 0;
+const intervalId = setInterval(() => {
+  count++;
+  console.log("Тік", count);
+  if (count >= 3) {
+    clearInterval(intervalId); // зупиняємо після 3 повторень
+  }
+}, 500);`,
+        lineNotes: ["intervalId, повернутий setInterval, зберігається в змінну — саме цей ID потрібен clearInterval для зупинки.", "Без clearInterval цей таймер продовжував би викликати callback кожні 500мс НЕСКІНЧЕННО, навіть коли лічильник більше не потрібен."],
+      },
+      {
+        before: "Callback hell — вкладені setTimeout для послідовних кроків стають важкими для читання:",
+        code: `setTimeout(() => {
+  console.log("Крок 1");
+  setTimeout(() => {
+    console.log("Крок 2");
+    setTimeout(() => {
+      console.log("Крок 3");
+    }, 500);
+  }, 500);
+}, 500);
+// Кожен наступний крок вкладений ГЛИБШЕ — код "сповзає" праворуч`,
+        lineNotes: ["Кожен наступний асинхронний крок вимагає ЩЕ ОДНОГО рівня вкладеності — при більшій кількості кроків код стає майже нечитабельним (класична \"піраміда приречення\").", "Це один з головних мотивів появи Promise і async/await — вони дозволяють писати послідовні асинхронні кроки БЕЗ наростання вкладеності."],
+      },
+      {
+        before: "setTimeout(fn, 0) все одно виконується ПІСЛЯ поточного синхронного коду:",
+        code: `console.log("1: синхронний код почався");
+
+setTimeout(() => {
+  console.log("3: цей callback з delay=0");
+}, 0);
+
+console.log("2: синхронний код продовжується");
+// Порядок: 1, 2, 3 — НЕ 1, 3, 2, попри delay: 0`,
+        lineNotes: ["Навіть з delay: 0 callback потрапляє в черзі ПІСЛЯ всього поточного синхронного коду — цикл подій (event loop) обробляє відкладені callback-и лише коли стек викликів порожній.", "Це доводить: setTimeout НІКОЛИ не виконується синхронно \"негайно\", навіть із нульовою затримкою."],
+      },
+    ],
+    commonMistakes: ["Забувати викликати clearInterval, коли повторення більше не потрібне — таймер продовжує працювати непотрібно.", "Вважати delay ТОЧНИМ часом виконання, а не мінімальною гарантованою затримкою.", "Будувати глибоко вкладені callback-и для послідовних кроків замість використання Promise/async-await.", "Передавати виклик функції fn() замість посилання fn у setTimeout — це виконає fn НЕГАЙНО, а не запланує виклик."],
+    dontDoThis: { code: `function showMessage() {\n  console.log("Повідомлення показано");\n}\n\nsetTimeout(showMessage(), 1000); // БАГ: викликає ОДРАЗУ, а не через 1000мс`, explanation: "showMessage() з дужками ВИКЛИКАЄ функцію НЕГАЙНО, під час виконання цього рядка — ще до того, як минула хоч якась затримка. Результат виклику (undefined, бо функція нічого не повертає) передається в setTimeout як \"callback\" — через 1000мс НІЧОГО не відбудеться, бо undefined не є функцією, яку можна викликати. Правильно: setTimeout(showMessage, 1000) — без дужок, як ПОСИЛАННЯ на функцію." },
+    bestPractices: ["Завжди передавай ПОСИЛАННЯ на функцію в setTimeout/setInterval (без дужок), а не результат її виклику.", "Зберігай ID, повернутий setInterval, і викликай clearInterval, коли повторення більше не потрібне.", "Для послідовних асинхронних кроків використовуй Promise чи async/await замість вкладених callback-ів.", "Не покладайся на точну кількість мілісекунд затримки — розглядай delay як МІНІМАЛЬНИЙ, а не гарантований час."],
+    remember: ["setTimeout — один відкладений виклик; setInterval — повторюваний, доки не clearInterval.", "Код після setTimeout виконується одразу — сам callback спрацьовує пізніше, коли стек викликів порожній.", "setTimeout(fn, 0) все одно виконується ПІСЛЯ всього поточного синхронного коду.", "fn() з дужками в setTimeout викликає функцію негайно — потрібне посилання fn, без дужок."],
+    interviewQuestions: [
+      { question: "У чому різниця між setTimeout і setInterval?", answer: "setTimeout планує ОДИН виклик callback через принаймні вказану кількість мілісекунд. setInterval планує ПОВТОРЮВАНИЙ виклик callback з тим самим інтервалом, знову і знову, доки явно не зупинити через clearInterval — без цього таймер продовжує працювати нескінченно." },
+      { question: "Чому setTimeout(fn, 0) не виконується миттєво, синхронно?", answer: "JavaScript однопотоковий і використовує цикл подій (event loop): відкладені callback-и (навіть з delay: 0) потрапляють у черзі й обробляються ЛИШЕ КОЛИ стек викликів повністю порожній, тобто після завершення ВСЬОГО поточного синхронного коду. Тому delay: 0 означає \"якнайшвидше після поточного коду\", а не \"негайно, синхронно\"." },
+      { question: "Що станеться, якщо не викликати clearInterval для непотрібного таймера?", answer: "setInterval продовжуватиме викликати callback з заданим інтервалом НЕСКІНЧЕННО, навіть якщо результат цих викликів більше нікому не потрібен. Це може призводити до непотрібного навантаження, витоків памʼяті (якщо callback тримає посилання на обʼєкти, що інакше мали б бути звільнені) чи навіть помилок, якщо callback звертається до вже неіснуючих елементів." },
+      { question: "Чому \"callback hell\" вважається проблемою, і що допомагає її вирішити?", answer: "Кожен наступний асинхронний крок, реалізований через вкладений callback (наприклад, всередині попереднього setTimeout), додає ще один рівень вкладеності — код швидко стає важким для читання й підтримки (\"піраміда приречення\"). Promise дозволяють ланцюжок пласких .then() викликів замість вкладеності, а async/await робить асинхронний код майже ідентичним синхронному за читабельністю." },
+    ],
+    summary: "setTimeout планує один відкладений виклик; setInterval — повторюваний, до явного clearInterval. Код після них виконується одразу — сам callback спрацьовує пізніше, коли черга подій дозволяє. Delay — мінімальна, не точна гарантія часу. Глибоко вкладені callback-и для послідовних кроків — головний мотив появи Promise і async/await.",
+    proTip: "Якщо запланований через setTimeout callback \"спрацьовує одразу\" — перша підозра: чи не передані дужки після імені функції (fn() замість fn).",
+    nextLessonNote: "Далі — проміси (Promise): як представити результат асинхронної операції одним обʼєктом і уникнути вкладених callback-ів через ланцюжок .then().",
+    interactiveDemo: "callback-timer-demo",
+    practiceTask: {
+      title: "Виправ setTimeout, що спрацьовує одразу замість запланованого виклику",
+      description: "Функція scheduleMessage передає showMessage() з дужками в setTimeout, тому повідомлення зʼявляється миттєво, а не через 2 секунди. Виправ, передавши посилання на функцію.",
+      checklist: ["Повідомлення зʼявляється ЧЕРЕЗ 2 секунди, а не миттєво.", "showMessage НЕ викликається одразу під час scheduleMessage.", "setTimeout отримує посилання на функцію, а не результат її виклику."],
+      starterFiles: [
+        {
+          id: "js-callback-timer-start",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<button id="notify">Показати повідомлення через 2с</button>
+<p id="output"></p>
+
+<script>
+  function showMessage() {
+    document.querySelector("#output").textContent = "Повідомлення показано!";
+  }
+
+  function scheduleMessage() {
+    setTimeout(showMessage(), 2000); // БАГ: викликає одразу
+  }
+
+  document.querySelector("#notify").addEventListener("click", scheduleMessage);
+</script>
+`,
+        },
+      ],
+      solutionFiles: [
+        {
+          id: "js-callback-timer-solution",
+          path: "index.html",
+          language: "html",
+          label: "index.html",
+          code: `<button id="notify">Показати повідомлення через 2с</button>
+<p id="output"></p>
+
+<script>
+  function showMessage() {
+    document.querySelector("#output").textContent = "Повідомлення показано!";
+  }
+
+  function scheduleMessage() {
+    setTimeout(showMessage, 2000);
+  }
+
+  document.querySelector("#notify").addEventListener("click", scheduleMessage);
+</script>
+`,
+          readOnly: true,
+        },
+      ],
+      hints: ["showMessage() з дужками викликає функцію одразу, у момент виконання scheduleMessage.", "Потрібне посилання на функцію без дужок: setTimeout(showMessage, 2000)."],
+      expectedOutput: "Повідомлення зʼявляється лише через 2 секунди після кліку",
+    },
+    microExercises: [
+      { id: "js-callback-order-predict", kind: "predict", prompt: "У якому порядку виведуться рядки?", code: `console.log("A");\nsetTimeout(() => console.log("B"), 0);\nconsole.log("C");`, solution: "A, C, B — навіть з delay: 0, callback у setTimeout виконується ПІСЛЯ всього поточного синхронного коду (A і C), бо цикл подій обробляє відкладені callback-и лише коли стек викликів порожній." },
+      { id: "js-callback-invoke-find-bug", kind: "find-the-bug", prompt: "У чому проблема цього коду?", code: `function logTick() {\n  console.log("тік");\n}\nsetInterval(logTick(), 1000);`, solution: "logTick() з дужками ВИКЛИКАЄ функцію негайно, а результат виклику (undefined) передається в setInterval як \"callback\" — реальні повторювані виклики кожні 1000мс НЕ відбудуться, бо undefined не є функцією. Потрібно передати logTick без дужок: setInterval(logTick, 1000)." },
+      { id: "js-callback-clear-choice", kind: "choice", prompt: "Що потрібно, щоб зупинити setInterval, який більше не потрібен?", options: ["clearTimeout(id)", "clearInterval(id) з ID, повернутим setInterval", "просто нічого не робити, він зупиниться сам", "викликати setInterval знову з delay: 0"], correctAnswer: "clearInterval(id) з ID, повернутим setInterval", solution: "setInterval повертає числовий ID; саме цей ID потрібно передати в clearInterval, щоб зупинити повторювані виклики. Без цього таймер продовжує працювати нескінченно." },
+      { id: "js-callback-hell-explain", kind: "explain", prompt: "Поясни, чому глибоко вкладені setTimeout для послідовних кроків вважаються проблемою (\"callback hell\").", solution: "Кожен наступний асинхронний крок, залежний від попереднього, реалізується як callback, ВКЛАДЕНИЙ у callback попереднього кроку. З кожним новим кроком рівень вкладеності зростає — код \"сповзає\" все далі праворуч і стає важким читати, підтримувати й правильно обробляти помилки в кожному рівні окремо. Promise і async/await вирішують це, дозволяючи писати послідовні кроки на одному рівні вкладеності." },
+      { id: "js-callback-rewrite", kind: "rewrite", prompt: "Перепиши код, щоб він зберігав ID таймера і зупиняв його після 5 тіків.", code: `setInterval(() => {\n  console.log("тік");\n}, 1000);\n// як зупинити після 5 тіків?`, solution: `let count = 0;\nconst id = setInterval(() => {\n  count++;\n  console.log("тік", count);\n  if (count >= 5) {\n    clearInterval(id);\n  }\n}, 1000);\n// ID зберігається в змінну id, яку потім передаємо в clearInterval` },
+    ],
+  },
+
+  "Проміси": {
+    whatIsIt: "Promise — обʼєкт, що представляє РЕЗУЛЬТАТ асинхронної операції, якого ще немає (або вже є). Проміс має один із трьох станів: pending (очікування), fulfilled (успішно виконано, є значення) чи rejected (сталась помилка). .then(onFulfilled) реагує на успіх, .catch(onRejected) — на помилку, .finally() виконується ЗАВЖДИ, незалежно від результату. new Promise((resolve, reject) => {...}) створює проміс вручну: викликати resolve(value) означає успіх, reject(error) — помилку.",
+    whyUseIt: "Promise вирішує проблему callback hell: замість вкладення callback-ів один в одного, послідовні асинхронні кроки записуються як ПЛАСКИЙ ланцюжок .then().then().then() — кожен на тому самому рівні вкладеності, незалежно від кількості кроків. Це стандартний, вбудований у мову механізм, на якому побудовані fetch та багато інших сучасних API.",
+    whenToUse: ["Представлення результату однієї асинхронної операції (запит до сервера, читання файлу) та реакція на її завершення.", "Перетворення старого callback-based API на промісо-орієнтований (\"promisify\").", "Послідовний ланцюжок залежних асинхронних кроків через .then()."],
+    whenNotToUse: ["Не забувай .catch() — необроблена помилка (unhandled rejection) може мовчки \"загубитись\" чи вивести попередження в консоль.", "Не вкладай .then() всередину іншого .then() без потреби — це знову призводить до зростаючої вкладеності; краще ПОВЕРТАТИ значення чи проміс із .then(), щоб продовжити плаский ланцюжок.", "Не використовуй Promise для подій, що відбуваються БАГАТО РАЗІВ (клік, скрол) — проміс встановлюється (settles) лише ОДИН РАЗ; для повторюваних подій потрібні звичайні слухачі подій."],
+    comparisonTable: {
+      headers: ["Стан", "Значення"],
+      rows: [
+        ["pending", "операція ще не завершена — очікування"],
+        ["fulfilled", "операція завершилась успішно — доступне значення через .then()"],
+        ["rejected", "операція завершилась з помилкою — доступна через .catch()"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "Створення проміса вручну та реакція через .then/.catch:",
+        code: `function delay(ms) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (ms < 0) {
+        reject(new Error("Затримка не може бути негативною"));
+      } else {
+        resolve(\`Минуло \${ms}мс\`);
+      }
+    }, ms);
+  });
+}
+
+delay(1000)
+  .then((message) => console.log("Успіх:", message))
+  .catch((error) => console.error("Помилка:", error.message));`,
+        lineNotes: ["Функція-виконавець (executor), передана в new Promise, викликається СИНХРОННО одразу, але resolve/reject всередині setTimeout спрацьовують пізніше, асинхронно.", "Лише ОДНЕ з resolve чи reject реально викликається для конкретного проміса — після цього стан \"фіксується\" назавжди (pending -> fulfilled ЧИ pending -> rejected, без повернення назад)."],
+      },
+      {
+        before: "Плаский ланцюжок .then() замість вкладених callback-ів — кожен крок повертає значення для наступного:",
+        code: `fetchUser(1)
+  .then((user) => fetchOrders(user.id))
+  .then((orders) => fetchOrderDetails(orders[0].id))
+  .then((details) => console.log("Деталі замовлення:", details))
+  .catch((error) => console.error("Щось пішло не так:", error));
+// Кожен .then ПОВЕРТАЄ проміс наступного кроку — ланцюжок залишається пласким`,
+        lineNotes: ["Кожен .then() ПОВЕРТАЄ значення (чи новий проміс) — саме тому наступний .then() у ланцюжку отримує результат ПОПЕРЕДНЬОГО кроку, а не оригінальні дані.", "Один спільний .catch() у кінці ланцюжка ловить помилку з БУДЬ-ЯКОГО з попередніх кроків — не потрібно обробляти кожен крок окремо."],
+      },
+      {
+        before: ".finally() виконується завжди, незалежно від успіху чи помилки — типово для прибирання:",
+        code: `showLoadingSpinner();
+
+fetchData()
+  .then((data) => renderData(data))
+  .catch((error) => showErrorMessage(error))
+  .finally(() => hideLoadingSpinner());
+// hideLoadingSpinner викликається і при успіху, і при помилці`,
+        lineNotes: [".finally() спрацьовує ПІСЛЯ завершення всього ланцюжка, незалежно від того, чи він завершився через .then (успіх), чи через .catch (помилка).", "Це ідеальне місце для дій, що мають статись у БУДЬ-ЯКОМУ випадку — сховати індикатор завантаження, звільнити ресурс, тощо."],
+      },
+      {
+        before: "Реальний баг: забутий return всередині .then() ламає ланцюжок — наступний крок отримує undefined:",
+        code: `fetchUser(1)
+  .then((user) => {
+    fetchOrders(user.id); // БАГ: немає return!
+  })
+  .then((orders) => {
+    console.log(orders); // undefined — попередній .then нічого не повернув
+  });`,
+        lineNotes: ["Без return всередині callback .then() наступний крок ланцюжка отримує undefined, а НЕ результат fetchOrders(user.id) — проміс від fetchOrders просто \"загубився\", ніхто на нього не чекає.", "Правильно: return fetchOrders(user.id); — тоді наступний .then() дочекається ЦЬОГО проміса і отримає його реальний результат."],
+        after: "Правило: якщо всередині .then() викликається асинхронна операція, результат якої потрібен далі в ланцюжку, її ОБОВʼЯЗКОВО повертати через return.",
+      },
+    ],
+    commonMistakes: ["Забувати .catch() у кінці ланцюжка — необроблена помилка (unhandled rejection) залишається непоміченою.", "Забувати return всередині .then(), коли результат наступної асинхронної операції потрібен далі в ланцюжку.", "Вкладати .then() усередині іншого .then() замість повернення значення для продовження плаского ланцюжка.", "Вважати, що проміс може \"передумати\" й перейти з fulfilled назад у pending чи в rejected — стан фіксується назавжди після першого resolve/reject."],
+    dontDoThis: { code: `fetchUser(1).then((user) => {\n  fetchOrders(user.id).then((orders) => { // БАГ: вкладений .then замість return\n    console.log(orders);\n  });\n});`, explanation: "Замість того, щоб ПОВЕРНУТИ проміс fetchOrders(user.id) з зовнішнього .then() і продовжити плаский ланцюжок новим .then(), тут .then() викликається ВСЕРЕДИНІ callback-у зовнішнього .then() — це відтворює ту саму проблему вкладеності, яку промайси мали вирішити. Крім того, помилка з внутрішнього fetchOrders НЕ буде поймана зовнішнім .catch(), якщо такий є, бо внутрішній проміс не повʼязаний з зовнішнім ланцюжком через return." },
+    bestPractices: ["Завжди повертай (return) результат асинхронної операції всередині .then(), якщо він потрібен далі в ланцюжку.", "Завершуй кожен ланцюжок промісів через .catch(), навіть якщо помилка \"здається неможливою\".", "Використовуй .finally() для дій, що мають статись незалежно від результату (сховати спінер, закрити зʼєднання).", "Уникай вкладення .then() всередині .then() — повертай значення чи проміс для продовження плаского ланцюжка."],
+    remember: ["Проміс має 3 стани: pending, fulfilled, rejected — стан фіксується назавжди після першого resolve/reject.", ".then() реагує на успіх, .catch() — на помилку, .finally() — завжди, незалежно від результату.", "Кожен .then() повертає значення (чи проміс) для НАСТУПНОГО кроку — забутий return ламає ланцюжок.", "Один .catch() у кінці ланцюжка ловить помилку з будь-якого попереднього кроку."],
+    interviewQuestions: [
+      { question: "Які три стани може мати Promise, і чи може він змінити стан після \"фіксації\"?", answer: "pending (очікування), fulfilled (успіх, є значення) і rejected (помилка). Проміс переходить з pending в ОДИН з двох інших станів РІВНО ОДИН РАЗ — після цього стан фіксується назавжди й більше не змінюється, навіть якщо всередині executor'а знову викликати resolve чи reject." },
+      { question: "Чому важливо не забувати return всередині .then()?", answer: "Кожен .then() у ланцюжку передає своє повернене значення (чи проміс) наступному .then(). Якщо всередині callback-у .then() викликається асинхронна операція БЕЗ return, наступний крок ланцюжка отримає undefined замість реального результату цієї операції — сама операція виконається, але її результат буде \"загублений\" для подальшого ланцюжка." },
+      { question: "Що робить .finally(), і чим воно відрізняється від .then()?", answer: ".finally() виконується ПІСЛЯ завершення всього ланцюжка НЕЗАЛЕЖНО від того, чи він завершився успіхом (.then) чи помилкою (.catch) — на відміну від .then(), який реагує лише на успіх. .finally() типово використовують для дій, що мають статись у будь-якому випадку: сховати індикатор завантаження, звільнити ресурс тощо." },
+      { question: "Чому один .catch() у кінці ланцюжка може обробити помилку з будь-якого попереднього кроку?", answer: "Якщо будь-який .then() у ланцюжку кидає помилку чи повертає rejected-проміс, весь ланцюжок \"перескакує\" напряму до найближчого наступного .catch(), ігноруючи всі проміжні .then() між місцем помилки та цим .catch(). Тому один .catch() у кінці природньо обробляє помилки з БУДЬ-ЯКОГО попереднього кроку, без потреби обробляти кожен окремо." },
+    ],
+    summary: "Promise представляє результат асинхронної операції одним обʼєктом зі станами pending/fulfilled/rejected. .then() реагує на успіх, .catch() — на помилку, .finally() — завжди. Кожен .then() повертає значення для наступного кроку — забутий return чи зайве вкладення .then() — найпоширеніші помилки при роботі з ланцюжками промісів.",
+    proTip: "Якщо наступний .then() у ланцюжку раптом отримує undefined замість очікуваних даних — перша перевірка: чи є return перед асинхронним викликом у попередньому .then().",
+    nextLessonNote: "Далі — async та await: синтаксичний цукор над промісами, що дозволяє писати асинхронний код майже так само, як синхронний.",
+    interactiveDemo: "promise-demo",
+    practiceTask: {
+      title: "Виправ ланцюжок промісів, що втрачає результат через відсутній return",
+      description: "Функція loadUserOrders викликає fetchOrders всередині .then() без return, тому наступний крок отримує undefined замість реальних замовлень. Додай return.",
+      checklist: ["Наступний .then() отримує РЕАЛЬНИЙ результат fetchOrders, не undefined.", "Ланцюжок залишається пласким, без вкладеного .then().", "Використано return перед викликом fetchOrders."],
+      starterFiles: [
+        {
+          id: "js-promise-chain-start",
+          path: "script.js",
+          language: "javascript",
+          label: "script.js",
+          code: `function fetchUser(id) {
+  return Promise.resolve({ id, name: "Оля" });
+}
+
+function fetchOrders(userId) {
+  return Promise.resolve(["Замовлення 1", "Замовлення 2"]);
+}
+
+function loadUserOrders() {
+  fetchUser(1)
+    .then((user) => {
+      fetchOrders(user.id); // БАГ: немає return
+    })
+    .then((orders) => {
+      console.log(orders); // undefined
+    });
+}
+
+loadUserOrders();
+`,
+        },
+      ],
+      solutionFiles: [
+        {
+          id: "js-promise-chain-solution",
+          path: "script.js",
+          language: "javascript",
+          label: "script.js",
+          code: `function fetchUser(id) {
+  return Promise.resolve({ id, name: "Оля" });
+}
+
+function fetchOrders(userId) {
+  return Promise.resolve(["Замовлення 1", "Замовлення 2"]);
+}
+
+function loadUserOrders() {
+  fetchUser(1)
+    .then((user) => {
+      return fetchOrders(user.id);
+    })
+    .then((orders) => {
+      console.log(orders); // ["Замовлення 1", "Замовлення 2"]
+    });
+}
+
+loadUserOrders();
+`,
+          readOnly: true,
+        },
+      ],
+      hints: ["Без return проміс від fetchOrders не повʼязаний із зовнішнім ланцюжком.", "Додай return перед fetchOrders(user.id), щоб наступний .then() дочекався його результату."],
+      expectedOutput: "У консолі виводиться реальний масив замовлень, а не undefined",
+    },
+    microExercises: [
+      { id: "js-promise-states-predict", kind: "predict", prompt: "Що виведе цей код?", code: `const p = Promise.resolve(42);\np.then((value) => console.log(value));\nconsole.log("синхронний код");`, solution: "Спочатку \"синхронний код\", потім 42. Callback у .then() виконується АСИНХРОННО (через мікрозадачі), навіть якщо проміс уже fulfilled у момент викликуconsole.log(\"синхронний код\") — весь поточний синхронний код завжди виконується першим." },
+      { id: "js-promise-noreturn-find-bug", kind: "find-the-bug", prompt: "Чому другий .then() отримує undefined?", code: `getUser().then((user) => {\n  getPosts(user.id);\n}).then((posts) => {\n  console.log(posts);\n});`, solution: "Callback першого .then() не має return перед getPosts(user.id) — проміс від getPosts виконується, але його результат НЕ передається далі в ланцюжок. Другий .then() отримує undefined (те, що НЕЯВНО повернув перший callback), а не реальний результат getPosts. Потрібно return getPosts(user.id);." },
+      { id: "js-promise-finally-choice", kind: "choice", prompt: "Який метод промісу виконується ЗАВЖДИ, незалежно від успіху чи помилки?", options: [".then()", ".catch()", ".finally()", ".resolve()"], correctAnswer: ".finally()", solution: ".finally() спрацьовує після завершення ланцюжка НЕЗАЛЕЖНО від того, чи він закінчився успіхом (.then) чи помилкою (.catch) — типове використання: сховати індикатор завантаження чи звільнити ресурс." },
+      { id: "js-promise-state-explain", kind: "explain", prompt: "Поясни, чому проміс не може перейти з fulfilled назад у pending.", solution: "Стан проміса фіксується РІВНО ОДИН РАЗ — коли викликається resolve чи reject всередині executor'а, проміс переходить із pending в fulfilled або rejected НАЗАВЖДИ. Подальші виклики resolve/reject (навіть якщо їх помилково викликати ще раз) просто ІГНОРУЮТЬСЯ — проміс не може \"передумати\" чи повернутись у стан очікування. Це гарантує передбачувану, стабільну поведінку: код, що підписався на .then(), отримає результат рівно один раз." },
+      { id: "js-promise-nested-rewrite", kind: "rewrite", prompt: "Перепиши вкладений ланцюжок .then() у плаский, використовуючи return.", code: `fetchUser(1).then((user) => {\n  fetchOrders(user.id).then((orders) => {\n    console.log(orders);\n  });\n});`, solution: `fetchUser(1)\n  .then((user) => {\n    return fetchOrders(user.id);\n  })\n  .then((orders) => {\n    console.log(orders);\n  });\n// return перед fetchOrders дозволяє продовжити ПЛАСКИЙ ланцюжок замість вкладення` },
+    ],
+  },
+
+  "Async та await": {
+    whatIsIt: "async перед оголошенням функції робить її async-функцією — така функція ЗАВЖДИ повертає Promise, навіть якщо всередині написано return звичайного значення (воно автоматично \"обгортається\" в проміс). await всередині async-функції ЗУПИНЯЄ виконання САМЕ ЦІЄЇ функції (не всієї програми), доки проміс праворуч від await не встановиться (settle) — після чого await \"повертає\" РЕЗУЛЬТАТ проміса (при успіху) чи кидає ПОМИЛКУ (при відхиленні, яку можна поймати через try/catch).",
+    whyUseIt: "async/await — синтаксичний цукор над Promise, що дозволяє писати послідовний асинхронний код так, ніби він синхронний: без .then()-ланцюжків, зі звичними try/catch для помилок. Це значно покращує читабельність коду з кількома залежними асинхронними кроками порівняно з .then().then().then().",
+    whenToUse: ["Послідовні асинхронні кроки, де кожен залежить від результату попереднього — код читається практично як синхронний.", "Потрібна звична обробка помилок через try/catch замість .catch() у ланцюжку (детальніше — наступний урок).", "Заміна довгого .then()-ланцюжка на легший для читання еквівалент."],
+    whenNotToUse: ["Не використовуй послідовні await для операцій, що НЕ залежать одна від одної — це марно гальмує виконання; для незалежних операцій паралельний запуск швидший (детальніше — урок про паралельні запити).", "await можна використовувати ЛИШЕ всередині async-функції (чи на верхньому рівні ES-модуля) — у звичайній функції це синтаксична помилка.", "Не забувай, що async-функція ЗАВЖДИ повертає Promise — навіть простий return значення ззовні виглядає як проміс, і викликати таку функцію без await чи .then() дає сам проміс, а не значення."],
+    comparisonTable: {
+      headers: ["Стиль", "Як виглядає обробка результату"],
+      rows: [
+        [".then()-ланцюжок", "fetchUser().then((u) => fetchOrders(u.id)).then((o) => ...)"],
+        ["async/await", "const u = await fetchUser(); const o = await fetchOrders(u.id);"],
+      ],
+    },
+    codeWalkthroughs: [
+      {
+        before: "Базова async-функція з await — читається як синхронний код:",
+        code: `async function loadUser() {
+  const user = await fetchUser(1);
+  console.log("Користувач:", user);
+  return user;
+}
+
+loadUser(); // повертає Promise, що зрештою fulfilled зі значенням user`,
+        lineNotes: ["await fetchUser(1) ЗУПИНЯЄ виконання loadUser рівно на цьому рядку, доки проміс від fetchUser не встановиться — решта програми (поза цією функцією) продовжує працювати нормально.", "return user всередині async-функції автоматично \"обгортається\" — сама loadUser() повертає Promise<User>, а НЕ просто User."],
+      },
+      {
+        before: "Той самий .then()-ланцюжок, переписаний через async/await — та сама логіка, читабельніше:",
+        code: `// .then()-стиль:
+function loadOrderDetailsThen() {
+  return fetchUser(1)
+    .then((user) => fetchOrders(user.id))
+    .then((orders) => fetchOrderDetails(orders[0].id));
+}
+
+// async/await-стиль, та сама логіка:
+async function loadOrderDetailsAwait() {
+  const user = await fetchUser(1);
+  const orders = await fetchOrders(user.id);
+  const details = await fetchOrderDetails(orders[0].id);
+  return details;
+}`,
+        lineNotes: ["Обидва варіанти виконують РІВНО ту саму послідовність асинхронних кроків — async/await лише змінює СИНТАКСИС, роблячи залежність між кроками візуально очевиднішою.", "У async/await-варіанті немає жодного .then() — кожен await просто \"чекає\" й повертає результат у звичайну змінну."],
+      },
+      {
+        before: "Послідовні await для НЕЗАЛЕЖНИХ операцій — працює, але марно повільно (детальніше — наступні уроки):",
+        code: `async function loadDashboard() {
+  const weather = await fetchWeather(); // чекає ЗАВЕРШЕННЯ
+  const news = await fetchNews();       // лише ПОТІМ починає це
+  return { weather, news };
+}
+// weather і news НЕ залежать одне від одного, але виконуються ПО ЧЕРЗІ,
+// а не одночасно — загальний час = час(weather) + час(news)`,
+        lineNotes: ["Кожен await у цій функції ЗУПИНЯЄ виконання, доки поточний проміс не завершиться — другий fetchNews() навіть НЕ ПОЧИНАЄТЬСЯ, доки не завершиться перший fetchWeather().", "Якщо операції одна від одної не залежать, послідовні await марно збільшують загальний час очікування — краще запустити їх одночасно (Promise.all, тема наступного модульного уроку)."],
+      },
+      {
+        before: "Забутий await — функція повертає сам Promise, а не значення:",
+        code: `async function loadUser() {
+  const userPromise = fetchUser(1); // БАГ: забули await
+  console.log(userPromise); // Promise { <pending> } — НЕ обʼєкт користувача!
+  return userPromise;
+}`,
+        lineNotes: ["Без await fetchUser(1) повертає САМ обʼєкт Promise (у стані pending у момент console.log), а не результат, який цей проміс зрештою поверне.", "Правильно: const user = await fetchUser(1); — тоді userPromise замінюється на реальний обʼєкт користувача, отриманий ПІСЛЯ завершення проміса."],
+      },
+    ],
+    commonMistakes: ["Забувати await перед викликом функції, що повертає Promise — отримуєш сам обʼєкт Promise, а не значення.", "Використовувати await поза async-функцією (синтаксична помилка).", "Виконувати послідовні await для операцій, що не залежать одна від одної, замість паралельного запуску.", "Забувати, що async-функція ЗАВЖДИ повертає Promise — намагатись використати її результат напряму без await чи .then() у викликаючому коді."],
+    dontDoThis: { code: `async function getUserName() {\n  return "Оля";\n}\n\nconst name = getUserName(); // БАГ: забули await\nconsole.log(name.toUpperCase()); // помилка: name це Promise, не рядок`, explanation: "getUserName() — async-функція, тому вона ЗАВЖДИ повертає Promise, навіть коли всередині просто return \"Оля\". Без await змінна name містить САМ обʼєкт Promise (у стані pending чи fulfilled, залежно від моменту перевірки), а не рядок \"Оля\" — виклик name.toUpperCase() на обʼєкті Promise кидає помилку, бо в Promise немає такого методу. Потрібно: const name = await getUserName(); всередині іншої async-функції, або getUserName().then((name) => ...)." },
+    bestPractices: ["Завжди пиши await перед викликом функції, що повертає Promise, якщо потрібне саме РЕЗУЛЬТУЮЧЕ значення.", "Використовуй await лише всередині async-функцій — інакше отримаєш синтаксичну помилку.", "Для незалежних асинхронних операцій запускай їх ПАРАЛЕЛЬНО (Promise.all), а не послідовними await.", "Памʼятай, що async-функція завжди повертає Promise — викликаючий код повинен теж await-увати чи .then()-увати результат."],
+    remember: ["async робить функцію такою, що ЗАВЖДИ повертає Promise, навіть при return звичайного значення.", "await зупиняє виконання ЛИШЕ поточної async-функції, доки проміс не встановиться — решта програми продовжує працювати.", "await можна використовувати лише всередині async-функції (чи на верхньому рівні ES-модуля).", "Забутий await дає сам обʼєкт Promise замість очікуваного значення."],
+    interviewQuestions: [
+      { question: "Що повертає функція, оголошена з async, навіть якщо всередині просто return значення?", answer: "async-функція ЗАВЖДИ повертає Promise. Якщо всередині написано return значення (не проміс), це значення автоматично \"обгортається\" у fulfilled Promise з цим значенням. Викликаючий код повинен await-увати цей проміс чи використати .then(), щоб отримати саме значення, а не обʼєкт Promise." },
+      { question: "Що саме зупиняє await — всю програму чи щось конкретніше?", answer: "await зупиняє виконання ЛИШЕ ТІЄЇ async-функції, всередині якої він написаний — решта програми (інші функції, обробники подій, інший код поза цією функцією) продовжує виконуватись нормально. Це принципово відрізняється від синхронного блокуючого очікування — JavaScript залишається однопотоковим і responsive для іншого коду." },
+      { question: "Чому послідовні await для незалежних операцій вважаються неоптимальними?", answer: "Кожен await зупиняє виконання, доки поточний проміс НЕ завершиться, перш ніж перейти до наступного рядка. Якщо друга операція не залежить від результату першої, послідовні await змушують їх виконуватись ПО ЧЕРЗІ — загальний час стає сумою часів обох операцій, замість максимуму з них при паралельному запуску (наприклад, через Promise.all)." },
+      { question: "Що станеться, якщо забути await перед викликом async-функції?", answer: "Змінна отримає САМ обʼєкт Promise (можливо ще у стані pending у момент перевірки), а не значення, яке цей проміс зрештою поверне. Спроба використати цю змінну як реальне значення (наприклад, викликати метод рядка на ній) призведе до помилки чи неочікуваної поведінки, бо Promise — це не те саме, що значення, яке він представляє." },
+    ],
+    summary: "async робить функцію такою, що завжди повертає Promise. await зупиняє виконання ЛИШЕ поточної async-функції, доки проміс не встановиться, повертаючи результат чи кидаючи помилку. Це синтаксичний цукор над Promise — та сама логіка, читабельніша форма. Забутий await — найпоширеніша помилка, що дає сам Promise замість значення.",
+    proTip: "Якщо змінна після виклику async-функції виводить \"Promise { <pending> }\" замість очікуваного значення — перша перевірка: чи написаний await перед цим викликом.",
+    nextLessonNote: "Далі — try/catch з async: як ловити помилки в async-функціях так само природно, як у звичайному синхронному коді.",
+    interactiveDemo: "async-await-demo",
+    practiceTask: {
+      title: "Виправ функцію, що виводить Promise замість реального значення",
+      description: "Функція greetUser забула await перед викликом fetchUserName, тому виводить обʼєкт Promise замість реального імені. Додай await.",
+      checklist: ["У консоль виводиться РЕАЛЬНЕ імʼя, а не обʼєкт Promise.", "Використано await перед fetchUserName().", "Функція greetUser залишається async."],
+      starterFiles: [
+        {
+          id: "js-async-await-start",
+          path: "script.js",
+          language: "javascript",
+          label: "script.js",
+          code: `function fetchUserName() {
+  return Promise.resolve("Оля");
+}
+
+async function greetUser() {
+  const name = fetchUserName(); // БАГ: забули await
+  console.log("Привіт, " + name + "!");
+}
+
+greetUser();
+`,
+        },
+      ],
+      solutionFiles: [
+        {
+          id: "js-async-await-solution",
+          path: "script.js",
+          language: "javascript",
+          label: "script.js",
+          code: `function fetchUserName() {
+  return Promise.resolve("Оля");
+}
+
+async function greetUser() {
+  const name = await fetchUserName();
+  console.log("Привіт, " + name + "!");
+}
+
+greetUser();
+`,
+          readOnly: true,
+        },
+      ],
+      hints: ["Без await name — це обʼєкт Promise, а не рядок.", "Додай await перед fetchUserName(), щоб отримати реальне значення."],
+      expectedOutput: "У консолі виводиться \"Привіт, Оля!\", а не \"Привіт, [object Promise]!\"",
+    },
+    microExercises: [
+      { id: "js-async-return-predict", kind: "predict", prompt: "Що виведе console.log(getValue())?", code: `async function getValue() {\n  return 42;\n}\nconsole.log(getValue());`, solution: "Promise { 42 } (fulfilled проміс зі значенням 42), а НЕ просто 42. async-функція завжди повертає Promise, навіть коли всередині написано return звичайного значення — воно автоматично обгортається в проміс." },
+      { id: "js-async-missing-find-bug", kind: "find-the-bug", prompt: "У чому проблема цього коду?", code: `async function loadData() {\n  const data = fetchData(); // fetchData повертає Promise\n  console.log(data.length);\n}`, solution: "Забутий await перед fetchData() — змінна data містить сам обʼєкт Promise, а не реальні дані. Спроба прочитати data.length на обʼєкті Promise не спрацює як очікується (Promise не має властивості length), бо це не масив/рядок, які повернув би реально завершений проміс. Потрібно: const data = await fetchData();." },
+      { id: "js-async-where-choice", kind: "choice", prompt: "Де можна використовувати await?", options: ["у будь-якій функції", "лише всередині async-функції (чи на верхньому рівні ES-модуля)", "лише всередині .then()", "лише в глобальному скоупі звичайного скрипта"], correctAnswer: "лише всередині async-функції (чи на верхньому рівні ES-модуля)", solution: "await — синтаксична конструкція, дозволена лише всередині функцій, оголошених з async (або на верхньому рівні ES-модуля, за сучасною специфікацією). Використання await у звичайній (не async) функції — синтаксична помилка." },
+      { id: "js-async-parallel-explain", kind: "explain", prompt: "Поясни, чому послідовні await для двох незалежних fetch-запитів працюють повільніше, ніж могли б.", solution: "Кожен await зупиняє виконання функції, доки ПОТОЧНИЙ проміс повністю не завершиться, і лише ПІСЛЯ цього починається наступний рядок. Якщо другий запит не залежить від результату першого, він міг би розпочатись ОДНОЧАСНО з першим — але послідовні await змушують чекати завершення першого, перш ніж навіть РОЗПОЧАТИ другий. Загальний час стає сумою часів обох запитів, а не максимумом з них, як було б при паралельному запуску." },
+      { id: "js-async-convert-rewrite", kind: "rewrite", prompt: "Перепиши цей .then()-ланцюжок через async/await.", code: `function loadProfile() {\n  return fetchUser(1).then((user) => {\n    return fetchAvatar(user.id);\n  });\n}`, solution: `async function loadProfile() {\n  const user = await fetchUser(1);\n  const avatar = await fetchAvatar(user.id);\n  return avatar;\n}\n// та сама логіка, без .then() — кожен крок читається як звичайний синхронний рядок` },
+    ],
+  },
+};

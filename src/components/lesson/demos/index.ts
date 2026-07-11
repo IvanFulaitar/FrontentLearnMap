@@ -103,6 +103,9 @@ import { FormSubmitDemo } from "./FormSubmitDemo";
 import { InputChangeDemo } from "./InputChangeDemo";
 import { EventBubblingDemo } from "./EventBubblingDemo";
 import { PreventDefaultDemo } from "./PreventDefaultDemo";
+import { CallbackTimerDemo } from "./CallbackTimerDemo";
+import { PromiseDemo } from "./PromiseDemo";
+import { AsyncAwaitDemo } from "./AsyncAwaitDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -225,4 +228,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "input-change-demo": InputChangeDemo,
   "event-bubbling-demo": EventBubblingDemo,
   "prevent-default-demo": PreventDefaultDemo,
+  "callback-timer-demo": CallbackTimerDemo,
+  "promise-demo": PromiseDemo,
+  "async-await-demo": AsyncAwaitDemo,
 };
