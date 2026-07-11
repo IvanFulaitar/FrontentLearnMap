@@ -96,6 +96,13 @@
 
 /* Code snippet */
 .codeSnippet {
+  /* .codeSnippet is a direct grid item of .demoStack (display: grid, no
+     explicit columns). Grid items default to min-width: auto, which for a
+     <pre white-space: pre> equals the width of its longest unwrapped line —
+     without min-width: 0 that intrinsic width stretches the whole grid
+     track (and the card around it) instead of letting overflow-x: auto
+     scroll internally, breaking the layout on narrow/mobile screens. */
+  min-width: 0;
   margin: 0;
   padding: 12px;
   border-radius: var(--radius);
