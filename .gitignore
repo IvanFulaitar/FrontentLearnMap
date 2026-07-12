@@ -44,4 +44,4 @@ coverage/
 *.tsbuildinfo
 
 # Husky (local hook state, not the config itself)
-.husk
+.husky/_/
