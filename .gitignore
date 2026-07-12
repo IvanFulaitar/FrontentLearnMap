@@ -27,6 +27,7 @@ pnpm-debug.log*
 .vscode/*
 !.vscode/extensions.json
 .idea/
+.vs/
 *.suo
 *.ntvs*
 *.njsproj
@@ -43,4 +44,4 @@ coverage/
 *.tsbuildinfo
 
 # Husky (local hook state, not the config itself)
-.husky/_/
+.husk
