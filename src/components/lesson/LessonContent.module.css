@@ -492,6 +492,14 @@
     padding: 0;
     font-size: inherit;
   }
+
+  /* The collapse-to-rail toggle has no visual effect at this width (the
+     rules above force the TOC to always render full/expanded) — leaving
+     the button visible here made it look broken: tappable but seemingly
+     doing nothing. Hide it entirely instead of shipping a dead control. */
+  .tocToggle {
+    display: none;
+  }
 }
 
 @media (max-width: 580px) {
