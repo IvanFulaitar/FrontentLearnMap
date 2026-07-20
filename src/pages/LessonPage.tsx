@@ -9,7 +9,7 @@ import { Card } from "../components/ui/Card";
 import { useProgressContext } from "../context/ProgressContext";
 import { usePlatform } from "../context/PlatformContext";
 import { useToast } from "../context/ToastContext";
-import { findLesson, getLessonKey, getLessonStatus, getNeighborLessons } from "../utils/progress";
+import { findLesson, getCourseProgress, getLessonKey, getLessonStatus, getModuleProgress, getNeighborLessons } from "../utils/progress";
 import { XP_REWARDS } from "../constants/gamification";
 import { lessonDifficultyLabels, lessonStatusLabels, lessonTypeLabels } from "../constants/labels";
 import styles from "./LessonPage.module.css";
@@ -18,7 +18,17 @@ export function LessonPage() {
   const { courseId, moduleId, lessonId } = useParams();
   const location = findLesson(courseId, moduleId, lessonId);
   const { lessonProgress, setLessonStatus, recordLessonOpened } = useProgressContext();
-  const { addXp, bookmarks, notes, saveNote, toggleBookmark } = usePlatform();
+  const {
+    addXp,
+    bookmarks,
+    notes,
+    saveNote,
+    toggleBookmark,
+    completedModules,
+    completedCourses,
+    markModuleCompletedIfNeeded,
+    markCourseCompletedIfNeeded,
+  } = usePlatform();
   const { notify } = useToast();
 
   // Record the actual lesson the learner visited, so the dashboard's
@@ -50,7 +60,38 @@ export function LessonPage() {
     } else {
       setLessonStatus(course.id, module.id, lesson.id, "completed");
       addXp(XP_REWARDS.lessonRead);
-      notify({ title: "Урок завершено", message: `«${lesson.title}» позначено як завершений.`, tone: "success" });
+
+      // Check whether THIS completion also just finished the whole module
+      // and/or course, using the progress map as it will be right after
+      // setLessonStatus — not `lessonProgress` from context, which hasn't
+      // re-rendered with the new status yet.
+      const updatedLessonProgress = { ...lessonProgress, [lessonKey]: "completed" as const };
+      const moduleKey = `${course.id}:${module.id}`;
+      const isNewModuleCompletion =
+        !completedModules.includes(moduleKey) && getModuleProgress(course, module, updatedLessonProgress).isCompleted;
+      const isNewCourseCompletion =
+        !completedCourses.includes(course.id) && getCourseProgress(course, updatedLessonProgress).percent === 100;
+
+      if (isNewModuleCompletion) markModuleCompletedIfNeeded(moduleKey);
+      if (isNewCourseCompletion) markCourseCompletedIfNeeded(course.id);
+
+      if (isNewCourseCompletion) {
+        const bonusXp = XP_REWARDS.lessonRead + XP_REWARDS.moduleCompleted + XP_REWARDS.courseCompleted;
+        notify({
+          title: "Курс завершено! 🎉",
+          message: `Ти пройшов увесь курс «${course.title}». +${bonusXp} XP разом з бонусами за модуль і курс.`,
+          tone: "success",
+        });
+      } else if (isNewModuleCompletion) {
+        const bonusXp = XP_REWARDS.lessonRead + XP_REWARDS.moduleCompleted;
+        notify({
+          title: "Модуль завершено! 🎉",
+          message: `Модуль «${module.title}» повністю пройдено. +${bonusXp} XP разом з бонусом за модуль.`,
+          tone: "success",
+        });
+      } else {
+        notify({ title: "Урок завершено", message: `«${lesson.title}» позначено як завершений.`, tone: "success" });
+      }
     }
   };
 

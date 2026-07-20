@@ -7,7 +7,7 @@ import {
   PROGRESS_SYNC_EVENT,
   QUIZ_PROGRESS_KEY,
 } from "../hooks/useProgress";
-import { getCourseProgress, getLearningStats, type ProgressMap, type QuizProgressMap } from "../utils/progress";
+import { getCourseProgress, getLearningStats, getModuleProgress, type ProgressMap, type QuizProgressMap } from "../utils/progress";
 import type { OsChoice, PlatformSettings, UserProfile } from "../types/platform";
 
 const STORAGE_KEY = "frontend-academy:platform-state";
@@ -22,6 +22,12 @@ interface PlatformState {
   // they'd stay "done" forever instead of resetting every day.
   dailyChallengesDate: string;
   completedProjects: string[];
+  // Module keys ("courseId:moduleId") and course ids that already received
+  // their one-time XP_REWARDS.moduleCompleted / courseCompleted bonus, so
+  // toggling a lesson's status back and forth inside an already-finished
+  // module/course never re-grants the bonus.
+  completedModules: string[];
+  completedCourses: string[];
   notes: Record<string, string>;
   bookmarks: string[];
   settings: PlatformSettings;
@@ -36,6 +42,8 @@ const defaultState: PlatformState = {
   completedDaily: [],
   dailyChallengesDate: todayKey(),
   completedProjects: [],
+  completedModules: [],
+  completedCourses: [],
   notes: {},
   bookmarks: [],
   settings: { fontSize: "medium", animations: true, compactMode: false },
@@ -67,6 +75,8 @@ interface PlatformContextValue extends PlatformState {
   addXp: (amount: number) => void;
   completeDaily: (id: string) => void;
   completeProject: (id: string) => void;
+  markModuleCompletedIfNeeded: (moduleKey: string) => void;
+  markCourseCompletedIfNeeded: (courseId: string) => void;
   saveNote: (lessonKey: string, value: string) => void;
   toggleBookmark: (lessonKey: string) => void;
   updateSettings: (settings: Partial<PlatformSettings>) => void;
@@ -178,6 +188,28 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     });
   }, [update]);
 
+  const markModuleCompletedIfNeeded = useCallback((moduleKey: string) => {
+    update((current) => {
+      if (current.completedModules.includes(moduleKey)) return current;
+      return {
+        ...current,
+        completedModules: [...current.completedModules, moduleKey],
+        xp: current.xp + XP_REWARDS.moduleCompleted,
+      };
+    });
+  }, [update]);
+
+  const markCourseCompletedIfNeeded = useCallback((courseId: string) => {
+    update((current) => {
+      if (current.completedCourses.includes(courseId)) return current;
+      return {
+        ...current,
+        completedCourses: [...current.completedCourses, courseId],
+        xp: current.xp + XP_REWARDS.courseCompleted,
+      };
+    });
+  }, [update]);
+
   const saveNote = useCallback((lessonKey: string, value: string) => {
     update((current) => ({ ...current, notes: { ...current.notes, [lessonKey]: value } }));
   }, [update]);
@@ -225,6 +257,12 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     const stats = getLearningStats(lessonProgress, quizProgress, activityLog);
     const htmlCourse = courses.find((course) => course.id === "html");
     const cssCourse = courses.find((course) => course.id === "css");
+    const reactCourse = courses.find((course) => course.id === "react");
+    const typescriptCourse = courses.find((course) => course.id === "typescript");
+    const jsCourse = courses.find((course) => course.id === "javascript");
+    const nodeCourse = courses.find((course) => course.id === "node-basics");
+    const networkStorageModule = jsCourse?.modules.find((module) => module.id === "js-network-storage");
+    const nodeApiModule = nodeCourse?.modules.find((module) => module.id === "node-api");
 
     if (stats.completedLessons >= 1) unlocked.add("first-lesson");
     if (stats.longestStreak >= 7) unlocked.add("seven-day-streak");
@@ -234,6 +272,14 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     if (stats.completedLessons >= 100) unlocked.add("hundred-lessons");
     if (htmlCourse && getCourseProgress(htmlCourse, lessonProgress).percent === 100) unlocked.add("completed-html");
     if (cssCourse && getCourseProgress(cssCourse, lessonProgress).percent === 100) unlocked.add("completed-css");
+    if (reactCourse && getCourseProgress(reactCourse, lessonProgress).percent === 100) unlocked.add("react-developer");
+    if (typescriptCourse && getCourseProgress(typescriptCourse, lessonProgress).percent === 100) unlocked.add("typescript-master");
+    if (
+      (jsCourse && networkStorageModule && getModuleProgress(jsCourse, networkStorageModule, lessonProgress).isCompleted) ||
+      (nodeCourse && nodeApiModule && getModuleProgress(nodeCourse, nodeApiModule, lessonProgress).isCompleted)
+    ) {
+      unlocked.add("api-explorer");
+    }
     if (state.completedProjects.length >= 1) unlocked.add("first-project");
     if (document.documentElement.dataset.theme === "dark") unlocked.add("dark-mode-user");
     return achievements.filter((achievement) => unlocked.has(achievement.id)).map((achievement) => achievement.id);
@@ -246,6 +292,8 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     addXp,
     completeDaily,
     completeProject,
+    markModuleCompletedIfNeeded,
+    markCourseCompletedIfNeeded,
     saveNote,
     toggleBookmark,
     updateSettings,
@@ -253,7 +301,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     setOs,
     resetPlatform,
     resetNotes,
-  }), [addXp, completeDaily, completeProject, level, resetNotes, resetPlatform, saveNote, setOs, state, toggleBookmark, unlockedAchievements, updateProfile, updateSettings]);
+  }), [addXp, completeDaily, completeProject, markCourseCompletedIfNeeded, markModuleCompletedIfNeeded, level, resetNotes, resetPlatform, saveNote, setOs, state, toggleBookmark, unlockedAchievements, updateProfile, updateSettings]);
 
   return <PlatformContext.Provider value={value}>{children}</PlatformContext.Provider>;
 }
