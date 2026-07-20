@@ -749,29 +749,38 @@ console.table(cart); // акуратна таблиця з колонками na
       },
       {
         before: "Ключове слово debugger зупиняє виконання коду точно в цьому рядку, якщо відкриті DevTools:",
-        code: `function getCartTotal(items) {
-  let total = 0;
-  for (const item of items) {
-    debugger; // виконання зупиниться тут на кожній ітерації
-    total += item.price * item.quantity;
-  }
-  return total;
-}`,
-        lineNotes: ["debugger; працює як точка зупину, вписана прямо в код — зручно, коли швидше додати рядок, ніж клікати в Sources.", "На паузі видно поточні значення item, total і можна виконати код по кроках (Step Over/Step Into)."],
+        code: `const items = [
+  { name: "Кава", price: 65, quantity: 2 },
+  { name: "Круасан", price: 45, quantity: 1 },
+];
+
+let total = 0;
+
+debugger; // виконання зупиниться тут — перед першим товаром
+total += items[0].price * items[0].quantity;
+
+debugger; // і тут — перед другим товаром
+total += items[1].price * items[1].quantity;
+
+console.log(total); // 175`,
+        lineNotes: ["debugger; працює як точка зупину, вписана прямо в код — зручно, коли швидше додати рядок, ніж клікати в Sources.", "На паузі видно поточні значення total, items[0]/items[1] і можна виконати код по кроках (Step Over/Step Into).", "У реальному кошику з десятками товарів цю саму перевірку виконував би цикл (цикли — тема наступного модуля) — тут для наочності товари оброблені по черзі вручну."],
         after: "Прибери debugger; перед комітом — залишений у коді, він зупиняє виконання в будь-кого, хто відкриє DevTools.",
       },
       {
-        before: "conditional breakpoint зупиняє виконання лише коли умова true — рятує, коли баг стається не на першій ітерації:",
-        code: `function getCartTotal(items) {
-  let total = 0;
-  for (const item of items) {
-    // conditional breakpoint у Sources: item.price > 1000
-    total += item.price * item.quantity;
-  }
-  return total;
-}`,
-        lineNotes: ["Звичайний breakpoint зупинив би виконання на КОЖНІЙ ітерації циклу — доводилось би клацати \"продовжити\" десятки разів, щоб дійти до потрібної.", "Conditional breakpoint (правий клік на номер рядка в Sources → Add conditional breakpoint) зупиняється лише коли умова true — наприклад, лише для товару з ціною понад 1000."],
-        after: "Це рятує, коли баг стається на 500-й ітерації циклу з тисячею товарів, а не на першій.",
+        before: "conditional breakpoint зупиняє виконання лише коли умова true — рятує, коли перевіряти доводиться кілька значень поспіль, а цікавить лише одне:",
+        code: `const items = [
+  { name: "Ручка", price: 20 },
+  { name: "Навушники", price: 1200 },
+  { name: "Зошит", price: 45 },
+];
+
+// звичайний breakpoint зупинив би виконання на КОЖНОМУ рядку —
+// conditional breakpoint у Sources: items[i].price > 1000
+console.log(items[0].name, items[0].price); // 20 — нецікавий випадок
+console.log(items[1].name, items[1].price); // 1200 — саме цей товар цікавить
+console.log(items[2].name, items[2].price); // 45 — знову нецікавий`,
+        lineNotes: ["Звичайний breakpoint зупинив би виконання на кожному з трьох рядків — довелось би тричі клацати \"продовжити\", щоб дійти до потрібного товару.", "Conditional breakpoint (правий клік на номер рядка в Sources → Add conditional breakpoint) зупиняється лише коли умова true — наприклад, лише для товару з ціною понад 1000."],
+        after: "У реальному кошику з сотнями товарів цю перевірку виконував би цикл (цикли — тема наступного модуля) — рятує, коли потрібний випадок ховається не серед перших кількох значень, а десь глибоко в списку.",
       },
     ],
     commonMistakes: ["Залишені console.log/debugger у коді, який іде в комміт.", "alert() замість console.log для дебагінгу.", "console.log(складний об'єкт) замість console.table для масивів об'єктів.", "Дебагінг \"на очі\" без жодного breakpoint у справді заплутаній логіці.", "Звичайний breakpoint на кожній ітерації циклу замість conditional breakpoint для рідкісного випадку."],
@@ -790,11 +799,11 @@ console.table(cart); // акуратна таблиця з колонками na
     interactiveDemo: "devtools-simulator-demo",
     practiceTask: {
       title: "Знайди баг за допомогою console.table",
-      description: "Функція рахує суму кошика неправильно. Додай console.table для перевірки вхідних даних і виправ знайдену помилку.",
+      description: "Розрахунок суми кошика видає неправильне число. Додай console.table для перевірки вхідних даних і виправ знайдену помилку.",
       checklist: [
         "console.table використаний для перегляду масиву items.",
         "Знайдено і виправлено причину неправильної суми.",
-        "Функція повертає коректний результат після виправлення.",
+        "total дорівнює коректному значенню (175) після виправлення.",
         "Тимчасовий console.table прибраний з фінального рішення (або замінений на коментар).",
       ],
       starterFiles: [
@@ -808,15 +817,11 @@ console.table(cart); // акуратна таблиця з колонками na
   { name: "Круасан", price: 45, quantity: 1 },
 ];
 
-function getCartTotal(items) {
-  let total = 0;
-  for (const item of items) {
-    total += item.price; // баг: не враховує quantity
-  }
-  return total;
-}
+let total = 0;
+total += items[0].price; // баг: не враховує quantity
+total += items[1].price; // баг: не враховує quantity
 
-console.log(getCartTotal(items)); // виводить 110, очікується 175
+console.log(total); // виводить 110, очікується 175
 `,
         },
       ],
@@ -831,16 +836,13 @@ console.log(getCartTotal(items)); // виводить 110, очікується 
   { name: "Круасан", price: 45, quantity: 1 },
 ];
 
-function getCartTotal(items) {
-  console.table(items); // видно колонку quantity, яку функція ігнорувала
-  let total = 0;
-  for (const item of items) {
-    total += item.price * item.quantity;
-  }
-  return total;
-}
+console.table(items); // видно колонку quantity, яку розрахунок ігнорував
 
-console.log(getCartTotal(items)); // 175
+let total = 0;
+total += items[0].price * items[0].quantity;
+total += items[1].price * items[1].quantity;
+
+console.log(total); // 175
 `,
           readOnly: true,
         },
