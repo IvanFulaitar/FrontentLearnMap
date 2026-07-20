@@ -519,3 +519,106 @@
     height: 32px;
   }
 }
+
+/* Real-time animated timeline (Gantt-style bars) — bar widths are recomputed
+   every animation frame from genuine elapsed milliseconds (see
+   useTimelineClock), never from a fixed-duration CSS animation. Used to
+   visualize concurrent timers/promises/requests instead of a text log. */
+.timeline {
+  display: grid;
+  gap: 10px;
+}
+
+.timelineAxis {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 104px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.timelineRow {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) 60px;
+  align-items: center;
+  gap: 10px;
+}
+
+.timelineLabel {
+  overflow: hidden;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timelineTrack {
+  position: relative;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  overflow: hidden;
+}
+
+.timelineBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  min-width: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--border);
+  transition: width 80ms linear;
+}
+
+.timelineBarRunning {
+  background: var(--primary);
+}
+
+.timelineBarPaused {
+  background: var(--warning);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.35) 0,
+    rgba(255, 255, 255, 0.35) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.timelineBarDone {
+  background: var(--success);
+}
+
+.timelineBarError {
+  background: var(--danger);
+}
+
+.timelineBarAborted {
+  background: var(--muted);
+}
+
+.timelineNote {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .timelineAxis {
+    padding-left: 0;
+  }
+
+  .timelineRow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+
+  .timelineNote {
+    text-align: left;
+  }
+}

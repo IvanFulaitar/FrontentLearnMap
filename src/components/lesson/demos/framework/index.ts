@@ -12,3 +12,6 @@ export { DemoAxis } from "./DemoAxis";
 export { HighlightDemo, HighlightArea } from "./HighlightDemo";
 export type { HighlightRegion } from "./HighlightDemo";
 export { LessonFigure } from "./LessonFigure";
+export { DemoTimeline } from "./DemoTimeline";
+export type { TimelineTrack, TimelineStatus } from "./DemoTimeline";
+export { useTimelineClock } from "./useTimelineClock";
