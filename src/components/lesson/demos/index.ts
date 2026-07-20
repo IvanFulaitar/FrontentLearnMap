@@ -117,6 +117,18 @@ import { VscodeTerminalDemo } from "./VscodeTerminalDemo";
 import { VscodeExtensionsDemo } from "./VscodeExtensionsDemo";
 import { VscodeFormattingDemo } from "./VscodeFormattingDemo";
 import { VscodeFirstPageDemo } from "./VscodeFirstPageDemo";
+import { FetchGetDemo } from "./FetchGetDemo";
+import { FetchPostDemo } from "./FetchPostDemo";
+import { HttpStatusDemo } from "./HttpStatusDemo";
+import { LocalStorageDemo } from "./LocalStorageDemo";
+import { JsonParseDemo } from "./JsonParseDemo";
+import { LoadingStatesDemo } from "./LoadingStatesDemo";
+import { ModulePatternDemo } from "./ModulePatternDemo";
+import { StateRenderDemo } from "./StateRenderDemo";
+import { UtilityFunctionsDemo } from "./UtilityFunctionsDemo";
+import { ValidationLogicDemo } from "./ValidationLogicDemo";
+import { HashRoutingDemo } from "./HashRoutingDemo";
+import { PureFunctionTestingDemo } from "./PureFunctionTestingDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -253,4 +265,16 @@ export const lessonDemos: Record<string, ComponentType> = {
   "vscode-extensions-demo": VscodeExtensionsDemo,
   "vscode-formatting-demo": VscodeFormattingDemo,
   "vscode-first-page-demo": VscodeFirstPageDemo,
+  "fetch-get-demo": FetchGetDemo,
+  "fetch-post-demo": FetchPostDemo,
+  "http-status-demo": HttpStatusDemo,
+  "localstorage-demo": LocalStorageDemo,
+  "json-parse-demo": JsonParseDemo,
+  "loading-states-demo": LoadingStatesDemo,
+  "module-pattern-demo": ModulePatternDemo,
+  "state-render-demo": StateRenderDemo,
+  "utility-functions-demo": UtilityFunctionsDemo,
+  "validation-logic-demo": ValidationLogicDemo,
+  "hash-routing-demo": HashRoutingDemo,
+  "pure-function-testing-demo": PureFunctionTestingDemo,
 };
