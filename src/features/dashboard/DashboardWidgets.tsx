@@ -20,6 +20,7 @@ import { Button } from "../../components/ui/Button";
 import { Card } from "../../components/ui/Card";
 import { ProgressBar } from "../../components/progress/ProgressBar";
 import { GradientLineChart } from "../../shared/charts/GradientLineChart";
+import { LevelRing } from "../../shared/charts/LevelRing";
 import type { usePlatform } from "../../context/PlatformContext";
 import type { useDashboardData } from "./useDashboardData";
 import type { ProgressMap } from "../../utils/progress";
@@ -57,7 +58,18 @@ export function DashboardHero({ data, platform }: { data: DashboardData; platfor
           замість сухої теорії — від HTML і CSS до React, TypeScript і основ backend.
         </p>
         <ProgressBar value={overall.percent} label="Загальний прогрес" />
-        <ProgressBar value={platform.level.progress} label={`Поточний XP: ${platform.xp} · Наступний рівень: ${platform.level.next?.title ?? "Максимальний рівень"}`} />
+        <div className={styles.levelRow}>
+          <LevelRing percent={platform.level.progress} level={platform.level.current.level} />
+          <div className={styles.levelInfo}>
+            <span className={styles.levelTitle}>{platform.level.current.title}</span>
+            <span className={styles.levelXp}>
+              {platform.xp} XP
+              {platform.level.next
+                ? ` · ще ${Math.max(0, platform.level.next.minXp - platform.xp)} XP до «${platform.level.next.title}»`
+                : " · максимальний рівень"}
+            </span>
+          </div>
+        </div>
         <Alert title="Як влаштований курс" message="Кожен урок: пояснення мовою наставника, живий приклад у браузері, практика і питання на співбесіді. Модуль за модулем — до підсумкового проєкту." />
         <Link to={lessonHref}>
           <Button>Продовжити навчання</Button>

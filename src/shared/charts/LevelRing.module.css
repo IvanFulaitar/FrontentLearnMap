@@ -1,0 +1,15 @@
+.ring {
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+.ringProgress {
+  transition: stroke-dashoffset 400ms ease;
+  filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.25));
+}
+
+.ringLevel {
+  font-size: 22px;
+  font-weight: 800;
+  fill: var(--text);
+}
