@@ -7,6 +7,7 @@ import {
   DashboardMissions,
   DashboardStats,
   LearningPathPreview,
+  TodayPlan,
 } from "../features/dashboard/DashboardWidgets";
 import { useDashboardData } from "../features/dashboard/useDashboardData";
 
@@ -18,6 +19,7 @@ export function DashboardPage() {
   return (
     <div className="page">
       <DashboardHero data={data} platform={platform} />
+      <TodayPlan platform={platform} />
       <DashboardStats data={data} platform={platform} />
       <CourseProgressGrid data={data} lessonProgress={lessonProgress} />
       <DashboardMissions platform={platform} />

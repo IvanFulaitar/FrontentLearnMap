@@ -9,6 +9,7 @@ import {
   GraduationCap,
   Lock,
   PartyPopper,
+  Sparkles,
   Trophy,
   TrendingUp,
   Zap,
@@ -108,6 +109,48 @@ export function DashboardHero({ data, platform }: { data: DashboardData; platfor
             </Link>
           </>
         )}
+      </Card>
+    </section>
+  );
+}
+
+/**
+ * Compact "at a glance" strip summarizing today's real daily-challenge
+ * progress (auto-detected from actual activity, see PlatformContext) right
+ * under the hero — so the learner doesn't have to scroll down to the full
+ * "Щоденні виклики" card just to see what's left for today.
+ */
+export function TodayPlan({ platform }: { platform: PlatformState }) {
+  const remaining = dailyChallenges.filter((challenge) => !platform.completedDaily.includes(challenge.id));
+  const doneCount = dailyChallenges.length - remaining.length;
+  const remainingXp = remaining.reduce((sum, challenge) => sum + challenge.xpReward, 0);
+  const allDone = remaining.length === 0;
+
+  return (
+    <section className={styles.todayPlan}>
+      <Card className={styles.todayPlanCard}>
+        <div className={styles.todayPlanHeader}>
+          <span className={`${styles.todayPlanIcon} ${allDone ? styles.todayPlanIconDone : ""}`}>
+            <Sparkles size={18} aria-hidden="true" />
+          </span>
+          <div className={styles.todayPlanText}>
+            <h2>План на сьогодні</h2>
+            <p className={styles.todayPlanSubtitle}>
+              {allDone
+                ? "Усі щоденні виклики виконано — чудова робота сьогодні!"
+                : `Виконано ${doneCount}/${dailyChallenges.length} · ще ${remainingXp} XP можна отримати сьогодні`}
+            </p>
+          </div>
+        </div>
+        {!allDone ? (
+          <div className={styles.todayPlanPills}>
+            {remaining.map((challenge) => (
+              <span key={challenge.id} className={styles.todayPlanPill}>
+                {challenge.title} · +{challenge.xpReward} XP
+              </span>
+            ))}
+          </div>
+        ) : null}
       </Card>
     </section>
   );

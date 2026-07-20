@@ -40,6 +40,65 @@
   font-size: 0.85rem;
 }
 
+.todayPlan {
+  display: grid;
+}
+
+.todayPlanCard {
+  display: grid;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.todayPlanHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.todayPlanText h2 {
+  margin: 0 0 2px;
+  font-size: 1rem;
+}
+
+.todayPlanIcon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.todayPlanIconDone {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.todayPlanSubtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.todayPlanPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.todayPlanPill {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface-raised);
+}
+
 .stats,
 .courseProgress {
   display: grid;
