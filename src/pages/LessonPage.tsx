@@ -58,7 +58,7 @@ export function LessonPage() {
       addXp(-XP_REWARDS.lessonRead);
       notify({ title: "Позначку знято", message: `«${lesson.title}» більше не позначено як завершений.`, tone: "warning" });
     } else {
-      setLessonStatus(course.id, module.id, lesson.id, "completed");
+      setLessonStatus(course.id, module.id, lesson.id, "completed", { isPractice: lesson.type === "practice" });
       addXp(XP_REWARDS.lessonRead);
 
       // Check whether THIS completion also just finished the whole module

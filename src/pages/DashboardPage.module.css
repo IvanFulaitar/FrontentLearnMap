@@ -303,24 +303,12 @@
   padding: 10px 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  cursor: pointer;
   transition: border-color var(--transition), background var(--transition);
-}
-
-.challengeRow:hover {
-  border-color: color-mix(in srgb, var(--primary) 32%, var(--border));
 }
 
 .challengeRowDone {
   border-color: var(--success);
   background: var(--success-soft);
-}
-
-.challengeCheckbox {
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-  accent-color: var(--success);
 }
 
 .challengeText {

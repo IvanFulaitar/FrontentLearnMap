@@ -3,9 +3,11 @@ import { achievements, dailyChallenges, levels, XP_REWARDS } from "../constants/
 import { courses } from "../data/courses";
 import {
   ACTIVITY_LOG_KEY,
+  DAILY_EVENTS_KEY,
   LESSON_PROGRESS_KEY,
   PROGRESS_SYNC_EVENT,
   QUIZ_PROGRESS_KEY,
+  type DailyEventMap,
 } from "../hooks/useProgress";
 import { getCourseProgress, getLearningStats, getModuleProgress, type ProgressMap, type QuizProgressMap } from "../utils/progress";
 import type { OsChoice, PlatformSettings, UserProfile } from "../types/platform";
@@ -103,13 +105,29 @@ interface CourseProgressSnapshot {
   lessonProgress: ProgressMap;
   quizProgress: QuizProgressMap;
   activityLog: string[];
+  // Today's real activity tags only ("lesson" / "practice" / "quiz-passed" /
+  // "js-lesson") — used to auto-detect daily-challenge completion instead of
+  // a manual checkbox.
+  todayEvents: string[];
 }
 
-const readCourseProgressSnapshot = (): CourseProgressSnapshot => ({
-  lessonProgress: readJson<ProgressMap>(LESSON_PROGRESS_KEY, {}),
-  quizProgress: readJson<QuizProgressMap>(QUIZ_PROGRESS_KEY, {}),
-  activityLog: readJson<string[]>(ACTIVITY_LOG_KEY, []),
-});
+const readCourseProgressSnapshot = (): CourseProgressSnapshot => {
+  const dailyEvents = readJson<DailyEventMap>(DAILY_EVENTS_KEY, {});
+  return {
+    lessonProgress: readJson<ProgressMap>(LESSON_PROGRESS_KEY, {}),
+    quizProgress: readJson<QuizProgressMap>(QUIZ_PROGRESS_KEY, {}),
+    activityLog: readJson<string[]>(ACTIVITY_LOG_KEY, []),
+    todayEvents: dailyEvents[todayKey()] ?? [],
+  };
+};
+
+/** Maps each daily-challenge id to the real activity tag that satisfies it. */
+const DAILY_CHALLENGE_EVENT_MAP: Record<string, string> = {
+  "daily-lesson": "lesson",
+  "daily-practice": "practice",
+  "daily-quiz": "quiz-passed",
+  "daily-js": "js-lesson",
+};
 
 export function PlatformProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<PlatformState>(readState);
@@ -176,6 +194,18 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
       };
     });
   }, [update]);
+
+  // Auto-completes today's daily challenges from real activity (recorded by
+  // useProgress.ts whenever a lesson/practice/quiz is actually completed),
+  // replacing the old honor-system checkbox the learner had to tick
+  // themselves. completeDaily() is idempotent (no-ops once a challenge is
+  // already marked done today), so re-running this on every progress sync
+  // is safe.
+  useEffect(() => {
+    Object.entries(DAILY_CHALLENGE_EVENT_MAP).forEach(([challengeId, eventTag]) => {
+      if (courseProgress.todayEvents.includes(eventTag)) completeDaily(challengeId);
+    });
+  }, [completeDaily, courseProgress.todayEvents]);
 
   const completeProject = useCallback((id: string) => {
     update((current) => {

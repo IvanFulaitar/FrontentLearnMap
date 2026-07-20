@@ -11,6 +11,12 @@ export const QUIZ_PROGRESS_KEY = "frontend-academy:quiz-progress";
 export const ACTIVITY_LOG_KEY = "frontend-academy:activity-log";
 export const LAST_LESSON_KEY = "frontend-academy:last-opened-lesson";
 export const PROGRESS_SYNC_EVENT = "frontend-academy:progress-sync";
+// One entry per calendar day, listing which kinds of real activity happened
+// that day ("lesson" / "practice" / "quiz-passed" / "js-lesson") — lets the
+// dashboard's daily challenges auto-detect completion from actual learning
+// activity instead of a manual, honor-system checkbox.
+export const DAILY_EVENTS_KEY = "frontend-academy:daily-events";
+export type DailyEventMap = Record<string, string[]>;
 
 export type LastOpenedLesson = {
   courseId: string;
@@ -87,6 +93,21 @@ export function useProgressState() {
     });
   }, []);
 
+  const recordDailyEvent = useCallback((eventType: string) => {
+    const today = todayKey();
+    try {
+      const map = readStorage<DailyEventMap>(DAILY_EVENTS_KEY, {});
+      const todayEvents = map[today] ?? [];
+      if (todayEvents.includes(eventType)) return;
+      const next = { ...map, [today]: [...todayEvents, eventType] };
+      localStorage.setItem(DAILY_EVENTS_KEY, JSON.stringify(next));
+      window.dispatchEvent(new Event(PROGRESS_SYNC_EVENT));
+    } catch {
+      // Best-effort — daily-challenge auto-detection simply won't fire for
+      // this event if storage is unavailable, nothing else depends on it.
+    }
+  }, []);
+
   const recordLessonOpened = useCallback((courseId: string, moduleId: string, lessonId: string) => {
     const entry: LastOpenedLesson = { courseId, moduleId, lessonId, openedAt: new Date().toISOString() };
     localStorage.setItem(LAST_LESSON_KEY, JSON.stringify(entry));
@@ -95,7 +116,13 @@ export function useProgressState() {
   }, []);
 
   const setLessonStatus = useCallback(
-    (courseId: string, moduleId: string, lessonId: string, status: LessonStatus) => {
+    (
+      courseId: string,
+      moduleId: string,
+      lessonId: string,
+      status: LessonStatus,
+      meta?: { isPractice?: boolean },
+    ) => {
       setLessonProgress((current) => {
         const next = {
           ...current,
@@ -105,9 +132,14 @@ export function useProgressState() {
         window.dispatchEvent(new Event(PROGRESS_SYNC_EVENT));
         return next;
       });
-      if (status === "completed") recordActivity();
+      if (status === "completed") {
+        recordActivity();
+        recordDailyEvent("lesson");
+        if (meta?.isPractice) recordDailyEvent("practice");
+        if (courseId === "javascript") recordDailyEvent("js-lesson");
+      }
     },
-    [recordActivity],
+    [recordActivity, recordDailyEvent],
   );
 
   const saveQuizScore = useCallback((courseId: string, moduleId: string, quizId: string, score: number) => {
@@ -121,7 +153,8 @@ export function useProgressState() {
       return next;
     });
     recordActivity();
-  }, [recordActivity]);
+    if (score >= 60) recordDailyEvent("quiz-passed");
+  }, [recordActivity, recordDailyEvent]);
 
   return {
     lessonProgress,

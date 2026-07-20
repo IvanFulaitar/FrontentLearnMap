@@ -160,25 +160,24 @@ export function DashboardMissions({ platform }: { platform: PlatformState }) {
         <p className={styles.missionsSubtitle}>
           {allDoneToday
             ? "Усе на сьогодні виконано — нові виклики зʼявляться завтра."
-            : "Список оновлюється щодня о півночі."}
+            : "Визначається автоматично з твоєї реальної активності — нічого позначати вручну не треба."}
         </p>
         <div className={styles.challengeList}>
           {dailyChallenges.map((challenge) => {
             const done = platform.completedDaily.includes(challenge.id);
             return (
-              <label className={`${styles.challengeRow} ${done ? styles.challengeRowDone : ""}`} key={challenge.id}>
-                <input
-                  className={styles.challengeCheckbox}
-                  type="checkbox"
-                  checked={done}
-                  onChange={() => platform.completeDaily(challenge.id)}
-                />
+              <div className={`${styles.challengeRow} ${done ? styles.challengeRowDone : ""}`} key={challenge.id}>
+                {done ? (
+                  <CheckCircle2 size={20} aria-hidden="true" className={styles.achievementIconDone} />
+                ) : (
+                  <Circle size={20} aria-hidden="true" className={styles.achievementIconLocked} />
+                )}
                 <span className={styles.challengeText}>
                   <span className={styles.challengeLabel}>{challenge.title}</span>
                   <span className={styles.challengeDescription}>{challenge.description}</span>
                 </span>
                 <span className={styles.challengeXp}>+{challenge.xpReward} XP</span>
-              </label>
+              </div>
             );
           })}
         </div>

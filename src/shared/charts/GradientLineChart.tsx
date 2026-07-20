@@ -1,4 +1,4 @@
-import { useId, useMemo } from "react";
+import { useId, useMemo, useState } from "react";
 import styles from "./GradientLineChart.module.css";
 
 export interface ChartPoint {
@@ -62,6 +62,10 @@ export function GradientLineChart({ data, ariaLabel, formatPointLabel, formatToo
   const gradientId = useId();
   const formatLabel = formatPointLabel ?? ((value: number) => String(value));
   const formatTip = formatTooltip ?? ((value: number, label: string) => `${label}: ${value}`);
+  // Custom on-hover/focus tooltip in addition to the native <title> (which
+  // still covers touch/assistive tech) — shows the exact value immediately
+  // instead of waiting for the browser's native tooltip delay.
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const { points, gridlines, peakIndexes } = useMemo(() => {
     const values = data.map((item) => item.value);
@@ -162,11 +166,16 @@ export function GradientLineChart({ data, ariaLabel, formatPointLabel, formatToo
             <circle
               cx={point.x}
               cy={point.y}
-              r={isPeak ? 5.5 : 4}
+              r={hoveredIndex === index ? 7 : isPeak ? 5.5 : 4}
               fill={isPeak ? "var(--primary)" : "var(--surface)"}
               stroke="var(--primary)"
               strokeWidth="2"
               className={isPeak ? styles.pointFilled : styles.pointHollow}
+              tabIndex={0}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex((current) => (current === index ? null : current))}
+              onFocus={() => setHoveredIndex(index)}
+              onBlur={() => setHoveredIndex((current) => (current === index ? null : current))}
             >
               <title>{formatTip(point.value, point.label)}</title>
             </circle>
@@ -179,6 +188,29 @@ export function GradientLineChart({ data, ariaLabel, formatPointLabel, formatToo
           {point.label}
         </text>
       ))}
+
+      {hoveredIndex !== null ? (() => {
+        const point = points[hoveredIndex];
+        const text = formatTip(point.value, point.label);
+        const tooltipWidth = Math.max(56, text.length * 6.4 + 18);
+        const x = Math.min(Math.max(point.x, PLOT_LEFT + tooltipWidth / 2), PLOT_RIGHT - tooltipWidth / 2);
+        const y = Math.max(point.y - 20, 24);
+        return (
+          <g className={styles.tooltip} style={{ pointerEvents: "none" }}>
+            <rect
+              x={x - tooltipWidth / 2}
+              y={y - 24}
+              width={tooltipWidth}
+              height={26}
+              rx={6}
+              className={styles.tooltipBubble}
+            />
+            <text x={x} y={y - 6} textAnchor="middle" className={styles.tooltipText}>
+              {text}
+            </text>
+          </g>
+        );
+      })() : null}
     </svg>
   );
 }
