@@ -208,54 +208,97 @@
   display: grid;
 }
 
-.pathPreview {
+/* Vertical stepper/journey: a circular status node per course connected by
+   a line to the next node, replacing the old flat wrapped chip list — makes
+   the actual SEQUENCE of the learning path visible, not just a bag of
+   percentages. */
+.journey {
+  display: grid;
+}
+
+.journeyRow {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.journeyNodeColumn {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.pathStep {
-  display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 8px 12px;
-  font-weight: 700;
-  font-size: 0.88rem;
 }
 
-.pathStepDone {
+.journeyNode {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface-muted);
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+
+.journeyNodeDone {
   background: var(--success-soft);
   color: var(--success);
-  border-color: transparent;
+  border-color: var(--success);
 }
 
-.pathStepActive {
+.journeyNodeActive {
   background: var(--primary-soft);
   color: var(--primary);
-  border-color: transparent;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent);
 }
 
-.pathStepLocked {
-  /* No opacity here (previously 0.65): applying opacity to the whole badge
-     blends both its text AND background toward the page backdrop, which
-     quietly drops the text below the 4.5:1 contrast ratio required for
-     normal-size text — a real Lighthouse contrast violation. --muted on
-     --surface-muted at full opacity already reads as clearly "inactive"
-     and passes contrast on its own, no opacity trick needed. */
+.journeyNodeLocked {
+  /* No opacity trick here either — same contrast reasoning as before:
+     --muted text on --surface-muted background already reads as clearly
+     "inactive" while staying above the 4.5:1 contrast ratio. */
   background: var(--surface-muted);
   color: var(--muted);
 }
 
-.pathStepPercent {
-  /* Same reasoning as .pathStepLocked above: opacity (previously 0.8) here
-     compounded with the parent badge's own color, pushing contrast below
-     4.5:1 for this small (0.78rem) text in the locked-badge case. The
-     smaller font-size and weight already create enough visual hierarchy
-     against the main label without needing to fade it out. */
+.journeyLine {
+  width: 2px;
+  flex: 1;
+  min-height: 20px;
+  margin: 4px 0;
+  background: var(--border);
+}
+
+.journeyLineDone {
+  background: var(--success);
+}
+
+.journeyContent {
+  min-width: 0;
+  padding-bottom: 22px;
+}
+
+.journeyHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.journeyHeader h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.journeyPercent {
+  flex-shrink: 0;
+  color: var(--muted);
   font-weight: 600;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .missionsHeader {

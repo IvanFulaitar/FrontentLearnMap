@@ -7,6 +7,7 @@ import {
   Code2,
   Flame,
   GraduationCap,
+  Lock,
   PartyPopper,
   Trophy,
   TrendingUp,
@@ -219,18 +220,37 @@ export function LearningPathPreview({ data, lessonProgress }: { data: DashboardD
     <section className={styles.pathSection}>
       <Card className={styles.panel}>
         <h2>Навчальний шлях</h2>
-        <div className={styles.pathPreview}>
-          {data.courses.map((course) => {
+        <div className={styles.journey}>
+          {data.courses.map((course, index) => {
             const stats = getCourseProgress(course, lessonProgress);
             const status = stats.percent === 100 ? "done" : stats.percent > 0 ? "active" : "locked";
-            const statusClass =
-              status === "done" ? styles.pathStepDone : status === "active" ? styles.pathStepActive : styles.pathStepLocked;
+            const isLast = index === data.courses.length - 1;
+            const nodeClass =
+              status === "done" ? styles.journeyNodeDone : status === "active" ? styles.journeyNodeActive : styles.journeyNodeLocked;
             return (
-              <span key={course.id} className={`${styles.pathStep} ${statusClass}`}>
-                {status === "done" ? <CheckCircle2 size={14} aria-hidden="true" /> : null}
-                {course.title}
-                <span className={styles.pathStepPercent}>{stats.percent}%</span>
-              </span>
+              <div className={styles.journeyRow} key={course.id}>
+                <div className={styles.journeyNodeColumn}>
+                  <span className={`${styles.journeyNode} ${nodeClass}`}>
+                    {status === "done" ? (
+                      <CheckCircle2 size={18} aria-hidden="true" />
+                    ) : status === "locked" ? (
+                      <Lock size={15} aria-hidden="true" />
+                    ) : (
+                      `${stats.percent}%`
+                    )}
+                  </span>
+                  {!isLast ? (
+                    <span className={`${styles.journeyLine} ${status === "done" ? styles.journeyLineDone : ""}`} />
+                  ) : null}
+                </div>
+                <div className={styles.journeyContent} style={isLast ? { paddingBottom: 0 } : undefined}>
+                  <div className={styles.journeyHeader}>
+                    <h3>{course.title}</h3>
+                    <span className={styles.journeyPercent}>{stats.completed}/{stats.total} уроків</span>
+                  </div>
+                  <ProgressBar value={stats.percent} ariaLabel={`${course.title}: ${stats.percent}% пройдено`} />
+                </div>
+              </div>
             );
           })}
         </div>
