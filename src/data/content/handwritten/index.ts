@@ -35,6 +35,8 @@ import { jsObjectsOverrides } from "./jsObjects";
 import { jsDomOverrides } from "./jsDom";
 import { jsEventsOverrides } from "./jsEvents";
 import { jsAsyncOverrides } from "./jsAsync";
+import { jsNetworkStorageOverrides } from "./jsNetworkStorage";
+import { jsAppPatternsOverrides } from "./jsAppPatterns";
 import { vscodeSetupOverrides } from "./vscodeSetup";
 
 /**
@@ -85,6 +87,8 @@ const lessonOverridesByModule: Record<string, Record<string, LessonOverride>> = 
   "js-dom": jsDomOverrides,
   "js-events": jsEventsOverrides,
   "js-async": jsAsyncOverrides,
+  "js-network-storage": jsNetworkStorageOverrides,
+  "js-app-patterns": jsAppPatternsOverrides,
 };
 
 export const getLessonOverride = (moduleId: string, title: string): LessonOverride | undefined =>
