@@ -58,31 +58,37 @@ console.log(bonus); // ReferenceError: bonus is not defined`,
         after: "Уяви, що discount випадково \"пролізла\" в код нижче й вплинула на розрахунок зовсім іншого замовлення — це і є типовий джерело важких для пошуку багів зі старим var.",
       },
       {
-        before: "Крок 4 — реальна кнопка кошика на сторінці кав'ярні: DOM-елементи в const, cartCount у let. Мод модель: клік → зміна значення → оновлення екрана:",
-        code: `const countElement = document.querySelector("#cart-count");
-const addButton = document.querySelector("#add-button");
-let cartCount = 0;
+        before: "Крок 4 — трасування: подивимось, яке значення cartCount має в ПАМʼЯТІ на кожному окремому рядку коду, зверху вниз:",
+        code: `let cartCount = 0;
+console.log(cartCount); // 0
 
-addButton.addEventListener("click", () => {
-  cartCount = cartCount + 1;
-  countElement.textContent = cartCount;
-});`,
-        lineNotes: ["countElement і addButton — const: ці два DOM-елементи знайдені один раз і більше НЕ перепризначаються на щось інше.", "cartCount — let: значення перепризначається на кожен клік (cartCount = cartCount + 1), інакше кнопка просто не рахувала б.", "Крок за кроком: клік → cartCount = cartCount + 1 (нове число в памʼяті) → countElement.textContent = cartCount (нове число на екрані)."],
-        after: "Якби cartCount був const, другий клік кинув би TypeError і кнопка \"зламалась\" би після першого натискання — тут let не стиль, а умова роботи кнопки.",
+cartCount = cartCount + 1;
+console.log(cartCount); // 1
+
+cartCount = cartCount + 1;
+console.log(cartCount); // 2`,
+        lineNotes: [
+          "Крок 1: cartCount оголошено й одразу дорівнює 0 — це початкове значення, ще до жодного \"додавання в кошик\".",
+          "Крок 2: cartCount = cartCount + 1 бере ПОТОЧНЕ значення (0), додає до нього 1 і записує результат (1) назад у ту саму комірку памʼяті — стара 0 більше ніде не зберігається.",
+          "Крок 3: та сама операція виконується вдруге: тепер поточне значення вже 1, тому результат — 2.",
+        ],
+        after: "Кожен console.log показує значення cartCount у ТОЙ конкретний момент виконання коду — це і є трасування: програма виконується рядок за рядком, зверху вниз, і те саме імʼя змінної може мати різне значення в різних точках коду.",
       },
       {
-        before: "Крок 5 — той самий сайт кав'ярні, ще один елемент інтерфейсу: мобільне меню з тим самим патерном let/const:",
-        code: `const menuButton = document.querySelector("#menu-button");
-const menu = document.querySelector("#menu");
-let isMenuOpen = false;
+        before: "Крок 5 — той самий принцип на іншому прикладі: значення, яке НЕ повинно змінюватись (ціна однієї кави), у const; значення, яке реально змінюється (кількість замовлених чашок), у let:",
+        code: `const pricePerCup = 65; // ціна однієї кави, грн — не змінюється
+let cupsOrdered = 1;
 
-menuButton.addEventListener("click", () => {
-  isMenuOpen = !isMenuOpen;
-  menu.hidden = !isMenuOpen;
-  menuButton.setAttribute("aria-expanded", String(isMenuOpen));
-});`,
-        lineNotes: ["isMenuOpen — let: перемикається між true й false на кожному кліку (! означає \"навпаки\" — заперечення поточного значення).", "aria-expanded повідомляє скрінрідеру поточний стан меню — той самий isMenuOpen, що керує видимістю, керує й доступністю."],
-        after: "Той самий сайт, той самий принцип: DOM-елемент — const, значення, що перемикається — let. Побачивши цей патерн двічі, його вже легко впізнати в будь-якому новому коді.",
+cupsOrdered = cupsOrdered + 1; // клієнт додав ще одну каву
+
+const total = pricePerCup * cupsOrdered;
+console.log(total); // 130`,
+        lineNotes: [
+          "pricePerCup — const: скільки б кав не замовили, ціна ОДНІЄЇ чашки в межах цього замовлення не змінюється.",
+          "cupsOrdered — let: клієнт може докупити ще одну каву, тому це значення точно перепризначається.",
+          "total обчислюється ПІСЛЯ того, як cupsOrdered уже оновлено — тому результат 65 * 2, а не 65 * 1.",
+        ],
+        after: "Той самий принцип, що й у кроці 4: незмінне значення — const, те, що реально змінюється, — let. Пізніше, в уроках про DOM, цей самий total ти навчишся показувати прямо на сторінці — але сама логіка обчислення вже повністю зрозуміла зараз, без жодного HTML.",
       },
     ],
     commonMistakes: ["var замість let/const у новому коді.", "let там, де значення ніколи не перепризначається (мало б бути const).", "Очікування, що const заморожує вміст масиву/обʼєкта.", "Оголошення змінної без ключового слова (cartCount = 5 без let/const — випадковий global).", "Повторне оголошення let з тим самим іменем в одному блоці.", "Однолітерні імена змінних там, де опис (cartCount) читається набагато швидше."],
@@ -102,67 +108,60 @@ menuButton.addEventListener("click", () => {
     interactiveDemo: "variable-state-demo",
     practiceTask: {
       title: "Знайди і виправ баг лічильника кошика",
-      description: "На сторінці кав'ярні кнопка \"Додати в кошик\" має збільшувати число товарів після кожного кліку. Зараз cartCount оголошено через const. Запусти код, подивись помилку в консолі й виправ оголошення.",
+      description: "Код нижче має рахувати товари в кошику кав'ярні: кожен наступний рядок додає ще один товар і виводить поточну суму в консоль. Зараз cartCount оголошено через const. Запусти код, подивись помилку в консолі й виправ оголошення.",
       checklist: [
         "Знайдено, яка змінна оголошена неправильно (const замість let).",
-        "cartCount перепризначається на кожному кліку без помилки.",
-        "countElement і addButton лишились через const (вони не перепризначаються).",
-        "Після виправлення кнопка коректно рахує товари в textContent.",
+        "cartCount перепризначається тричі без помилки.",
+        "У консолі послідовно з'являються значення 1, 2, 3.",
       ],
       starterFiles: [
         {
           id: "js-variables-start",
-          path: "index.html",
-          language: "html",
-          label: "index.html",
-          code: `<p>Товарів у кошику: <strong id="cart-count">0</strong></p>
-<button id="add-button" type="button">Додати в кошик</button>
+          path: "script.js",
+          language: "javascript",
+          label: "script.js",
+          code: `const cartCount = 0; // тут баг
 
-<script>
-  const countElement = document.querySelector("#cart-count");
-  const addButton = document.querySelector("#add-button");
-  const cartCount = 0; // тут баг
+cartCount = cartCount + 1;
+console.log("Товарів у кошику:", cartCount);
 
-  addButton.addEventListener("click", () => {
-    cartCount = cartCount + 1;
-    countElement.textContent = cartCount;
-  });
-</script>
+cartCount = cartCount + 1;
+console.log("Товарів у кошику:", cartCount);
+
+cartCount = cartCount + 1;
+console.log("Товарів у кошику:", cartCount);
 `,
         },
       ],
       solutionFiles: [
         {
           id: "js-variables-solution",
-          path: "index.html",
-          language: "html",
-          label: "index.html",
-          code: `<p>Товарів у кошику: <strong id="cart-count">0</strong></p>
-<button id="add-button" type="button">Додати в кошик</button>
+          path: "script.js",
+          language: "javascript",
+          label: "script.js",
+          code: `let cartCount = 0;
 
-<script>
-  const countElement = document.querySelector("#cart-count");
-  const addButton = document.querySelector("#add-button");
-  let cartCount = 0;
+cartCount = cartCount + 1;
+console.log("Товарів у кошику:", cartCount);
 
-  addButton.addEventListener("click", () => {
-    cartCount = cartCount + 1;
-    countElement.textContent = cartCount;
-  });
-</script>
+cartCount = cartCount + 1;
+console.log("Товарів у кошику:", cartCount);
+
+cartCount = cartCount + 1;
+console.log("Товарів у кошику:", cartCount);
 `,
           readOnly: true,
         },
       ],
-      hints: ["Відкрий консоль браузера — після першого кліку там буде TypeError: Assignment to constant variable.", "cartCount перепризначається на кожному кліку, тому це let; countElement і addButton не перепризначаються — вони лишаються const."],
-      expectedOutput: "Після кожного кліку число в #cart-count збільшується на 1, без помилок у консолі.",
+      hints: ["Відкрий консоль — на першому ж перепризначенні буде TypeError: Assignment to constant variable.", "cartCount перепризначається тричі в цьому коді, тому це let, а не const."],
+      expectedOutput: "У консолі послідовно з'являються: Товарів у кошику: 1, Товарів у кошику: 2, Товарів у кошику: 3 — без жодної помилки.",
     },
     microExercises: [
       { id: "js-var-let-predict", kind: "predict", prompt: "Що виведе цей код?", code: `if (true) {\n  let x = 5;\n}\nconsole.log(x);`, solution: "ReferenceError: x is not defined — let має блочну область видимості, x не існує зовні if." },
       { id: "js-const-choice", kind: "choice", prompt: "Яке ключове слово обрати для cartCount, що збільшується на кожен клік кнопки \"Додати в кошик\"?", options: ["var", "let", "const"], correctAnswer: "let", solution: "cartCount перепризначається на кожен клік, тому потрібен let, а не const, який кинув би помилку вже на другому кліку." },
       { id: "js-const-array-predict", kind: "predict", prompt: "Що виведе цей код?", code: `const cartItems = ["Кава"];\ncartItems.push("Чай");\nconsole.log(cartItems);`, solution: "[\"Кава\", \"Чай\"] — push() змінює вміст масиву, а не саме посилання cartItems, тому const це дозволяє." },
-      { id: "js-dom-const-explain", kind: "explain", prompt: "Поясни, чому DOM-елемент, знайдений через querySelector, зазвичай зберігають у const, навіть якщо інтерфейс дуже інтерактивний.", solution: "Сам DOM-елемент (кнопка, блок, поле) не змінюється — змінна завжди посилається на той самий елемент. Змінюється лише вміст усередині нього (textContent, класи, атрибути), а не сам факт, який елемент це є." },
-      { id: "js-global-leak-find-bug", kind: "find-the-bug", prompt: "У чому проблема цього коду?", code: `function addToCart() {\n  cartTotal = cartTotal + 65;\n}`, solution: "cartTotal оголошена без let/const/var — це створює випадкову глобальну змінну, яку може непередбачувано змінити код в іншому місці застосунку. Потрібно let cartTotal (оголошене заздалегідь) або const/let усередині функції." },
+      { id: "js-const-default-explain", kind: "explain", prompt: "Поясни, чому досвідчені розробники радять оголошувати змінну через const за замовчуванням, і переходити на let лише коли справді потрібне перепризначення.", solution: "const одразу сигналізує (і собі, і будь-кому, хто читає код пізніше), що значення не повинно змінюватись — якщо хтось випадково спробує його перезаписати, JavaScript одразу кине помилку, замість того щоб мовчки зламати логіку десь далі в програмі. Якщо весь код писати через let, цього захисту немає: будь-який рядок може непомітно перезаписати значення, яке мало лишатись незмінним." },
+      { id: "js-global-leak-find-bug", kind: "find-the-bug", prompt: "У чому проблема цього коду?", code: `cartTotal = 0;\ncartTotal = cartTotal + 65;\nconsole.log(cartTotal);`, solution: "cartTotal ніде не оголошена через let/const — обидва рядки просто присвоюють значення, і JavaScript тихо створює випадкову глобальну змінну, доступну будь-якому іншому коду на сторінці, який може непередбачувано її змінити. Потрібно let cartTotal = 0; на початку." },
     ],
   },
 
