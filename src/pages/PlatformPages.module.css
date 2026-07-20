@@ -83,6 +83,25 @@
   opacity: 0.58;
 }
 
+.achievementCardUnlocked {
+  border-color: var(--success);
+  background: var(--success-soft);
+}
+
+.achievementCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.achievementCardIconDone {
+  color: var(--success);
+}
+
+.achievementCardIconLocked {
+  color: var(--muted);
+}
+
 .stats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

@@ -1,3 +1,4 @@
+import { CheckCircle2, Lock } from "lucide-react";
 import { achievements } from "../constants/gamification";
 import { Badge } from "../components/ui/Badge";
 import { Card } from "../components/ui/Card";
@@ -28,12 +29,23 @@ export function ProfilePage() {
         <Card className={styles.card}><strong>Завершено курсів</strong><h2>{completedCourses}</h2></Card>
         <Card className={styles.card}><strong>Уроків завершено</strong><h2>{stats.completedLessons}</h2></Card>
       </section>
+      <PageHeader
+        eyebrow="Бейджі"
+        title={`Досягнення · ${platform.unlockedAchievements.length}/${achievements.length}`}
+      />
       <section className={styles.grid}>
         {achievements.map((achievement) => {
           const unlocked = platform.unlockedAchievements.includes(achievement.id);
           return (
-            <Card className={`${styles.card} ${unlocked ? "" : styles.locked}`} key={achievement.id}>
-              <Badge tone={unlocked ? "completed" : "not-started"}>{unlocked ? "Відкрито" : "Заблоковано"}</Badge>
+            <Card className={`${styles.card} ${unlocked ? styles.achievementCardUnlocked : styles.locked}`} key={achievement.id}>
+              <div className={styles.achievementCardHeader}>
+                {unlocked ? (
+                  <CheckCircle2 size={22} aria-hidden="true" className={styles.achievementCardIconDone} />
+                ) : (
+                  <Lock size={20} aria-hidden="true" className={styles.achievementCardIconLocked} />
+                )}
+                <Badge tone={unlocked ? "completed" : "not-started"}>{unlocked ? "Відкрито" : "Заблоковано"}</Badge>
+              </div>
               <h2>{achievement.title}</h2>
               <p>{achievement.description}</p>
               <strong>{achievement.xpReward} XP</strong>
