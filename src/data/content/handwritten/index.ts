@@ -40,6 +40,7 @@ import { jsAppPatternsOverrides } from "./jsAppPatterns";
 import { vscodeSetupOverrides } from "./vscodeSetup";
 import { tsBasicsOverrides } from "./tsBasics";
 import { tsObjectsOverrides } from "./tsObjects";
+import { tsFunctionsOverrides } from "./tsFunctions";
 
 /**
  * Registry of fully hand-authored lesson content, keyed by
@@ -93,6 +94,7 @@ const lessonOverridesByModule: Record<string, Record<string, LessonOverride>> = 
   "js-app-patterns": jsAppPatternsOverrides,
   "ts-basics": tsBasicsOverrides,
   "ts-objects": tsObjectsOverrides,
+  "ts-functions": tsFunctionsOverrides,
 };
 
 export const getLessonOverride = (moduleId: string, title: string): LessonOverride | undefined =>

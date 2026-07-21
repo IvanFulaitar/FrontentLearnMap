@@ -160,6 +160,12 @@ import { OptionalPropertyDemo } from "./OptionalPropertyDemo";
 import { ReadonlyPropertyDemo } from "./ReadonlyPropertyDemo";
 import { IndexSignatureDemo } from "./IndexSignatureDemo";
 import { NestedModelDemo } from "./NestedModelDemo";
+import { ParameterTypesDemo } from "./ParameterTypesDemo";
+import { ReturnTypeDemo } from "./ReturnTypeDemo";
+import { CallbackTypeDemo } from "./CallbackTypeDemo";
+import { FunctionOverloadDemo } from "./FunctionOverloadDemo";
+import { TypePredicateDemo } from "./TypePredicateDemo";
+import { ResultTypeDemo } from "./ResultTypeDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -253,6 +259,12 @@ export const lessonDemos: Record<string, ComponentType> = {
   "readonly-property-demo": ReadonlyPropertyDemo,
   "index-signature-demo": IndexSignatureDemo,
   "nested-model-demo": NestedModelDemo,
+  "parameter-types-demo": ParameterTypesDemo,
+  "return-type-demo": ReturnTypeDemo,
+  "callback-type-demo": CallbackTypeDemo,
+  "function-overload-demo": FunctionOverloadDemo,
+  "type-predicate-demo": TypePredicateDemo,
+  "result-type-demo": ResultTypeDemo,
   "variable-state-demo": VariableStateDemo,
   "primitive-typeof-demo": PrimitiveTypeofDemo,
   "nullish-vs-or-demo": NullishVsOrDemo,
