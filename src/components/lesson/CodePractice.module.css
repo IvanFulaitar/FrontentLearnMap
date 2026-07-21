@@ -35,6 +35,10 @@
   color: #e5edf8;
   font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
   line-height: 1.55;
+  /* Disable ligatures so === / !== / => render as separate characters,
+     not one fused glyph — matches the rule for code, pre in globals.css. */
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
 }
 
 .result {

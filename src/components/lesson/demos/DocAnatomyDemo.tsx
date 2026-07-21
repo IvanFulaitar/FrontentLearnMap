@@ -49,7 +49,7 @@ export function DocAnatomyDemo() {
           <div
             key={p.value}
             className={`${styles.pipelineStage} ${p.value === part ? styles.pipelineStageActive : ""}`}
-            style={{ fontFamily: "var(--font-mono, monospace)", fontSize: "0.75rem" }}
+            style={{ fontFamily: "var(--font-mono, monospace)", fontSize: "0.75rem", fontVariantLigatures: "none" }}
           >
             {p.label}
           </div>

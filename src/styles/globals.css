@@ -53,6 +53,13 @@ button {
 code,
 pre {
   font-family: var(--font-mono);
+  /* JetBrains Mono / Fira Code / Cascadia Code merge sequences like ===,
+     !==, => into a single fused glyph via the "calt"/"liga" OpenType
+     features. That's disorienting for beginners reading real code
+     character-by-character, so ligatures are turned off everywhere code
+     is shown — === always renders as three separate "=" characters. */
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
 }
 
 :focus-visible {
