@@ -129,6 +129,11 @@ import { UtilityFunctionsDemo } from "./UtilityFunctionsDemo";
 import { ValidationLogicDemo } from "./ValidationLogicDemo";
 import { HashRoutingDemo } from "./HashRoutingDemo";
 import { PureFunctionTestingDemo } from "./PureFunctionTestingDemo";
+import { LabelPlaceholderDemo } from "./LabelPlaceholderDemo";
+import { InputTypesDemo } from "./InputTypesDemo";
+import { SelectFieldsetDemo } from "./SelectFieldsetDemo";
+import { RadioValidationDemo } from "./RadioValidationDemo";
+import { AriaErrorDemo } from "./AriaErrorDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -277,4 +282,9 @@ export const lessonDemos: Record<string, ComponentType> = {
   "validation-logic-demo": ValidationLogicDemo,
   "hash-routing-demo": HashRoutingDemo,
   "pure-function-testing-demo": PureFunctionTestingDemo,
+  "label-placeholder-demo": LabelPlaceholderDemo,
+  "input-types-demo": InputTypesDemo,
+  "select-fieldset-demo": SelectFieldsetDemo,
+  "radio-validation-demo": RadioValidationDemo,
+  "aria-error-demo": AriaErrorDemo,
 };

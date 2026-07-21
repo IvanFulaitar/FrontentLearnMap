@@ -2748,3 +2748,205 @@
     padding: 12px;
   }
 }
+
+/* Label-vs-placeholder demo ("Структура форми та підписи"): two real
+   fields side by side, one placeholder-only, one with a genuine
+   <label htmlFor>. */
+.lpRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 500px) {
+  .lpRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lpField {
+  display: grid;
+  gap: 6px;
+}
+
+.lpCaption {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  margin: 0;
+}
+
+.lpLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.lpInput {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.lpHint {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: 0;
+  min-height: 2.2em;
+}
+
+/* Input-types demo ("Типи полів і атрибути"): one real input whose type
+   changes, plus a "Перевірити" button that surfaces the browser's own
+   reportValidity() message. */
+.itStage {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.itInput {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  flex: 1;
+  min-width: 160px;
+}
+
+.itButton {
+  font: inherit;
+  font-weight: 600;
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: var(--on-primary, #fff);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.itValidity {
+  margin: 10px 0 0;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--surface-muted);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+}
+
+/* Select/fieldset demo ("Textarea, select і fieldset"): real fieldset
+   whose `disabled` attribute cascades to a genuine select + textarea
+   inside it. */
+.sfToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+
+.sfFieldset {
+  display: grid;
+  gap: 8px;
+  max-width: 320px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+
+.sfLegend {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+  padding: 0 6px;
+}
+
+.sfLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.sfInput {
+  font: inherit;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* Radio/validation demo ("Чекбокси, радіокнопки і валідація"). */
+.rvForm {
+  display: grid;
+  gap: 12px;
+  max-width: 320px;
+}
+
+.rvOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+/* ARIA error demo ("Доступні повідомлення про помилки"): a real
+   aria-live region that only fills up in the "accessible" mode, proving
+   the color-only version announces nothing. */
+.aeStage {
+  display: grid;
+  gap: 8px;
+  max-width: 320px;
+  margin-bottom: 16px;
+}
+
+.aeBadBorder {
+  border-color: var(--danger) !important;
+  border-width: 2px !important;
+}
+
+.aeErrorText {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--danger);
+}
+
+.aeLog {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  background: var(--surface-muted);
+}
+
+.aeLogTitle {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.aeLogEmpty {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.aeLogList {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.85rem;
+  color: var(--text);
+}
