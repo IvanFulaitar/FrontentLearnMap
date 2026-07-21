@@ -38,6 +38,7 @@ import { jsAsyncOverrides } from "./jsAsync";
 import { jsNetworkStorageOverrides } from "./jsNetworkStorage";
 import { jsAppPatternsOverrides } from "./jsAppPatterns";
 import { vscodeSetupOverrides } from "./vscodeSetup";
+import { tsBasicsOverrides } from "./tsBasics";
 
 /**
  * Registry of fully hand-authored lesson content, keyed by
@@ -89,6 +90,7 @@ const lessonOverridesByModule: Record<string, Record<string, LessonOverride>> = 
   "js-async": jsAsyncOverrides,
   "js-network-storage": jsNetworkStorageOverrides,
   "js-app-patterns": jsAppPatternsOverrides,
+  "ts-basics": tsBasicsOverrides,
 };
 
 export const getLessonOverride = (moduleId: string, title: string): LessonOverride | undefined =>

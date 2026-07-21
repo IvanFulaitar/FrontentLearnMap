@@ -148,6 +148,12 @@ import { ArticleTimeCartDemo } from "./ArticleTimeCartDemo";
 import { WireframeTagMatchDemo } from "./WireframeTagMatchDemo";
 import { SectionTagQuizDemo } from "./SectionTagQuizDemo";
 import { BugHuntDemo } from "./BugHuntDemo";
+import { WhyTypeScriptDemo } from "./WhyTypeScriptDemo";
+import { TypeAnnotationDemo } from "./TypeAnnotationDemo";
+import { TypeInferenceDemo } from "./TypeInferenceDemo";
+import { UnionTypeDemo } from "./UnionTypeDemo";
+import { LiteralTypeDemo } from "./LiteralTypeDemo";
+import { NarrowingDemo } from "./NarrowingDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -229,6 +235,12 @@ export const lessonDemos: Record<string, ComponentType> = {
   "article-section-aside-demo": ArticleSectionAsideDemo,
   "figure-details-dialog-demo": FigureDetailsDialogDemo,
   "button-vs-link-demo": ButtonVsLinkDemo,
+  "why-typescript-demo": WhyTypeScriptDemo,
+  "type-annotation-demo": TypeAnnotationDemo,
+  "type-inference-demo": TypeInferenceDemo,
+  "union-type-demo": UnionTypeDemo,
+  "literal-type-demo": LiteralTypeDemo,
+  "narrowing-demo": NarrowingDemo,
   "variable-state-demo": VariableStateDemo,
   "primitive-typeof-demo": PrimitiveTypeofDemo,
   "nullish-vs-or-demo": NullishVsOrDemo,
