@@ -26,6 +26,15 @@ export const cssRealFormsPricingOverrides: Record<string, LessonOverride> = {
       caption: "Той самий <input>, до і після узгодження зі шрифтом, border-radius і кольорами решти сайту.",
     },
     interactiveDemo: "field-styling-demo",
+    comparisonTable: {
+      headers: ["Проблема браузера за замовчуванням", "CSS-рішення"],
+      rows: [
+        ["Поле показує інший шрифт, ніж решта сайту", "font: inherit"],
+        ["select зі своєю системною стрілкою (в кожній ОС інакша)", "appearance: none + власна background-image"],
+        ["textarea можна розтягнути в обидва боки й зламати layout", "resize: vertical"],
+        ["border-radius/padding поля не збігається з картками й кнопками сайту", "Однакові значення border-radius/padding для input, select, textarea"],
+      ],
+    },
     codeWalkthroughs: [
       {
         before: "Поле форми бронювання, узгоджене з рештою дизайну:",
@@ -140,6 +149,15 @@ export const cssRealFormsPricingOverrides: Record<string, LessonOverride> = {
       caption: "Три незалежні стани того самого поля: активне зараз, з помилкою, і тимчасово недоступне — кожен має свій візуальний сигнал.",
     },
     interactiveDemo: "forms-pricing-demo",
+    comparisonTable: {
+      headers: ["Псевдоклас / атрибут", "Коли застосовується", "Типовий стиль"],
+      rows: [
+        [":focus-visible", "Поле активне зараз (фокус з клавіатури)", "Помітний outline"],
+        [":invalid:not(:placeholder-shown)", "Поле вже займане і має некоректне значення", "Червона рамка + текст помилки"],
+        [":disabled", "Поле тимчасово недоступне, НЕ відправляється з формою", "Приглушений колір, cursor: not-allowed"],
+        ["[readonly]", "Поле не редагується, але значення відправляється з формою", "Легка зміна фону, без приглушення"],
+      ],
+    },
     codeWalkthroughs: [
       {
         before: "Стани полів форми бронювання:",
@@ -255,6 +273,15 @@ export const cssRealFormsPricingOverrides: Record<string, LessonOverride> = {
       caption: "Той самий рядок прайсу стає карткою; товщий border і значок кольору бренду виділяють рекомендований варіант серед решти.",
     },
     interactiveDemo: "price-cards-demo",
+    comparisonTable: {
+      headers: ["Що саме", "Звичайний рядок таблиці", "Картка (той самий рядок)"],
+      rows: [
+        ["Розмітка", "table/th/scope", "Та сама розмітка — змінюється лише CSS-вигляд (Grid/Flex)"],
+        ["Ціна", "Звичайний текст у комірці", "Виділена font-size, font-weight і кольором бренду"],
+        ["Кнопка \"Замовити\"", "—", "flex-grow на блоці контенту притискає її донизу картки"],
+        ["Рекомендований варіант", "—", "Товщий border кольору бренду + текстовий бейдж через ::before"],
+      ],
+    },
     codeWalkthroughs: [
       {
         before: "Прайс кав'ярні як картки, з виділеною ціною:",
@@ -412,6 +439,13 @@ export const cssRealFormsPricingOverrides: Record<string, LessonOverride> = {
         <text x="380" y="196" font-size="11" fill="var(--muted)" text-anchor="middle">1 колонка</text>
       </svg>`,
       caption: "auto-fit сам вирішує, скільки колонок поміщається: 4 на широкому footer, 1 на вузькому — той самий CSS без жодного медіазапиту.",
+    },
+    comparisonTable: {
+      headers: ["", "auto-fit", "auto-fill"],
+      rows: [
+        ["Коли реальних елементів менше, ніж могло б поміститись колонок", "Схлопує порожні місця, розтягує наявні елементи на все вільне місце", "Залишає порожні \"невидимі\" колонки-заглушки"],
+        ["Коли обирати для footer із фіксованою кількістю розділів", "Майже завжди — саме цей варіант", "Рідко: лише якщо кількість елементів справді буде змінюватись"],
+      ],
     },
     codeWalkthroughs: [
       {
