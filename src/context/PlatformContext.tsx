@@ -25,6 +25,7 @@ interface PlatformState {
   // they'd stay "done" forever instead of resetting every day.
   dailyChallengesDate: string;
   completedProjects: string[];
+  completedChallenges: string[];
   // Module keys ("courseId:moduleId") and course ids that already received
   // their one-time XP_REWARDS.moduleCompleted / courseCompleted bonus, so
   // toggling a lesson's status back and forth inside an already-finished
@@ -45,6 +46,7 @@ const defaultState: PlatformState = {
   completedDaily: [],
   dailyChallengesDate: todayKey(),
   completedProjects: [],
+  completedChallenges: [],
   completedModules: [],
   completedCourses: [],
   notes: {},
@@ -78,6 +80,7 @@ interface PlatformContextValue extends PlatformState {
   addXp: (amount: number) => void;
   completeDaily: (id: string) => void;
   completeProject: (id: string) => void;
+  completeChallenge: (id: string, xpReward: number) => void;
   markModuleCompletedIfNeeded: (moduleKey: string) => void;
   markCourseCompletedIfNeeded: (courseId: string) => void;
   saveNote: (lessonKey: string, value: string) => void;
@@ -221,6 +224,17 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     });
   }, [update]);
 
+  const completeChallenge = useCallback((id: string, xpReward: number) => {
+    update((current) => {
+      if (current.completedChallenges.includes(id)) return current;
+      return {
+        ...current,
+        completedChallenges: [...current.completedChallenges, id],
+        xp: current.xp + xpReward,
+      };
+    });
+  }, [update]);
+
   const markModuleCompletedIfNeeded = useCallback((moduleKey: string) => {
     update((current) => {
       if (current.completedModules.includes(moduleKey)) return current;
@@ -325,6 +339,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     addXp,
     completeDaily,
     completeProject,
+    completeChallenge,
     markModuleCompletedIfNeeded,
     markCourseCompletedIfNeeded,
     saveNote,
@@ -334,7 +349,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     setOs,
     resetPlatform,
     resetNotes,
-  }), [addXp, completeDaily, completeProject, markCourseCompletedIfNeeded, markModuleCompletedIfNeeded, level, resetNotes, resetPlatform, saveNote, setOs, state, toggleBookmark, unlockedAchievements, updateProfile, updateSettings]);
+  }), [addXp, completeChallenge, completeDaily, completeProject, markCourseCompletedIfNeeded, markModuleCompletedIfNeeded, level, resetNotes, resetPlatform, saveNote, setOs, state, toggleBookmark, unlockedAchievements, updateProfile, updateSettings]);
 
   return <PlatformContext.Provider value={value}>{children}</PlatformContext.Provider>;
 }

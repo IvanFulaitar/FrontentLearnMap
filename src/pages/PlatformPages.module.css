@@ -22,6 +22,14 @@
   gap: 8px;
 }
 
+.taskFooter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .cardDone {
   border-color: var(--success);
   background: var(--success-soft);

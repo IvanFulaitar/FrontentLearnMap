@@ -54,6 +54,10 @@ export interface CodingChallenge {
   category: ChallengeCategory;
   title: string;
   description: string;
+  requirements: string[];
+  starterCode: PlaygroundFile[];
+  hints: string[];
+  solution: string;
   difficulty: LessonDifficulty;
   xpReward: number;
 }
