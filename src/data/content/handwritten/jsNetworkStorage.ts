@@ -52,6 +52,18 @@ export const jsNetworkStorageOverrides: Record<string, LessonOverride> = {
         lineNotes: ["items — це вже реальний масив обʼєктів меню, готовий для .map(), бо response.json() дочекались через await.", "Цей приклад поєднує fetch з уже відомими .map() і шаблонними рядками — нового тут лише сам факт, що items прийшли з мережі, а не були написані в коді."],
       },
       {
+        before: "response.text() замість response.json() — коли сервер повертає ПРОСТИЙ ТЕКСТ, а не JSON:",
+        code: `async function loadPlainMessage() {
+  const response = await fetch("/api/status-message");
+  const message = await response.text(); // НЕ .json() — це не JSON!
+
+  console.log(message); // наприклад: "Сервіс тимчасово недоступний"
+  console.log(typeof message); // "string"
+}`,
+        lineNotes: ["response.text() читає тіло відповіді як звичайний рядок, БЕЗ спроби розібрати його як JSON — якщо викликати тут .json() замість .text(), розбір впаде з помилкою на нечинному JSON.", "Результат .text() завжди рядок (typeof message === \"string\"), тоді як .json() дає готовий обʼєкт/масив/число залежно від того, що саме прийшло в тілі відповіді."],
+        after: "Правило вибору просте: сервер обіцяє JSON — .json(); сервер обіцяє звичайний текст, HTML чи щось інше не-JSON — .text().",
+      },
+      {
         before: "Реальний баг: спроба використати Response напряму як масив даних:",
         code: `async function loadProductsBroken() {
   const products = await fetch("/api/products"); // БАГ: це Response, не масив!
