@@ -41,6 +41,7 @@ import { vscodeSetupOverrides } from "./vscodeSetup";
 import { tsBasicsOverrides } from "./tsBasics";
 import { tsObjectsOverrides } from "./tsObjects";
 import { tsFunctionsOverrides } from "./tsFunctions";
+import { tsGenericsOverrides } from "./tsGenerics";
 
 /**
  * Registry of fully hand-authored lesson content, keyed by
@@ -95,6 +96,7 @@ const lessonOverridesByModule: Record<string, Record<string, LessonOverride>> = 
   "ts-basics": tsBasicsOverrides,
   "ts-objects": tsObjectsOverrides,
   "ts-functions": tsFunctionsOverrides,
+  "ts-generics": tsGenericsOverrides,
 };
 
 export const getLessonOverride = (moduleId: string, title: string): LessonOverride | undefined =>

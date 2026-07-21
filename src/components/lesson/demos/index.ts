@@ -166,6 +166,12 @@ import { CallbackTypeDemo } from "./CallbackTypeDemo";
 import { FunctionOverloadDemo } from "./FunctionOverloadDemo";
 import { TypePredicateDemo } from "./TypePredicateDemo";
 import { ResultTypeDemo } from "./ResultTypeDemo";
+import { GenericFunctionDemo } from "./GenericFunctionDemo";
+import { GenericConstraintDemo } from "./GenericConstraintDemo";
+import { KeyofDemo } from "./KeyofDemo";
+import { UtilityTypesDemo } from "./UtilityTypesDemo";
+import { TypedApiResponseDemo } from "./TypedApiResponseDemo";
+import { FormModelDemo } from "./FormModelDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -265,6 +271,12 @@ export const lessonDemos: Record<string, ComponentType> = {
   "function-overload-demo": FunctionOverloadDemo,
   "type-predicate-demo": TypePredicateDemo,
   "result-type-demo": ResultTypeDemo,
+  "generic-function-demo": GenericFunctionDemo,
+  "generic-constraint-demo": GenericConstraintDemo,
+  "keyof-demo": KeyofDemo,
+  "utility-types-demo": UtilityTypesDemo,
+  "typed-api-response-demo": TypedApiResponseDemo,
+  "form-model-demo": FormModelDemo,
   "variable-state-demo": VariableStateDemo,
   "primitive-typeof-demo": PrimitiveTypeofDemo,
   "nullish-vs-or-demo": NullishVsOrDemo,
