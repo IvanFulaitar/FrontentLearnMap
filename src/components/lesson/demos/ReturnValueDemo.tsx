@@ -11,12 +11,14 @@ function calcWithReturn(price: number, qty: number): number {
 }
 
 function calcWithoutReturn(price: number, qty: number): undefined {
-  const total = price * qty; // computed, but never handed back to the caller
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- intentional: computed
+  // but deliberately never returned, the exact bug this demo shows.
+  const total = price * qty;
 }
 
 const doubleImplicit = (n: number): number => n * 2;
 const doubleBlockNoReturn = (n: number): undefined => {
-  n * 2; // computed, but the block body never returns it
+  void (n * 2); // computed, but discarded — the block body never returns it
 };
 
 /**

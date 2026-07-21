@@ -28,6 +28,8 @@ function runReduce(cart: CartItem[], mode: ReduceMode): { result?: number; error
     // навмисно "нетипізований" (as any[]), як і виглядала б ця реальна помилка
     // в звичайному JavaScript без типів; а на порожньому масиві виклик без
     // початкового значення кидає справжній TypeError
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- intentional: shows the
+    // untyped-JS mistake for real; typing this properly would make TS reject the bug entirely.
     const total = (cart as any[]).reduce((sum: any, item: any) =>
       (typeof sum === "number" ? sum : sum.price) + item.price
     );

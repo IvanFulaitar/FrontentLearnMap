@@ -9,8 +9,6 @@ interface UserData {
   address: { city: string };
 }
 
-const original: UserData = { name: "Ярина", address: { city: "Одеса" } };
-
 function updateCityShallow(user: UserData, newCity: string): UserData {
   const updated = { ...user };
   updated.address.city = newCity; // genuine mutation of the shared nested object

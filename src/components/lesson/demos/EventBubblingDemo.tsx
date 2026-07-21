@@ -25,7 +25,7 @@ export function EventBubblingDemo() {
     if (mode === "fixed") {
       event.stopPropagation();
     }
-    addLog(`button: спрацював обробник кнопки (\"видалено\")${mode === "fixed" ? " — stopPropagation викликано" : ""}`);
+    addLog(`button: спрацював обробник кнопки ("видалено")${mode === "fixed" ? " — stopPropagation викликано" : ""}`);
   };
 
   const codeFor: Record<Mode, string> = {

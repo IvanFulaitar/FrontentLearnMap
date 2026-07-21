@@ -48,9 +48,16 @@ export function CssModulesDemo() {
         </div>
         <div className={styles.cmDemoBox}>
           <span className={styles.cmDemoLabel}>Card.tsx — теж клас .accent</span>
-          <div className={styles.cmDemoCard} style={{ borderColor: ACCENTS[effectiveCardAccent] }}>
+          <button
+            type="button"
+            className={styles.cmDemoCard}
+            style={{ borderColor: ACCENTS[effectiveCardAccent] }}
+            disabled={mode === "global"}
+            onClick={() => setCardAccent((index) => (index + 1) % ACCENTS.length)}
+            title={mode === "modules" ? "Клікни, щоб змінити колір лише цієї картки" : "У глобальному режимі картка керується кольором кнопки"}
+          >
             Картка товару
-          </div>
+          </button>
         </div>
       </div>
 

@@ -11,7 +11,9 @@ function doubleWithReturn(price: number): number {
 }
 
 function doubleWithoutReturn(price: number): undefined {
-  const doubled = price * 2; // обчислено, але забутий return
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- intentional: this
+  // variable is computed but deliberately never returned, the exact bug this demo shows.
+  const doubled = price * 2;
 }
 
 /**

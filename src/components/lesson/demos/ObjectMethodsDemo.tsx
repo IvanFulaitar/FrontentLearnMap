@@ -18,7 +18,7 @@ function runMethod(method: Method): { display: string; note: string } {
   }
   // freeze
   const frozen = Object.freeze({ limits: { max: 10 } });
-  (frozen as any).limits.max = 999; // nested object is NOT frozen — this genuinely succeeds
+  frozen.limits.max = 999; // nested object is NOT frozen — this genuinely succeeds (Object.freeze is shallow)
   return { display: JSON.stringify(frozen), note: `рівень 1 захищений, але frozen.limits.max реально змінився на ${frozen.limits.max}` };
 }
 

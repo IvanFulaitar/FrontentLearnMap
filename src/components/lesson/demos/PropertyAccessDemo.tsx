@@ -16,8 +16,9 @@ const userWithoutAddress: UserData = { name: "Оксана" };
 function readCity(user: UserData, mode: AccessMode): { result?: string; error?: string } {
   try {
     if (mode === "unsafe") {
-      // Genuine unsafe access — throws for real when address is missing
-      const city = (user as any).address.city;
+      // Genuine unsafe access — throws for real when address is missing. Cast to a
+      // narrower type (not `any`) that still bypasses the optional-property check.
+      const city = (user as UserData & { address: { city: string } }).address.city;
       return { result: city };
     }
     return { result: user.address?.city ?? "Невідомо" };
