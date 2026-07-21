@@ -3192,3 +3192,98 @@
 .rcBlocked {
   color: var(--danger);
 }
+
+/* Active-nav demo ("Header і навігація сайту"): a real nav whose
+   aria-current="page" is set by React state and styled purely via the
+   [aria-current="page"] attribute selector. */
+.anNav {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.anLink {
+  font-size: 0.88rem;
+  color: var(--text);
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+
+.anLink[aria-current="page"] {
+  border-bottom-color: var(--primary);
+  font-weight: 700;
+}
+
+/* H1-count demo ("Hero-секція і картки"): a real querySelectorAll("h1")
+   count against the actual rendered stage. */
+.hcStage {
+  display: grid;
+  gap: 4px;
+  max-width: 320px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+  margin: 10px 0;
+}
+
+.hcHeading {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+.hcSubtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* Contact-links demo ("Footer і форма зв'язку"): real tel:/mailto: links
+   next to plain unlinked text. */
+.clRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 560px) {
+  .clRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.clPlainText {
+  font-size: 0.88rem;
+  color: var(--text);
+  cursor: default;
+  margin: 0;
+}
+
+.clLink {
+  font-size: 0.88rem;
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+/* Article time/cart demo ("Стаття блогу і картка товару"). */
+.atcRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.atcTime {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.atcCartRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}

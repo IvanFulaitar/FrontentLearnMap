@@ -140,6 +140,10 @@ import { AriaBasicsDemo } from "./AriaBasicsDemo";
 import { SerpPreviewDemo } from "./SerpPreviewDemo";
 import { OgCardPreviewDemo } from "./OgCardPreviewDemo";
 import { RobotsCanonicalDemo } from "./RobotsCanonicalDemo";
+import { ActiveNavDemo } from "./ActiveNavDemo";
+import { H1CountDemo } from "./H1CountDemo";
+import { ContactLinksDemo } from "./ContactLinksDemo";
+import { ArticleTimeCartDemo } from "./ArticleTimeCartDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -299,4 +303,8 @@ export const lessonDemos: Record<string, ComponentType> = {
   "serp-preview-demo": SerpPreviewDemo,
   "og-card-preview-demo": OgCardPreviewDemo,
   "robots-canonical-demo": RobotsCanonicalDemo,
+  "active-nav-demo": ActiveNavDemo,
+  "h1-count-demo": H1CountDemo,
+  "contact-links-demo": ContactLinksDemo,
+  "article-time-cart-demo": ArticleTimeCartDemo,
 };
