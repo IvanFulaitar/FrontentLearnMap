@@ -435,7 +435,7 @@ const cssCodeVariants: ((title: string) => string)[] = [
 ];
 
 const reactCodeVariants: ((title: string) => string)[] = [
-  (title) => `type LessonDemoProps = {\n  title: string;\n  completed: boolean;\n};\n\nexport function LessonDemo({ title, completed }: LessonDemoProps) {\n  return <article aria-label={title}>{completed ? "Завершено" : title}</article>;\n}`,
+  () => `type LessonDemoProps = {\n  title: string;\n  completed: boolean;\n};\n\nexport function LessonDemo({ title, completed }: LessonDemoProps) {\n  return <article aria-label={title}>{completed ? "Завершено" : title}</article>;\n}`,
   () => `import { useState } from "react";\n\nexport function Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <button type="button" onClick={() => setCount((value) => value + 1)}>\n      Натиснуто: {count}\n    </button>\n  );\n}`,
   (title) => `type Item = { id: string; label: string };\n\nexport function LessonList({ items }: { items: Item[] }) {\n  return (\n    <ul aria-label="${title}">\n      {items.map((item) => (\n        <li key={item.id}>{item.label}</li>\n      ))}\n    </ul>\n  );\n}`,
   () => `import { useEffect, useState } from "react";\n\nfunction useOnlineStatus() {\n  const [isOnline, setIsOnline] = useState(navigator.onLine);\n\n  useEffect(() => {\n    const update = () => setIsOnline(navigator.onLine);\n    window.addEventListener("online", update);\n    window.addEventListener("offline", update);\n    return () => {\n      window.removeEventListener("online", update);\n      window.removeEventListener("offline", update);\n    };\n  }, []);\n\n  return isOnline;\n}`,
