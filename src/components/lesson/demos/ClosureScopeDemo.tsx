@@ -7,8 +7,9 @@ type Keyword = "var" | "let";
 
 function capturedWithVar(): number[] {
   const closures: Array<() => number> = [];
-  // eslint-disable-next-line no-var -- intentional: this function exists to demonstrate
-  // var's function-scoped (not block-scoped) closure capture, the whole point of the demo.
+  // intentional: this function exists to demonstrate var's function-scoped (not
+  // block-scoped) closure capture, the whole point of the demo.
+  // eslint-disable-next-line no-var
   for (var i = 0; i < 3; i++) {
     closures.push(() => i);
   }

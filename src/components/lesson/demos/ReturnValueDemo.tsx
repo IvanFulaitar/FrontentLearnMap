@@ -11,8 +11,8 @@ function calcWithReturn(price: number, qty: number): number {
 }
 
 function calcWithoutReturn(price: number, qty: number): undefined {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- intentional: computed
-  // but deliberately never returned, the exact bug this demo shows.
+  // intentional: computed but deliberately never returned, the exact bug this demo shows.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const total = price * qty;
 }
 
