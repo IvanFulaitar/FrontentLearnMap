@@ -1,13 +1,14 @@
 :root {
-  /* Base surfaces — cool, slightly desaturated neutrals for a calmer, more
-     modern canvas than the previous flat blue-white. */
-  --bg: #f7f7fb;
+  /* Base surfaces — warm, soft neutrals for a friendlier, less corporate
+     canvas. Text and borders are lifted off pure black/grey so contrast
+     feels gentler while staying comfortably readable. */
+  --bg: #f8f7fb;
   --surface: #ffffff;
-  --surface-muted: #f1f1f7;
+  --surface-muted: #f2f0f8;
   --surface-raised: #ffffff;
-  --text: #15161d;
-  --muted: #6b6d7a;
-  --border: #e4e4ec;
+  --text: #232231;
+  --muted: #726f80;
+  --border: #e8e4ee;
 
   /* Single accent used consistently for interactive elements. */
   --primary: #4f46e5;
@@ -21,15 +22,18 @@
   --danger: #dc2626;
   --danger-soft: rgba(220, 38, 38, 0.1);
 
-  /* Softer, more diffuse elevation than the previous heavy drop shadow. */
-  --shadow-sm: 0 1px 2px rgba(15, 16, 26, 0.04);
-  --shadow: 0 8px 24px rgba(15, 16, 26, 0.06);
-  --shadow-lg: 0 20px 48px rgba(15, 16, 26, 0.1);
+  /* Softer, more diffuse elevation — larger blur, lower opacity reads as
+     "floaty" rather than a hard corporate drop shadow. */
+  --shadow-sm: 0 2px 6px rgba(35, 34, 49, 0.05);
+  --shadow: 0 10px 30px rgba(35, 34, 49, 0.07);
+  --shadow-lg: 0 26px 60px rgba(35, 34, 49, 0.11);
 
-  /* Consistent radius and spacing scale used across components. */
-  --radius-sm: 8px;
-  --radius: 14px;
-  --radius-lg: 20px;
+  /* Rounder corners than a typical dashboard — the single biggest lever
+     for a friendlier, less corporate feel, since every Card/Button/Badge
+     reads var(--radius*) already. */
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 26px;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -58,13 +62,13 @@
 }
 
 :root[data-theme="dark"] {
-  --bg: #0e0f14;
-  --surface: #171821;
-  --surface-muted: #1e2029;
-  --surface-raised: #1c1e28;
+  --bg: #131319;
+  --surface: #1a1b25;
+  --surface-muted: #21222d;
+  --surface-raised: #20212b;
   --text: #f3f3f7;
-  --muted: #9a9cab;
-  --border: #2b2d3a;
+  --muted: #a3a1b0;
+  --border: #302f3d;
   --primary: #818cf8;
   --primary-strong: #a5b4fc;
   --primary-soft: rgba(129, 140, 248, 0.16);
@@ -74,9 +78,9 @@
   --warning-soft: rgba(251, 191, 36, 0.16);
   --danger: #f87171;
   --danger-soft: rgba(248, 113, 113, 0.16);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
-  --shadow-lg: 0 24px 56px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.28);
+  --shadow: 0 14px 32px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 28px 58px rgba(0, 0, 0, 0.38);
 }
 
 :root[data-theme="high-contrast"] {
