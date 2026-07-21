@@ -144,6 +144,8 @@ import { ActiveNavDemo } from "./ActiveNavDemo";
 import { H1CountDemo } from "./H1CountDemo";
 import { ContactLinksDemo } from "./ContactLinksDemo";
 import { ArticleTimeCartDemo } from "./ArticleTimeCartDemo";
+import { WireframeTagMatchDemo } from "./WireframeTagMatchDemo";
+import { SectionTagQuizDemo } from "./SectionTagQuizDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -307,4 +309,6 @@ export const lessonDemos: Record<string, ComponentType> = {
   "h1-count-demo": H1CountDemo,
   "contact-links-demo": ContactLinksDemo,
   "article-time-cart-demo": ArticleTimeCartDemo,
+  "wireframe-tag-match-demo": WireframeTagMatchDemo,
+  "section-tag-quiz-demo": SectionTagQuizDemo,
 };

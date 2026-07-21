@@ -3287,3 +3287,63 @@
   flex-wrap: wrap;
   margin-top: 14px;
 }
+
+/* Wireframe tag-match demo ("Як аналізувати дизайн у Figma"): a real
+   wireframe where each block's select is checked live against the
+   correct semantic tag. */
+.wfStage {
+  display: grid;
+  gap: 12px;
+  max-width: 360px;
+}
+
+.wfBlock {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+}
+
+.wfBlockCorrect {
+  border-color: var(--success);
+}
+
+.wfBlockWrong {
+  border-color: var(--danger);
+}
+
+.wfBlockLabel {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.wfVerdict {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Section-tag quiz demo ("Як розбити сторінку на семантичні секції"): a
+   real one-question-at-a-time scored quiz. */
+.stqStage {
+  display: grid;
+  gap: 12px;
+  max-width: 380px;
+}
+
+.stqScenario {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.stqOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
