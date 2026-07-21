@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { lazy, Suspense, type ReactElement } from "react";
 import { App } from "./App";
 import { Skeleton } from "../components/ui/Skeleton";
@@ -8,8 +8,7 @@ const DashboardPage = lazy(() => import("../pages/DashboardPage").then((module) 
 const LessonPage = lazy(() => import("../pages/LessonPage").then((module) => ({ default: module.LessonPage })));
 const ProgressPage = lazy(() => import("../pages/ProgressPage").then((module) => ({ default: module.ProgressPage })));
 const QuizPage = lazy(() => import("../pages/QuizPage").then((module) => ({ default: module.QuizPage })));
-const PracticePage = lazy(() => import("../pages/PracticePage").then((module) => ({ default: module.PracticePage })));
-const ChallengesPage = lazy(() => import("../pages/ChallengesPage").then((module) => ({ default: module.ChallengesPage })));
+const TasksPage = lazy(() => import("../pages/TasksPage").then((module) => ({ default: module.TasksPage })));
 const ProjectsPage = lazy(() => import("../pages/ProjectsPage").then((module) => ({ default: module.ProjectsPage })));
 const ResourcesPage = lazy(() => import("../pages/ResourcesPage").then((module) => ({ default: module.ResourcesPage })));
 const ProfilePage = lazy(() => import("../pages/ProfilePage").then((module) => ({ default: module.ProfilePage })));
@@ -47,8 +46,12 @@ export const router = createBrowserRouter([
         element: withSuspense(<QuizPage />),
       },
       { path: "progress", element: withSuspense(<ProgressPage />) },
-      { path: "practice", element: withSuspense(<PracticePage />) },
-      { path: "challenges", element: withSuspense(<ChallengesPage />) },
+      { path: "tasks", element: withSuspense(<TasksPage />) },
+      // Practice and Challenges used to be two separate, near-identical
+      // pages — merged into one ("Задачі"). Old links/bookmarks still land
+      // somewhere useful instead of a 404.
+      { path: "practice", element: <Navigate to="/tasks" replace /> },
+      { path: "challenges", element: <Navigate to="/tasks" replace /> },
       { path: "projects", element: withSuspense(<ProjectsPage />) },
       { path: "resources", element: withSuspense(<ResourcesPage />) },
       { path: "profile", element: withSuspense(<ProfilePage />) },

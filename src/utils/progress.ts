@@ -1,5 +1,5 @@
 import { courses } from "../data/courses";
-import { practiceTasks } from "../data/practice";
+import { codingTasks } from "../data/tasks";
 import { platformProjects } from "../data/projects";
 import { resources } from "../data/resources";
 import type { Course, Lesson, LessonLocation, LessonStatus, Module } from "../types/course";
@@ -155,18 +155,18 @@ export const getLearningStats = (
   progress: ProgressMap,
   quizProgress: QuizProgressMap,
   activityLog: string[] = [],
-  practiceTaskProgress: Record<string, boolean> = {},
+  completedTaskCount = 0,
 ) => {
   const lessons = getAllLessons();
   const completedLessons = lessons.filter(
     ({ course, module, lesson }) => getLessonStatus(lesson, progress, course.id, module.id) === "completed",
   );
   // Two sources feed "completed practices": in-lesson practiceTask completions
-  // (tracked as a lesson-type) and the standalone /practice task list, which
-  // has its own completion map since it isn't part of any course/module.
+  // (tracked as a lesson-type) and the standalone /tasks list, whose
+  // completions live in PlatformContext (completedChallenges) since it isn't
+  // part of any course/module.
   const completedPractices =
-    completedLessons.filter(({ lesson }) => lesson.type === "practice").length +
-    Object.values(practiceTaskProgress).filter(Boolean).length;
+    completedLessons.filter(({ lesson }) => lesson.type === "practice").length + completedTaskCount;
   const passedTests = Object.values(quizProgress).filter((score) => score >= 60).length;
   const streak = getStreak(activityLog);
 
@@ -243,9 +243,9 @@ export const searchLearningContent = (query: string): SearchResult[] => {
     });
   });
 
-  practiceTasks.forEach((task) => {
+  codingTasks.forEach((task) => {
     if (`${task.title} ${task.description} ${task.category}`.toLowerCase().includes(normalized)) {
-      results.push({ type: "practice", title: task.title, description: task.description, href: "/practice", tags: [task.category, task.difficulty] });
+      results.push({ type: "practice", title: task.title, description: task.description, href: "/tasks", tags: [task.category, task.difficulty] });
     }
   });
 

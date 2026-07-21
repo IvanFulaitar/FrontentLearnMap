@@ -1,5 +1,6 @@
 import { courses } from "../data/courses";
 import { useProgressContext } from "../context/ProgressContext";
+import { usePlatform } from "../context/PlatformContext";
 import { getCourseProgress, getLearningStats, getOverallProgress } from "../utils/progress";
 import { pluralizeUk } from "../utils/pluralize";
 import { ProgressBar } from "../components/progress/ProgressBar";
@@ -8,9 +9,10 @@ import { PageHeader } from "../shared/page/PageHeader";
 import styles from "./ProgressPage.module.css";
 
 export function ProgressPage() {
-  const { lessonProgress, quizProgress, activityLog, practiceTaskProgress } = useProgressContext();
+  const { lessonProgress, quizProgress, activityLog } = useProgressContext();
+  const { completedChallenges } = usePlatform();
   const overall = getOverallProgress(lessonProgress);
-  const stats = getLearningStats(lessonProgress, quizProgress, activityLog, practiceTaskProgress);
+  const stats = getLearningStats(lessonProgress, quizProgress, activityLog, completedChallenges.length);
 
   return (
     <div className="page">

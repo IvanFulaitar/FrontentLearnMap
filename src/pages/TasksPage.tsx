@@ -3,10 +3,10 @@ import { CheckCircle2 } from "lucide-react";
 import { Badge } from "../components/ui/Badge";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
-import { practiceTasks } from "../data/practice";
-import type { ChallengeCategory, PracticeTask } from "../types/platform";
+import { codingTasks } from "../data/tasks";
+import type { CodingChallenge, ChallengeCategory } from "../types/platform";
 import { lessonDifficultyLabels } from "../constants/labels";
-import { useProgressContext } from "../context/ProgressContext";
+import { usePlatform } from "../context/PlatformContext";
 import { pluralizeUk } from "../utils/pluralize";
 import { PageHeader } from "../shared/page/PageHeader";
 import styles from "./PlatformPages.module.css";
@@ -20,13 +20,13 @@ const CATEGORY_LABELS: Record<ChallengeCategory | "All", string> = {
   TypeScript: "TypeScript",
 };
 
-interface PracticeTaskCardProps {
-  task: PracticeTask;
+interface TaskCardProps {
+  task: CodingChallenge;
   isDone: boolean;
-  onToggleDone: () => void;
+  onComplete: () => void;
 }
 
-function PracticeTaskCard({ task, isDone, onToggleDone }: PracticeTaskCardProps) {
+function TaskCard({ task, isDone, onComplete }: TaskCardProps) {
   const [showSolution, setShowSolution] = useState(false);
 
   return (
@@ -39,10 +39,10 @@ function PracticeTaskCard({ task, isDone, onToggleDone }: PracticeTaskCardProps)
       <p>{task.description}</p>
       <strong>Вимоги</strong>
       <ul>{task.requirements.map((item) => <li key={item}>{item}</li>)}</ul>
-      <span className={styles.codeLabel}>З чого почати</span>
+      <span className={styles.codeLabel}>Заверши код</span>
       {task.starterCode.map((file) => (
         <pre className={styles.solutionCode} key={file.label}>
-          <code>{`// ${file.label}\n${file.code}`}</code>
+          <code>{file.code}</code>
         </pre>
       ))}
       {task.hints.length ? (
@@ -59,45 +59,58 @@ function PracticeTaskCard({ task, isDone, onToggleDone }: PracticeTaskCardProps)
           <code>{task.solution}</code>
         </pre>
       ) : null}
-      <Button variant={isDone ? "success" : "primary"} onClick={onToggleDone}>
-        {isDone ? (
-          <>
-            <CheckCircle2 size={16} aria-hidden="true" /> Виконано
-          </>
-        ) : (
-          "Позначити виконаним"
-        )}
-      </Button>
+      <div className={styles.taskFooter}>
+        <strong>{task.xpReward} XP</strong>
+        <Button variant={isDone ? "success" : "primary"} onClick={onComplete} disabled={isDone}>
+          {isDone ? (
+            <>
+              <CheckCircle2 size={16} aria-hidden="true" /> Виконано
+            </>
+          ) : (
+            "Позначити виконаним"
+          )}
+        </Button>
+      </div>
     </Card>
   );
 }
 
-export function PracticePage() {
+export function TasksPage() {
+  const [query, setQuery] = useState("");
   const [category, setCategory] = useState<ChallengeCategory | "All">("All");
-  const { practiceTaskProgress, setPracticeTaskStatus } = useProgressContext();
-  const tasks = useMemo(() => category === "All" ? practiceTasks : practiceTasks.filter((task) => task.category === category), [category]);
-  const doneCount = practiceTasks.filter((task) => practiceTaskProgress[task.id]).length;
+  const { completedChallenges, completeChallenge } = usePlatform();
+  const filtered = useMemo(
+    () =>
+      codingTasks.filter(
+        (item) =>
+          item.title.toLowerCase().includes(query.toLowerCase()) &&
+          (category === "All" || item.category === category),
+      ),
+    [query, category],
+  );
+  const doneCount = codingTasks.filter((item) => completedChallenges.includes(item.id)).length;
 
   return (
     <div className="page">
       <PageHeader
-        breadcrumbs={[{ label: "Дашборд", href: "/" }, { label: "Практика" }]}
-        eyebrow="Практика"
-        title="Практичні завдання"
-        description={`Прочитай умову, напиши код у своєму редакторі, звір із рішенням і познач завдання виконаним. Виконано ${doneCount} з ${practiceTasks.length} ${pluralizeUk(practiceTasks.length, ["завдання", "завдання", "завдань"])}.`}
-        actions={
+        breadcrumbs={[{ label: "Дашборд", href: "/" }, { label: "Задачі" }]}
+        eyebrow={`${codingTasks.length} ${pluralizeUk(codingTasks.length, ["задача", "задачі", "задач"])}`}
+        title="Маленькі задачі"
+        description={`Заверши код за коментарем-підказкою, звір із рішенням і забери XP. Виконано ${doneCount} з ${codingTasks.length} ${pluralizeUk(codingTasks.length, ["задачі", "задач", "задач"])}.`}
+      />
+      <div className={styles.toolbar}>
+        <input className={styles.input} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Пошук задачі" />
         <select className={styles.select} value={category} onChange={(event) => setCategory(event.target.value as ChallengeCategory | "All")}>
           {(["All", "HTML", "CSS", "JavaScript", "React", "TypeScript"] as const).map((item) => <option key={item} value={item}>{CATEGORY_LABELS[item]}</option>)}
         </select>
-        }
-      />
+      </div>
       <section className={styles.grid}>
-        {tasks.map((task) => (
-          <PracticeTaskCard
+        {filtered.map((task) => (
+          <TaskCard
             key={task.id}
             task={task}
-            isDone={Boolean(practiceTaskProgress[task.id])}
-            onToggleDone={() => setPracticeTaskStatus(task.id, !practiceTaskProgress[task.id])}
+            isDone={completedChallenges.includes(task.id)}
+            onComplete={() => completeChallenge(task.id, task.xpReward)}
           />
         ))}
       </section>

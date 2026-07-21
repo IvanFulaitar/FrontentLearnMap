@@ -41,9 +41,9 @@ Module and lesson quizzes are generated from course/module/lesson metadata. Quiz
 
 Add portfolio projects in `src/data/projects.ts` or module projects in `src/data/courses.ts`.
 
-## Practice Task
+## Task (/tasks page)
 
-Add a `PracticeTask` in `src/data/practice.ts`. Include category, difficulty, requirements, starter code, hints and solution.
+Add a `CodingChallenge` in `src/data/tasks.ts`. Include category, difficulty, requirements, starter code, hints, solution and xpReward. Practice and Challenges used to be two separate, near-identical pages/data files — they were merged into one curated list. Keep new tasks distinct in topic from existing ones in the same category; don't just pad the count.
 
 ## Resource
 

@@ -10,11 +10,6 @@ export const LESSON_PROGRESS_KEY = "frontend-academy:lesson-progress";
 export const QUIZ_PROGRESS_KEY = "frontend-academy:quiz-progress";
 export const ACTIVITY_LOG_KEY = "frontend-academy:activity-log";
 export const LAST_LESSON_KEY = "frontend-academy:last-opened-lesson";
-// Standalone /practice tasks (src/data/practice.ts) are a separate list from
-// in-lesson practiceTask completions — this is their own completion map so
-// "Позначити виконаним" on that page actually persists and feeds into the
-// same "виконаних практик" stat instead of being purely decorative.
-export const PRACTICE_TASK_PROGRESS_KEY = "frontend-academy:practice-task-progress";
 export const PROGRESS_SYNC_EVENT = "frontend-academy:progress-sync";
 // One entry per calendar day, listing which kinds of real activity happened
 // that day ("lesson" / "practice" / "quiz-passed" / "js-lesson") — lets the
@@ -59,9 +54,6 @@ export function useProgressState() {
   const [lastOpenedLesson, setLastOpenedLessonState] = useState<LastOpenedLesson | null>(() =>
     readStorage<LastOpenedLesson | null>(LAST_LESSON_KEY, null),
   );
-  const [practiceTaskProgress, setPracticeTaskProgress] = useState<Record<string, boolean>>(() =>
-    readStorage<Record<string, boolean>>(PRACTICE_TASK_PROGRESS_KEY, {}),
-  );
 
   useEffect(() => {
     localStorage.setItem(LESSON_PROGRESS_KEY, JSON.stringify(lessonProgress));
@@ -81,7 +73,6 @@ export function useProgressState() {
       setQuizProgress(readStorage<QuizProgressMap>(QUIZ_PROGRESS_KEY, {}));
       setActivityLog(readStorage<string[]>(ACTIVITY_LOG_KEY, []));
       setLastOpenedLessonState(readStorage<LastOpenedLesson | null>(LAST_LESSON_KEY, null));
-      setPracticeTaskProgress(readStorage<Record<string, boolean>>(PRACTICE_TASK_PROGRESS_KEY, {}));
     };
 
     window.addEventListener("storage", syncProgress);
@@ -151,19 +142,6 @@ export function useProgressState() {
     [recordActivity, recordDailyEvent],
   );
 
-  const setPracticeTaskStatus = useCallback((taskId: string, completed: boolean) => {
-    setPracticeTaskProgress((current) => {
-      const next = { ...current, [taskId]: completed };
-      localStorage.setItem(PRACTICE_TASK_PROGRESS_KEY, JSON.stringify(next));
-      window.dispatchEvent(new Event(PROGRESS_SYNC_EVENT));
-      return next;
-    });
-    if (completed) {
-      recordActivity();
-      recordDailyEvent("practice");
-    }
-  }, [recordActivity, recordDailyEvent]);
-
   const saveQuizScore = useCallback((courseId: string, moduleId: string, quizId: string, score: number) => {
     setQuizProgress((current) => {
       const next = {
@@ -183,10 +161,8 @@ export function useProgressState() {
     quizProgress,
     activityLog,
     lastOpenedLesson,
-    practiceTaskProgress,
     setLessonStatus,
     saveQuizScore,
     recordLessonOpened,
-    setPracticeTaskStatus,
   };
 }

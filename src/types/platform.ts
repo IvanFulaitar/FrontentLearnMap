@@ -37,18 +37,6 @@ export interface DailyChallenge {
   xpReward: number;
 }
 
-export interface PracticeTask {
-  id: string;
-  category: ChallengeCategory;
-  title: string;
-  description: string;
-  requirements: string[];
-  starterCode: PlaygroundFile[];
-  hints: string[];
-  solution: string;
-  difficulty: LessonDifficulty;
-}
-
 export interface CodingChallenge {
   id: string;
   category: ChallengeCategory;

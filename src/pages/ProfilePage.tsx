@@ -12,8 +12,8 @@ import styles from "./PlatformPages.module.css";
 
 export function ProfilePage() {
   const platform = usePlatform();
-  const { lessonProgress, quizProgress, activityLog, practiceTaskProgress } = useProgressContext();
-  const stats = getLearningStats(lessonProgress, quizProgress, activityLog, practiceTaskProgress);
+  const { lessonProgress, quizProgress, activityLog } = useProgressContext();
+  const stats = getLearningStats(lessonProgress, quizProgress, activityLog, platform.completedChallenges.length);
   const completedCourses = courses.filter((course) => getCourseProgress(course, lessonProgress).percent === 100).length;
 
   return (

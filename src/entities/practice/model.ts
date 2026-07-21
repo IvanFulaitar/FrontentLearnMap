@@ -1,1 +1,1 @@
-export type { PracticeTask, CodingChallenge, ProjectTask } from "../../types/platform";
+export type { CodingChallenge, ProjectTask } from "../../types/platform";

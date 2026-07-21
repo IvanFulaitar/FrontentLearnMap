@@ -5,7 +5,6 @@ import {
   ACTIVITY_LOG_KEY,
   DAILY_EVENTS_KEY,
   LESSON_PROGRESS_KEY,
-  PRACTICE_TASK_PROGRESS_KEY,
   PROGRESS_SYNC_EVENT,
   QUIZ_PROGRESS_KEY,
   type DailyEventMap,
@@ -109,7 +108,6 @@ interface CourseProgressSnapshot {
   lessonProgress: ProgressMap;
   quizProgress: QuizProgressMap;
   activityLog: string[];
-  practiceTaskProgress: Record<string, boolean>;
   // Today's real activity tags only ("lesson" / "practice" / "quiz-passed" /
   // "js-lesson") — used to auto-detect daily-challenge completion instead of
   // a manual checkbox.
@@ -122,7 +120,6 @@ const readCourseProgressSnapshot = (): CourseProgressSnapshot => {
     lessonProgress: readJson<ProgressMap>(LESSON_PROGRESS_KEY, {}),
     quizProgress: readJson<QuizProgressMap>(QUIZ_PROGRESS_KEY, {}),
     activityLog: readJson<string[]>(ACTIVITY_LOG_KEY, []),
-    practiceTaskProgress: readJson<Record<string, boolean>>(PRACTICE_TASK_PROGRESS_KEY, {}),
     todayEvents: dailyEvents[todayKey()] ?? [],
   };
 };
@@ -300,8 +297,8 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
 
   const unlockedAchievements = useMemo(() => {
     const unlocked = new Set<string>();
-    const { lessonProgress, quizProgress, activityLog, practiceTaskProgress } = courseProgress;
-    const stats = getLearningStats(lessonProgress, quizProgress, activityLog, practiceTaskProgress);
+    const { lessonProgress, quizProgress, activityLog } = courseProgress;
+    const stats = getLearningStats(lessonProgress, quizProgress, activityLog, state.completedChallenges.length);
     const htmlCourse = courses.find((course) => course.id === "html");
     const cssCourse = courses.find((course) => course.id === "css");
     const reactCourse = courses.find((course) => course.id === "react");
@@ -330,7 +327,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     if (state.completedProjects.length >= 1) unlocked.add("first-project");
     if (document.documentElement.dataset.theme === "dark") unlocked.add("dark-mode-user");
     return achievements.filter((achievement) => unlocked.has(achievement.id)).map((achievement) => achievement.id);
-  }, [courseProgress, state.completedProjects.length]);
+  }, [courseProgress, state.completedChallenges.length, state.completedProjects.length]);
 
   const value = useMemo<PlatformContextValue>(() => ({
     ...state,

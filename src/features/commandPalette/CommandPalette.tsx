@@ -7,7 +7,7 @@ import styles from "./CommandPalette.module.css";
 
 const staticCommands = [
   { title: "Відкрити дашборд", href: "/" },
-  { title: "Відкрити практику", href: "/practice" },
+  { title: "Відкрити задачі", href: "/tasks" },
   { title: "Відкрити проєкти", href: "/projects" },
   { title: "Відкрити налаштування", href: "/settings" },
   { title: "Відкрити профіль", href: "/profile" },
