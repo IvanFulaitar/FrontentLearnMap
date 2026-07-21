@@ -3347,3 +3347,34 @@
   flex-wrap: wrap;
   gap: 8px;
 }
+
+/* Bug-hunt demo ("Найпоширеніші помилки початківців в HTML"): real code
+   lines toggled as flagged, checked against the actual bug list. */
+.bhStage {
+  display: grid;
+  gap: 10px;
+  max-width: 420px;
+  margin-bottom: 14px;
+}
+
+.bhLineWrap {
+  display: grid;
+  gap: 4px;
+}
+
+.bhLine {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 8px 12px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.bhLineFlagged {
+  border-color: var(--warning);
+  background: var(--warning-soft);
+}

@@ -146,6 +146,7 @@ import { ContactLinksDemo } from "./ContactLinksDemo";
 import { ArticleTimeCartDemo } from "./ArticleTimeCartDemo";
 import { WireframeTagMatchDemo } from "./WireframeTagMatchDemo";
 import { SectionTagQuizDemo } from "./SectionTagQuizDemo";
+import { BugHuntDemo } from "./BugHuntDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -311,4 +312,5 @@ export const lessonDemos: Record<string, ComponentType> = {
   "article-time-cart-demo": ArticleTimeCartDemo,
   "wireframe-tag-match-demo": WireframeTagMatchDemo,
   "section-tag-quiz-demo": SectionTagQuizDemo,
+  "bug-hunt-demo": BugHuntDemo,
 };
