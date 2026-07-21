@@ -6,14 +6,11 @@
 }
 
 .top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
+  display: grid;
+  gap: 6px;
 }
 
 .title {
-  margin-bottom: 6px;
   font-size: 1.1rem;
 }
 

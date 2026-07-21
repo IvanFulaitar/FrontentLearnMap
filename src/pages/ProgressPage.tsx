@@ -1,6 +1,7 @@
 import { courses } from "../data/courses";
 import { useProgressContext } from "../context/ProgressContext";
 import { getCourseProgress, getLearningStats, getOverallProgress } from "../utils/progress";
+import { pluralizeUk } from "../utils/pluralize";
 import { ProgressBar } from "../components/progress/ProgressBar";
 import { Card } from "../components/ui/Card";
 import { PageHeader } from "../shared/page/PageHeader";
@@ -25,19 +26,19 @@ export function ProgressPage() {
         </Card>
         <Card className={styles.box}>
           <div className={styles.number}>{overall.completed}</div>
-          <p>завершених уроків</p>
+          <p>{pluralizeUk(overall.completed, ["завершений урок", "завершені уроки", "завершених уроків"])}</p>
         </Card>
         <Card className={styles.box}>
           <div className={styles.number}>{stats.passedTests}</div>
-          <p>пройдених тестів</p>
+          <p>{pluralizeUk(stats.passedTests, ["пройдений тест", "пройдені тести", "пройдених тестів"])}</p>
         </Card>
         <Card className={styles.box}>
           <div className={styles.number}>{overall.total}</div>
-          <p>уроків у roadmap</p>
+          <p>{pluralizeUk(overall.total, ["урок у roadmap", "уроки у roadmap", "уроків у roadmap"])}</p>
         </Card>
         <Card className={styles.box}>
           <div className={styles.number}>{stats.completedPractices}</div>
-          <p>практик завершено</p>
+          <p>{pluralizeUk(stats.completedPractices, ["практика завершена", "практики завершено", "практик завершено"])}</p>
         </Card>
       </section>
       <section className={styles.courses}>

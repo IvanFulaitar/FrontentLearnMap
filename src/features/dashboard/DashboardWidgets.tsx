@@ -26,6 +26,7 @@ import type { usePlatform } from "../../context/PlatformContext";
 import type { useDashboardData } from "./useDashboardData";
 import type { ProgressMap } from "../../utils/progress";
 import { getActivitySeries, getCourseProgress } from "../../utils/progress";
+import { pluralizeUk } from "../../utils/pluralize";
 import styles from "../../pages/DashboardPage.module.css";
 
 type DashboardData = ReturnType<typeof useDashboardData>;
@@ -164,10 +165,10 @@ export function DashboardStats({ data, platform }: { data: DashboardData; platfo
     { icon: <TrendingUp size={18} aria-hidden="true" />, value: `${overall.percent}%`, label: "загального прогресу", accent: styles.accentSuccess },
     { icon: <GraduationCap size={18} aria-hidden="true" />, value: `${completedCourses}/${courses.length}`, label: "курсів завершено", accent: styles.accentPrimary },
     { icon: <BookOpenCheck size={18} aria-hidden="true" />, value: `${overall.completed}/${overall.total}`, label: "уроків виконано", accent: styles.accentSuccess },
-    { icon: <Flame size={18} aria-hidden="true" />, value: learningStats.currentStreak, label: "поточна серія днів", accent: styles.accentDanger },
-    { icon: <Trophy size={18} aria-hidden="true" />, value: learningStats.longestStreak, label: "найдовша серія днів", accent: styles.accentAmber },
-    { icon: <Code2 size={18} aria-hidden="true" />, value: learningStats.completedPractices, label: "виконаних практик", accent: styles.accentPrimary },
-    { icon: <CheckCircle2 size={18} aria-hidden="true" />, value: learningStats.passedTests, label: "пройдених тестів", accent: styles.accentSuccess },
+    { icon: <Flame size={18} aria-hidden="true" />, value: learningStats.currentStreak, label: `поточна серія ${pluralizeUk(learningStats.currentStreak, ["день", "дні", "днів"])} поспіль`, accent: styles.accentDanger },
+    { icon: <Trophy size={18} aria-hidden="true" />, value: learningStats.longestStreak, label: `найдовша серія ${pluralizeUk(learningStats.longestStreak, ["день", "дні", "днів"])} поспіль`, accent: styles.accentAmber },
+    { icon: <Code2 size={18} aria-hidden="true" />, value: learningStats.completedPractices, label: pluralizeUk(learningStats.completedPractices, ["виконана практика", "виконані практики", "виконаних практик"]), accent: styles.accentPrimary },
+    { icon: <CheckCircle2 size={18} aria-hidden="true" />, value: learningStats.passedTests, label: pluralizeUk(learningStats.passedTests, ["пройдений тест", "пройдені тести", "пройдених тестів"]), accent: styles.accentSuccess },
   ];
 
   return (
