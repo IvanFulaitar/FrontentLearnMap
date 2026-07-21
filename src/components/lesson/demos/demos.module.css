@@ -2950,3 +2950,134 @@
   font-size: 0.85rem;
   color: var(--text);
 }
+
+/* Div-vs-button demo ("Семантика як основа доступності"): a real
+   `<div onClick>` (unreachable by Tab, no Enter/Space handling) next to
+   a real `<button>` — the difference only shows up via actual keyboard
+   navigation, not visually. */
+.dvbRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 500px) {
+  .dvbRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dvbCard {
+  display: grid;
+  gap: 6px;
+}
+
+.dvbFakeButton,
+.dvbRealButton {
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: var(--on-primary, #fff);
+  cursor: pointer;
+  border: none;
+}
+
+.dvbFakeButton {
+  /* Deliberately no tabindex — same bug as the lesson's dontDoThis. */
+  user-select: none;
+}
+
+/* Skip-link + focus-visible demo ("Скрінрідери та клавіатурна
+   навігація"): the skip link is only visually revealed on real keyboard
+   focus, and the button below relies on genuine :focus-visible. */
+.slfStage {
+  display: grid;
+  gap: 12px;
+  max-width: 360px;
+  position: relative;
+}
+
+.slfSkipLink {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: 8px 12px;
+  background: var(--primary);
+  color: var(--on-primary, #fff);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  z-index: 1;
+  transition: top 0.15s ease;
+}
+
+.slfSkipLink:focus {
+  top: 0;
+}
+
+.slfNav {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: var(--text);
+  padding: 8px 0;
+}
+
+.slfFocusButton {
+  font: inherit;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+}
+
+.slfFocusButton:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.slfMain {
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  font-size: 0.85rem;
+  color: var(--text);
+  outline: none;
+}
+
+.slfMain:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ARIA basics demo ("Основи ARIA: коли HTML недостатньо"): real
+   aria-expanded/aria-controls on a burger button and a real
+   role="status" live region that fills up on click. */
+.abStage {
+  display: grid;
+  gap: 10px;
+  max-width: 360px;
+}
+
+.abRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.abToggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--text);
+  cursor: pointer;
+}

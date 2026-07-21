@@ -134,6 +134,9 @@ import { InputTypesDemo } from "./InputTypesDemo";
 import { SelectFieldsetDemo } from "./SelectFieldsetDemo";
 import { RadioValidationDemo } from "./RadioValidationDemo";
 import { AriaErrorDemo } from "./AriaErrorDemo";
+import { DivVsButtonDemo } from "./DivVsButtonDemo";
+import { SkipLinkFocusDemo } from "./SkipLinkFocusDemo";
+import { AriaBasicsDemo } from "./AriaBasicsDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -287,4 +290,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "select-fieldset-demo": SelectFieldsetDemo,
   "radio-validation-demo": RadioValidationDemo,
   "aria-error-demo": AriaErrorDemo,
+  "div-vs-button-demo": DivVsButtonDemo,
+  "skip-link-focus-demo": SkipLinkFocusDemo,
+  "aria-basics-demo": AriaBasicsDemo,
 };
