@@ -137,6 +137,9 @@ import { AriaErrorDemo } from "./AriaErrorDemo";
 import { DivVsButtonDemo } from "./DivVsButtonDemo";
 import { SkipLinkFocusDemo } from "./SkipLinkFocusDemo";
 import { AriaBasicsDemo } from "./AriaBasicsDemo";
+import { SerpPreviewDemo } from "./SerpPreviewDemo";
+import { OgCardPreviewDemo } from "./OgCardPreviewDemo";
+import { RobotsCanonicalDemo } from "./RobotsCanonicalDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -293,4 +296,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "div-vs-button-demo": DivVsButtonDemo,
   "skip-link-focus-demo": SkipLinkFocusDemo,
   "aria-basics-demo": AriaBasicsDemo,
+  "serp-preview-demo": SerpPreviewDemo,
+  "og-card-preview-demo": OgCardPreviewDemo,
+  "robots-canonical-demo": RobotsCanonicalDemo,
 };

@@ -3081,3 +3081,114 @@
   color: var(--text);
   cursor: pointer;
 }
+
+/* Shared field-stack layout used by SERP/OG/robots demos. */
+.spFields {
+  display: grid;
+  gap: 6px;
+  max-width: 380px;
+  margin-bottom: 14px;
+}
+
+/* SERP preview demo ("Title і description для пошукових систем"): a real
+   Google-result-style card driven entirely by live input values. */
+.spCard {
+  max-width: 420px;
+  padding: 4px 0;
+}
+
+.spUrl {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--success);
+}
+
+.spTitle {
+  margin: 2px 0;
+  font-size: 1.05rem;
+  color: #1a0dab;
+}
+
+.spDesc {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* OG card preview demo ("Open Graph і прев'ю в соцмережах"). */
+.ogCard {
+  max-width: 320px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.ogBareUrl {
+  margin: 0;
+  padding: 14px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.ogImageBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  background: var(--surface-muted);
+  font-size: 1.6rem;
+}
+
+.ogCardTitle {
+  margin: 8px 12px 2px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text);
+}
+
+.ogCardDesc {
+  margin: 0 12px 8px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.ogCardUrl {
+  margin: 0 12px 12px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
+/* Robots.txt + canonical demo ("Favicon, robots.txt і canonical URL"): a
+   real, editable robots.txt whose Disallow rules are genuinely parsed. */
+.rcTextarea {
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  max-width: 380px;
+  margin-bottom: 10px;
+}
+
+.rcVerdictList {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 0.85rem;
+}
+
+.rcAllowed {
+  color: var(--success);
+}
+
+.rcBlocked {
+  color: var(--danger);
+}
