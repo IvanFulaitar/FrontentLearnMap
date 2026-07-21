@@ -6,6 +6,7 @@
 
 .card {
   display: grid;
+  align-content: start;
   gap: 12px;
   padding: 18px;
   /* Without an explicit min-width: 0, a grid item defaults to auto and
@@ -13,6 +14,42 @@
      unbroken code line in .solutionCode below was pushing the whole card
      wider than the grid track instead of scrolling inside it. */
   min-width: 0;
+}
+
+.taskHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cardDone {
+  border-color: var(--success);
+  background: var(--success-soft);
+}
+
+.codeLabel {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.reveal {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  background: var(--surface-muted);
+}
+
+.reveal summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.reveal ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
 }
 
 .solutionCode {

@@ -8,9 +8,10 @@ export function useDashboardData(
   quizProgress: QuizProgressMap,
   activityLog: string[] = [],
   lastOpenedLesson: LastOpenedLesson | null = null,
+  practiceTaskProgress: Record<string, boolean> = {},
 ) {
   const overall = getOverallProgress(lessonProgress);
-  const learningStats = getLearningStats(lessonProgress, quizProgress, activityLog);
+  const learningStats = getLearningStats(lessonProgress, quizProgress, activityLog, practiceTaskProgress);
   const completedCourses = courses.filter((course) => getCourseProgress(course, lessonProgress).percent === 100).length;
   const lessons = getAllLessons();
   const nextLesson = lessons.find(

@@ -151,12 +151,22 @@ export const getActivitySeries = (activityLog: string[]) => {
   return { daily, weekly };
 };
 
-export const getLearningStats = (progress: ProgressMap, quizProgress: QuizProgressMap, activityLog: string[] = []) => {
+export const getLearningStats = (
+  progress: ProgressMap,
+  quizProgress: QuizProgressMap,
+  activityLog: string[] = [],
+  practiceTaskProgress: Record<string, boolean> = {},
+) => {
   const lessons = getAllLessons();
   const completedLessons = lessons.filter(
     ({ course, module, lesson }) => getLessonStatus(lesson, progress, course.id, module.id) === "completed",
   );
-  const completedPractices = completedLessons.filter(({ lesson }) => lesson.type === "practice").length;
+  // Two sources feed "completed practices": in-lesson practiceTask completions
+  // (tracked as a lesson-type) and the standalone /practice task list, which
+  // has its own completion map since it isn't part of any course/module.
+  const completedPractices =
+    completedLessons.filter(({ lesson }) => lesson.type === "practice").length +
+    Object.values(practiceTaskProgress).filter(Boolean).length;
   const passedTests = Object.values(quizProgress).filter((score) => score >= 60).length;
   const streak = getStreak(activityLog);
 

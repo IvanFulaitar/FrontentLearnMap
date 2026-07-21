@@ -8,9 +8,9 @@ import { PageHeader } from "../shared/page/PageHeader";
 import styles from "./ProgressPage.module.css";
 
 export function ProgressPage() {
-  const { lessonProgress, quizProgress } = useProgressContext();
+  const { lessonProgress, quizProgress, activityLog, practiceTaskProgress } = useProgressContext();
   const overall = getOverallProgress(lessonProgress);
-  const stats = getLearningStats(lessonProgress, quizProgress);
+  const stats = getLearningStats(lessonProgress, quizProgress, activityLog, practiceTaskProgress);
 
   return (
     <div className="page">
