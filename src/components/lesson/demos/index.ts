@@ -63,6 +63,7 @@ import { ArticleSectionAsideDemo } from "./ArticleSectionAsideDemo";
 import { FigureDetailsDialogDemo } from "./FigureDetailsDialogDemo";
 import { ButtonVsLinkDemo } from "./ButtonVsLinkDemo";
 import { VariableStateDemo } from "./VariableStateDemo";
+import { PrimitiveTypeofDemo } from "./PrimitiveTypeofDemo";
 import { NullishVsOrDemo } from "./NullishVsOrDemo";
 import { TypeCoercionDemo } from "./TypeCoercionDemo";
 import { TemplateLiteralDemo } from "./TemplateLiteralDemo";
@@ -229,6 +230,7 @@ export const lessonDemos: Record<string, ComponentType> = {
   "figure-details-dialog-demo": FigureDetailsDialogDemo,
   "button-vs-link-demo": ButtonVsLinkDemo,
   "variable-state-demo": VariableStateDemo,
+  "primitive-typeof-demo": PrimitiveTypeofDemo,
   "nullish-vs-or-demo": NullishVsOrDemo,
   "type-coercion-demo": TypeCoercionDemo,
   "template-literal-demo": TemplateLiteralDemo,
