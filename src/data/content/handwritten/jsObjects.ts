@@ -448,6 +448,18 @@ console.log(settings); // { theme: "light", fontSize: 18 } — fontSize пере
         lineNotes: ["Спочатку розгортаються defaults, потім userOptions — оскільки userOptions йде ДРУГИМ, його fontSize: 18 перезаписує fontSize: 14 з defaults.", "theme залишається з defaults, бо userOptions не містить такої властивості взагалі."],
       },
       {
+        before: "Object.assign() — старий (до spread) спосіб зробити те саме обʼєднання:",
+        code: `const defaults = { theme: "light", fontSize: 14 };
+const userOptions = { fontSize: 18 };
+
+const viaAssign = Object.assign({}, defaults, userOptions);
+const viaSpread = { ...defaults, ...userOptions };
+
+console.log(viaAssign); // { theme: "light", fontSize: 18 }
+console.log(viaSpread); // { theme: "light", fontSize: 18 } — той самий результат`,
+        lineNotes: ["Перший аргумент {} — порожній обʼєкт-\"приймач\": Object.assign копіює властивості НАСТУПНИХ аргументів у нього по черзі (пізніший аргумент перезаписує однойменні властивості з ранішого — той самий принцип, що й у spread).", "Якщо забути {} першим аргументом і написати Object.assign(defaults, userOptions) — сам defaults мутується напряму, що майже завжди небажано.", "У сучасному коді spread ({ ...a, ...b }) читається коротше й безпечніше, тому Object.assign трапляється здебільшого в старішому коді."],
+      },
+      {
         before: "Незмінне оновлення однієї властивості — реальний React-подібний шаблон:",
         code: `const state = { count: 0, name: "Лічильник" };
 
@@ -558,6 +570,17 @@ console.log(user.address === copy.address); // true — те саме посил
       ],
     },
     codeWalkthroughs: [
+      {
+        before: "Спершу найпростіший можливий випадок вкладеності — лише ОДИН додатковий рівень, перш ніж переходити до складнішої структури:",
+        code: `const user = {
+  name: "Олена",
+  address: { city: "Київ", street: "Хрещатик" },
+};
+
+console.log(user.address.city); // "Київ"`,
+        lineNotes: ["user.address — це обʼєкт, вкладений усередину іншого обʼєкта user.", "user.address.city — просто два крапкових звернення підряд: спочатку дістаємось до address, потім до його city."],
+        after: "Реальні дані рідко такі прості — часто замість одного вкладеного обʼєкта є масив вкладених обʼєктів, і так у кілька рівнів. Дивись наступний приклад.",
+      },
       {
         before: "Реальна вкладена структура: користувач з масивом замовлень, кожне замовлення з масивом товарів:",
         code: `const user = {
