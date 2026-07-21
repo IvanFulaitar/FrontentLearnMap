@@ -154,6 +154,12 @@ import { TypeInferenceDemo } from "./TypeInferenceDemo";
 import { UnionTypeDemo } from "./UnionTypeDemo";
 import { LiteralTypeDemo } from "./LiteralTypeDemo";
 import { NarrowingDemo } from "./NarrowingDemo";
+import { InterfaceShapeDemo } from "./InterfaceShapeDemo";
+import { TypeAliasDemo } from "./TypeAliasDemo";
+import { OptionalPropertyDemo } from "./OptionalPropertyDemo";
+import { ReadonlyPropertyDemo } from "./ReadonlyPropertyDemo";
+import { IndexSignatureDemo } from "./IndexSignatureDemo";
+import { NestedModelDemo } from "./NestedModelDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -241,6 +247,12 @@ export const lessonDemos: Record<string, ComponentType> = {
   "union-type-demo": UnionTypeDemo,
   "literal-type-demo": LiteralTypeDemo,
   "narrowing-demo": NarrowingDemo,
+  "interface-shape-demo": InterfaceShapeDemo,
+  "type-alias-demo": TypeAliasDemo,
+  "optional-property-demo": OptionalPropertyDemo,
+  "readonly-property-demo": ReadonlyPropertyDemo,
+  "index-signature-demo": IndexSignatureDemo,
+  "nested-model-demo": NestedModelDemo,
   "variable-state-demo": VariableStateDemo,
   "primitive-typeof-demo": PrimitiveTypeofDemo,
   "nullish-vs-or-demo": NullishVsOrDemo,
