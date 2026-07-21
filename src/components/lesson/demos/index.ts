@@ -172,6 +172,12 @@ import { KeyofDemo } from "./KeyofDemo";
 import { UtilityTypesDemo } from "./UtilityTypesDemo";
 import { TypedApiResponseDemo } from "./TypedApiResponseDemo";
 import { FormModelDemo } from "./FormModelDemo";
+import { ComponentPropsDemo } from "./ComponentPropsDemo";
+import { ChildrenPropsDemo } from "./ChildrenPropsDemo";
+import { EventTypingDemo } from "./EventTypingDemo";
+import { UseStateTypingDemo } from "./UseStateTypingDemo";
+import { CustomHookTypingDemo } from "./CustomHookTypingDemo";
+import { UiStateDemo } from "./UiStateDemo";
 
 /**
  * Registry of interactive lesson demos, keyed by the id set on
@@ -277,6 +283,12 @@ export const lessonDemos: Record<string, ComponentType> = {
   "utility-types-demo": UtilityTypesDemo,
   "typed-api-response-demo": TypedApiResponseDemo,
   "form-model-demo": FormModelDemo,
+  "component-props-demo": ComponentPropsDemo,
+  "children-props-demo": ChildrenPropsDemo,
+  "event-typing-demo": EventTypingDemo,
+  "use-state-typing-demo": UseStateTypingDemo,
+  "custom-hook-typing-demo": CustomHookTypingDemo,
+  "ui-state-demo": UiStateDemo,
   "variable-state-demo": VariableStateDemo,
   "primitive-typeof-demo": PrimitiveTypeofDemo,
   "nullish-vs-or-demo": NullishVsOrDemo,
