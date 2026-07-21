@@ -46,6 +46,5 @@ export const searchResultTypeLabels: Record<string, string> = {
   module: "Модуль",
   lesson: "Урок",
   practice: "Практика",
-  project: "Проєкт",
   resource: "Ресурс",
 };

@@ -39,7 +39,7 @@ Module and lesson quizzes are generated from course/module/lesson metadata. Quiz
 
 ## Project
 
-Add portfolio projects in `src/data/projects.ts` or module projects in `src/data/courses.ts`.
+Module projects live in `src/data/courses.ts` (per-module `project` field, rendered via `ProjectBrief`). The standalone `/projects` portfolio-list page was removed — it was procedurally generated with byte-identical descriptions across all entries.
 
 ## Task (/tasks page)
 

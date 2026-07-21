@@ -1,6 +1,5 @@
 import { courses } from "../data/courses";
 import { codingTasks } from "../data/tasks";
-import { platformProjects } from "../data/projects";
 import { resources } from "../data/resources";
 import type { Course, Lesson, LessonLocation, LessonStatus, Module } from "../types/course";
 
@@ -185,7 +184,6 @@ export type SearchResult =
   | { type: "module"; title: string; description: string; href: string; tags: string[] }
   | { type: "lesson"; title: string; description: string; href: string; tags: string[] }
   | { type: "practice"; title: string; description: string; href: string; tags: string[] }
-  | { type: "project"; title: string; description: string; href: string; tags: string[] }
   | { type: "resource"; title: string; description: string; href: string; tags: string[] };
 
 export const searchLearningContent = (query: string): SearchResult[] => {
@@ -246,12 +244,6 @@ export const searchLearningContent = (query: string): SearchResult[] => {
   codingTasks.forEach((task) => {
     if (`${task.title} ${task.description} ${task.category}`.toLowerCase().includes(normalized)) {
       results.push({ type: "practice", title: task.title, description: task.description, href: "/tasks", tags: [task.category, task.difficulty] });
-    }
-  });
-
-  platformProjects.forEach((project) => {
-    if (`${project.title} ${project.description} ${project.technologies.join(" ")}`.toLowerCase().includes(normalized)) {
-      results.push({ type: "project", title: project.title, description: project.description, href: "/projects", tags: [project.level, project.difficulty] });
     }
   });
 

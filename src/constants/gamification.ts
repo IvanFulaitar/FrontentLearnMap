@@ -5,7 +5,6 @@ export const XP_REWARDS = {
   quizPassed: 50,
   moduleCompleted: 150,
   courseCompleted: 500,
-  projectCompleted: 1000,
   dailyChallenge: 25,
 } as const;
 
@@ -41,7 +40,6 @@ export const achievements: Achievement[] = [
   { id: "hundred-lessons", title: "100 уроків", description: "Заверши сто уроків.", xpReward: 1000 },
   { id: "seven-day-streak", title: "Серія 7 днів", description: "Навчайся сім днів поспіль.", xpReward: 250 },
   { id: "thirty-day-streak", title: "Серія 30 днів", description: "Навчайся тридцять днів поспіль.", xpReward: 900 },
-  { id: "first-project", title: "Перший проєкт", description: "Заверши свій перший проєкт.", xpReward: 500 },
   { id: "react-developer", title: "React-розробник", description: "Заверши модулі з React.", xpReward: 600 },
   { id: "typescript-master", title: "Майстер TypeScript", description: "Заверши модулі з TypeScript.", xpReward: 600 },
   { id: "api-explorer", title: "Дослідник API", description: "Заверши завдання, пов'язані з API.", xpReward: 350 },

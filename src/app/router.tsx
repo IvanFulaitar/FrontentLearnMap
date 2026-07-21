@@ -9,7 +9,6 @@ const LessonPage = lazy(() => import("../pages/LessonPage").then((module) => ({ 
 const ProgressPage = lazy(() => import("../pages/ProgressPage").then((module) => ({ default: module.ProgressPage })));
 const QuizPage = lazy(() => import("../pages/QuizPage").then((module) => ({ default: module.QuizPage })));
 const TasksPage = lazy(() => import("../pages/TasksPage").then((module) => ({ default: module.TasksPage })));
-const ProjectsPage = lazy(() => import("../pages/ProjectsPage").then((module) => ({ default: module.ProjectsPage })));
 const ResourcesPage = lazy(() => import("../pages/ResourcesPage").then((module) => ({ default: module.ResourcesPage })));
 const ProfilePage = lazy(() => import("../pages/ProfilePage").then((module) => ({ default: module.ProfilePage })));
 const SettingsPage = lazy(() => import("../pages/SettingsPage").then((module) => ({ default: module.SettingsPage })));
@@ -52,7 +51,11 @@ export const router = createBrowserRouter([
       // somewhere useful instead of a 404.
       { path: "practice", element: <Navigate to="/tasks" replace /> },
       { path: "challenges", element: <Navigate to="/tasks" replace /> },
-      { path: "projects", element: withSuspense(<ProjectsPage />) },
+      // "Проєкти" (portfolio projects) removed entirely — it was 11
+      // procedurally-generated cards with an identical description, just the
+      // title swapped, same problem as the old practice/challenges/resources
+      // data. Old bookmarks land on the dashboard instead of a 404.
+      { path: "projects", element: <Navigate to="/" replace /> },
       { path: "resources", element: withSuspense(<ResourcesPage />) },
       { path: "profile", element: withSuspense(<ProfilePage />) },
       { path: "settings", element: withSuspense(<SettingsPage />) },

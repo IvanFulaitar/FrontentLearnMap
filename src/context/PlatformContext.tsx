@@ -23,7 +23,6 @@ interface PlatformState {
   // Without this, checked-off daily challenges never uncheck themselves —
   // they'd stay "done" forever instead of resetting every day.
   dailyChallengesDate: string;
-  completedProjects: string[];
   completedChallenges: string[];
   // Module keys ("courseId:moduleId") and course ids that already received
   // their one-time XP_REWARDS.moduleCompleted / courseCompleted bonus, so
@@ -44,7 +43,6 @@ const defaultState: PlatformState = {
   xp: 0,
   completedDaily: [],
   dailyChallengesDate: todayKey(),
-  completedProjects: [],
   completedChallenges: [],
   completedModules: [],
   completedCourses: [],
@@ -78,7 +76,6 @@ interface PlatformContextValue extends PlatformState {
   unlockedAchievements: string[];
   addXp: (amount: number) => void;
   completeDaily: (id: string) => void;
-  completeProject: (id: string) => void;
   completeChallenge: (id: string, xpReward: number) => void;
   markModuleCompletedIfNeeded: (moduleKey: string) => void;
   markCourseCompletedIfNeeded: (courseId: string) => void;
@@ -210,17 +207,6 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     });
   }, [completeDaily, courseProgress.todayEvents]);
 
-  const completeProject = useCallback((id: string) => {
-    update((current) => {
-      if (current.completedProjects.includes(id)) return current;
-      return {
-        ...current,
-        completedProjects: [...current.completedProjects, id],
-        xp: current.xp + XP_REWARDS.projectCompleted,
-      };
-    });
-  }, [update]);
-
   const completeChallenge = useCallback((id: string, xpReward: number) => {
     update((current) => {
       if (current.completedChallenges.includes(id)) return current;
@@ -324,10 +310,9 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     ) {
       unlocked.add("api-explorer");
     }
-    if (state.completedProjects.length >= 1) unlocked.add("first-project");
     if (document.documentElement.dataset.theme === "dark") unlocked.add("dark-mode-user");
     return achievements.filter((achievement) => unlocked.has(achievement.id)).map((achievement) => achievement.id);
-  }, [courseProgress, state.completedChallenges.length, state.completedProjects.length]);
+  }, [courseProgress, state.completedChallenges.length]);
 
   const value = useMemo<PlatformContextValue>(() => ({
     ...state,
@@ -335,7 +320,6 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     unlockedAchievements,
     addXp,
     completeDaily,
-    completeProject,
     completeChallenge,
     markModuleCompletedIfNeeded,
     markCourseCompletedIfNeeded,
@@ -346,7 +330,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     setOs,
     resetPlatform,
     resetNotes,
-  }), [addXp, completeChallenge, completeDaily, completeProject, markCourseCompletedIfNeeded, markModuleCompletedIfNeeded, level, resetNotes, resetPlatform, saveNote, setOs, state, toggleBookmark, unlockedAchievements, updateProfile, updateSettings]);
+  }), [addXp, completeChallenge, completeDaily, markCourseCompletedIfNeeded, markModuleCompletedIfNeeded, level, resetNotes, resetPlatform, saveNote, setOs, state, toggleBookmark, unlockedAchievements, updateProfile, updateSettings]);
 
   return <PlatformContext.Provider value={value}>{children}</PlatformContext.Provider>;
 }

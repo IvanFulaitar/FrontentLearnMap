@@ -11,7 +11,6 @@ export type AchievementId =
   | "hundred-lessons"
   | "seven-day-streak"
   | "thirty-day-streak"
-  | "first-project"
   | "react-developer"
   | "typescript-master"
   | "api-explorer"
