@@ -33,6 +33,17 @@ starterCode: [
 ]
 ```
 
+## Live editor (opt-in exception to the self-check rule)
+
+`lesson.liveEditor` (type `{ html: string; css?: string; js?: string }`) renders a real, editable, sandboxed HTML/CSS/JS playground (`LiveCodeEditor.tsx`) in the "Подивись у дії" section. This is a deliberate, scoped exception to the platform's normal self-check-only format (see `MicroExercise`'s doc comment) — use it sparingly, per lesson, only where actually running the student's edits teaches the concept faster than a static `codeWalkthroughs` preview.
+
+Tab visibility follows what's provided — don't pass fields just to "fill them in":
+- Pure HTML lesson → pass only `html`. Only the HTML tab shows.
+- CSS lesson → pass `html` + `css`. HTML and CSS tabs show.
+- JS lesson → pass `html` + `css` + `js` (css can be `""`). All three tabs show.
+
+Piloted (as of the /projects removal session) on the first two HTML lessons (`htmlFoundations.ts` → "Анатомія HTML-документа", `htmlText.ts` → "Текстові елементи та ієрархія"). Roll out to more modules incrementally, not all at once.
+
 ## Quiz
 
 Module and lesson quizzes are generated from course/module/lesson metadata. Quizzes support `single`, `multiple`, `true-false` and `code` questions.

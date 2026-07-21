@@ -5,6 +5,7 @@ import { Card } from "../ui/Card";
 import { Callout } from "./Callout";
 import { LessonPractice } from "./LessonPractice";
 import { LessonToc } from "./LessonToc";
+import { LiveCodeEditor } from "./LiveCodeEditor";
 import { lessonDemos } from "./demos";
 import styles from "./LessonContent.module.css";
 
@@ -394,7 +395,7 @@ function CheatSheetLessonContent({ lesson }: LessonContentProps) {
           </Card>
         ) : null}
 
-        {lesson.visualExplanation || Demo ? (
+        {lesson.visualExplanation || Demo || lesson.liveEditor ? (
           <Card className={styles.section} id="see">
             <h2>👀 Подивись у дії</h2>
             {lesson.visualExplanation ? (
@@ -409,6 +410,16 @@ function CheatSheetLessonContent({ lesson }: LessonContentProps) {
               <div className={styles.demoBlock}>
                 <p className={styles.demoLabel}>🕹 Спробуй сам — зміни значення й подивись, що станеться:</p>
                 <Demo />
+              </div>
+            ) : null}
+            {lesson.liveEditor ? (
+              <div className={styles.demoBlock}>
+                <p className={styles.demoLabel}>🧪 Онлайн-редактор — зміни код і натисни «Виконати»:</p>
+                <LiveCodeEditor
+                  html={lesson.liveEditor.html}
+                  css={lesson.liveEditor.css}
+                  js={lesson.liveEditor.js}
+                />
               </div>
             ) : null}
           </Card>
@@ -514,7 +525,7 @@ function CheatSheetLessonContent({ lesson }: LessonContentProps) {
       <LessonToc
         sections={sections.filter(([id]) => {
           if (id === "why") return Boolean(lesson.whyUseIt);
-          if (id === "see") return Boolean(lesson.visualExplanation || Demo);
+          if (id === "see") return Boolean(lesson.visualExplanation || Demo || lesson.liveEditor);
           if (id === "not") return Boolean(lesson.whenNotToUse?.length || lesson.dontDoThis || lesson.commonMistakes?.length);
           if (id === "senior") return Boolean(seniorTips.length || lesson.proTip);
           if (id === "interview") return Boolean(lesson.interviewQuestions?.length);

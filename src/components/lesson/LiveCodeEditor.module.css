@@ -1,0 +1,142 @@
+.editor {
+  display: grid;
+  gap: 0;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.tabStrip {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 8px;
+  background: var(--surface-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  border: none;
+  background: transparent;
+  color: var(--text-muted, inherit);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.tab:hover {
+  background: var(--surface-raised);
+}
+
+.tabActive {
+  background: var(--surface-raised);
+  color: var(--color-primary, var(--success));
+}
+
+.tabSpacer {
+  flex: 1;
+}
+
+.actionButton {
+  border: none;
+  background: var(--success);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.actionButtonGhost {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  margin-left: 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.codeArea {
+  width: 100%;
+  min-height: 120px;
+  max-height: 220px;
+  resize: vertical;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  background: var(--surface);
+  color: inherit;
+  outline: none;
+}
+
+.resultLabel {
+  padding: 8px 14px 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--success);
+}
+
+.resultFrameWrap {
+  padding: 6px 14px 12px;
+}
+
+.resultFrame {
+  width: 100%;
+  height: 220px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+}
+
+.hungMessage {
+  padding: 16px;
+  border: 1px solid var(--danger);
+  background: var(--danger-soft);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--danger);
+}
+
+.consolePanel {
+  display: grid;
+  gap: 2px;
+  padding: 8px 14px 14px;
+  border-top: 1px solid var(--border);
+  max-height: 120px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.consoleLine {
+  padding: 2px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.console_log {
+  color: inherit;
+}
+
+.console_warn {
+  color: var(--warning);
+}
+
+.console_error {
+  color: var(--danger);
+}

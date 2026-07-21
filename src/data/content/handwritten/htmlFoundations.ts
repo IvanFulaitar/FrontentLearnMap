@@ -12,6 +12,15 @@ export type LessonOverride = Partial<Lesson>;
 export const htmlFoundationsOverrides: Record<string, LessonOverride> = {
   "Анатомія HTML-документа": {
     interactiveDemo: "doc-anatomy-demo",
+    // Pilot for the new opt-in live editor (see LiveCodeEditor.tsx doc
+    // comment) — the very first HTML lesson, deliberately chosen as the
+    // lowest-risk test of the plumbing (no JS, nothing that can hang).
+    // Mirrors the minimal document from the first codeWalkthrough below,
+    // body-only (head/doctype are implicit — this widget renders into an
+    // existing <body>, same as LiveCodeFrame does elsewhere).
+    liveEditor: {
+      html: `<h1>Привіт, світ!</h1>\n<p>Це мій перший HTML-документ.</p>`,
+    },
     whatIsIt:
       "Спочатку кілька слів. HTML-код — це звичайний текст, написаний за певними правилами, який розуміє браузер. Тег — це спеціальний запис у кутових дужках, наприклад <p>, за допомогою якого в HTML-коді позначають частину сторінки. Елемент — це відкривальний тег, вміст усередині нього і закривальний тег разом, наприклад <p>Текст</p>. Атрибут — це додаткова інформація всередині відкривального тегу, наприклад lang=\"uk\" усередині <html lang=\"uk\">. Тепер до головного: кожен HTML-файл має один обов'язковий \"скелет\" із чотирьох частин: doctype (перший рядок файлу), <html>, <head> і <body>. Браузер завжди читає файл строго зверху вниз: спочатку doctype, потім html, потім усе, що в head, і лише тоді body.",
     whyUseIt:

@@ -127,6 +127,13 @@ export interface Lesson {
    * HTML/CSS the student can manipulate with controls, never a static
    * image. Rendered right after `visualExplanation` when present. */
   interactiveDemo?: string;
+  /** A real, editable HTML/CSS/JS playground rendered in a sandboxed iframe
+   * (see `LiveCodeEditor`'s doc comment) — a deliberate, opt-in exception to
+   * the platform's usual self-check-only practice format. Set this only on
+   * lessons where actually running the student's own edits teaches the
+   * concept meaningfully faster than a static live-rendered walkthrough
+   * (`codeWalkthroughs`). Omit `css`/`js` to hide those tabs entirely. */
+  liveEditor?: { html: string; css?: string; js?: string };
   codeExample: string;
   task: string;
   practiceTask: PracticeTask;

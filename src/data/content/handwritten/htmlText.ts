@@ -7,6 +7,14 @@ import type { LessonOverride } from "./htmlFoundations";
 export const htmlTextOverrides: Record<string, LessonOverride> = {
   "Текстові елементи та ієрархія": {
     interactiveDemo: "heading-hierarchy-demo",
+    // Second liveEditor pilot lesson (see LiveCodeEditor.tsx doc comment
+    // and the first pilot in htmlFoundations.ts) — the "good" version of
+    // the card from the first codeWalkthrough below, so a student can try
+    // renaming the heading, editing the strong text, or adding another
+    // paragraph and immediately see the semantic structure still renders.
+    liveEditor: {
+      html: `<article>\n  <h2>Навушники AirSound</h2>\n  <p>Бездротові, з <strong>активним шумозаглушенням</strong>.</p>\n</article>`,
+    },
     whatIsIt: "Заголовки (теги h1, h2, h3... до h6) і абзаци (тег p) описують структуру тексту — тобто ЩО є заголовком, а що звичайним текстом, а не те, ЯК це виглядає (розмір шрифту, колір — це вже завдання CSS). h1 позначає головну тему сторінки, h2 — великий підрозділ, h3 — підрозділ усередині h2, і так далі. Це працює так само, як у книзі: назва книги → назва розділу → назва підрозділу → звичайний абзац тексту.",
     whyUseIt: "Скрінрідер (програма, яка вголос читає сторінку користувачам з порушенням зору) і пошукові системи, такі як Google, розуміють структуру сторінки саме за заголовками — незалежно від того, який шрифт і колір там заданий через CSS. Якщо весь текст зробити однаковими тегами div чи p, скрінрідер не зможе сказати користувачу \"ось головний заголовок\", а Google не зрозуміє, яка частина тексту найважливіша.",
     whenToUse: ["h1 — рівно один раз, для головної теми сторінки.", "h2, h3... — послідовно, без пропуску рівнів (h1 → h2 → h3, а не h1 → h4).", "strong/em — коли текст справді важливий за змістом, а не просто для візуального ефекту."],
