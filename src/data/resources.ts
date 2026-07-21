@@ -1,26 +1,234 @@
-import type { LearningResource, ResourceCategory } from "../types/platform";
-import { resourceCategoryLabels } from "../constants/labels";
+import type { LearningResource } from "../types/platform";
 
-const categories: ResourceCategory[] = ["Official Docs", "Videos", "Articles", "YouTube", "GitHub", "Cheat Sheets", "Practice Sites"];
-
-export const resources: LearningResource[] = categories.flatMap((category, index) => {
-  const categoryLabel = resourceCategoryLabels[category].toLowerCase();
-  return [
-    {
-      id: `${category.toLowerCase().replace(/ /g, "-")}-core`,
-      category,
-      title: `${resourceCategoryLabels[category]}: основи frontend`,
-      description: `Добірка ресурсів типу «${categoryLabel}» для вивчення frontend-розробки.`,
-      url: index % 2 === 0 ? "https://developer.mozilla.org/" : "https://web.dev/learn/",
-      tags: ["frontend", "навчання", category],
-    },
-    {
-      id: `${category.toLowerCase().replace(/ /g, "-")}-react`,
-      category,
-      title: `${resourceCategoryLabels[category]}: напрямок React`,
-      description: `Корисні ресурси типу «${categoryLabel}» для React, TypeScript та UI-розробки.`,
-      url: "https://react.dev/",
-      tags: ["react", "typescript", category],
-    },
-  ];
-});
+/**
+ * Curated by hand — every entry below was picked because it maps directly to
+ * something the platform actually teaches (HTML, CSS, JavaScript, TypeScript,
+ * React, Git, доступність). No procedurally generated placeholders and no
+ * generic "top 10 websites" filler: if a resource doesn't connect to our own
+ * course content, it doesn't belong here.
+ */
+export const resources: LearningResource[] = [
+  // Official Docs
+  {
+    id: "docs-mdn",
+    category: "Official Docs",
+    title: "MDN Web Docs",
+    description: "Найповніший довідник по HTML, CSS і JavaScript — синтаксис, приклади коду, сумісність із браузерами.",
+    url: "https://developer.mozilla.org/en-US/docs/Web",
+    tags: ["html", "css", "javascript", "довідник"],
+  },
+  {
+    id: "docs-react",
+    category: "Official Docs",
+    title: "react.dev — офіційна документація React",
+    description: "Офіційний навчальний курс і довідник React з інтерактивними прикладами прямо в браузері.",
+    url: "https://react.dev/learn",
+    tags: ["react"],
+  },
+  {
+    id: "docs-typescript",
+    category: "Official Docs",
+    title: "TypeScript Handbook",
+    description: "Офіційний посібник з TypeScript: від базової типізації до дженериків і утилітарних типів.",
+    url: "https://www.typescriptlang.org/docs/handbook/intro.html",
+    tags: ["typescript"],
+  },
+  {
+    id: "docs-webdev-learn",
+    category: "Official Docs",
+    title: "web.dev: Learn",
+    description: "Безкоштовні структуровані курси від команди Chrome — HTML, CSS, JavaScript, доступність, форми.",
+    url: "https://web.dev/learn",
+    tags: ["html", "css", "javascript", "доступність"],
+  },
+  // Videos
+  {
+    id: "video-freecodecamp",
+    category: "Videos",
+    title: "freeCodeCamp",
+    description: "Безкоштовна інтерактивна платформа з повними відеокурсами HTML, CSS, JavaScript і React.",
+    url: "https://www.freecodecamp.org/",
+    tags: ["html", "css", "javascript", "react"],
+  },
+  {
+    id: "video-odin-project",
+    category: "Videos",
+    title: "The Odin Project — Foundations",
+    description: "Безкоштовний курс з відкритим кодом у форматі проєктів: HTML, CSS, JavaScript і React крок за кроком.",
+    url: "https://www.theodinproject.com/",
+    tags: ["html", "css", "javascript", "react"],
+  },
+  {
+    id: "video-scrimba-htmlcss",
+    category: "Videos",
+    title: "Scrimba: HTML & CSS Crash Course",
+    description: "Інтерактивний відеокурс, де можна одразу редагувати код прямо у відео, а не тільки дивитись.",
+    url: "https://scrimba.com/learn/htmlcss",
+    tags: ["html", "css"],
+  },
+  // Articles
+  {
+    id: "article-js-info",
+    category: "Articles",
+    title: "javascript.info — сучасний підручник з JavaScript",
+    description: "Детальний підручник з JS з прикладами й задачами, доступний українською мовою.",
+    url: "https://uk.javascript.info/",
+    tags: ["javascript"],
+  },
+  {
+    id: "article-css-tricks-flexbox",
+    category: "Articles",
+    title: "CSS-Tricks: A Complete Guide to Flexbox",
+    description: "Класичний візуальний довідник по Flexbox — усі властивості з наочними прикладами.",
+    url: "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
+    tags: ["css", "flexbox"],
+  },
+  {
+    id: "article-css-tricks-grid",
+    category: "Articles",
+    title: "CSS-Tricks: A Complete Guide to Grid",
+    description: "Такий самий вичерпний гід, але для CSS Grid — від grid-template-columns до іменованих областей.",
+    url: "https://css-tricks.com/snippets/css/complete-guide-grid/",
+    tags: ["css", "grid"],
+  },
+  {
+    id: "article-webdev-a11y",
+    category: "Articles",
+    title: "web.dev: Learn Accessibility",
+    description: "Курс про доступність вебу — семантика, ARIA, фокус, контраст, читачі екрана.",
+    url: "https://web.dev/learn/accessibility",
+    tags: ["доступність", "html"],
+  },
+  // YouTube
+  {
+    id: "youtube-kevin-powell",
+    category: "YouTube",
+    title: "Kevin Powell",
+    description: "Один із найпопулярніших каналів про CSS: макети, анімації, сучасні техніки верстки.",
+    url: "https://www.youtube.com/@KevinPowell",
+    tags: ["css"],
+  },
+  {
+    id: "youtube-fireship",
+    category: "YouTube",
+    title: "Fireship",
+    description: "Короткі й енергійні відео про JavaScript, TypeScript, React та новинки веброзробки.",
+    url: "https://www.youtube.com/@Fireship",
+    tags: ["javascript", "typescript", "react"],
+  },
+  {
+    id: "youtube-traversy-media",
+    category: "YouTube",
+    title: "Traversy Media",
+    description: "Практичні туторіали з HTML, CSS, JavaScript і React — від основ до готових проєктів.",
+    url: "https://www.youtube.com/@TraversyMedia",
+    tags: ["html", "css", "javascript", "react"],
+  },
+  {
+    id: "youtube-net-ninja",
+    category: "YouTube",
+    title: "The Net Ninja",
+    description: "Покрокові плейлисти по JavaScript, React і сучасному CSS для тих, хто вчиться з нуля.",
+    url: "https://www.youtube.com/@NetNinja",
+    tags: ["javascript", "react", "css"],
+  },
+  // GitHub
+  {
+    id: "github-ydkjs",
+    category: "GitHub",
+    title: "You Don't Know JS Yet",
+    description: "Безкоштовна серія книг, що пояснює, як JavaScript працює насправді: замикання, прототипи, асинхронність.",
+    url: "https://github.com/getify/You-Dont-Know-JS",
+    tags: ["javascript"],
+  },
+  {
+    id: "github-30-seconds",
+    category: "GitHub",
+    title: "30 Seconds of Code",
+    description: "Колекція коротких, готових до використання прийомів на JavaScript і CSS.",
+    url: "https://github.com/Chalarangelo/30-seconds-of-code",
+    tags: ["javascript", "css"],
+  },
+  {
+    id: "github-clean-code-js",
+    category: "GitHub",
+    title: "Clean Code JavaScript",
+    description: "Адаптація принципів чистого коду спеціально для JavaScript — іменування, функції, структура.",
+    url: "https://github.com/ryanmcdermott/clean-code-javascript",
+    tags: ["javascript"],
+  },
+  {
+    id: "github-public-apis",
+    category: "GitHub",
+    title: "Public APIs",
+    description: "Список безкоштовних публічних API — пригодиться для практики fetch і роботи з мережею з курсу JavaScript.",
+    url: "https://github.com/public-apis/public-apis",
+    tags: ["javascript", "api"],
+  },
+  // Cheat Sheets
+  {
+    id: "cheatsheet-html",
+    category: "Cheat Sheets",
+    title: "HTML Cheat Sheet",
+    description: "Інтерактивна шпаргалка з тегами, атрибутами й готовими блоками розмітки HTML.",
+    url: "https://htmlcheatsheet.com/",
+    tags: ["html"],
+  },
+  {
+    id: "cheatsheet-css",
+    category: "Cheat Sheets",
+    title: "CSS Cheat Sheet",
+    description: "Та сама шпаргалка, але для CSS: селектори, властивості, значення на одній сторінці.",
+    url: "https://htmlcheatsheet.com/css/",
+    tags: ["css"],
+  },
+  {
+    id: "cheatsheet-flexbox-devhints",
+    category: "Cheat Sheets",
+    title: "Devhints: CSS Flexbox",
+    description: "Гранично стисла шпаргалка по Flexbox — усі властивості без зайвих пояснень.",
+    url: "https://devhints.io/css-flexbox",
+    tags: ["css", "flexbox"],
+  },
+  {
+    id: "cheatsheet-git",
+    category: "Cheat Sheets",
+    title: "Git Cheat Sheet",
+    description: "Офіційна шпаргалка GitHub з найпотрібнішими командами Git: стадіювання, гілки, історія.",
+    url: "https://education.github.com/git-cheat-sheet-education.pdf",
+    tags: ["git"],
+  },
+  // Practice Sites
+  {
+    id: "practice-frontend-mentor",
+    category: "Practice Sites",
+    title: "Frontend Mentor",
+    description: "Реальні макети для верстки на HTML, CSS, JavaScript і React — з перевіркою від спільноти.",
+    url: "https://www.frontendmentor.io/",
+    tags: ["html", "css", "javascript", "react"],
+  },
+  {
+    id: "practice-codewars",
+    category: "Practice Sites",
+    title: "Codewars",
+    description: "Короткі задачі (kata) на JavaScript і TypeScript — гарне тренування логіки та масивів/об'єктів.",
+    url: "https://www.codewars.com/",
+    tags: ["javascript", "typescript"],
+  },
+  {
+    id: "practice-exercism-js",
+    category: "Practice Sites",
+    title: "Exercism: JavaScript Track",
+    description: "159 вправ з JavaScript із безкоштовним фідбеком від менторів по коду.",
+    url: "https://exercism.org/tracks/javascript",
+    tags: ["javascript"],
+  },
+  {
+    id: "practice-cssbattle",
+    category: "Practice Sites",
+    title: "CSS Battle",
+    description: "Гра-тренажер: відтворити картинку якомога коротшим CSS-кодом. Швидко прокачує відчуття макета.",
+    url: "https://cssbattle.dev/",
+    tags: ["css"],
+  },
+];
