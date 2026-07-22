@@ -13,7 +13,7 @@ import { htmlAccessibilityOverrides, htmlAccessibilityModuleQuiz } from "./htmlA
 import { htmlSeoOverrides, htmlSeoModuleQuiz } from "./htmlSeo";
 import { htmlRealComponentsOverrides, htmlRealComponentsModuleQuiz } from "./htmlRealComponents";
 import { htmlThinkingOverrides, htmlThinkingModuleQuiz } from "./htmlThinking";
-import { htmlMistakesOverrides } from "./htmlMistakes";
+import { htmlMistakesOverrides, htmlMistakesModuleQuiz } from "./htmlMistakes";
 import { htmlMiniProjectsOverrides } from "./htmlMiniProjects";
 import { cssFoundationsOverrides } from "./cssFoundations";
 import { cssBoxModelOverrides } from "./cssBoxModel";
@@ -129,6 +129,7 @@ const moduleQuizOverrides: Record<string, QuizData> = {
   "vscode-setup-basics": vscodeSetupModuleQuiz,
   "html-real-components": htmlRealComponentsModuleQuiz,
   "html-thinking": htmlThinkingModuleQuiz,
+  "html-mistakes": htmlMistakesModuleQuiz,
 };
 
 export const getModuleQuizOverride = (moduleId: string): QuizData | undefined => moduleQuizOverrides[moduleId];

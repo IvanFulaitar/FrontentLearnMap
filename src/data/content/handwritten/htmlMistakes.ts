@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Типові помилки початківців" (html-mistakes). Cheat-sheet format.
@@ -108,5 +109,155 @@ export const htmlMistakesOverrides: Record<string, LessonOverride> = {
       { id: "html-mistakes-sort", kind: "find-the-bug", prompt: "Знайди всі помилки:\n\n<div onclick=\"go()\">Меню</div>\n<input placeholder=\"Ім'я\">\n<img src=\"a.jpg\">", solution: "div замість a/button для навігації, placeholder замість label, відсутній alt на img — три окремі помилки." },
       { id: "html-mistakes-doctype-choice", kind: "choice", prompt: "Сторінка без <!DOCTYPE html> на початку файлу. Що найімовірніше станеться?", options: ["Нічого, це просто формальність", "Браузер може перейти в Quirks Mode і зверстати сторінку некоректно", "Сторінка не завантажиться взагалі", "CSS перестане працювати"], correctAnswer: "Браузер може перейти в Quirks Mode і зверстати сторінку некоректно", solution: "DOCTYPE каже браузеру використовувати сучасний стандартний режим рендерингу; без нього браузер може ввімкнути Quirks Mode зі старою, непередбачуваною поведінкою верстки." },
     ],
+    quiz: {
+      id: "html-mistakes-quiz",
+      title: "Типові помилки початківців: перевір себе",
+      questions: [
+        {
+          id: "html-mistakes-div-onclick",
+          type: "code",
+          question: "Яка помилка в цьому рядку?",
+          codeSnippet: `<div onclick="submit()">Надіслати</div>`,
+          options: [
+            "div не реагує на Tab/Enter/Space, як справжній button",
+            "onclick не можна використовувати на div",
+            "Функція submit() написана неправильно",
+            "Це насправді правильний код",
+          ],
+          correctAnswer: "div не реагує на Tab/Enter/Space, як справжній button",
+          explanation: "Div не отримує клавіатурну поведінку кнопки автоматично — потрібен <button>.",
+        },
+        {
+          id: "html-mistakes-two-h1",
+          type: "true-false",
+          question: "На сторінці може бути кілька h1 без шкоди для SEO і доступності.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Кілька h1 плутають структуру заголовків для пошукових систем і скрінрідерів — на сторінці має бути рівно один.",
+        },
+        {
+          id: "html-mistakes-doctype",
+          type: "single",
+          question: "Що станеться, якщо забути <!DOCTYPE html> на початку файлу?",
+          options: [
+            "Браузер може перейти в Quirks Mode і зверстати сторінку некоректно",
+            "Сторінка взагалі не завантажиться",
+            "CSS перестане застосовуватись",
+            "Нічого, це формальність без реальних наслідків",
+          ],
+          correctAnswer: "Браузер може перейти в Quirks Mode і зверстати сторінку некоректно",
+          explanation: "DOCTYPE вказує на сучасний стандартний режим рендерингу браузера.",
+        },
+        {
+          id: "html-mistakes-placeholder-label",
+          type: "single",
+          question: "Чому placeholder не може замінити label?",
+          options: [
+            "Він зникає під час вводу тексту і не завжди озвучується скрінрідером як назва поля",
+            "placeholder технічно заборонений у сучасному HTML",
+            "placeholder працює лише в Chrome",
+            "label і placeholder — це те саме",
+          ],
+          correctAnswer: "Він зникає під час вводу тексту і не завжди озвучується скрінрідером як назва поля",
+          explanation: "label лишається видимим і клікабельним завжди, на відміну від placeholder.",
+        },
+        {
+          id: "html-mistakes-lang-attribute",
+          type: "single",
+          question: "Навіщо потрібен атрибут lang на <html>?",
+          options: [
+            "Повідомляє браузеру й скрінрідеру мову контенту сторінки",
+            "Змінює кодування файлу",
+            "Прискорює завантаження сторінки",
+            "Визначає розмір шрифту за замовчуванням",
+          ],
+          correctAnswer: "Повідомляє браузеру й скрінрідеру мову контенту сторінки",
+          explanation: "Це впливає на вимову скрінрідера й коректність перевірки орфографії та перекладу.",
+        },
+      ],
+    },
   },
+};
+
+export const htmlMistakesModuleQuiz: QuizData = {
+  id: "html-mistakes-module-quiz",
+  title: "Типові помилки: контрольний тест",
+  questions: [
+    {
+      id: "html-mistakes-module-div-soup",
+      type: "single",
+      question: "Що таке \"Div Soup\"?",
+      options: [
+        "Сторінка, побудована з вкладених div без семантичних тегів",
+        "Помилка в синтаксисі CSS",
+        "Спеціальний вид форматування коду",
+        "Назва застарілого браузера",
+      ],
+      correctAnswer: "Сторінка, побудована з вкладених div без семантичних тегів",
+      explanation: "Це шкодить SEO, доступності й читабельності коду.",
+    },
+    {
+      id: "html-mistakes-module-code-picture",
+      type: "code",
+      question: "Яка помилка в цьому зображенні?",
+      codeSnippet: `<img src="cake.jpg">`,
+      options: [
+        "Відсутній атрибут alt",
+        "Відсутній атрибут width",
+        "src написаний неправильно",
+        "Тут усе правильно",
+      ],
+      correctAnswer: "Відсутній атрибут alt",
+      explanation: "Без alt скрінрідер прочитає лише назву файлу замість опису зображення.",
+    },
+    {
+      id: "html-mistakes-module-viewport",
+      type: "true-false",
+      question: "meta viewport критичний для правильного відображення сторінки на мобільних пристроях.",
+      options: ["Так", "Ні"],
+      correctAnswer: true,
+      explanation: "Без нього сторінка може масштабуватись некоректно на телефонах.",
+    },
+    {
+      id: "html-mistakes-module-button-vs-a",
+      type: "single",
+      question: "Яка типова помилка з button і a?",
+      options: [
+        "button для переходу на іншу сторінку, а замість дії використовують a",
+        "button і a завжди взаємозамінні",
+        "a не можна стилізувати як кнопку",
+        "button не можна ставити у форму",
+      ],
+      correctAnswer: "button для переходу на іншу сторінку, а замість дії використовують a",
+      explanation: "a — для навігації (перехід), button — для дії без переходу; плутанина між ними — часта помилка.",
+    },
+    {
+      id: "html-mistakes-module-outdated-tags",
+      type: "single",
+      question: "Чим варто замінити застарілі теги <font> і <center>?",
+      options: ["CSS для оформлення", "Новішими HTML-тегами з тим самим призначенням", "JavaScript", "Вони не мають заміни"],
+      correctAnswer: "CSS для оформлення",
+      explanation: "Оформлення (шрифти, вирівнювання) сьогодні повністю виконує CSS, а не HTML-теги.",
+    },
+    {
+      id: "html-mistakes-module-facts",
+      type: "multiple",
+      question: "Які з цих тверджень правильні?",
+      options: [
+        "Незакриті теги можуть спричиняти неправильну вкладеність елементів",
+        "outline: none без заміни — рекомендована практика доступності",
+        "Копіювання коду без розуміння — поширена помилка початківців",
+        "target=\"_blank\" без rel=\"noopener noreferrer\" — потенційний ризик безпеки",
+      ],
+      correctAnswer: [
+        "Незакриті теги можуть спричиняти неправильну вкладеність елементів",
+        "Копіювання коду без розуміння — поширена помилка початківців",
+        "target=\"_blank\" без rel=\"noopener noreferrer\" — потенційний ризик безпеки",
+      ],
+      explanation: "outline: none без заміни — навпаки, типова помилка, яка позбавляє користувачів клавіатури візуального орієнтира фокусу.",
+      optionExplanations: {
+        "outline: none без заміни — рекомендована практика доступності": "Це поширена помилка, а не рекомендована практика — потрібен власний видимий стиль :focus-visible.",
+      },
+    },
+  ],
 };
