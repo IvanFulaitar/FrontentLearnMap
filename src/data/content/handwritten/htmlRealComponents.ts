@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Створення реальних компонентів" (html-real-components).
@@ -101,6 +102,75 @@ export const htmlRealComponentsOverrides: Record<string, LessonOverride> = {
       { id: "html-header-choice", kind: "choice", prompt: "Куди помістити кнопку \"Кошик\" у header інтернет-магазину?", options: ["Усередину <nav>", "У header, поза nav", "У <footer>", "У <aside>"], correctAnswer: "У header, поза nav", solution: "Кошик — дія, не навігаційний перехід, тому логічно тримати її окремо від посилань nav." },
       { id: "html-header-find-bug", kind: "find-the-bug", prompt: "Чому клік по \"Каталог\" у header не поводиться як звичайний перехід між сторінками?\n<button onclick=\"location.href='/catalog'\">Каталог</button>", solution: "Це перехід на іншу сторінку, тому потрібен <a href=\"/catalog\">Каталог</a>, а не <button> — навіть якщо button і працює через JavaScript, це не справжня навігація (немає href для копіювання посилання, відкриття в новій вкладці тощо)." },
     ],
+    quiz: {
+      id: "html-real-header-nav-quiz",
+      title: "Header і навігація сайту: перевір себе",
+      questions: [
+        {
+          id: "html-real-head-vs-header",
+          type: "single",
+          question: "Чим <head> відрізняється від <header>?",
+          options: [
+            "<head> — невидима службова частина документа, <header> — видима шапка сторінки",
+            "Це синоніми, різниці немає",
+            "<head> — для CSS, <header> — для JS",
+            "<header> може бути лише один раз у всьому документі, а <head> — кілька",
+          ],
+          correctAnswer: "<head> — невидима службова частина документа, <header> — видима шапка сторінки",
+          explanation: "Новачки часто плутають ці два теги через схожі назви, хоча призначення в них зовсім різне.",
+        },
+        {
+          id: "html-real-nav-vs-div",
+          type: "code",
+          question: "Чому скрінрідер не розпізнає це меню як навігацію?",
+          codeSnippet: `<div class="nav">
+  <a href="/">Головна</a>
+</div>`,
+          options: [
+            "class=\"nav\" — це лише ім'я для CSS, потрібен справжній тег <nav>",
+            "Посилання <a> написане неправильно",
+            "Div не може містити посилання",
+            "Це насправді працює правильно",
+          ],
+          correctAnswer: "class=\"nav\" — це лише ім'я для CSS, потрібен справжній тег <nav>",
+          explanation: "Скрінрідер розпізнає <nav> як орієнтир \"Навігація\" — div з будь-яким класом такої ролі не отримує.",
+        },
+        {
+          id: "html-real-aria-current",
+          type: "single",
+          question: "Навіщо потрібен aria-current=\"page\" на посиланні меню?",
+          options: [
+            "Повідомляє скрінрідеру, яка сторінка є поточною (активною) серед пунктів меню",
+            "Змінює колір посилання",
+            "Робить посилання клікабельним",
+            "Прискорює завантаження сторінки",
+          ],
+          correctAnswer: "Повідомляє скрінрідеру, яка сторінка є поточною (активною) серед пунктів меню",
+          explanation: "Без цього атрибута скрінрідер не знає, на якій сторінці зараз перебуває користувач.",
+        },
+        {
+          id: "html-real-logo-link",
+          type: "true-false",
+          question: "Логотип у header зазвичай повинен бути посиланням на головну сторінку.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Користувачі звикли, що клік на логотип повертає на головну — це стандартна практика.",
+        },
+        {
+          id: "html-real-button-vs-a-header",
+          type: "single",
+          question: "Кнопка \"Каталог\" у header реалізована через <button onclick=\"location.href='/catalog'\">. Чому це неправильно?",
+          options: [
+            "Це справжній перехід на іншу сторінку, тому потрібен <a href=\"/catalog\">",
+            "onclick не можна використовувати на button",
+            "Каталог не можна відкривати через посилання",
+            "Це насправді правильний підхід",
+          ],
+          correctAnswer: "Це справжній перехід на іншу сторінку, тому потрібен <a href=\"/catalog\">",
+          explanation: "button без href не дає стандартних можливостей посилання: копіювання адреси, відкриття в новій вкладці тощо.",
+        },
+      ],
+    },
   },
 
   "Hero-секція і картки": {
@@ -197,6 +267,73 @@ export const htmlRealComponentsOverrides: Record<string, LessonOverride> = {
       { id: "html-hero-cards-choice", kind: "choice", prompt: "Що семантичніше для картки товару в каталозі інтернет-магазину?", options: ["<div class=\"product\">", "<article>"], correctAnswer: "<article>", solution: "Картка товару самодостатня — її логічно показати окремо на сторінці товару, тому це article." },
       { id: "html-hero-two-h1-find-bug", kind: "find-the-bug", prompt: "На сторінці вже є h1 з логотипом у header, і ще один h1 у hero-секції. У чому проблема?", solution: "На сторінці має бути рівно один h1 — головна тема сторінки для SEO і скрінрідера. Логотип у header зазвичай не оформлюють як h1 (досить посилання чи зображення з alt), h1 лишають саме в hero." },
     ],
+    quiz: {
+      id: "html-real-hero-cards-quiz",
+      title: "Hero-секція і картки: перевір себе",
+      questions: [
+        {
+          id: "html-real-hero-purpose",
+          type: "single",
+          question: "На які три питання повинна відповісти Hero-секція за кілька секунд?",
+          options: [
+            "Куди я потрапив, що пропонує сайт, що робити далі",
+            "Скільки коштує сайт, хто автор, коли створено",
+            "Яка версія браузера, яка операційна система, яке роздільне здатність",
+            "Hero не має конкретної мети",
+          ],
+          correctAnswer: "Куди я потрапив, що пропонує сайт, що робити далі",
+          explanation: "Саме тому Hero майже завжди містить заголовок, короткий опис і кнопку заклику до дії.",
+        },
+        {
+          id: "html-real-hero-tag",
+          type: "single",
+          question: "У якому тезі розміщують Hero, якщо в HTML немає окремого тега <hero>?",
+          options: ["<section> усередині <main>", "<header>", "<footer>", "<aside>"],
+          correctAnswer: "<section> усередині <main>",
+          explanation: "HTML не має окремого тега hero — його розміщують у section.",
+        },
+        {
+          id: "html-real-card-tag",
+          type: "code",
+          question: "Чому картку товару варто верстати через article, а не div?",
+          codeSnippet: `<article class="product-card">
+  <img src="headphones.jpg" alt="Навушники AirSound" />
+  <h3>Навушники AirSound</h3>
+  <p>1299 грн</p>
+  <button type="button">Додати в кошик</button>
+</article>`,
+          options: [
+            "Картка — самодостатня одиниця контенту, яку можна показати окремо",
+            "article швидше рендериться, ніж div",
+            "div не може містити img",
+            "Різниці немає, це стилістичний вибір",
+          ],
+          correctAnswer: "Картка — самодостатня одиниця контенту, яку можна показати окремо",
+          explanation: "Це передає семантичний сенс і скрінрідеру, і пошуковику — на відміну від безсенсового div.",
+        },
+        {
+          id: "html-real-one-h1",
+          type: "true-false",
+          question: "На сторінці може бути кілька h1: один у логотипі, інший у Hero.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "На сторінці має бути рівно один h1 — головна тема для SEO і скрінрідера.",
+        },
+        {
+          id: "html-real-cards-grouping",
+          type: "single",
+          question: "У що зазвичай групують кілька карток на сторінці?",
+          options: [
+            "<section> із власним <h2>",
+            "<header>",
+            "<footer>",
+            "Окремий <html>-документ для кожної групи",
+          ],
+          correctAnswer: "<section> із власним <h2>",
+          explanation: "Наприклад, section \"Популярні товари\" з h2-заголовком, що містить кілька article-карток.",
+        },
+      ],
+    },
   },
 
   "Footer і форма зв'язку": {
@@ -302,6 +439,74 @@ export const htmlRealComponentsOverrides: Record<string, LessonOverride> = {
       { id: "html-footer-find-bug", kind: "find-the-bug", prompt: "У footer форма підписки: <input type=\"email\" placeholder=\"Ваш email\" />. Що не так?", solution: "Немає label — та сама помилка, яку роблять найчастіше саме в \"маленьких\" формах footer." },
       { id: "html-footer-address-choice", kind: "choice", prompt: "У footer потрібно показати телефон і email кав'ярні. Який тег семантично призначений саме для цього?", options: ["<p>", "<address>", "<div>", "<span>"], correctAnswer: "<address>", solution: "<address> — тег, призначений спеціально для контактної інформації сторінки, організації чи автора." },
     ],
+    quiz: {
+      id: "html-real-footer-contact-quiz",
+      title: "Footer і форма зв'язку: перевір себе",
+      questions: [
+        {
+          id: "html-real-address-purpose",
+          type: "single",
+          question: "Для чого призначений тег <address>?",
+          options: [
+            "Для контактної інформації сторінки, організації чи автора",
+            "Для будь-якої адреси на сторінці (наприклад, доставки товару)",
+            "Для фізичної адреси в базі даних",
+            "Для навігаційного меню",
+          ],
+          correctAnswer: "Для контактної інформації сторінки, організації чи автора",
+          explanation: "Адреса доставки товару чи будь-яка інша адреса не за призначенням тега address — для неї варто використовувати звичайний p.",
+        },
+        {
+          id: "html-real-footer-code-no-label",
+          type: "code",
+          question: "Чому ця форма підписки в footer недоступна для скрінрідера?",
+          codeSnippet: `<input type="email" placeholder="Ваш email" />
+<button>OK</button>`,
+          options: [
+            "Немає жодного <label>, лише placeholder, який зникає при вводі",
+            "type=\"email\" написаний неправильно",
+            "button не може бути без атрибута type",
+            "Це насправді доступна форма",
+          ],
+          correctAnswer: "Немає жодного <label>, лише placeholder, який зникає при вводі",
+          explanation: "Ця помилка трапляється найчастіше саме в \"маленьких\" формах footer, бо їх вважають несерйозними.",
+        },
+        {
+          id: "html-real-tel-mailto",
+          type: "single",
+          question: "Як варто оформити телефон і email у footer?",
+          options: [
+            "Як клікабельні посилання через tel: і mailto:",
+            "Як звичайний текст без посилань",
+            "Як зображення з номером телефону",
+            "Як атрибут title на footer",
+          ],
+          correctAnswer: "Як клікабельні посилання через tel: і mailto:",
+          explanation: "Простий текст не клікабельний і незручний на мобільних пристроях.",
+        },
+        {
+          id: "html-real-footer-duplicate-nav",
+          type: "true-false",
+          question: "Footer повинен повністю дублювати всю навігацію header один в один.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Досить короткого набору ключових посилань (privacy, terms, про нас) — не всієї навігації.",
+        },
+        {
+          id: "html-real-footer-form-rules",
+          type: "single",
+          question: "Яким правилам підпорядковується форма зворотного зв'язку у footer?",
+          options: [
+            "Тим самим, що й будь-яка інша форма на сайті: label, правильний type, кнопка button",
+            "Особливим, спрощеним правилам, бо форма маленька",
+            "Формі у footer не потрібен label, бо контекст і так зрозумілий",
+            "Тільки правилам стилізації, доступність не важлива",
+          ],
+          correctAnswer: "Тим самим, що й будь-яка інша форма на сайті: label, правильний type, кнопка button",
+          explanation: "Розмір форми не звільняє від базових правил доступності.",
+        },
+      ],
+    },
   },
 
   "Стаття блогу і картка товару": {
@@ -383,5 +588,160 @@ export const htmlRealComponentsOverrides: Record<string, LessonOverride> = {
       { id: "html-blog-product-choice", kind: "choice", prompt: "У картці товару потрібна дія \"Додати в кошик\", без переходу на нову сторінку. Що обрати?", options: ["<a href=\"#\">", "<button>", "<a href=\"/cart\">", "<div onclick>"], correctAnswer: "<button>", solution: "Дія без навігації — це завжди button, не посилання." },
       { id: "html-blog-time-find-bug", kind: "find-the-bug", prompt: "Дата статті показана просто текстом: <p>10 липня 2026</p>. Чому це не найкращий варіант?", solution: "Дата не машиночитана — браузери й пошукові системи не розпізнають її як дату публікації. Потрібен <time datetime=\"2026-07-10\">10 липня 2026</time>." },
     ],
+    quiz: {
+      id: "html-real-blog-product-quiz",
+      title: "Стаття блогу і картка товару: перевір себе",
+      questions: [
+        {
+          id: "html-real-time-datetime",
+          type: "single",
+          question: "Навіщо потрібен атрибут datetime у тезі <time>?",
+          options: [
+            "Дає машиночитаний формат дати, який розпізнають браузери й пошукові системи",
+            "Змінює візуальний вигляд дати",
+            "Прискорює завантаження сторінки",
+            "Автоматично перекладає дату іншою мовою",
+          ],
+          correctAnswer: "Дає машиночитаний формат дати, який розпізнають браузери й пошукові системи",
+          explanation: "Видимий текст усередині time може бути будь-яким (\"3 дні тому\"), а datetime — точний ISO-формат.",
+        },
+        {
+          id: "html-real-cart-code",
+          type: "code",
+          question: "Чому цей код проблемний для кнопки додавання в кошик?",
+          codeSnippet: `<a href="#" onclick="addToCart()">Додати в кошик</a>`,
+          options: [
+            "Це дія без переходу, замаскована під посилання — правою кнопкою запропонує \"відкрити в новій вкладці\"",
+            "onclick не можна використовувати на <a>",
+            "addToCart() написана неправильно",
+            "Це насправді правильний і рекомендований підхід",
+          ],
+          correctAnswer: "Це дія без переходу, замаскована під посилання — правою кнопкою запропонує \"відкрити в новій вкладці\"",
+          explanation: "Додавання в кошик — дія на місці, тому потрібен <button type=\"button\">, а не <a href=\"#\">.",
+        },
+        {
+          id: "html-real-article-standalone",
+          type: "true-false",
+          question: "Стаття блогу вважається семантично самостійною одиницею, яку можна поширювати окремо (RSS, посилання).",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Саме тому для неї існує окремий тег <article>.",
+        },
+        {
+          id: "html-real-product-specs",
+          type: "single",
+          question: "Як краще оформити список характеристик товару (процесор, пам'ять тощо)?",
+          options: [
+            "Через <ul>/<li>",
+            "Через окремі <p> для кожної характеристики",
+            "Через <table> завжди",
+            "Через звичайний текст без розмітки",
+          ],
+          correctAnswer: "Через <ul>/<li>",
+          explanation: "Список легше читається і скрінрідером (оголошує кількість пунктів), і людиною.",
+        },
+        {
+          id: "html-real-seo-per-item",
+          type: "single",
+          question: "Чому кожна стаття й кожен товар повинні мати власні SEO-метадані (Title, Description, Open Graph)?",
+          options: [
+            "Вони мають описувати саме цей конкретний товар/статтю, а не сайт загалом",
+            "Це технічна вимога HTML-валідатора",
+            "Без цього стаття не відображатиметься в браузері взагалі",
+            "Це впливає лише на швидкість завантаження",
+          ],
+          correctAnswer: "Вони мають описувати саме цей конкретний товар/статтю, а не сайт загалом",
+          explanation: "Загальні метадані на весь сайт роблять усі сторінки однаковими в пошуку й соцмережах.",
+        },
+      ],
+    },
   },
+};
+
+export const htmlRealComponentsModuleQuiz: QuizData = {
+  id: "html-real-components-module-quiz",
+  title: "Реальні компоненти: контрольний тест",
+  questions: [
+    {
+      id: "html-real-module-head-header",
+      type: "single",
+      question: "Чим <head> відрізняється від <header>?",
+      options: [
+        "<head> невидимий і службовий, <header> — видима шапка сторінки",
+        "Це синоніми",
+        "<header> може бути лише всередині <head>",
+        "<head> використовується лише в React",
+      ],
+      correctAnswer: "<head> невидимий і службовий, <header> — видима шапка сторінки",
+      explanation: "Ці два тегі часто плутають новачки через схожі назви.",
+    },
+    {
+      id: "html-real-module-hero-one-h1",
+      type: "true-false",
+      question: "На сторінці може бути кілька h1 без проблем для SEO.",
+      options: ["Так", "Ні"],
+      correctAnswer: false,
+      explanation: "На сторінці має бути рівно один h1 — головна тема сторінки.",
+    },
+    {
+      id: "html-real-module-code-cart-link",
+      type: "code",
+      question: "Що варто виправити в цій кнопці кошика?",
+      codeSnippet: `<a href="#" onclick="addToCart()">Додати в кошик</a>`,
+      options: [
+        "Замінити на <button type=\"button\">, оскільки це дія, а не перехід",
+        "Додати ще один атрибут href",
+        "Прибрати onclick",
+        "Тут усе правильно",
+      ],
+      correctAnswer: "Замінити на <button type=\"button\">, оскільки це дія, а не перехід",
+      explanation: "href=\"#\" — хак, що ламає стандартну поведінку посилання (контекстне меню, нова вкладка).",
+    },
+    {
+      id: "html-real-module-address",
+      type: "single",
+      question: "Для чого призначений тег <address>?",
+      options: [
+        "Для контактної інформації сторінки, організації чи автора",
+        "Для будь-якої адреси на сторінці",
+        "Для навігаційного меню",
+        "Для дати публікації статті",
+      ],
+      correctAnswer: "Для контактної інформації сторінки, організації чи автора",
+      explanation: "Не для довільних адрес (наприклад, доставки товару) — лише для контактів.",
+    },
+    {
+      id: "html-real-module-article-tag",
+      type: "single",
+      question: "Чому картку товару в сітці варто верстати через article, а не div?",
+      options: [
+        "Картка — самодостатня одиниця контенту, яку можна показати окремо",
+        "article швидше завантажується",
+        "div не підтримує img усередині",
+        "Різниці немає, це лише стиль коду",
+      ],
+      correctAnswer: "Картка — самодостатня одиниця контенту, яку можна показати окремо",
+      explanation: "article передає скрінрідеру й пошуковику реальну структуру, на відміну від безсенсового div.",
+    },
+    {
+      id: "html-real-module-facts",
+      type: "multiple",
+      question: "Які з цих тверджень правильні?",
+      options: [
+        "nav скрінрідер розпізнає як орієнтир \"Навігація\", а div з класом \"nav\" — ні",
+        "footer повинен повністю дублювати всю навігацію header",
+        "<time datetime=\"...\"> дає машиночитаний формат дати",
+        "Форма у footer підпорядковується тим самим правилам доступності, що й будь-яка інша форма",
+      ],
+      correctAnswer: [
+        "nav скрінрідер розпізнає як орієнтир \"Навігація\", а div з класом \"nav\" — ні",
+        "<time datetime=\"...\"> дає машиночитаний формат дати",
+        "Форма у footer підпорядковується тим самим правилам доступності, що й будь-яка інша форма",
+      ],
+      explanation: "footer не повинен дублювати всю навігацію header — досить короткого набору ключових посилань.",
+      optionExplanations: {
+        "footer повинен повністю дублювати всю навігацію header": "Це поширена помилка — footer має короткий набір посилань, а не повне дублювання.",
+      },
+    },
+  ],
 };
