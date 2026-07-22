@@ -1,6 +1,7 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 import { htmlFoundationsOverrides } from "./htmlFoundations";
-import { htmlWebBasicsOverrides } from "./htmlWebBasics";
+import { htmlWebBasicsOverrides, htmlWebBasicsModuleQuiz } from "./htmlWebBasics";
 import { htmlTextOverrides } from "./htmlText";
 import { htmlNavigationOverrides } from "./htmlNavigation";
 import { htmlImagesOverrides } from "./htmlImages";
@@ -103,3 +104,18 @@ const lessonOverridesByModule: Record<string, Record<string, LessonOverride>> = 
 
 export const getLessonOverride = (moduleId: string, title: string): LessonOverride | undefined =>
   lessonOverridesByModule[moduleId]?.[title];
+
+/**
+ * Hand-written replacements for the generated per-module "контрольний тест"
+ * (`makeModuleQuiz` in courses.ts), keyed by module id. Same idea as lesson
+ * overrides: the generated quiz was a content-free template ("Яке твердження
+ * найкраще описує модуль...", options like "Це важливо лише для
+ * backend-систем") that never actually tested what the module taught.
+ * Rewriting these is a module-by-module effort — a module with no entry
+ * here still falls back to the generated quiz in `makeModule`.
+ */
+const moduleQuizOverrides: Record<string, QuizData> = {
+  "html-web-basics": htmlWebBasicsModuleQuiz,
+};
+
+export const getModuleQuizOverride = (moduleId: string): QuizData | undefined => moduleQuizOverrides[moduleId];

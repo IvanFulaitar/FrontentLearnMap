@@ -1,6 +1,6 @@
 import courseCatalog from "./content/courseCatalog.json";
 import type { Course, CourseLevel, CodeWalkthrough, Lesson, LessonDifficulty, Module, ModuleProject, PlaygroundFile, PlaygroundLanguage, QuizData, TheoryStep } from "../types/course";
-import { getLessonOverride } from "./content/handwritten";
+import { getLessonOverride, getModuleQuizOverride } from "./content/handwritten";
 
 interface CatalogCourse {
   id: string;
@@ -829,7 +829,7 @@ const makeModule = (course: CatalogCourse, module: CatalogModule): Module => ({
   title: module.title,
   description: module.description,
   lessons: module.lessons.map((lessonTitle, index) => makeLesson(course, module, lessonTitle, index)),
-  quiz: makeModuleQuiz(module, course),
+  quiz: getModuleQuizOverride(module.id) ?? makeModuleQuiz(module, course),
   project: makeProject(course, module),
 });
 
