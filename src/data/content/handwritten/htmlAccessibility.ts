@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Доступність в HTML" (html-accessibility). Cheat-sheet format.
@@ -79,6 +80,73 @@ export const htmlAccessibilityOverrides: Record<string, LessonOverride> = {
       { id: "html-a11y-semantics-choice", kind: "choice", prompt: "Потрібна кнопка \"Закрити\" в модалці. Що обрати?", options: ["<div role=\"button\">", "<button>", "<span onclick>", "<a href=\"#\">"], correctAnswer: "<button>", solution: "button вирішує задачу повністю: клавіатура, фокус, скрінрідер — без жодного ARIA." },
       { id: "html-a11y-tabindex-find-bug", kind: "find-the-bug", prompt: "Чому клавіша Enter не активує цю \"кнопку\"?\n<div role=\"button\" tabindex=\"0\" onclick=\"addToCart()\">Додати в кошик</div>", solution: "onclick реагує лише на клік мишею. div не має вбудованої обробки клавіш Enter/Space, як справжній <button> — цю логіку довелось би дописувати вручну через JavaScript." },
     ],
+    quiz: {
+      id: "html-a11y-semantics-quiz",
+      title: "Семантика як основа доступності: перевір себе",
+      questions: [
+        {
+          id: "html-a11y-90-percent",
+          type: "single",
+          question: "Яка частка доступності досягається просто правильними HTML-тегами (без ARIA)?",
+          options: [
+            "Близько 90% — button, label, h1-h6 та інші семантичні теги",
+            "Приблизно 10%, основну роль відіграє ARIA",
+            "Жодної — доступність завжди вимагає ARIA",
+            "Рівно 50%, порівну з ARIA",
+          ],
+          correctAnswer: "Близько 90% — button, label, h1-h6 та інші семантичні теги",
+          explanation: "Правильні семантичні теги вирішують більшість задач доступності самі, без жодного ARIA-атрибута.",
+        },
+        {
+          id: "html-a11y-accessibility-tree",
+          type: "single",
+          question: "Що таке Accessibility Tree?",
+          options: [
+            "Дерево, яке браузер будує з DOM спеціально для скрінрідерів",
+            "Дерево файлів проєкту",
+            "Список усіх CSS-класів сторінки",
+            "Дерево DOM без жодних змін",
+          ],
+          correctAnswer: "Дерево, яке браузер будує з DOM спеціально для скрінрідерів",
+          explanation: "Пайплайн: HTML → DOM → Accessibility Tree → Screen Reader. Саме Accessibility Tree, а не DOM чи візуальний вигляд, читає скрінрідер.",
+        },
+        {
+          id: "html-a11y-code-div-button",
+          type: "code",
+          question: "Чому Enter і Space не активують цей елемент?",
+          codeSnippet: `<div role="button" tabindex="0" onclick="submit()">Надіслати</div>`,
+          options: [
+            "div не має вбудованої обробки клавіш Enter/Space, на відміну від справжнього button",
+            "onclick не можна використовувати на div",
+            "role=\"button\" написано неправильно",
+            "Це насправді працює коректно",
+          ],
+          correctAnswer: "div не має вбудованої обробки клавіш Enter/Space, на відміну від справжнього button",
+          explanation: "role і tabindex імітують лише частину поведінки кнопки — обробку клавіш довелося б дописувати вручну через JS.",
+        },
+        {
+          id: "html-a11y-div-soup",
+          type: "true-false",
+          question: "\"Div Soup\" (сторінка з самих вкладених div без семантичних тегів) погано впливає і на SEO, і на доступність.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Без header/nav/main/article/footer ні пошуковик, ні скрінрідер не розуміють структуру сторінки.",
+        },
+        {
+          id: "html-a11y-when-div-ok",
+          type: "single",
+          question: "Коли використання <div> є правильним вибором?",
+          options: [
+            "Коли немає відповідного семантичного тега (стилізація, flex/grid-контейнер)",
+            "Завжди, div універсальний і підходить для будь-чого",
+            "Тільки для кнопок",
+            "Ніколи, div слід повністю уникати",
+          ],
+          correctAnswer: "Коли немає відповідного семантичного тега (стилізація, flex/grid-контейнер)",
+          explanation: "div — не поганий тег, а тег для випадків без власного семантичного значення.",
+        },
+      ],
+    },
   },
 
   "Скрінрідери та клавіатурна навігація": {
@@ -133,6 +201,73 @@ export const htmlAccessibilityOverrides: Record<string, LessonOverride> = {
       { id: "html-a11y-keyboard-predict", kind: "predict", prompt: "На сайті прибрали button:focus { outline: none; } без заміни. Що станеться для користувача клавіатури?", solution: "Він втратить видимий орієнтир — не бачитиме, який елемент зараз у фокусі під час навігації Tab-ом." },
       { id: "html-a11y-focus-visible-choice", kind: "choice", prompt: "Потрібно прибрати неприємну рамку :focus лише при кліку мишею, але лишити її видимою для клавіатурної навігації. Що використати?", options: [":hover", ":focus-visible", ":active", "outline: none назавжди"], correctAnswer: ":focus-visible", solution: ":focus-visible показує індикатор переважно під час навігації клавіатурою, а не після кожного кліку мишею." },
     ],
+    quiz: {
+      id: "html-a11y-keyboard-quiz",
+      title: "Скрінрідери та клавіатурна навігація: перевір себе",
+      questions: [
+        {
+          id: "html-a11y-tab-shift-tab",
+          type: "single",
+          question: "Що робить комбінація Shift + Tab?",
+          options: [
+            "Переходить до попереднього елемента",
+            "Переходить до наступного елемента",
+            "Активує поточний елемент",
+            "Закриває сторінку",
+          ],
+          correctAnswer: "Переходить до попереднього елемента",
+          explanation: "Tab рухається вперед по елементах, Shift+Tab — назад.",
+        },
+        {
+          id: "html-a11y-outline-none",
+          type: "code",
+          question: "Чому цей CSS-стиль шкодить доступності?",
+          codeSnippet: `button:focus { outline: none; }`,
+          options: [
+            "Прибирає єдиний вбудований візуальний індикатор фокуса без заміни",
+            "Уповільнює рендеринг сторінки",
+            "Ламає роботу кнопки з мишею",
+            "Це насправді хороша практика",
+          ],
+          correctAnswer: "Прибирає єдиний вбудований візуальний індикатор фокуса без заміни",
+          explanation: "Користувач клавіатури перестає бачити, на якому елементі він перебуває, без власного помітного стилю замість outline.",
+        },
+        {
+          id: "html-a11y-tabindex-positive",
+          type: "true-false",
+          question: "tabindex з великими додатними значеннями (1, 2, 3...) вважається хорошою практикою для контролю порядку табуляції.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Позитивні значення tabindex ламають природний порядок і плутають користувача — це антипатерн.",
+        },
+        {
+          id: "html-a11y-focus-visible-vs-focus",
+          type: "single",
+          question: "Чим :focus-visible відрізняється від :focus?",
+          options: [
+            ":focus-visible показує індикатор переважно під час навігації клавіатурою, а не при кожному кліку мишею",
+            "Це повні синоніми",
+            ":focus-visible працює лише в Safari",
+            ":focus-visible вимикає фокус повністю",
+          ],
+          correctAnswer: ":focus-visible показує індикатор переважно під час навігації клавіатурою, а не при кожному кліку мишею",
+          explanation: "Це дозволяє прибрати рамку при кліку мишею, зберігши її для клавіатурної навігації.",
+        },
+        {
+          id: "html-a11y-skip-link",
+          type: "single",
+          question: "Для чого потрібен Skip Link?",
+          options: [
+            "Дозволяє клавіатурному користувачу одразу перейти до основного контенту, минаючи довге меню",
+            "Прискорює завантаження сторінки",
+            "Автоматично перекладає сторінку",
+            "Пропускає перевірку форми",
+          ],
+          correctAnswer: "Дозволяє клавіатурному користувачу одразу перейти до основного контенту, минаючи довге меню",
+          explanation: "Skip Link — це приховане посилання, що з'являється при першому Tab і веде прямо до #main.",
+        },
+      ],
+    },
   },
 
   "Основи ARIA: коли HTML недостатньо": {
@@ -192,5 +327,160 @@ export const htmlAccessibilityOverrides: Record<string, LessonOverride> = {
       { id: "html-aria-basics-choice", kind: "choice", prompt: "Кнопка з іконкою кошика без тексту. Що додати?", options: ["aria-hidden=\"true\"", "aria-label=\"Кошик\"", "role=\"presentation\"", "Нічого, іконка й так зрозуміла"], correctAnswer: "aria-label=\"Кошик\"", solution: "aria-label дає скрінрідеру ім'я елемента замість порожнечі чи символу." },
       { id: "html-aria-expanded-find-bug", kind: "find-the-bug", prompt: "Меню відкрито (видно на екрані), але скрінрідер каже \"згорнуто\". У чому проблема?\n<button aria-expanded=\"false\" onclick=\"toggleMenu()\">☰</button>", solution: "aria-expanded лишився \"false\" і не оновлюється JavaScript-ом після реального відкриття меню — застаріле значення атрибута суперечить фактичному стану інтерфейсу." },
     ],
+    quiz: {
+      id: "html-a11y-aria-basics-quiz",
+      title: "Основи ARIA: перевір себе",
+      questions: [
+        {
+          id: "html-aria-when-to-use",
+          type: "single",
+          question: "Коли варто застосовувати ARIA-атрибути?",
+          options: [
+            "Коли готового HTML-тега для задачі не існує (бургер-меню, акордеон, динамічне повідомлення)",
+            "Завжди, на кожному елементі сторінки",
+            "Тільки на кнопках",
+            "Замість семантичних тегів, вони кращі",
+          ],
+          correctAnswer: "Коли готового HTML-тега для задачі не існує (бургер-меню, акордеон, динамічне повідомлення)",
+          explanation: "ARIA доповнює HTML там, де немає готового семантичного рішення — не замінює його.",
+        },
+        {
+          id: "html-aria-code-icon-button",
+          type: "code",
+          question: "Чому скрінрідер не пояснить призначення цієї кнопки?",
+          codeSnippet: `<button>✕</button>`,
+          options: [
+            "Символ ✕ не несе зрозумілого змісту, а aria-label відсутній",
+            "button не можна використовувати без тексту",
+            "Потрібен role=\"button\"",
+            "Це насправді працює правильно",
+          ],
+          correctAnswer: "Символ ✕ не несе зрозумілого змісту, а aria-label відсутній",
+          explanation: "aria-label=\"Закрити\" дав би скрінрідеру зрозуміле ім'я замість голого символу.",
+        },
+        {
+          id: "html-aria-expanded-sync",
+          type: "true-false",
+          question: "aria-expanded потрібно оновлювати через JavaScript щоразу, коли реальний стан елемента змінюється.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Застаріле значення aria-expanded (наприклад, \"false\" при реально відкритому меню) гірше, ніж відсутність атрибута — воно вводить в оману.",
+        },
+        {
+          id: "html-aria-status-vs-alert",
+          type: "single",
+          question: "У чому різниця між role=\"status\" і role=\"alert\"?",
+          options: [
+            "status озвучує повідомлення без переривання читання, alert перериває одразу",
+            "Це повні синоніми",
+            "status працює лише для помилок, alert — лише для успіху",
+            "alert застарів і не підтримується",
+          ],
+          correctAnswer: "status озвучує повідомлення без переривання читання, alert перериває одразу",
+          explanation: "role=\"status\" підходить для звичайних повідомлень (\"Збережено\"), role=\"alert\" — для термінових помилок.",
+        },
+        {
+          id: "html-aria-redundant-role",
+          type: "single",
+          question: "Чи потрібно додавати role=\"button\" на справжній <button>?",
+          options: [
+            "Ні, це зайве дублювання вже наявної семантики",
+            "Так, завжди обов'язково",
+            "Тільки на мобільних пристроях",
+            "Тільки якщо кнопка має іконку",
+          ],
+          correctAnswer: "Ні, це зайве дублювання вже наявної семантики",
+          explanation: "button вже має роль \"button\" з коробки — додатковий role нічого не додає.",
+        },
+      ],
+    },
   },
+};
+
+export const htmlAccessibilityModuleQuiz: QuizData = {
+  id: "html-accessibility-module-quiz",
+  title: "Доступність в HTML: контрольний тест",
+  questions: [
+    {
+      id: "html-a11y-module-semantics-first",
+      type: "single",
+      question: "Яке перше правило застосування ARIA?",
+      options: [
+        "Спочатку шукати HTML-рішення, ARIA — лише коли тега не вистачає",
+        "Додавати ARIA на кожен елемент сторінки",
+        "ARIA завжди краща за семантичний тег",
+        "ARIA потрібна лише для кнопок",
+      ],
+      correctAnswer: "Спочатку шукати HTML-рішення, ARIA — лише коли тега не вистачає",
+      explanation: "\"No ARIA is better than bad ARIA\" — правильний семантичний тег вирішує більшість задач без жодного ARIA-атрибута.",
+    },
+    {
+      id: "html-a11y-module-code-outline",
+      type: "code",
+      question: "Що не так у цьому CSS?",
+      codeSnippet: `button:focus { outline: none; }`,
+      options: [
+        "Прибирає індикатор фокуса без заміни — користувач клавіатури губиться",
+        "Це синтаксично некоректний CSS",
+        "outline не можна застосовувати до button",
+        "Тут усе правильно",
+      ],
+      correctAnswer: "Прибирає індикатор фокуса без заміни — користувач клавіатури губиться",
+      explanation: "Якщо прибираєш outline, потрібно додати власний помітний стиль саме для :focus-visible.",
+    },
+    {
+      id: "html-a11y-module-aria-label",
+      type: "single",
+      question: "Навіщо потрібен aria-label на кнопці з іконкою без тексту?",
+      options: [
+        "Дає скрінрідеру зрозуміле ім'я замість голого символу чи порожнечі",
+        "Змінює вигляд іконки",
+        "Прискорює клік по кнопці",
+        "Робить кнопку більшою",
+      ],
+      correctAnswer: "Дає скрінрідеру зрозуміле ім'я замість голого символу чи порожнечі",
+      explanation: "Без aria-label скрінрідер оголосить лише \"кнопка\" або спробує прочитати символ буквально.",
+    },
+    {
+      id: "html-a11y-module-tabindex",
+      type: "true-false",
+      question: "tabindex=\"5\" — гарна практика для явного контролю порядку табуляції.",
+      options: ["Так", "Ні"],
+      correctAnswer: false,
+      explanation: "Позитивні значення tabindex ламають природний порядок і вважаються антипатерном.",
+    },
+    {
+      id: "html-a11y-module-status-alert",
+      type: "single",
+      question: "Яке повідомлення варто оформити через role=\"alert\", а не role=\"status\"?",
+      options: [
+        "\"Платіж не пройшов\" — критична помилка",
+        "\"Товар додано в кошик\"",
+        "\"Форма збережена як чернетка\"",
+        "\"Сторінка завантажена\"",
+      ],
+      correctAnswer: "\"Платіж не пройшов\" — критична помилка",
+      explanation: "role=\"alert\" перериває поточне читання скрінрідера — його бережуть для дійсно термінових повідомлень.",
+    },
+    {
+      id: "html-a11y-module-facts",
+      type: "multiple",
+      question: "Які з цих тверджень правильні?",
+      options: [
+        "button вирішує клавіатурну доступність без жодного ARIA",
+        "Accessibility Tree будується браузером з DOM для скрінрідерів",
+        "outline: none без заміни — рекомендована практика",
+        ":focus-visible показує індикатор переважно для клавіатурної навігації",
+      ],
+      correctAnswer: [
+        "button вирішує клавіатурну доступність без жодного ARIA",
+        "Accessibility Tree будується браузером з DOM для скрінрідерів",
+        ":focus-visible показує індикатор переважно для клавіатурної навігації",
+      ],
+      explanation: "outline: none без заміни — навпаки, поширена помилка, яка позбавляє користувачів клавіатури візуального орієнтира.",
+      optionExplanations: {
+        "outline: none без заміни — рекомендована практика": "Це типова помилка доступності, а не рекомендована практика — потрібен власний видимий стиль :focus-visible.",
+      },
+    },
+  ],
 };
