@@ -5,7 +5,7 @@ import { htmlWebBasicsOverrides, htmlWebBasicsModuleQuiz } from "./htmlWebBasics
 import { htmlTextOverrides, htmlTextModuleQuiz } from "./htmlText";
 import { htmlNavigationOverrides, htmlNavigationModuleQuiz } from "./htmlNavigation";
 import { htmlImagesOverrides, htmlImagesModuleQuiz } from "./htmlImages";
-import { htmlListsOverrides } from "./htmlLists";
+import { htmlListsOverrides, htmlListsModuleQuiz } from "./htmlLists";
 import { htmlTablesOverrides } from "./htmlTables";
 import { htmlSemanticsOverrides } from "./htmlSemantics";
 import { htmlFormsOverrides } from "./htmlForms";
@@ -120,6 +120,7 @@ const moduleQuizOverrides: Record<string, QuizData> = {
   "html-text": htmlTextModuleQuiz,
   "html-navigation": htmlNavigationModuleQuiz,
   "html-images": htmlImagesModuleQuiz,
+  "html-lists": htmlListsModuleQuiz,
 };
 
 export const getModuleQuizOverride = (moduleId: string): QuizData | undefined => moduleQuizOverrides[moduleId];
