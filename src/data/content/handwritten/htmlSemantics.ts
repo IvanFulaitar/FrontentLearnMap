@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Семантичний HTML" (html-semantics). Continues the café project:
@@ -118,6 +119,73 @@ export const htmlSemanticsOverrides: Record<string, LessonOverride> = {
       { id: "html-landmarks-choice", kind: "choice", prompt: "Скільки тегів <main> може бути на одній сторінці?", options: ["Скільки завгодно", "Рівно один", "Два — для десктопу й мобільного", "Жодного, main застарів"], correctAnswer: "Рівно один", solution: "main позначає унікальний контент сторінки — він один." },
       { id: "html-landmarks-find-bug", kind: "find-the-bug", prompt: "Що не так?\n\n<main>\n  <h1>Кав'ярня «Аромат»</h1>\n</main>\n<main>\n  <h2>Контакти</h2>\n</main>", solution: "На сторінці два <main> — так не можна, main позначає єдиний унікальний контент. Другий блок має бути всередині першого <main> або обгорнутий у section." },
     ],
+    quiz: {
+      id: "html-semantics-landmarks-quiz",
+      title: "Орієнтири та регіони сторінки: перевір себе",
+      questions: [
+        {
+          id: "html-semantics-landmarks-purpose",
+          type: "single",
+          question: "Навіщо потрібні теги header/nav/main/footer замість div?",
+          options: [
+            "Вони дають скрінрідеру карту сторінки для швидкого перестрибування між блоками",
+            "Вони прискорюють завантаження сторінки",
+            "Вони автоматично додають стилі",
+            "Різниці немає, це лише інші назви для div",
+          ],
+          correctAnswer: "Вони дають скрінрідеру карту сторінки для швидкого перестрибування між блоками",
+          explanation: "Скрінрідер розуміє ці теги як орієнтири (landmarks) і дозволяє одразу перейти до потрібного блоку, а div для нього нічим не примітний.",
+        },
+        {
+          id: "html-semantics-main-count",
+          type: "single",
+          question: "Скільки тегів <main> може бути на одній сторінці?",
+          options: [
+            "Рівно один",
+            "Скільки завгодно",
+            "Два — для десктопу й мобільного",
+            "Жодного, main застарів",
+          ],
+          correctAnswer: "Рівно один",
+          explanation: "main позначає унікальний контент сторінки, тому має бути рівно один.",
+        },
+        {
+          id: "html-semantics-code-div-header",
+          type: "code",
+          question: "Чому скрінрідер не сприймає цей блок як орієнтир?",
+          codeSnippet: `<div class="header">...</div>`,
+          options: [
+            "class=\"header\" — це просто рядок для CSS, браузер і скрінрідер не надають йому особливого сенсу",
+            "У div не можна використовувати class",
+            "Потрібно додати ще один атрибут id",
+            "Це насправді працює як орієнтир",
+          ],
+          correctAnswer: "class=\"header\" — це просто рядок для CSS, браузер і скрінрідер не надають йому особливого сенсу",
+          explanation: "Ім'я класу — умовність тільки для CSS і розробника; справжній орієнтир дає лише тег <header>.",
+        },
+        {
+          id: "html-semantics-header-repeat",
+          type: "true-false",
+          question: "header і footer можуть повторюватись на сторінці кілька разів (наприклад, свій у кожній статті).",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "На відміну від main (рівно один), header/nav/footer можуть з'являтися кілька разів — і на рівні сторінки, і всередині окремих секцій чи статей.",
+        },
+        {
+          id: "html-semantics-main-vs-body",
+          type: "single",
+          question: "Чим <main> відрізняється від <body>?",
+          options: [
+            "body — це вся сторінка цілком, main — лише унікальний головний контент",
+            "Це повні синоніми",
+            "main завжди йде до body в коді",
+            "body використовують лише для мобільних сторінок",
+          ],
+          correctAnswer: "body — це вся сторінка цілком, main — лише унікальний головний контент",
+          explanation: "body включає header/nav/footer і все інше; main — лише той контент, що унікальний саме для цієї сторінки.",
+        },
+      ],
+    },
   },
 
   "Article, section і aside": {
@@ -233,6 +301,79 @@ export const htmlSemanticsOverrides: Record<string, LessonOverride> = {
       { id: "html-article-section-choice", kind: "choice", prompt: "Що правильніше для окремого поста блогу в стрічці?", options: ["<div class=\"post\">", "<article>"], correctAnswer: "<article>", solution: "Пост блогу самодостатній — його можна опублікувати окремо. Це article." },
       { id: "html-section-find-bug", kind: "find-the-bug", prompt: "Що не так?\n\n<section>\n  <p>Ми готуємо каву з 2015 року.</p>\n</section>", solution: "У section немає власного заголовка — без нього це просто ще один div без додаткової семантики. Потрібен, наприклад, <h2>Про нас</h2> всередині section." },
     ],
+    quiz: {
+      id: "html-semantics-article-section-quiz",
+      title: "Article, section і aside: перевір себе",
+      questions: [
+        {
+          id: "html-semantics-article-test",
+          type: "single",
+          question: "За яким принципом визначають, чи потрібен article?",
+          options: [
+            "Чи має цей блок сенс окремо, поза контекстом сторінки",
+            "Чи є в блоці зображення",
+            "Чи блок займає більше половини екрана",
+            "Чи блок має клас у CSS",
+          ],
+          correctAnswer: "Чи має цей блок сенс окремо, поза контекстом сторінки",
+          explanation: "article — самодостатня одиниця контенту, яку можна винести на іншу сторінку без втрати сенсу (пост блогу, картка товару).",
+        },
+        {
+          id: "html-semantics-section-heading",
+          type: "true-false",
+          question: "section без власного заголовка несе таку саму семантику, як звичайний div.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "section без власного заголовка (h2/h3) не додає додаткової семантичної інформації — фактично він рівнозначний div.",
+        },
+        {
+          id: "html-semantics-code-article-in-section",
+          type: "code",
+          question: "Що описує ця структура?",
+          codeSnippet: `<section aria-labelledby="menu-heading">
+  <h2 id="menu-heading">Меню</h2>
+  <article>
+    <h3>Еспресо</h3>
+    <p>45 грн.</p>
+  </article>
+</section>`,
+          options: [
+            "Тематичний блок \"Меню\" (section), що містить самодостатню картку напою (article)",
+            "Дві незалежні статті на одному рівні",
+            "Помилку — section не може містити article",
+            "Побічний контент, не пов'язаний з основною сторінкою",
+          ],
+          correctAnswer: "Тематичний блок \"Меню\" (section), що містить самодостатню картку напою (article)",
+          explanation: "section групує весь блок Меню зі своїм заголовком, а кожен article усередині — окрема самодостатня картка напою.",
+        },
+        {
+          id: "html-semantics-hero-section",
+          type: "single",
+          question: "Чому Hero-секцію сторінки зазвичай оформлюють через section, а не article?",
+          options: [
+            "Hero не має сенсу як самостійний матеріал поза сторінкою",
+            "Hero завжди містить лише одне зображення",
+            "article не можна використовувати у верхній частині сторінки",
+            "Це питання суто стилістичне, різниці немає",
+          ],
+          correctAnswer: "Hero не має сенсу як самостійний матеріал поза сторінкою",
+          explanation: "article — для самодостатнього контенту; Hero-блок радше тематичний, тому підходить section.",
+        },
+        {
+          id: "html-semantics-nested-article-section",
+          type: "single",
+          question: "Чи може article містити всередині кілька section?",
+          options: [
+            "Так, наприклад стаття з підрозділами (кожен зі своїм заголовком)",
+            "Ні, це заборонено HTML",
+            "Так, але лише один section",
+            "Ні, section може бути лише на рівні всієї сторінки",
+          ],
+          correctAnswer: "Так, наприклад стаття з підрозділами (кожен зі своїм заголовком)",
+          explanation: "Велика стаття може ділитись на кілька тематичних підрозділів через section, кожен зі своїм заголовком.",
+        },
+      ],
+    },
   },
 
   "Figure, figcaption, details, summary і dialog": {
@@ -350,6 +491,76 @@ export const htmlSemanticsOverrides: Record<string, LessonOverride> = {
       { id: "html-details-choice", kind: "choice", prompt: "Потрібен блок \"показати повний опис\", що розкривається по кліку без JS. Що обрати?", options: ["<div onclick>", "<details><summary>", "<dialog>", "<aside>"], correctAnswer: "<details><summary>", solution: "details/summary дає розкривну поведінку без жодного скрипта." },
       { id: "html-figure-find-bug", kind: "find-the-bug", prompt: "Що не так?\n\n<img src=\"interior.jpg\" alt=\"Зал кав'ярні\">\n<p>Наш зал вранці, до відкриття</p>", solution: "Підпис написаний окремим p, і його зв'язок із зображенням існує лише візуально (вони стоять поруч). Потрібен <figure><img ...><figcaption>Наш зал вранці, до відкриття</figcaption></figure> — тоді зв'язок явний і для скрінрідера." },
     ],
+    quiz: {
+      id: "html-semantics-figure-details-dialog-quiz",
+      title: "Figure, details, dialog: перевір себе",
+      questions: [
+        {
+          id: "html-semantics-figcaption-purpose",
+          type: "single",
+          question: "Що робить figcaption усередині figure?",
+          options: [
+            "Явно зв'язує підпис саме з цим зображенням (чи іншим вмістом figure)",
+            "Змінює розмір зображення",
+            "Додає рамку навколо figure",
+            "Замінює атрибут alt",
+          ],
+          correctAnswer: "Явно зв'язує підпис саме з цим зображенням (чи іншим вмістом figure)",
+          explanation: "На відміну від окремого p поруч із img, figcaption усередині figure явно прив'язаний до вмісту саме цього блоку.",
+        },
+        {
+          id: "html-semantics-details-no-js",
+          type: "true-false",
+          question: "details/summary дає розкривну поведінку без жодного рядка JavaScript.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "details/summary розгортається і згортається по кліку через саму природу тега, без обробників подій.",
+        },
+        {
+          id: "html-semantics-code-faq-div",
+          type: "code",
+          question: "Що можна замінити цим кодом, щоб не писати обробники кліку вручну?",
+          codeSnippet: `<div class="faq-item" onclick="toggle(this)">
+  <div class="question">Чи є Wi-Fi?</div>
+  <div class="answer">Так.</div>
+</div>`,
+          options: [
+            "<details><summary>Чи є Wi-Fi?</summary><p>Так.</p></details>",
+            "<dialog>Чи є Wi-Fi?</dialog>",
+            "<figure><figcaption>Чи є Wi-Fi?</figcaption></figure>",
+            "Це вже оптимальний варіант, змінювати нічого не потрібно",
+          ],
+          correctAnswer: "<details><summary>Чи є Wi-Fi?</summary><p>Так.</p></details>",
+          explanation: "details/summary дає ту саму розкривну поведінку без jQuery, обробників кліку чи ручної логіки показати/сховати.",
+        },
+        {
+          id: "html-semantics-dialog-showmodal",
+          type: "single",
+          question: "Що робить showModal() на елементі dialog?",
+          options: [
+            "Відкриває його як справжню модалку: блокує фон, підтримує закриття по Esc",
+            "Просто робить елемент видимим через display:block",
+            "Видаляє елемент з DOM",
+            "Додає атрибут alt",
+          ],
+          correctAnswer: "Відкриває його як справжню модалку: блокує фон, підтримує закриття по Esc",
+          explanation: "showModal() автоматично дає поведінку, яку раніше доводилось реалізовувати вручну через z-index, position:fixed і JS-обробники.",
+        },
+        {
+          id: "html-semantics-dialog-without-open",
+          type: "single",
+          question: "Що станеться з <dialog>, якщо не викликати showModal() і не додати атрибут open?",
+          options: [
+            "Він просто не буде показаний",
+            "Він відкриється автоматично при завантаженні сторінки",
+            "Браузер покаже помилку в консолі",
+            "Він завжди показується поверх усього контенту",
+          ],
+          correctAnswer: "Він просто не буде показаний",
+          explanation: "dialog без showModal() чи атрибута open лишається прихованим.",
+        },
+      ],
+    },
   },
 
   "Семантичні кнопки проти посилань": {
@@ -442,5 +653,158 @@ export const htmlSemanticsOverrides: Record<string, LessonOverride> = {
       { id: "html-button-vs-link-choice", kind: "choice", prompt: "Клік перемикає темну/світлу тему сайту без переходу на нову адресу. Що обрати?", options: ["<a href=\"#\">", "<button>", "<a href=\"/theme\">", "<div onclick>"], correctAnswer: "<button>", solution: "Перемикання теми — дія на місці, без навігації, тому button." },
       { id: "html-button-find-bug", kind: "find-the-bug", prompt: "Що не так?\n\n<form>\n  <button onclick=\"openMenu()\">Відкрити меню</button>\n  <button type=\"submit\">Надіслати</button>\n</form>", solution: "Перша кнопка без type — усередині form це за замовчуванням type=\"submit\", тому клік по ній випадково відправить форму замість відкриття меню. Потрібен явний type=\"button\"." },
     ],
+    quiz: {
+      id: "html-semantics-button-vs-link-quiz",
+      title: "Кнопки проти посилань: перевір себе",
+      questions: [
+        {
+          id: "html-semantics-button-link-rule",
+          type: "single",
+          question: "Яке просте правило розрізняє a href і button?",
+          options: [
+            "a href — навігація (змінюється URL), button — дія на поточній сторінці",
+            "a href — для тексту, button — для картинок",
+            "button завжди більший за розміром",
+            "Різниці немає, обидва рівноцінні",
+          ],
+          correctAnswer: "a href — навігація (змінюється URL), button — дія на поточній сторінці",
+          explanation: "Якщо після кліку адреса сторінки має змінитись — це a; якщо виконується дія без переходу — button.",
+        },
+        {
+          id: "html-semantics-button-default-type",
+          type: "true-false",
+          question: "button без атрибута type усередині form за замовчуванням поводиться як type=\"submit\".",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Якщо не вказати type явно, браузер трактує button у формі як submit — це часта причина випадкового відправлення форми.",
+        },
+        {
+          id: "html-semantics-code-hash-cart",
+          type: "code",
+          question: "Чому цей код проблемний?",
+          codeSnippet: `<a href="#" onclick="addToCart()">Додати в кошик</a>`,
+          options: [
+            "href=\"#\" — не реальна адреса; скрінрідер оголосить \"посилання\", хоча переходу немає",
+            "onclick не можна використовувати на <a>",
+            "Функція addToCart() написана неправильно",
+            "Це повністю правильний і рекомендований підхід",
+          ],
+          correctAnswer: "href=\"#\" — не реальна адреса; скрінрідер оголосить \"посилання\", хоча переходу немає",
+          explanation: "Додавання в кошик — дія, а не навігація, тому правильний елемент — <button type=\"button\">.",
+        },
+        {
+          id: "html-semantics-role-button",
+          type: "single",
+          question: "Чи потрібно додавати role=\"button\" до звичайного <button>?",
+          options: [
+            "Ні, HTML вже дає button правильну семантичну роль",
+            "Так, завжди, це обов'язкова практика",
+            "Тільки якщо кнопка кругла",
+            "Тільки в формах",
+          ],
+          correctAnswer: "Ні, HTML вже дає button правильну семантичну роль",
+          explanation: "ARIA-ролі потрібні лише тоді, коли неможливо використати відповідний нативний елемент — button вже має роль з коробки.",
+        },
+        {
+          id: "html-semantics-keyboard-activation",
+          type: "single",
+          question: "Якими клавішами активується посилання (a), а якими — кнопка (button)?",
+          options: [
+            "Посилання — лише Enter; кнопка — Enter і Space",
+            "Обидва — лише Tab",
+            "Посилання — Space; кнопка — лише Enter",
+            "Клавіатура на них узагалі не працює",
+          ],
+          correctAnswer: "Посилання — лише Enter; кнопка — Enter і Space",
+          explanation: "Це стандартна вбудована в браузер поведінка нативних елементів a і button.",
+        },
+      ],
+    },
   },
+};
+
+export const htmlSemanticsModuleQuiz: QuizData = {
+  id: "html-semantics-module-quiz",
+  title: "Семантичний HTML: контрольний тест",
+  questions: [
+    {
+      id: "html-semantics-module-main-count",
+      type: "single",
+      question: "Скільки тегів <main> може бути на сторінці?",
+      options: ["Рівно один", "Скільки завгодно", "Рівно два", "Жодного"],
+      correctAnswer: "Рівно один",
+      explanation: "main позначає унікальний контент сторінки, тому має бути єдиним.",
+    },
+    {
+      id: "html-semantics-module-article-test",
+      type: "single",
+      question: "Який тест допомагає визначити, чи потрібен article?",
+      options: [
+        "Чи має блок сенс окремо, поза контекстом сторінки",
+        "Чи блок містить зображення",
+        "Чи блок має унікальний колір фону",
+        "Чи блок розташований у верхній частині сторінки",
+      ],
+      correctAnswer: "Чи має блок сенс окремо, поза контекстом сторінки",
+      explanation: "article — самодостатня одиниця контенту (пост, товар, коментар), яку можна винести на іншу сторінку без втрати сенсу.",
+    },
+    {
+      id: "html-semantics-module-code-details",
+      type: "code",
+      question: "Яку перевагу дає ця розмітка порівняно з div+JS?",
+      codeSnippet: `<details>
+  <summary>Чи є Wi-Fi?</summary>
+  <p>Так, безкоштовний.</p>
+</details>`,
+      options: [
+        "Розкривна поведінка працює без жодного рядка JavaScript",
+        "Текст автоматично перекладається",
+        "Це прискорює завантаження зображень на сторінці",
+        "Ніякої переваги немає",
+      ],
+      correctAnswer: "Розкривна поведінка працює без жодного рядка JavaScript",
+      explanation: "details/summary розгортається і згортається по кліку через саму природу тега.",
+    },
+    {
+      id: "html-semantics-module-button-link",
+      type: "true-false",
+      question: "button без type усередині form за замовчуванням поводиться як submit.",
+      options: ["Так", "Ні"],
+      correctAnswer: true,
+      explanation: "Це типова причина, чому кнопки без сабміту всередині форми потребують явного type=\"button\".",
+    },
+    {
+      id: "html-semantics-module-section-heading",
+      type: "single",
+      question: "Що потрібно кожному section для повноцінної семантики?",
+      options: [
+        "Власний заголовок (h2/h3)",
+        "Атрибут alt",
+        "Вкладений article обов'язково",
+        "Атрибут colspan",
+      ],
+      correctAnswer: "Власний заголовок (h2/h3)",
+      explanation: "section без власного заголовка не додає семантики порівняно зі звичайним div.",
+    },
+    {
+      id: "html-semantics-module-facts",
+      type: "multiple",
+      question: "Які з цих тверджень правильні?",
+      options: [
+        "header і footer можуть повторюватись на сторінці кілька разів",
+        "a href=\"#\" — правильний спосіб зробити кнопку дії",
+        "dialog з showModal() автоматично блокує взаємодію з фоном",
+        "figcaption явно зв'язує підпис із вмістом figure",
+      ],
+      correctAnswer: [
+        "header і footer можуть повторюватись на сторінці кілька разів",
+        "dialog з showModal() автоматично блокує взаємодію з фоном",
+        "figcaption явно зв'язує підпис із вмістом figure",
+      ],
+      explanation: "a href=\"#\" для дії — типова помилка: href має вести на реальну адресу, для дій призначений button.",
+      optionExplanations: {
+        "a href=\"#\" — правильний спосіб зробити кнопку дії": "Навпаки: href=\"#\" — це хак без реальної адреси, для дій потрібен <button>.",
+      },
+    },
+  ],
 };
