@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Налаштування VS Code" (vscode-setup-basics). Onboarding course
@@ -68,6 +69,67 @@ export const vscodeSetupOverrides: Record<string, LessonOverride> = {
     microExercises: [
       { id: "vscode-intro-choice", kind: "choice", prompt: "Що з переліченого показує готову вебсторінку користувачу?", options: ["VS Code", "Visual Studio", "Браузер", "Термінал"], correctAnswer: "Браузер", solution: "Браузер — це програма, яка відкриває й показує вебсторінки. VS Code лише створює файли для неї." },
     ],
+    quiz: {
+      id: "vscode-intro-quiz",
+      title: "Що таке VS Code: перевір себе",
+      questions: [
+        {
+          id: "vscode-intro-what-is-it",
+          type: "single",
+          question: "Що таке VS Code?",
+          options: [
+            "Безкоштовний редактор коду для написання файлів HTML, CSS, JavaScript",
+            "Браузер для перегляду вебсторінок",
+            "Те саме, що Visual Studio",
+            "Онлайн-сервіс без встановлення на комп'ютер",
+          ],
+          correctAnswer: "Безкоштовний редактор коду для написання файлів HTML, CSS, JavaScript",
+          explanation: "VS Code — редактор коду; браузер показує готову сторінку, а Visual Studio — окрема, значно важча програма.",
+        },
+        {
+          id: "vscode-intro-vs-visual-studio",
+          type: "true-false",
+          question: "VS Code і Visual Studio — це одна й та сама програма.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Це дві різні програми різних розробників зі схожою назвою — Visual Studio значно більша й для інших задач.",
+        },
+        {
+          id: "vscode-intro-who-shows-page",
+          type: "single",
+          question: "Яка програма показує готову вебсторінку користувачу?",
+          options: ["Браузер", "VS Code", "Visual Studio", "Термінал"],
+          correctAnswer: "Браузер",
+          explanation: "VS Code лише створює файли; відкриває й показує сторінку браузер.",
+        },
+        {
+          id: "vscode-intro-word-mistake",
+          type: "single",
+          question: "Чому не варто писати HTML-код у Word чи Google Docs?",
+          options: [
+            "Вони додають невидиме форматування й спецсимволи, які ламають код",
+            "Word не вміє зберігати файли",
+            "Google Docs платний",
+            "Це насправді нормальна практика",
+          ],
+          correctAnswer: "Вони додають невидиме форматування й спецсимволи, які ламають код",
+          explanation: "Текстові процесори замінюють звичайні лапки на «фігурні» й додають приховане форматування — код через це може зламатись незрозумілим чином.",
+        },
+        {
+          id: "vscode-intro-features",
+          type: "single",
+          question: "Що з цього НЕ є перевагою VS Code над звичайним текстовим редактором?",
+          options: [
+            "Автоматична публікація сайту в інтернет",
+            "Підсвітка синтаксису кольором",
+            "Підказки назв тегів і властивостей",
+            "Вбудований термінал",
+          ],
+          correctAnswer: "Автоматична публікація сайту в інтернет",
+          explanation: "VS Code прискорює написання коду, але публікація сайту — окрема задача, не пов'язана з самим редактором.",
+        },
+      ],
+    },
   },
 
   "Встановлення VS Code": {
@@ -123,6 +185,67 @@ export const vscodeSetupOverrides: Record<string, LessonOverride> = {
     microExercises: [
       { id: "vscode-install-bug", kind: "find-the-bug", prompt: "Учень встановив VS Code на Windows, забувши позначку «Add to PATH», і одразу отримав помилку «code: команда не знайдена». Що робити?", solution: "Повторно запустити встановлювач VS Code і цього разу позначити «Add to PATH», або скористатись альтернативним способом додавання в PATH з довідки VS Code." },
     ],
+    quiz: {
+      id: "vscode-install-quiz",
+      title: "Встановлення VS Code: перевір себе",
+      questions: [
+        {
+          id: "vscode-install-official-source",
+          type: "single",
+          question: "Звідки варто завантажувати VS Code?",
+          options: [
+            "Лише з офіційного сайту code.visualstudio.com",
+            "З будь-якого сайту в топі пошуку Google",
+            "З торентів чи файлообмінників, якщо швидше",
+            "Джерело не має значення",
+          ],
+          correctAnswer: "Лише з офіційного сайту code.visualstudio.com",
+          explanation: "Файли з інших джерел можуть містити шкідливий код; офіційний сайт сам визначає операційну систему і пропонує правильний файл.",
+        },
+        {
+          id: "vscode-install-add-to-path",
+          type: "single",
+          question: "Що дає позначка «Add to PATH» на Windows?",
+          options: [
+            "Дозволяє запускати VS Code командою code з термінала з будь-якої папки",
+            "Прискорює запуск VS Code",
+            "Автоматично встановлює розширення",
+            "Вмикає темну тему за замовчуванням",
+          ],
+          correctAnswer: "Дозволяє запускати VS Code командою code з термінала з будь-якої папки",
+          explanation: "Без цієї позначки команда code у терміналі не працюватиме, хоча сам редактор все одно можна відкрити зі значка.",
+        },
+        {
+          id: "vscode-install-verify-new-terminal",
+          type: "true-false",
+          question: "Команду code --version можна перевіряти в терміналі, відкритому ще до встановлення VS Code.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Старий термінал не бачить змін PATH — потрібно відкрити новий термінал після встановлення.",
+        },
+        {
+          id: "vscode-install-macos",
+          type: "single",
+          question: "Як виглядає \"встановлення\" VS Code на macOS?",
+          options: [
+            "Переміщення файлу програми в папку Applications",
+            "Через спеціальний встановлювач, як на Windows",
+            "Автоматично, без жодних дій",
+            "Тільки через термінал",
+          ],
+          correctAnswer: "Переміщення файлу програми в папку Applications",
+          explanation: "На macOS процес простіший, ніж на Windows: файл просто переносять у Applications.",
+        },
+        {
+          id: "vscode-install-verify-command",
+          type: "single",
+          question: "Якою командою перевіряють, що VS Code встановлено успішно?",
+          options: ["code --version", "code --check", "vscode --test", "install --verify"],
+          correctAnswer: "code --version",
+          explanation: "Якщо в терміналі з'явився номер версії — встановлення пройшло успішно.",
+        },
+      ],
+    },
   },
 
   "Файли й папки": {
@@ -198,6 +321,67 @@ export const vscodeSetupOverrides: Record<string, LessonOverride> = {
     microExercises: [
       { id: "vscode-files-choice", kind: "choice", prompt: "Який файл підключає CSS до HTML-сторінки?", options: ["<script src=\"./styles.css\">", "<link rel=\"stylesheet\" href=\"./styles.css\">", "<style src=\"./styles.css\">", "CSS підключається сам, без коду"], correctAnswer: "<link rel=\"stylesheet\" href=\"./styles.css\">", solution: "Тег link з rel=\"stylesheet\" — стандартний спосіб підключити зовнішній файл стилів." },
     ],
+    quiz: {
+      id: "vscode-files-folders-quiz",
+      title: "Файли й папки: перевір себе",
+      questions: [
+        {
+          id: "vscode-files-extension",
+          type: "single",
+          question: "Що таке розширення файлу?",
+          options: [
+            "Частина назви після крапки, яка визначає тип файлу (.html, .css, .js)",
+            "Розмір файлу на диску",
+            "Кількість рядків коду у файлі",
+            "Назва папки, де лежить файл",
+          ],
+          correctAnswer: "Частина назви після крапки, яка визначає тип файлу (.html, .css, .js)",
+          explanation: "Розширення каже комп'ютеру й VS Code, який це тип файлу.",
+        },
+        {
+          id: "vscode-files-one-project-one-folder",
+          type: "true-false",
+          question: "Файли одного проєкту варто тримати в одній спільній папці, а не розкидати по різних місцях.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Один проєкт — одна папка. Це звичка, яку використовують у реальній роботі.",
+        },
+        {
+          id: "vscode-files-naming",
+          type: "single",
+          question: "Яка назва файлу найбезпечніша для роботи в терміналі й посиланнях?",
+          options: ["index.html", "Мій сайт.html", "Index .html", "індекс.html"],
+          correctAnswer: "index.html",
+          explanation: "Латиниця, без пробілів, у нижньому регістрі — надійніший варіант, що уникає проблем у терміналі.",
+        },
+        {
+          id: "vscode-files-structure",
+          type: "single",
+          question: "Що підключає файл стилів до HTML-сторінки?",
+          options: [
+            "<link rel=\"stylesheet\" href=\"./styles.css\">",
+            "<script src=\"./styles.css\">",
+            "<style src=\"./styles.css\">",
+            "Стилі підключаються самі, без коду",
+          ],
+          correctAnswer: "<link rel=\"stylesheet\" href=\"./styles.css\">",
+          explanation: "Тег link з rel=\"stylesheet\" — стандартний спосіб підключити зовнішній CSS-файл.",
+        },
+        {
+          id: "vscode-files-system-folder",
+          type: "single",
+          question: "Чому не варто створювати навчальний проєкт у системних папках (наприклад, C:\\Program Files)?",
+          options: [
+            "Там обмежені права доступу",
+            "Там немає місця на диску",
+            "VS Code не бачить системні папки",
+            "Це насправді рекомендована практика",
+          ],
+          correctAnswer: "Там обмежені права доступу",
+          explanation: "Системні папки мають обмежений доступ на запис — краще створювати проєкти у власній папці на кшталт Documents.",
+        },
+      ],
+    },
   },
 
   "Інтерфейс VS Code": {
@@ -245,6 +429,72 @@ export const vscodeSetupOverrides: Record<string, LessonOverride> = {
     microExercises: [
       { id: "vscode-interface-choice", kind: "choice", prompt: "Що краще відкрити для навчального проєкту?", options: ["Лише index.html", "Кореневу папку проєкту", "Випадкову папку Downloads", "Кожен файл окремо через Open File"], correctAnswer: "Кореневу папку проєкту", solution: "Open Folder дає VS Code бачити всі файли проєкту одразу — це і є правильний спосіб." },
     ],
+    quiz: {
+      id: "vscode-interface-quiz",
+      title: "Інтерфейс VS Code: перевір себе",
+      questions: [
+        {
+          id: "vscode-interface-open-folder-vs-file",
+          type: "single",
+          question: "Чому для навчального проєкту потрібно відкривати папку (Open Folder), а не окремий файл?",
+          options: [
+            "Explorer показує всі файли проєкту одразу, і посилання між HTML/CSS/JS працюють коректно",
+            "Open File взагалі не існує у VS Code",
+            "Це впливає лише на швидкість запуску",
+            "Різниці немає, обидва варіанти рівноцінні",
+          ],
+          correctAnswer: "Explorer показує всі файли проєкту одразу, і посилання між HTML/CSS/JS працюють коректно",
+          explanation: "Коли відкрито окремий файл, VS Code не бачить решти файлів проєкту одразу.",
+        },
+        {
+          id: "vscode-interface-explorer",
+          type: "single",
+          question: "Що показує область Explorer у VS Code?",
+          options: [
+            "Список файлів і папок поточного проєкту",
+            "Список встановлених розширень",
+            "Історію виконаних команд у терміналі",
+            "Налаштування редактора",
+          ],
+          correctAnswer: "Список файлів і папок поточного проєкту",
+          explanation: "Explorer — це файлова панель, окрема від Extensions чи Terminal.",
+        },
+        {
+          id: "vscode-interface-command-palette",
+          type: "true-false",
+          question: "Command Palette дозволяє знайти майже будь-яку команду VS Code за назвою.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Ctrl/Cmd+Shift+P відкриває спливаюче поле пошуку команд — найшвидший спосіб знайти потрібну дію.",
+        },
+        {
+          id: "vscode-interface-workspace-trust",
+          type: "single",
+          question: "Що варто робити, коли VS Code запитує «Do you trust the authors of the files in this folder?»",
+          options: [
+            "Довіряти лише папкам, які створив сам",
+            "Завжди натискати \"Так\", не читаючи",
+            "Ігнорувати запит",
+            "Видалити папку",
+          ],
+          correctAnswer: "Довіряти лише папкам, які створив сам",
+          explanation: "Це називається Workspace Trust і захищає від випадкового виконання чужого коду.",
+        },
+        {
+          id: "vscode-interface-editor-vs-terminal",
+          type: "single",
+          question: "Де в VS Code виконують команди, а де редагують код?",
+          options: [
+            "Terminal — команди, Editor — редагування коду",
+            "Editor — команди, Terminal — редагування коду",
+            "Обидва однакові за призначенням",
+            "Команди виконують у Explorer",
+          ],
+          correctAnswer: "Terminal — команди, Editor — редагування коду",
+          explanation: "Це дві різні області інтерфейсу з різними ролями.",
+        },
+      ],
+    },
   },
 
   Термінал: {
@@ -305,6 +555,73 @@ export const vscodeSetupOverrides: Record<string, LessonOverride> = {
     microExercises: [
       { id: "vscode-terminal-choice", kind: "choice", prompt: "Термінал показує шлях, що закінчується на Desktop, а не на frontend-start. Що це означає?", options: ["Все правильно", "Термінал відкритий не в тій папці", "pwd показує помилку", "Потрібно видалити термінал"], correctAnswer: "Термінал відкритий не в тій папці", solution: "pwd показує реальну поточну папку — якщо це не очікувана папка проєкту, команди виконуватимуться не там, де треба." },
     ],
+    quiz: {
+      id: "vscode-terminal-quiz",
+      title: "Термінал: перевір себе",
+      questions: [
+        {
+          id: "vscode-terminal-pwd",
+          type: "single",
+          question: "Що показує команда pwd?",
+          options: [
+            "Повний шлях поточної папки термінала",
+            "Список файлів у папці",
+            "Версію VS Code",
+            "Список встановлених розширень",
+          ],
+          correctAnswer: "Повний шлях поточної папки термінала",
+          explanation: "pwd відповідає на питання \"де я знаходжусь\" у файловій системі.",
+        },
+        {
+          id: "vscode-terminal-relative",
+          type: "true-false",
+          question: "Команди в терміналі виконуються відносно поточної папки, у якій він зараз \"стоїть\".",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Це ключовий момент уроку: перед важливою командою варто перевіряти pwd.",
+        },
+        {
+          id: "vscode-terminal-code-dot",
+          type: "code",
+          question: "Що робить ця команда?",
+          codeSnippet: `code .`,
+          options: [
+            "Відкриває поточну папку термінала у VS Code",
+            "Відкриває один файл під назвою \".\"",
+            "Перевіряє версію VS Code",
+            "Видаляє поточну папку",
+          ],
+          correctAnswer: "Відкриває поточну папку термінала у VS Code",
+          explanation: "Крапка означає \"поточна папка\" — команда відкриває саме її, а не окремий файл.",
+        },
+        {
+          id: "vscode-terminal-ls",
+          type: "single",
+          question: "Що показує команда ls?",
+          options: [
+            "Список файлів і папок усередині поточної папки",
+            "Версію операційної системи",
+            "Історію відкритих файлів",
+            "Поточну дату й час",
+          ],
+          correctAnswer: "Список файлів і папок усередині поточної папки",
+          explanation: "ls (в PowerShell працює як псевдонім) показує вміст поточної директорії.",
+        },
+        {
+          id: "vscode-terminal-backend-only",
+          type: "single",
+          question: "Чи потрібен термінал лише backend-розробникам?",
+          options: [
+            "Ні, у фронтенд-роботі ним відкривають проєкти, перевіряють інструменти, запускають сервери",
+            "Так, у фронтенді термінал взагалі не використовується",
+            "Термінал потрібен лише для видалення файлів",
+            "Термінал використовують лише для встановлення VS Code",
+          ],
+          correctAnswer: "Ні, у фронтенд-роботі ним відкривають проєкти, перевіряють інструменти, запускають сервери",
+          explanation: "Термінал — базовий інструмент фронтенд-розробки, не лише backend.",
+        },
+      ],
+    },
   },
 
   Розширення: {
@@ -361,6 +678,76 @@ export const vscodeSetupOverrides: Record<string, LessonOverride> = {
     microExercises: [
       { id: "vscode-ext-choice", kind: "choice", prompt: "Скільки formatter варто тримати активним на один проєкт?", options: ["Один", "Два, для надійності", "Якнайбільше", "Formatter не потрібен"], correctAnswer: "Один", solution: "Кілька formatter одночасно конфліктують — VS Code не знає, якому довіряти." },
     ],
+    quiz: {
+      id: "vscode-extensions-quiz",
+      title: "Розширення: перевір себе",
+      questions: [
+        {
+          id: "vscode-ext-what-is-it",
+          type: "single",
+          question: "Що таке розширення (extension) у VS Code?",
+          options: [
+            "Додатковий необов'язковий модуль, який додає нову функцію",
+            "Обов'язковий компонент, без якого VS Code не запускається",
+            "Розширення файлу типу .html",
+            "Окрема програма замість VS Code",
+          ],
+          correctAnswer: "Додатковий необов'язковий модуль, який додає нову функцію",
+          explanation: "Розширення — опційний додаток, наприклад Prettier для форматування коду.",
+        },
+        {
+          id: "vscode-ext-many-at-once",
+          type: "true-false",
+          question: "Варто встановлювати якнайбільше розширень одразу \"про всяк випадок\".",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Кожне розширення впливає на швидкість роботи й налаштування — встановлюй лише те, що вирішує конкретну потребу.",
+        },
+        {
+          id: "vscode-ext-code-two-formatters",
+          type: "code",
+          question: "Чому проблематично мати одночасно встановлені Prettier, Beautify і JS-CSS-HTML Formatter?",
+          codeSnippet: `// Встановлено одночасно:
+// - Prettier
+// - Beautify
+// - JS-CSS-HTML Formatter`,
+          options: [
+            "VS Code не знає, якому formatter довіряти — форматування стає непередбачуваним",
+            "Це прискорює форматування втричі",
+            "Такого конфлікту не існує",
+            "Це обов'язкова конфігурація",
+          ],
+          correctAnswer: "VS Code не знає, якому formatter довіряти — форматування стає непередбачуваним",
+          explanation: "Достатньо одного formatter на проєкт — кілька одночасно конфліктують.",
+        },
+        {
+          id: "vscode-ext-what-to-check",
+          type: "single",
+          question: "Що варто перевірити перед встановленням розширення?",
+          options: [
+            "Назву, publisher, кількість встановлень і дату останнього оновлення",
+            "Тільки назву",
+            "Нічого, всі розширення безпечні за замовчуванням",
+            "Тільки кількість зірок на GitHub",
+          ],
+          correctAnswer: "Назву, publisher, кількість встановлень і дату останнього оновлення",
+          explanation: "Це базова перевірка перед встановленням будь-якого розширення.",
+        },
+        {
+          id: "vscode-ext-formatOnSave",
+          type: "single",
+          question: "Що робить налаштування \"editor.formatOnSave\": true?",
+          options: [
+            "Форматує код автоматично щоразу під час збереження файлу",
+            "Зберігає файл автоматично щохвилини",
+            "Вмикає підсвітку синтаксису",
+            "Встановлює нові розширення автоматично",
+          ],
+          correctAnswer: "Форматує код автоматично щоразу під час збереження файлу",
+          explanation: "Разом з editor.defaultFormatter це налаштовує автоматичне форматування при Ctrl/Cmd+S.",
+        },
+      ],
+    },
   },
 
   "Форматування коду": {
@@ -418,6 +805,71 @@ export const vscodeSetupOverrides: Record<string, LessonOverride> = {
     microExercises: [
       { id: "vscode-format-choice", kind: "choice", prompt: "Що робить форматер, знайшовши помилку в назві змінної?", options: ["Виправляє автоматично", "Нічого — це не його задача", "Видаляє змінну", "Зупиняє збереження файлу"], correctAnswer: "Нічого — це не його задача", solution: "Форматер працює лише з виглядом коду, а не з логікою — помилки в назвах змінних він не шукає." },
     ],
+    quiz: {
+      id: "vscode-formatting-quiz",
+      title: "Форматування коду: перевір себе",
+      questions: [
+        {
+          id: "vscode-format-what-is-it",
+          type: "single",
+          question: "Що таке форматування коду?",
+          options: [
+            "Зміна вигляду й відступів коду без зміни того, що код робить",
+            "Виправлення логічних помилок у коді",
+            "Видалення зайвих файлів проєкту",
+            "Переклад коду іншою мовою програмування",
+          ],
+          correctAnswer: "Зміна вигляду й відступів коду без зміни того, що код робить",
+          explanation: "Форматер (наприклад, Prettier) не виправляє логіку, лише вигляд: пробіли, переноси рядків, лапки.",
+        },
+        {
+          id: "vscode-format-fixes-logic",
+          type: "true-false",
+          question: "Форматер знаходить і виправляє логічні помилки в коді (наприклад, неправильну назву змінної).",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Форматування й виправлення логічних помилок — різні задачі; форматер працює лише з виглядом коду.",
+        },
+        {
+          id: "vscode-format-code-same-result",
+          type: "code",
+          question: "Що зміниться в браузері після форматування цього коду Prettier?",
+          codeSnippet: `<div>
+<h1>Кав'ярня</h1>
+      <p>Опис</p>
+</div>`,
+          options: [
+            "Нічого — форматування впливає лише на вигляд у редакторі, а не на браузер",
+            "Заголовок стане більшим",
+            "Сторінка почне завантажуватись швидше",
+            "З'явиться нова кнопка",
+          ],
+          correctAnswer: "Нічого — форматування впливає лише на вигляд у редакторі, а не на браузер",
+          explanation: "У браузері обидва варіанти (до і після форматування) виглядають однаково.",
+        },
+        {
+          id: "vscode-format-shortcut",
+          type: "single",
+          question: "Яке сполучення клавіш форматує документ вручну на Windows?",
+          options: ["Shift + Alt + F", "Ctrl + S", "Ctrl + Shift + P", "Ctrl + F"],
+          correctAnswer: "Shift + Alt + F",
+          explanation: "На macOS аналогічне сполучення — Shift + Option + F.",
+        },
+        {
+          id: "vscode-format-on-save",
+          type: "single",
+          question: "Що дає увімкнене formatOnSave?",
+          options: [
+            "Код форматується автоматично при кожному збереженні файлу",
+            "Файл зберігається автоматично щохвилини",
+            "Розширення встановлюються автоматично",
+            "Код перекладається на іншу мову",
+          ],
+          correctAnswer: "Код форматується автоматично при кожному збереженні файлу",
+          explanation: "Це прибирає потребу форматувати вручну після кожної зміни.",
+        },
+      ],
+    },
   },
 
   "Запуск першої HTML-сторінки": {
@@ -468,5 +920,160 @@ export const vscodeSetupOverrides: Record<string, LessonOverride> = {
     microExercises: [
       { id: "vscode-run-choice", kind: "choice", prompt: "Яка адреса вказує, що сторінку показує локальний сервер, а не файл напряму?", options: ["file:///index.html", "http://127.0.0.1:5500", "C:\\index.html", "index.html"], correctAnswer: "http://127.0.0.1:5500", solution: "Адреси, що починаються з http://localhost або http://127.0.0.1, означають роботу через локальний сервер." },
     ],
+    quiz: {
+      id: "vscode-first-page-quiz",
+      title: "Запуск першої HTML-сторінки: перевір себе",
+      questions: [
+        {
+          id: "vscode-run-file-vs-server",
+          type: "single",
+          question: "Чим відкриття файлу напряму (file://) відрізняється від локального сервера (http://localhost:...)?",
+          options: [
+            "file:// не оновлюється автоматично при зміні коду, локальний сервер (з Live Server) — оновлюється",
+            "file:// працює лише для CSS, а localhost — лише для HTML",
+            "Різниці немає, це те саме",
+            "localhost — це публікація сайту в реальний інтернет",
+          ],
+          correctAnswer: "file:// не оновлюється автоматично при зміні коду, локальний сервер (з Live Server) — оновлюється",
+          explanation: "Локальний сервер економить час завдяки автоматичному оновленню сторінки при збереженні файлу.",
+        },
+        {
+          id: "vscode-run-localhost-is-not-public",
+          type: "true-false",
+          question: "Сторінка, відкрита через http://localhost:..., вже опублікована в реальному інтернеті і доступна іншим людям.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Локальний сервер існує лише на твоєму комп'ютері — це не публікація сайту в інтернет.",
+        },
+        {
+          id: "vscode-run-code-address",
+          type: "code",
+          question: "Що означає ця адреса в рядку браузера?",
+          codeSnippet: `http://127.0.0.1:5500/index.html`,
+          options: [
+            "Сторінку показує локальний сервер (наприклад, Live Server), а не файл напряму",
+            "Сторінка вже опублікована в інтернеті",
+            "Це помилка адреси",
+            "Файл відкрито напряму з диска",
+          ],
+          correctAnswer: "Сторінку показує локальний сервер (наприклад, Live Server), а не файл напряму",
+          explanation: "Адреса http:// (на відміну від file://) означає, що сторінку віддає локальний сервер.",
+        },
+        {
+          id: "vscode-run-forgot-save",
+          type: "single",
+          question: "Сторінка в браузері не оновилась після зміни коду. Що перевірити першим?",
+          options: [
+            "Чи файл справді збережено (немає крапки на вкладці)",
+            "Чи встановлено VS Code",
+            "Чи є інтернет-з'єднання",
+            "Чи змінено назву файлу",
+          ],
+          correctAnswer: "Чи файл справді збережено (немає крапки на вкладці)",
+          explanation: "Найчастіша причина \"сторінка не оновилась\" — забутий Ctrl/Cmd+S перед перевіркою результату.",
+        },
+        {
+          id: "vscode-run-live-server-benefit",
+          type: "single",
+          question: "Яка головна перевага Live Server над простим відкриттям файлу?",
+          options: [
+            "Сторінка автоматично оновлюється в браузері одразу після збереження файлу",
+            "Live Server робить сайт видимим для всього інтернету",
+            "Live Server прискорює написання коду в редакторі",
+            "Live Server замінює потребу в HTML взагалі",
+          ],
+          correctAnswer: "Сторінка автоматично оновлюється в браузері одразу після збереження файлу",
+          explanation: "Це економить ручні натискання F5 після кожної зміни коду.",
+        },
+      ],
+    },
   },
+};
+
+export const vscodeSetupModuleQuiz: QuizData = {
+  id: "vscode-setup-basics-module-quiz",
+  title: "Налаштування VS Code: контрольний тест",
+  questions: [
+    {
+      id: "vscode-module-what-is-it",
+      type: "single",
+      question: "VS Code — це:",
+      options: [
+        "Безкоштовний редактор коду, не браузер і не Visual Studio",
+        "Браузер для перегляду сайтів",
+        "Те саме, що Visual Studio",
+        "Онлайн-сервіс без встановлення",
+      ],
+      correctAnswer: "Безкоштовний редактор коду, не браузер і не Visual Studio",
+      explanation: "VS Code створює файли з кодом; браузер їх показує, а Visual Studio — окрема, значно важча програма.",
+    },
+    {
+      id: "vscode-module-add-to-path",
+      type: "single",
+      question: "Навіщо потрібна позначка «Add to PATH» під час встановлення на Windows?",
+      options: [
+        "Дозволяє запускати VS Code командою code з термінала",
+        "Прискорює запуск редактора",
+        "Автоматично встановлює Prettier",
+        "Вмикає темну тему",
+      ],
+      correctAnswer: "Дозволяє запускати VS Code командою code з термінала",
+      explanation: "Без неї команда code у терміналі не працюватиме.",
+    },
+    {
+      id: "vscode-module-code-open-folder",
+      type: "code",
+      question: "Чому для навчального проєкту краще відкривати папку, а не окремий файл?",
+      codeSnippet: `code .`,
+      options: [
+        "VS Code бачить усі файли проєкту одразу, і посилання між HTML/CSS/JS працюють коректно",
+        "Це єдиний спосіб взагалі відкрити файл у VS Code",
+        "Це впливає лише на швидкість запуску",
+        "Немає жодної різниці",
+      ],
+      correctAnswer: "VS Code бачить усі файли проєкту одразу, і посилання між HTML/CSS/JS працюють коректно",
+      explanation: "code . відкриває поточну папку термінала — саме так рекомендують відкривати проєкт.",
+    },
+    {
+      id: "vscode-module-one-formatter",
+      type: "true-false",
+      question: "Кілька розширень-форматерів (Prettier, Beautify тощо), встановлені одночасно, працюють без конфліктів.",
+      options: ["Так", "Ні"],
+      correctAnswer: false,
+      explanation: "VS Code не знає, якому formatter довіряти — достатньо одного formatter на проєкт.",
+    },
+    {
+      id: "vscode-module-localhost",
+      type: "single",
+      question: "Що означає адреса http://127.0.0.1:5500 у браузері?",
+      options: [
+        "Сторінку показує локальний сервер, доступний лише на цьому комп'ютері",
+        "Сайт уже опубліковано в реальному інтернеті",
+        "Файл відкрито напряму з диска",
+        "Це адреса помилки",
+      ],
+      correctAnswer: "Сторінку показує локальний сервер, доступний лише на цьому комп'ютері",
+      explanation: "Локальний сервер (наприклад, Live Server) — не публікація сайту в інтернет.",
+    },
+    {
+      id: "vscode-module-facts",
+      type: "multiple",
+      question: "Які з цих тверджень правильні?",
+      options: [
+        "pwd показує повний шлях поточної папки термінала",
+        "Форматер виправляє логічні помилки в коді",
+        "Файли проєкту варто тримати в одній спільній папці",
+        "Розширення варто встановлювати лише під конкретну потребу",
+      ],
+      correctAnswer: [
+        "pwd показує повний шлях поточної папки термінала",
+        "Файли проєкту варто тримати в одній спільній папці",
+        "Розширення варто встановлювати лише під конкретну потребу",
+      ],
+      explanation: "Форматер змінює лише вигляд коду (відступи, пробіли) — логічні помилки він не шукає і не виправляє.",
+      optionExplanations: {
+        "Форматер виправляє логічні помилки в коді": "Це не так: форматування і виправлення логіки — різні задачі.",
+      },
+    },
+  ],
 };

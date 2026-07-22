@@ -38,7 +38,7 @@ import { jsEventsOverrides } from "./jsEvents";
 import { jsAsyncOverrides } from "./jsAsync";
 import { jsNetworkStorageOverrides } from "./jsNetworkStorage";
 import { jsAppPatternsOverrides } from "./jsAppPatterns";
-import { vscodeSetupOverrides } from "./vscodeSetup";
+import { vscodeSetupOverrides, vscodeSetupModuleQuiz } from "./vscodeSetup";
 import { tsBasicsOverrides } from "./tsBasics";
 import { tsObjectsOverrides } from "./tsObjects";
 import { tsFunctionsOverrides } from "./tsFunctions";
@@ -126,6 +126,7 @@ const moduleQuizOverrides: Record<string, QuizData> = {
   "html-forms": htmlFormsModuleQuiz,
   "html-accessibility": htmlAccessibilityModuleQuiz,
   "html-seo": htmlSeoModuleQuiz,
+  "vscode-setup-basics": vscodeSetupModuleQuiz,
 };
 
 export const getModuleQuizOverride = (moduleId: string): QuizData | undefined => moduleQuizOverrides[moduleId];
