@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "SEO основи" (html-seo). Cheat-sheet format. Finishes the café
@@ -72,6 +73,73 @@ export const htmlSeoOverrides: Record<string, LessonOverride> = {
       { id: "html-seo-title-choice", kind: "choice", prompt: "Який опис кращий для SEO?", options: ["\"кава, львів, десерти, обсмажування\"", "\"Кав'ярня «Аромат» у центрі Львова: свіжа кава щодня з 8:00.\"", "\"Кав'ярня\"", "\"Найкраща\""], correctAnswer: "\"Кав'ярня «Аромат» у центрі Львова: свіжа кава щодня з 8:00.\"", solution: "Це повне речення, орієнтоване на людину, а не список слів." },
       { id: "html-seo-title-find-bug", kind: "find-the-bug", prompt: "На всіх 20 сторінках каталогу товарів стоїть один і той самий <title>Товар | Tech Store</title>. Чому це проблема для SEO?", solution: "Користувач і Google не можуть відрізнити сторінки одна від одної ні в результатах пошуку, ні у вкладках браузера — кожна сторінка повинна мати власний, унікальний title з назвою конкретного товару." },
     ],
+    quiz: {
+      id: "html-seo-title-description-quiz",
+      title: "Title і description: перевір себе",
+      questions: [
+        {
+          id: "html-seo-title-purpose",
+          type: "single",
+          question: "Що показує Google як перший синій рядок у результатах пошуку?",
+          options: [
+            "Вміст тега <title>",
+            "Перший абзац тексту сторінки",
+            "URL сторінки",
+            "Назву картинки og:image",
+          ],
+          correctAnswer: "Вміст тега <title>",
+          explanation: "title — заголовок у вкладці й перший рядок у результатах Google.",
+        },
+        {
+          id: "html-seo-description-missing",
+          type: "true-false",
+          question: "Якщо не вказати meta description, Google просто не покаже жодного тексту під заголовком.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Без description Google сам вирізає випадковий уривок тексту сторінки — і часто це виглядає невдало.",
+        },
+        {
+          id: "html-seo-code-keyword-list",
+          type: "code",
+          question: "Чому цей опис поганий для SEO?",
+          codeSnippet: `<meta name="description" content="кава, львів, кав'ярня, десерти, обсмажування">`,
+          options: [
+            "Це список ключових слів через кому, а не речення для людини",
+            "Атрибут name написаний неправильно",
+            "Опис занадто короткий",
+            "Це насправді хороший опис",
+          ],
+          correctAnswer: "Це список ключових слів через кому, а не речення для людини",
+          explanation: "Google показує description людям, а не лише ботам — воно повинно читатись як природна фраза.",
+        },
+        {
+          id: "html-seo-same-title-everywhere",
+          type: "single",
+          question: "Чому title не варто робити однаковим на кожній сторінці сайту?",
+          options: [
+            "Користувач і Google не зможуть відрізнити сторінки в пошуку чи вкладках",
+            "Це технічно заборонено HTML-специфікацією",
+            "Однаковий title уповільнює завантаження",
+            "Це впливає лише на дизайн сторінки",
+          ],
+          correctAnswer: "Користувач і Google не зможуть відрізнити сторінки в пошуку чи вкладках",
+          explanation: "Кожна сторінка повинна мати унікальний, змістовний title, що відображає саме її тему.",
+        },
+        {
+          id: "html-seo-length-limits",
+          type: "single",
+          question: "Що станеться, якщо title чи description набагато перевищують рекомендовану довжину?",
+          options: [
+            "Google обріже текст у результатах пошуку",
+            "Сторінка перестане індексуватись",
+            "Браузер покаже помилку",
+            "Нічого, довжина не має значення",
+          ],
+          correctAnswer: "Google обріже текст у результатах пошуку",
+          explanation: "title — до ~60 символів, description — до ~155, довші версії просто обрізаються у видачі.",
+        },
+      ],
+    },
   },
 
   "Open Graph і прев'ю в соцмережах": {
@@ -156,6 +224,63 @@ export const htmlSeoOverrides: Record<string, LessonOverride> = {
       { id: "html-og-find-bug", kind: "find-the-bug", prompt: "Що не так: <meta property=\"og:image\" content=\"photo.jpg\">?", solution: "Відносний шлях — зовнішні сервіси не зможуть завантажити картинку без повного URL." },
       { id: "html-og-type-choice", kind: "choice", prompt: "Сторінка окремого товару в інтернет-магазині. Яке значення og:type тут доречне?", options: ["website", "product", "article", "profile"], correctAnswer: "product", solution: "og:type відповідає змісту сторінки: для окремого товару використовують \"product\", а не загальний \"website\"." },
     ],
+    quiz: {
+      id: "html-seo-open-graph-quiz",
+      title: "Open Graph і прев'ю в соцмережах: перевір себе",
+      questions: [
+        {
+          id: "html-seo-og-purpose",
+          type: "single",
+          question: "Хто читає Open Graph теги, коли ти шлеш посилання в Telegram чи Facebook?",
+          options: [
+            "Сам месенджер/соцмережа, а не Google",
+            "Тільки Google",
+            "Браузер користувача, який відкриває сторінку",
+            "Жоден сервіс не читає ці теги",
+          ],
+          correctAnswer: "Сам месенджер/соцмережа, а не Google",
+          explanation: "Месенджер читає лише <head> сторінки й шукає там og-теги для побудови картки прев'ю.",
+        },
+        {
+          id: "html-seo-code-relative-og-image",
+          type: "code",
+          question: "Чому картинка не з'явиться в прев'ю Telegram із цим тегом?",
+          codeSnippet: `<meta property="og:image" content="images/photo.jpg">`,
+          options: [
+            "Це відносний шлях — сервіс соцмережі не знає, відносно чого його рахувати",
+            "og:image взагалі не підтримує JPG",
+            "Потрібно додати ще og:title",
+            "Це насправді працює правильно",
+          ],
+          correctAnswer: "Це відносний шлях — сервіс соцмережі не знає, відносно чого його рахувати",
+          explanation: "og:image повинен бути повним абсолютним URL (з https://) — картинку завантажує зовнішній сервер соцмережі.",
+        },
+        {
+          id: "html-seo-og-vs-title",
+          type: "true-false",
+          question: "Open Graph теги — це те саме, що звичайний <title> і meta description для Google.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "<title> читає Google для видачі й вкладки; Open Graph читають соцмережі й месенджери для картки прев'ю — це різні набори тегів.",
+        },
+        {
+          id: "html-seo-og-image-size",
+          type: "single",
+          question: "Який орієнтовний розмір рекомендують для og:image?",
+          options: ["~1200×630px", "~50×50px", "~4000×4000px", "Розмір не має значення"],
+          correctAnswer: "~1200×630px",
+          explanation: "Це універсальний формат, який добре відображається в більшості соцмереж без розмиття чи обрізання.",
+        },
+        {
+          id: "html-seo-og-type-product",
+          type: "single",
+          question: "Яке значення og:type найдоречніше для сторінки окремого товару?",
+          options: ["product", "website", "article", "profile"],
+          correctAnswer: "product",
+          explanation: "og:type має відповідати змісту сторінки — для товару це \"product\", а не загальний \"website\".",
+        },
+      ],
+    },
   },
 
   "Favicon, robots.txt і canonical URL": {
@@ -228,5 +353,161 @@ Sitemap: https://aroma-cafe.com/sitemap.xml`,
       { id: "html-robots-predict", kind: "predict", prompt: "У robots.txt написано:\nUser-agent: *\nDisallow: /\nЩо станеться з індексацією сайту?", solution: "Усі пошукові боти перестануть індексувати весь сайт — це заборона на все." },
       { id: "html-canonical-find-bug", kind: "find-the-bug", prompt: "Чому canonical не допомагає, якщо він виглядає так?\n<link rel=\"canonical\" href=\"/menu\" />", solution: "Це відносний шлях, а не повний абсолютний URL (наприклад https://aroma-cafe.com/menu) — canonical, як і og:image, повинен вказувати самодостатню адресу, яку розпізнає пошукова система незалежно від контексту сторінки." },
     ],
+    quiz: {
+      id: "html-seo-favicon-robots-canonical-quiz",
+      title: "Favicon, robots.txt і canonical: перевір себе",
+      questions: [
+        {
+          id: "html-seo-robots-disallow-all",
+          type: "code",
+          question: "Що станеться з індексацією сайту через цей robots.txt на робочому (не тестовому) сайті?",
+          codeSnippet: `User-agent: *
+Disallow: /`,
+          options: [
+            "Пошукові боти перестануть індексувати весь сайт",
+            "Нічого не зміниться",
+            "Проіндексується лише головна сторінка",
+            "Це прискорить індексацію",
+          ],
+          correctAnswer: "Пошукові боти перестануть індексувати весь сайт",
+          explanation: "Disallow: / без шляху забороняє сканування абсолютно всього — одна з найфатальніших помилок у robots.txt.",
+        },
+        {
+          id: "html-seo-robots-security",
+          type: "true-false",
+          question: "robots.txt — надійний спосіб захистити приватні сторінки від сторонніх користувачів.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "robots.txt — лише прохання до ботів не сканувати адресу, а не технічне обмеження доступу; реальний захист дають авторизація і серверна логіка.",
+        },
+        {
+          id: "html-seo-canonical-purpose",
+          type: "single",
+          question: "Навіщо потрібен <link rel=\"canonical\">?",
+          options: [
+            "Вказує основну версію сторінки серед кількох URL-дублікатів",
+            "Підключає favicon сайту",
+            "Задає мову сторінки",
+            "Прискорює завантаження зображень",
+          ],
+          correctAnswer: "Вказує основну версію сторінки серед кількох URL-дублікатів",
+          explanation: "Якщо сторінка доступна за кількома адресами (з www/без, http/https, з параметрами), canonical вказує \"головну\" з них.",
+        },
+        {
+          id: "html-seo-favicon-purpose",
+          type: "single",
+          question: "Для чого потрібен favicon?",
+          options: [
+            "Іконка сайту у вкладці браузера, закладках та історії",
+            "Прискорення індексації Google",
+            "Захист сайту від ботів",
+            "Стиснення зображень сайту",
+          ],
+          correctAnswer: "Іконка сайту у вкладці браузера, закладках та історії",
+          explanation: "favicon — базова візуальна впізнаваність сайту в браузері; apple-touch-icon доповнює її для мобільних екранів.",
+        },
+        {
+          id: "html-seo-canonical-relative",
+          type: "single",
+          question: "Чому canonical слід вказувати абсолютним URL, а не відносним шляхом?",
+          options: [
+            "Пошукова система повинна розпізнати самодостатню адресу незалежно від контексту сторінки",
+            "Відносні шляхи заборонені в HTML взагалі",
+            "Це впливає на швидкість завантаження",
+            "Різниці немає, обидва варіанти рівноцінні",
+          ],
+          correctAnswer: "Пошукова система повинна розпізнати самодостатню адресу незалежно від контексту сторінки",
+          explanation: "Так само, як з og:image — відносний шлях деякі системи можуть обробити некоректно.",
+        },
+      ],
+    },
   },
+};
+
+export const htmlSeoModuleQuiz: QuizData = {
+  id: "html-seo-module-quiz",
+  title: "SEO основи: контрольний тест",
+  questions: [
+    {
+      id: "html-seo-module-title-unique",
+      type: "single",
+      question: "Чому кожна сторінка сайту повинна мати унікальний title?",
+      options: [
+        "Щоб користувач і Google могли відрізнити сторінки в пошуку й вкладках",
+        "Це технічна вимога HTML-валідатора",
+        "Однаковий title уповільнює завантаження сторінки",
+        "Це впливає лише на візуальний дизайн",
+      ],
+      correctAnswer: "Щоб користувач і Google могли відрізнити сторінки в пошуку й вкладках",
+      explanation: "Однаковий title на всіх сторінках — типова помилка, яка знижує клікабельність кожної окремої сторінки.",
+    },
+    {
+      id: "html-seo-module-code-og-relative",
+      type: "code",
+      question: "Що потрібно виправити в цьому og-тегу?",
+      codeSnippet: `<meta property="og:image" content="images/photo.jpg">`,
+      options: [
+        "Замінити на повний абсолютний URL з https://",
+        "Прибрати атрибут property",
+        "Змінити формат картинки на PNG",
+        "Тут усе правильно",
+      ],
+      correctAnswer: "Замінити на повний абсолютний URL з https://",
+      explanation: "og:image завантажує зовнішній сервер соцмережі — йому потрібна самодостатня адреса, а не відносний шлях.",
+    },
+    {
+      id: "html-seo-module-robots-disallow-all",
+      type: "true-false",
+      question: "Disallow: / у robots.txt на робочому сайті забороняє індексацію лише одного розділу.",
+      options: ["Так", "Ні"],
+      correctAnswer: false,
+      explanation: "Disallow: / без шляху забороняє сканування абсолютно всього сайту — це одна з найфатальніших помилок у robots.txt.",
+    },
+    {
+      id: "html-seo-module-canonical",
+      type: "single",
+      question: "Коли потрібен <link rel=\"canonical\">?",
+      options: [
+        "Коли та сама сторінка доступна за кількома URL (з www/без, http/https, з параметрами)",
+        "Тільки на головній сторінці сайту",
+        "Тільки для сторінок з зображеннями",
+        "Він завжди необов'язковий і не впливає на SEO",
+      ],
+      correctAnswer: "Коли та сама сторінка доступна за кількома URL (з www/без, http/https, з параметрами)",
+      explanation: "canonical запобігає сприйняттю дублікатів сторінки як окремого контенту в очах пошукової системи.",
+    },
+    {
+      id: "html-seo-module-og-vs-title",
+      type: "single",
+      question: "Чим Open Graph теги відрізняються від звичайного <title>?",
+      options: [
+        "Open Graph читають соцмережі й месенджери для картки прев'ю, title — Google для видачі",
+        "Це повні синоніми з однаковим призначенням",
+        "Open Graph теги розташовуються поза <head>",
+        "title завжди важливіший, ніж Open Graph",
+      ],
+      correctAnswer: "Open Graph читають соцмережі й месенджери для картки прев'ю, title — Google для видачі",
+      explanation: "Це різні системи, що читають різні набори метатегів для різних цілей.",
+    },
+    {
+      id: "html-seo-module-facts",
+      type: "multiple",
+      question: "Які з цих тверджень правильні?",
+      options: [
+        "description варто писати як речення для людини, а не список ключових слів",
+        "robots.txt — надійна система захисту приватних сторінок",
+        "favicon показується у вкладці браузера й закладках",
+        "og:image повинен бути повним абсолютним URL",
+      ],
+      correctAnswer: [
+        "description варто писати як речення для людини, а не список ключових слів",
+        "favicon показується у вкладці браузера й закладках",
+        "og:image повинен бути повним абсолютним URL",
+      ],
+      explanation: "robots.txt — лише прохання до ботів, а не механізм безпеки; реальний захист приватних сторінок дають авторизація й серверна логіка.",
+      optionExplanations: {
+        "robots.txt — надійна система захисту приватних сторінок": "Це поширена помилкова думка — robots.txt не обмежує технічний доступ, лише радить ботам не сканувати.",
+      },
+    },
+  ],
 };

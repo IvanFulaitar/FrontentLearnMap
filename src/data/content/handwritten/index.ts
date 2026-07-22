@@ -10,7 +10,7 @@ import { htmlTablesOverrides, htmlTablesModuleQuiz } from "./htmlTables";
 import { htmlSemanticsOverrides, htmlSemanticsModuleQuiz } from "./htmlSemantics";
 import { htmlFormsOverrides, htmlFormsModuleQuiz } from "./htmlForms";
 import { htmlAccessibilityOverrides, htmlAccessibilityModuleQuiz } from "./htmlAccessibility";
-import { htmlSeoOverrides } from "./htmlSeo";
+import { htmlSeoOverrides, htmlSeoModuleQuiz } from "./htmlSeo";
 import { htmlRealComponentsOverrides } from "./htmlRealComponents";
 import { htmlThinkingOverrides } from "./htmlThinking";
 import { htmlMistakesOverrides } from "./htmlMistakes";
@@ -125,6 +125,7 @@ const moduleQuizOverrides: Record<string, QuizData> = {
   "html-semantics": htmlSemanticsModuleQuiz,
   "html-forms": htmlFormsModuleQuiz,
   "html-accessibility": htmlAccessibilityModuleQuiz,
+  "html-seo": htmlSeoModuleQuiz,
 };
 
 export const getModuleQuizOverride = (moduleId: string): QuizData | undefined => moduleQuizOverrides[moduleId];
