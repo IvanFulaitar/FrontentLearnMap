@@ -14,7 +14,7 @@ import { htmlSeoOverrides, htmlSeoModuleQuiz } from "./htmlSeo";
 import { htmlRealComponentsOverrides, htmlRealComponentsModuleQuiz } from "./htmlRealComponents";
 import { htmlThinkingOverrides, htmlThinkingModuleQuiz } from "./htmlThinking";
 import { htmlMistakesOverrides, htmlMistakesModuleQuiz } from "./htmlMistakes";
-import { htmlMiniProjectsOverrides } from "./htmlMiniProjects";
+import { htmlMiniProjectsOverrides, htmlMiniProjectsModuleQuiz } from "./htmlMiniProjects";
 import { cssFoundationsOverrides } from "./cssFoundations";
 import { cssBoxModelOverrides } from "./cssBoxModel";
 import { cssTypographyOverrides } from "./cssTypography";
@@ -130,6 +130,7 @@ const moduleQuizOverrides: Record<string, QuizData> = {
   "html-real-components": htmlRealComponentsModuleQuiz,
   "html-thinking": htmlThinkingModuleQuiz,
   "html-mistakes": htmlMistakesModuleQuiz,
+  "html-mini-projects": htmlMiniProjectsModuleQuiz,
 };
 
 export const getModuleQuizOverride = (moduleId: string): QuizData | undefined => moduleQuizOverrides[moduleId];
