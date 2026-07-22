@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Форми" (html-forms). Cheat-sheet format. Continues the café
@@ -93,6 +94,74 @@ export const htmlFormsOverrides: Record<string, LessonOverride> = {
       { id: "html-forms-find-bug", kind: "find-the-bug", prompt: "Що не так: <input type=\"text\" placeholder=\"Email\" />?", solution: "Немає label — тільки плейсхолдер, який зникає після вводу і не завжди озвучується як назва поля." },
       { id: "html-forms-label-for-bug", kind: "find-the-bug", prompt: "Чому клік по підпису «Телефон» не ставить фокус у поле?\n<label for=\"tel\">Телефон</label>\n<input type=\"tel\" id=\"phone\" name=\"phone\" />", solution: "for=\"tel\" не збігається з id=\"phone\" — браузер шукає елемент, чий id точно дорівнює значенню for, і не знаходить його." },
     ],
+    quiz: {
+      id: "html-forms-structure-quiz",
+      title: "Структура форми та підписи: перевір себе",
+      questions: [
+        {
+          id: "html-forms-label-vs-placeholder",
+          type: "single",
+          question: "Чому label кращий за placeholder як підпис поля?",
+          options: [
+            "label лишається видимим завжди і коректно озвучується скрінрідером, placeholder зникає при вводі",
+            "label автоматично перекладає текст",
+            "placeholder працює лише в Chrome",
+            "Різниці немає, обидва варіанти рівноцінні",
+          ],
+          correctAnswer: "label лишається видимим завжди і коректно озвучується скрінрідером, placeholder зникає при вводі",
+          explanation: "Placeholder зникає, щойно користувач починає вводити текст, і не завжди озвучується як назва поля.",
+        },
+        {
+          id: "html-forms-name-missing",
+          type: "true-false",
+          question: "Якщо в input немає атрибута name, поле все одно потрапить у відправлені дані форми.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Без name браузер узагалі не включає значення поля у відправлені дані, навіть якщо користувач його заповнив.",
+        },
+        {
+          id: "html-forms-code-for-id",
+          type: "code",
+          question: "Чому клік по цьому label не ставить фокус в поле?",
+          codeSnippet: `<label for="guest-name">Ім'я</label>
+<input type="text" id="guestName" name="guestName" />`,
+          options: [
+            "for=\"guest-name\" не збігається з id=\"guestName\" — регістр і написання різні",
+            "У input відсутній name",
+            "label не можна ставити перед input",
+            "Це насправді працює правильно",
+          ],
+          correctAnswer: "for=\"guest-name\" не збігається з id=\"guestName\" — регістр і написання різні",
+          explanation: "for і id мають збігатися точно, символ у символ — тут написання відрізняється.",
+        },
+        {
+          id: "html-forms-get-vs-post",
+          type: "single",
+          question: "Для якої форми method=\"get\" підходить найкраще?",
+          options: [
+            "Пошук чи фільтри, які зручно зберегти в закладки",
+            "Форма логіну з паролем",
+            "Реєстрація нового акаунту",
+            "Оформлення платежу",
+          ],
+          correctAnswer: "Пошук чи фільтри, які зручно зберегти в закладки",
+          explanation: "GET показує дані просто в URL — це зручно для пошуку/фільтрів, але небезпечно для паролів чи конфіденційних даних.",
+        },
+        {
+          id: "html-forms-input-in-label",
+          type: "single",
+          question: "Що станеться, якщо покласти input прямо всередину label, без for/id?",
+          options: [
+            "Зв'язок утвориться автоматично, for і id не потрібні",
+            "Форма перестане працювати",
+            "Це синтаксична помилка HTML",
+            "label ігноруватиме input усередині себе",
+          ],
+          correctAnswer: "Зв'язок утвориться автоматично, for і id не потрібні",
+          explanation: "Input усередині label автоматично зв'язаний з ним без явного for/id — хоча в професійній розробці частіше все ж обирають for+id.",
+        },
+      ],
+    },
   },
 
   "Типи полів і атрибути": {
@@ -182,6 +251,73 @@ export const htmlFormsOverrides: Record<string, LessonOverride> = {
       { id: "html-input-types-choice", kind: "choice", prompt: "Поле для дати бронювання. Який тип?", options: ["text", "date", "number", "tel"], correctAnswer: "date", solution: "date дає календар і правильний формат без ручного парсингу." },
       { id: "html-input-types-find-bug", kind: "find-the-bug", prompt: "Розробник поставив <input type=\"number\" name=\"phone\" /> для номера телефону. Що не так?", solution: "Телефон — не число для обчислень: у ньому можуть бути +, пробіли чи початкові нулі, які number або забороняє вводити, або обробляє некоректно. Для телефону призначений type=\"tel\"." },
     ],
+    quiz: {
+      id: "html-forms-input-types-quiz",
+      title: "Типи полів і атрибути: перевір себе",
+      questions: [
+        {
+          id: "html-forms-type-purpose",
+          type: "single",
+          question: "Що дає правильний вибір атрибута type на input, крім зовнішнього вигляду?",
+          options: [
+            "Відповідну мобільну клавіатуру і базову валідацію без JavaScript",
+            "Автоматичний переклад тексту",
+            "Прискорення завантаження сторінки",
+            "Захист від XSS-атак",
+          ],
+          correctAnswer: "Відповідну мобільну клавіатуру і базову валідацію без JavaScript",
+          explanation: "type=\"email\"/\"tel\"/\"number\" тощо змінюють мобільну клавіатуру і додають вбудовану перевірку формату.",
+        },
+        {
+          id: "html-forms-readonly-vs-disabled",
+          type: "single",
+          question: "Чим readonly відрізняється від disabled?",
+          options: [
+            "readonly відправляється на сервер, disabled — ні",
+            "disabled відправляється на сервер, readonly — ні",
+            "Це повні синоніми",
+            "readonly можна редагувати, disabled — ні",
+          ],
+          correctAnswer: "readonly відправляється на сервер, disabled — ні",
+          explanation: "readonly дозволяє бачити й копіювати значення (воно йде на сервер) — просто не редагується. disabled повністю виключає поле з даних форми.",
+        },
+        {
+          id: "html-forms-code-number-phone",
+          type: "code",
+          question: "Чому цей тип поля некоректний для номера телефону?",
+          codeSnippet: `<input type="number" name="phone" />`,
+          options: [
+            "Телефон може містити +, пробіли й початкові нулі, які number обробляє некоректно",
+            "number взагалі не можна використовувати в формах",
+            "Тут відсутній атрибут required",
+            "Це правильний і рекомендований вибір",
+          ],
+          correctAnswer: "Телефон може містити +, пробіли й початкові нулі, які number обробляє некоректно",
+          explanation: "Телефон — не число для математичних операцій, для нього призначений type=\"tel\".",
+        },
+        {
+          id: "html-forms-file-accept",
+          type: "single",
+          question: "Що робить атрибут accept=\"image/*\" на input type=\"file\"?",
+          options: [
+            "Дозволяє вибрати лише зображення в системному діалозі вибору файлу",
+            "Автоматично стискає завантажені зображення",
+            "Обмежує кількість файлів до одного",
+            "Конвертує файл у формат PNG",
+          ],
+          correctAnswer: "Дозволяє вибрати лише зображення в системному діалозі вибору файлу",
+          explanation: "accept фільтрує типи файлів, доступні для вибору, полегшуючи користувачу вибір правильного файлу.",
+        },
+        {
+          id: "html-forms-date-type",
+          type: "single",
+          question: "Який тип поля найдоречніший для дати бронювання?",
+          options: ["date", "text", "number", "tel"],
+          correctAnswer: "date",
+          explanation: "type=\"date\" дає вбудований календар і стандартний формат без ручного парсингу тексту.",
+        },
+      ],
+    },
   },
 
   "Textarea, select і fieldset": {
@@ -288,6 +424,75 @@ export const htmlFormsOverrides: Record<string, LessonOverride> = {
       { id: "html-fieldset-choice", kind: "choice", prompt: "6 контактних полів логічно належать разом. Що використати для групування?", options: ["div", "fieldset + legend", "section", "table"], correctAnswer: "fieldset + legend", solution: "fieldset групує поля семантично, legend озвучує назву групи скрінрідером." },
       { id: "html-select-value-find-bug", kind: "find-the-bug", prompt: "Чому на сервер приходить видимий текст «Львів», а не короткий код, як у першого option?\n<select name=\"city\">\n  <option value=\"\" selected disabled>Оберіть місто</option>\n  <option>Львів</option>\n</select>", solution: "У option \"Львів\" немає атрибута value, тому браузер відправляє видимий текст option як значення. Потрібно додати value=\"lviv\", як зроблено для заглушки." },
     ],
+    quiz: {
+      id: "html-forms-textarea-select-fieldset-quiz",
+      title: "Textarea, select і fieldset: перевір себе",
+      questions: [
+        {
+          id: "html-forms-select-vs-radio",
+          type: "single",
+          question: "Коли select зручніший за групу radio-кнопок?",
+          options: [
+            "Коли варіантів багато (7+) або обмежено місце на екрані",
+            "Коли варіантів рівно два",
+            "Завжди, select універсально кращий",
+            "Ніколи, radio завжди кращий вибір",
+          ],
+          correctAnswer: "Коли варіантів багато (7+) або обмежено місце на екрані",
+          explanation: "select не займає весь екран для довгого списку, на відміну від показу всіх radio одразу.",
+        },
+        {
+          id: "html-forms-legend-purpose",
+          type: "true-false",
+          question: "legend озвучується скрінрідером як назва всієї групи полів усередині fieldset.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "legend — перший дочірній елемент fieldset, і скрінрідер оголошує його перед кожним полем групи.",
+        },
+        {
+          id: "html-forms-code-option-no-value",
+          type: "code",
+          question: "Що піде на сервер, якщо в option немає атрибута value?",
+          codeSnippet: `<select name="city">
+  <option>Львів</option>
+</select>`,
+          options: [
+            "Видимий текст усередині option (\"Львів\")",
+            "Порожній рядок завжди",
+            "Форма взагалі не відправиться",
+            "Числовий індекс option у списку",
+          ],
+          correctAnswer: "Видимий текст усередині option (\"Львів\")",
+          explanation: "Без явного value браузер відправляє видимий текст option як значення поля.",
+        },
+        {
+          id: "html-forms-select-placeholder",
+          type: "single",
+          question: "Як зробити плейсхолдер-підказку в select, якщо цей елемент не підтримує атрибут placeholder?",
+          options: [
+            "Додати перший <option selected disabled> з текстом підказки",
+            "Додати атрибут placeholder напряму на select",
+            "Використати textarea замість select",
+            "Це неможливо зробити в HTML",
+          ],
+          correctAnswer: "Додати перший <option selected disabled> з текстом підказки",
+          explanation: "disabled не дає користувачу повернутись до цього option після вибору іншого варіанта — це і є заміна placeholder для select.",
+        },
+        {
+          id: "html-forms-fieldset-disabled",
+          type: "single",
+          question: "Що робить атрибут disabled, поставлений прямо на <fieldset>?",
+          options: [
+            "Вимикає одразу всі поля всередині нього одним атрибутом",
+            "Приховує fieldset візуально через CSS",
+            "Видаляє legend",
+            "Вимикає лише перше поле в групі",
+          ],
+          correctAnswer: "Вимикає одразу всі поля всередині нього одним атрибутом",
+          explanation: "Не потрібно проставляти disabled на кожному input окремо — досить одного атрибута на fieldset.",
+        },
+      ],
+    },
   },
 
   "Чекбокси, радіокнопки і валідація": {
@@ -376,6 +581,74 @@ export const htmlFormsOverrides: Record<string, LessonOverride> = {
       { id: "html-radio-find-bug", kind: "find-the-bug", prompt: "Чому можна вибрати і \"Зал\", і \"Тераса\" одночасно, якщо це radio?", solution: "У них різний атрибут name — браузер не групує їх як взаємовиключні варіанти." },
       { id: "html-required-radio-choice", kind: "choice", prompt: "Потрібно, щоб хоча б один варіант місця (зал/тераса) був обраний перед відправкою форми. Куди поставити required?", options: ["На кожній радіокнопці групи", "Лише на одній кнопці групи", "На fieldset", "На legend"], correctAnswer: "Лише на одній кнопці групи", solution: "Для required на групі radio достатньо додати атрибут хоча б на одній кнопці — браузер перевіряє всю групу разом." },
     ],
+    quiz: {
+      id: "html-forms-checkbox-radio-validation-quiz",
+      title: "Чекбокси, радіокнопки і валідація: перевір себе",
+      questions: [
+        {
+          id: "html-forms-checkbox-vs-radio",
+          type: "single",
+          question: "Чим checkbox відрізняється від radio?",
+          options: [
+            "checkbox — 0 або декілька незалежних варіантів, radio (з однаковим name) — рівно один",
+            "checkbox завжди квадратний, radio — круглий, функціонально це те саме",
+            "radio можна вибрати кілька одночасно, checkbox — лише один",
+            "Різниці немає",
+          ],
+          correctAnswer: "checkbox — 0 або декілька незалежних варіантів, radio (з однаковим name) — рівно один",
+          explanation: "checkbox — незалежний вибір; radio з однаковим name групується у взаємовиключний набір.",
+        },
+        {
+          id: "html-forms-code-radio-names",
+          type: "code",
+          question: "Чому можна вибрати і \"Зал\", і \"Тераса\" одночасно в цьому коді?",
+          codeSnippet: `<input type="radio" name="seat1" /> Зал
+<input type="radio" name="seat2" /> Тераса`,
+          options: [
+            "У них різні атрибути name, тому браузер не групує їх як взаємовиключні",
+            "Атрибут type написаний неправильно",
+            "Потрібно додати required на обидва",
+            "Це насправді правильна поведінка для radio",
+          ],
+          correctAnswer: "У них різні атрибути name, тому браузер не групує їх як взаємовиключні",
+          explanation: "Браузер групує радіокнопки у взаємовиключний набір лише за співпадінням name — тут це дві незалежні групи по одній кнопці.",
+        },
+        {
+          id: "html-forms-html-validation-no-js",
+          type: "true-false",
+          question: "Атрибути required і pattern перевіряють дані навіть без жодного рядка JavaScript.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Це вбудована HTML-валідація — вона працює, навіть якщо JS ще не завантажився чи впав з помилкою.",
+        },
+        {
+          id: "html-forms-novalidate",
+          type: "single",
+          question: "Що робить атрибут novalidate на <form>?",
+          options: [
+            "Вимикає всю вбудовану HTML-валідацію форми",
+            "Робить усі поля обов'язковими",
+            "Автоматично відправляє форму без кліку",
+            "Додає CSS-стилі помилок",
+          ],
+          correctAnswer: "Вимикає всю вбудовану HTML-валідацію форми",
+          explanation: "novalidate прибирає стандартну перевірку браузера — тоді required/pattern/min/max перестають перевірятись автоматично.",
+        },
+        {
+          id: "html-forms-server-validation",
+          type: "single",
+          question: "Чому HTML-валідація (required, pattern) не замінює перевірку даних на сервері?",
+          options: [
+            "Клієнтську валідацію легко обійти, надіславши запит напряму, минаючи форму",
+            "HTML-валідація взагалі не працює в сучасних браузерах",
+            "Сервер не вміє читати HTML-атрибути",
+            "Це питання стилю, а не безпеки",
+          ],
+          correctAnswer: "Клієнтську валідацію легко обійти, надіславши запит напряму, минаючи форму",
+          explanation: "HTML-валідація — лише перший, зручний для користувача рівень захисту; сервер повинен повторно перевірити ті самі дані.",
+        },
+      ],
+    },
   },
 
   "Доступні повідомлення про помилки": {
@@ -460,5 +733,161 @@ export const htmlFormsOverrides: Record<string, LessonOverride> = {
       { id: "html-aria-errors-choice", kind: "choice", prompt: "Як зв'язати поле з текстом помилки для скрінрідера?", options: ["Через колір рамки", "Через aria-describedby", "Через placeholder", "Ніяк, це не потрібно"], correctAnswer: "Через aria-describedby", solution: "aria-describedby явно каже скрінрідеру, який текст описує це поле." },
       { id: "html-aria-describedby-find-bug", kind: "find-the-bug", prompt: "Чому скрінрідер не озвучує текст помилки, хоча він є на сторінці?\n<input type=\"email\" id=\"email\" aria-describedby=\"email-err\" />\n<p id=\"email-error\">Некоректний email</p>", solution: "id тексту помилки — \"email-error\", а aria-describedby посилається на \"email-err\" — значення не збігаються, тому зв'язок не спрацьовує." },
     ],
+    quiz: {
+      id: "html-forms-error-messages-quiz",
+      title: "Доступні повідомлення про помилки: перевір себе",
+      questions: [
+        {
+          id: "html-forms-aria-describedby-purpose",
+          type: "single",
+          question: "Що робить aria-describedby на полі форми?",
+          options: [
+            "Зв'язує поле з текстом помилки чи пояснення за id",
+            "Змінює колір рамки поля",
+            "Автоматично валідовує значення поля",
+            "Приховує поле від скрінрідера",
+          ],
+          correctAnswer: "Зв'язує поле з текстом помилки чи пояснення за id",
+          explanation: "aria-describedby явно вказує скрінрідеру, який текст описує це поле.",
+        },
+        {
+          id: "html-forms-color-only-error",
+          type: "true-false",
+          question: "Червоної рамки навколо поля достатньо, щоб повідомити про помилку всім користувачам.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Колір — суто візуальний сигнал; користувачі скрінрідерів чи дальтоніки його не отримають без тексту помилки.",
+        },
+        {
+          id: "html-forms-code-mismatched-id",
+          type: "code",
+          question: "Чому скрінрідер не озвучує цей текст помилки?",
+          codeSnippet: `<input type="email" id="email" aria-describedby="email-err" />
+<p id="email-error">Некоректний email</p>`,
+          options: [
+            "id тексту (\"email-error\") не збігається зі значенням aria-describedby (\"email-err\")",
+            "Тег p не можна використовувати для помилок",
+            "Відсутній атрибут role",
+            "Це насправді працює правильно",
+          ],
+          correctAnswer: "id тексту (\"email-error\") не збігається зі значенням aria-describedby (\"email-err\")",
+          explanation: "Значення aria-describedby має точно, символ у символ, збігатися з id елемента-опису.",
+        },
+        {
+          id: "html-forms-aria-live-assertive",
+          type: "single",
+          question: "Коли варто використовувати aria-live=\"assertive\" замість \"polite\"?",
+          options: [
+            "Лише для справді критичних повідомлень (наприклад, помилка оплати)",
+            "Для будь-якого динамічного тексту на сторінці",
+            "Тільки для успішних повідомлень",
+            "Ніколи, assertive застарів",
+          ],
+          correctAnswer: "Лише для справді критичних повідомлень (наприклад, помилка оплати)",
+          explanation: "assertive перериває читання одразу — часті переривання дратують користувачів скрінрідерів, тому його бережуть для критичних випадків.",
+        },
+        {
+          id: "html-forms-error-summary",
+          type: "single",
+          question: "Для чого потрібен Error Summary (загальний список помилок)?",
+          options: [
+            "Показати всі помилки форми одразу зверху, коли невалідних полів кілька",
+            "Замінити aria-describedby на кожному полі",
+            "Приховати помилки від скрінрідера",
+            "Автоматично виправити некоректні значення",
+          ],
+          correctAnswer: "Показати всі помилки форми одразу зверху, коли невалідних полів кілька",
+          explanation: "У великих формах Error Summary дає користувачу повний список помилок одразу, з посиланнями на кожне проблемне поле.",
+        },
+      ],
+    },
   },
+};
+
+export const htmlFormsModuleQuiz: QuizData = {
+  id: "html-forms-module-quiz",
+  title: "Форми: контрольний тест",
+  questions: [
+    {
+      id: "html-forms-module-label-purpose",
+      type: "single",
+      question: "Чому label кращий за placeholder?",
+      options: [
+        "label лишається видимим завжди і коректно озвучується скрінрідером",
+        "label автоматично перекладає текст поля",
+        "placeholder не можна використовувати разом з label",
+        "Різниці немає",
+      ],
+      correctAnswer: "label лишається видимим завжди і коректно озвучується скрінрідером",
+      explanation: "placeholder зникає під час вводу і не завжди озвучується як назва поля — label вирішує обидві проблеми.",
+    },
+    {
+      id: "html-forms-module-code-type",
+      type: "code",
+      question: "Що варто виправити в цьому полі для номера телефону?",
+      codeSnippet: `<input type="text" placeholder="Телефон" />`,
+      options: [
+        "Додати type=\"tel\" замість text — це дасть правильну мобільну клавіатуру",
+        "Прибрати placeholder повністю",
+        "Додати атрибут colspan",
+        "Тут усе правильно",
+      ],
+      correctAnswer: "Додати type=\"tel\" замість text — це дасть правильну мобільну клавіатуру",
+      explanation: "type=\"tel\" на мобільному показує цифрову клавіатуру замість повної буквеної.",
+    },
+    {
+      id: "html-forms-module-select-vs-radio",
+      type: "single",
+      question: "Коли select зручніший, ніж radio-кнопки?",
+      options: [
+        "Коли варіантів багато (7+) або мало місця на екрані",
+        "Коли варіант лише один",
+        "Завжди без винятків",
+        "Ніколи, radio завжди кращий",
+      ],
+      correctAnswer: "Коли варіантів багато (7+) або мало місця на екрані",
+      explanation: "select не показує всі варіанти одразу, тому підходить для довгих списків.",
+    },
+    {
+      id: "html-forms-module-radio-grouping",
+      type: "true-false",
+      question: "Радіокнопки з різним атрибутом name групуються браузером як взаємовиключні.",
+      options: ["Так", "Ні"],
+      correctAnswer: false,
+      explanation: "Браузер групує radio лише за точним співпадінням name — різний name означає незалежні кнопки.",
+    },
+    {
+      id: "html-forms-module-aria-describedby",
+      type: "single",
+      question: "Як зв'язати поле форми з текстом помилки для скрінрідера?",
+      options: [
+        "Через aria-describedby, що вказує на id тексту помилки",
+        "Через колір рамки поля",
+        "Через атрибут placeholder",
+        "Це неможливо технічно",
+      ],
+      correctAnswer: "Через aria-describedby, що вказує на id тексту помилки",
+      explanation: "aria-describedby явно зв'язує поле з поясненням помилки — колір сам по собі нічого не повідомляє скрінрідеру.",
+    },
+    {
+      id: "html-forms-module-facts",
+      type: "multiple",
+      question: "Які з цих тверджень правильні?",
+      options: [
+        "Без атрибута name поле не потрапляє у відправлені дані форми",
+        "disabled поле все одно відправляється на сервер",
+        "required і pattern працюють без JavaScript",
+        "HTML-валідація повністю замінює перевірку на сервері",
+      ],
+      correctAnswer: [
+        "Без атрибута name поле не потрапляє у відправлені дані форми",
+        "required і pattern працюють без JavaScript",
+      ],
+      explanation: "disabled поле НЕ відправляється на сервер (на відміну від readonly); HTML-валідацію легко обійти, тому сервер завжди повинен перевіряти дані повторно.",
+      optionExplanations: {
+        "disabled поле все одно відправляється на сервер": "Навпаки: disabled повністю виключає поле з даних форми, на відміну від readonly.",
+        "HTML-валідація повністю замінює перевірку на сервері": "HTML-валідацію легко обійти, тому сервер завжди повинен перевіряти ті самі дані незалежно.",
+      },
+    },
+  ],
 };
