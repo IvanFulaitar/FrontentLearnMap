@@ -5,38 +5,66 @@
   max-width: 100%;
   min-width: 0;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--surface);
+  box-shadow: 0 2px 10px rgba(15, 15, 25, 0.06);
 }
 
 .tabStrip {
   display: flex;
   align-items: center;
   gap: 2px;
-  padding: 6px 8px;
+  padding: 8px 10px;
   background: var(--surface-muted);
   border-bottom: 1px solid var(--border);
 }
 
 .tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   border: none;
   background: transparent;
-  color: var(--text-muted, inherit);
+  color: inherit;
+  opacity: 0.7;
   font-size: 0.8rem;
   font-weight: 600;
-  padding: 6px 12px;
+  padding: 7px 12px;
   border-radius: var(--radius-sm);
   cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
 }
 
 .tab:hover {
   background: var(--surface-raised);
+  opacity: 1;
 }
 
 .tabActive {
   background: var(--surface-raised);
   color: var(--color-primary, var(--success));
+  opacity: 1;
+  box-shadow: inset 0 -2px 0 var(--success);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dotHtml {
+  background: #e35c26;
+}
+
+.dotCss {
+  background: #2965f1;
+}
+
+.dotJs {
+  background: #f0c419;
 }
 
 .tabSpacer {
@@ -44,70 +72,139 @@
 }
 
 .actionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   border: none;
   background: var(--success);
   color: #ffffff;
   font-size: 0.78rem;
-  font-weight: 600;
-  padding: 6px 12px;
+  font-weight: 700;
+  padding: 7px 14px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   white-space: nowrap;
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.actionButton:hover {
+  filter: brightness(1.08);
+}
+
+.actionButton:active {
+  transform: translateY(1px);
 }
 
 .actionButtonGhost {
   border: 1px solid var(--border);
-  background: transparent;
+  background: var(--surface);
   color: inherit;
+  opacity: 0.8;
   font-size: 0.78rem;
   font-weight: 600;
-  padding: 6px 12px;
+  padding: 7px 12px;
   margin-left: 6px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   white-space: nowrap;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.actionButtonGhost:hover {
+  opacity: 1;
+  background: var(--surface-muted);
 }
 
 .codeArea {
   width: 100%;
   min-height: 120px;
-  max-height: 220px;
+  max-height: 260px;
   resize: vertical;
   border: none;
   border-bottom: 1px solid var(--border);
-  padding: 12px 14px;
+  padding: 14px;
   font-family: var(--font-mono);
   font-size: 0.82rem;
-  line-height: 1.5;
-  background: var(--surface);
+  line-height: 1.55;
+  background: var(--surface-muted);
   color: inherit;
   outline: none;
+  transition: box-shadow 0.15s ease;
+}
+
+.codeArea:focus {
+  box-shadow: inset 0 0 0 2px var(--success);
 }
 
 .resultLabel {
-  padding: 8px 14px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px 0;
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   color: var(--success);
 }
 
 .resultFrameWrap {
-  padding: 6px 14px 12px;
+  padding: 6px 14px 14px;
 }
 
-.resultFrame {
-  width: 100%;
+.resizeBox {
+  resize: vertical;
+  overflow: auto;
   height: 220px;
+  min-height: 120px;
+  max-height: 640px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: #ffffff;
 }
 
-.hungMessage {
+.resultFrame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #ffffff;
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 100%;
+  min-height: 118px;
+  color: var(--text-muted, inherit);
+  opacity: 0.6;
+  font-size: 0.85rem;
+  text-align: center;
   padding: 16px;
-  border: 1px solid var(--danger);
+}
+
+.placeholderIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--success-soft);
+  color: var(--success);
+  font-size: 0.8rem;
+}
+
+.hungMessage {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-height: 118px;
+  padding: 16px;
   background: var(--danger-soft);
-  border-radius: var(--radius-sm);
   font-size: 0.85rem;
   color: var(--danger);
 }

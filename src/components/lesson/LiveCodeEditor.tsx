@@ -71,6 +71,9 @@ export function LiveCodeEditor({ html, css, js }: LiveCodeEditorProps) {
   const [frameKey, setFrameKey] = useState(0);
   const [consoleLines, setConsoleLines] = useState<ConsoleLine[]>([]);
   const [status, setStatus] = useState<"idle" | "running" | "hung">("idle");
+  // The result stays a placeholder until the student explicitly clicks
+  // "Виконати" — nothing runs automatically on load or on every keystroke.
+  const [hasRun, setHasRun] = useState(false);
 
   const runIdRef = useRef(0);
   const hangTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -135,6 +138,7 @@ export function LiveCodeEditor({ html, css, js }: LiveCodeEditorProps) {
     runIdRef.current = runId;
     setConsoleLines([]);
     setStatus("running");
+    setHasRun(true);
     setSrcDoc(buildDocument(nextHtml, nextCss, nextJs, runId));
     hangTimerRef.current = setTimeout(() => {
       if (runIdRef.current === runId) {
@@ -146,13 +150,18 @@ export function LiveCodeEditor({ html, css, js }: LiveCodeEditorProps) {
   };
 
   useEffect(() => {
-    run(html, css ?? "", js ?? "");
+    // A new lesson mounted (different starter code) — reset the editor back
+    // to its untouched, not-yet-run state instead of auto-executing.
+    setHtmlCode(html);
+    setCssCode(css ?? "");
+    setJsCode(js ?? "");
+    setHasRun(false);
+    setSrcDoc("");
+    setConsoleLines([]);
+    setStatus("idle");
     return () => {
       if (hangTimerRef.current) clearTimeout(hangTimerRef.current);
     };
-    // Only re-seed on first mount / if the starter code itself changes
-    // (different lesson) — not on every keystroke, so `run` is
-    // intentionally left out of the dependency list.
   }, [html, css, js]);
 
   useEffect(() => {
@@ -179,13 +188,16 @@ export function LiveCodeEditor({ html, css, js }: LiveCodeEditorProps) {
     setHtmlCode(html);
     setCssCode(css ?? "");
     setJsCode(js ?? "");
-    run(html, css ?? "", js ?? "");
+    setHasRun(false);
+    setSrcDoc("");
+    setConsoleLines([]);
+    setStatus("idle");
   };
 
-  const tabs: { id: Tab; label: string }[] = [
-    { id: "html", label: "HTML" },
-    ...(hasCss ? [{ id: "css" as Tab, label: "CSS" }] : []),
-    ...(hasJs ? [{ id: "js" as Tab, label: "JS" }] : []),
+  const tabs: { id: Tab; label: string; dotClassName: string }[] = [
+    { id: "html", label: "HTML", dotClassName: styles.dotHtml },
+    ...(hasCss ? [{ id: "css" as Tab, label: "CSS", dotClassName: styles.dotCss }] : []),
+    ...(hasJs ? [{ id: "js" as Tab, label: "JS", dotClassName: styles.dotJs }] : []),
   ];
 
   const activeCode = activeTab === "html" ? htmlCode : activeTab === "css" ? cssCode : jsCode;
@@ -205,6 +217,7 @@ export function LiveCodeEditor({ html, css, js }: LiveCodeEditorProps) {
             className={`${styles.tab} ${activeTab === tab.id ? styles.tabActive : ""}`}
             onClick={() => setActiveTab(tab.id)}
           >
+            <span className={`${styles.dot} ${tab.dotClassName}`} aria-hidden="true" />
             {tab.label}
           </button>
         ))}
@@ -227,19 +240,26 @@ export function LiveCodeEditor({ html, css, js }: LiveCodeEditorProps) {
 
       <div className={styles.resultLabel}>Результат</div>
       <div className={styles.resultFrameWrap}>
-        {status === "hung" ? (
-          <div className={styles.hungMessage}>
-            Схоже, код завис (можливо, нескінченний цикл). Редактор перезапущено — виправ код і натисни «Виконати» ще раз.
-          </div>
-        ) : (
-          <iframe
-            key={frameKey}
-            srcDoc={srcDoc}
-            className={styles.resultFrame}
-            sandbox="allow-scripts"
-            title="Результат виконання коду"
-          />
-        )}
+        <div className={styles.resizeBox}>
+          {status === "hung" ? (
+            <div className={styles.hungMessage}>
+              Схоже, код завис (можливо, нескінченний цикл). Редактор перезапущено — виправ код і натисни «Виконати» ще раз.
+            </div>
+          ) : !hasRun ? (
+            <div className={styles.placeholder}>
+              <span className={styles.placeholderIcon} aria-hidden="true">▶</span>
+              Натисни «Виконати», щоб побачити результат
+            </div>
+          ) : (
+            <iframe
+              key={frameKey}
+              srcDoc={srcDoc}
+              className={styles.resultFrame}
+              sandbox="allow-scripts"
+              title="Результат виконання коду"
+            />
+          )}
+        </div>
       </div>
 
       {consoleLines.length > 0 ? (
