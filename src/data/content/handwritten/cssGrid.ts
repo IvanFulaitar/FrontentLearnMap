@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Grid" (css-grid). Cheat-sheet format, deepened per the "DEEP
@@ -130,6 +131,74 @@ export const cssGridOverrides: Record<string, LessonOverride> = {
       { id: "css-grid-basic-choice", kind: "choice", prompt: "Потрібно 4 однакові колонки в сітці. Найкоротший запис?", options: ["1fr 1fr 1fr 1fr", "25% 25% 25% 25%", "200px 200px 200px 200px", "auto auto auto auto"], correctAnswer: "1fr 1fr 1fr 1fr", solution: "fr пропорційно ділить простір і адаптується краще за фіксовані значення." },
       { id: "css-grid-vs-flex-choice", kind: "choice", prompt: "Потрібен один горизонтальний ряд кнопок унизу форми, без вирівнювання по рядках. Що обрати?", options: ["display: grid", "display: flex", "table-layout", "float: left на кожній кнопці"], correctAnswer: "display: flex", solution: "Для одновимірного (один напрямок) розташування Flexbox простіший і саме для цього призначений; Grid тут надлишковий." },
     ],
+    quiz: {
+      id: "css-grid-container-tracks-quiz",
+      title: "Grid-контейнер і треки: перевір себе",
+      questions: [
+        {
+          id: "css-grid-fr-unit",
+          type: "single",
+          question: "Що означає одиниця fr у grid-template-columns?",
+          options: [
+            "Частку доступного вільного простору контейнера",
+            "Фіксовану кількість пікселів",
+            "Відсоток від висоти екрана",
+            "Кількість символів шрифту",
+          ],
+          correctAnswer: "Частку доступного вільного простору контейнера",
+          explanation: "1fr 1fr 1fr ділить простір на три рівні частини, автоматично підлаштовуючись під ширину контейнера.",
+        },
+        {
+          id: "css-grid-2d-vs-1d",
+          type: "true-false",
+          question: "Grid — двовимірний інструмент (рядки і колонки одночасно), а Flexbox — одновимірний (лише один напрямок).",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Це і є головна відмінність між двома інструментами.",
+        },
+        {
+          id: "css-grid-fixed-px-code",
+          type: "code",
+          question: "Що станеться на екрані вужчому за 900px?",
+          codeSnippet: `.gallery {\n  display: grid;\n  grid-template-columns: 300px 300px 300px;\n}`,
+          options: [
+            "З'явиться горизонтальний скрол — фіксовані px не адаптуються до ширини екрана",
+            "Колонки автоматично звузяться",
+            "Сітка перейде в один стовпець",
+            "Нічого, це нормальна поведінка",
+          ],
+          correctAnswer: "З'явиться горизонтальний скрол — фіксовані px не адаптуються до ширини екрана",
+          explanation: "Заміна на fr (чи repeat(3, 1fr)) вирішує проблему — колонки завжди займають пропорційну частку доступної ширини.",
+        },
+        {
+          id: "css-grid-table-layout-outdated",
+          type: "single",
+          question: "Чому верстку таблицями (table-layout) для розташування блоків вважають застарілою практикою?",
+          options: [
+            "Таблиця семантично призначена для табличних даних, а не для макета сторінки",
+            "Таблиці не підтримуються сучасними браузерами",
+            "Таблиці завжди повільніші за Grid",
+            "table-layout взагалі заборонений у HTML5",
+          ],
+          correctAnswer: "Таблиця семантично призначена для табличних даних, а не для макета сторінки",
+          explanation: "Це плутає скрінрідери й інші допоміжні технології, які очікують від <table> реальних даних.",
+        },
+        {
+          id: "css-grid-five-items-code",
+          type: "code",
+          question: "Скільки рядків утворить ця сітка з 5 елементів?",
+          codeSnippet: `<div class="grid-demo">\n  <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>\n</div>\n\n.grid-demo { display: grid; grid-template-columns: 1fr 1fr 1fr; }`,
+          options: [
+            "2 рядки: перші три в першому, решта два — в другому",
+            "5 рядків, по одному елементу в кожному",
+            "1 рядок з усіма 5 елементами",
+            "3 рядки",
+          ],
+          correctAnswer: "2 рядки: перші три в першому, решта два — в другому",
+          explanation: "Рядкові треки браузер створює автоматично, скільки потрібно для всіх прямих дітей.",
+        },
+      ],
+    },
   },
 
   "repeat, minmax і auto-fit": {
@@ -210,6 +279,69 @@ export const cssGridOverrides: Record<string, LessonOverride> = {
       { id: "css-grid-autofit-predict", kind: "predict", prompt: "grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) у контейнері шириною 900px. Скільки колонок?", solution: "3 колонки по 300px (900/300=3) — auto-fit підбирає максимальну кількість колонок мінімум по 300px." },
       { id: "css-grid-autofit-vs-fill", kind: "explain", prompt: "У сітці з auto-fill лише 2 фото при можливих 4 колонках. Чому лишається порожній простір справа, а не розтягуються 2 наявні фото?", solution: "auto-fill зберігає порожні (невидимі) треки, коли елементів менше за можливу кількість колонок, замість розтягування наявних — саме тому в такому випадку auto-fit майже завжди зручніший вибір." },
     ],
+    quiz: {
+      id: "css-grid-autofit-quiz",
+      title: "repeat, minmax і auto-fit: перевір себе",
+      questions: [
+        {
+          id: "css-grid-autofit-purpose",
+          type: "single",
+          question: "Що робить repeat(auto-fit, minmax(220px, 1fr))?",
+          options: [
+            "Сама підбирає кількість колонок мінімум по 220px під ширину екрана",
+            "Створює рівно 220 колонок",
+            "Фіксує кількість колонок на 1",
+            "Вимикає адаптивність сітки",
+          ],
+          correctAnswer: "Сама підбирає кількість колонок мінімум по 220px під ширину екрана",
+          explanation: "Це замінює кілька медіазапитів одним рядком CSS.",
+        },
+        {
+          id: "css-grid-autofit-no-minmax-risk",
+          type: "true-false",
+          question: "auto-fit без minmax може стиснути колонки до нечитабельно малого розміру на вузьких екранах.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Без нижньої межі браузеру нема на що орієнтуватись, коли зупинити додавання нових колонок.",
+        },
+        {
+          id: "css-grid-autofit-no-minmax-code",
+          type: "code",
+          question: "Чому це небезпечно на вузьких екранах?",
+          codeSnippet: `.gallery {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, 1fr);\n}`,
+          options: [
+            "Немає нижньої межі ширини — колонки можуть стиснутись до нечитабельного розміру",
+            "auto-fit взагалі не працює без repeat",
+            "1fr не можна використовувати з auto-fit",
+            "Тут усе правильно",
+          ],
+          correctAnswer: "Немає нижньої межі ширини — колонки можуть стиснутись до нечитабельного розміру",
+          explanation: "Потрібен minmax(220px, 1fr) — трек ніколи не стане вужчим за 220px.",
+        },
+        {
+          id: "css-grid-autofit-vs-autofill",
+          type: "single",
+          question: "У чому різниця між auto-fit і auto-fill?",
+          options: [
+            "auto-fit розтягує наявні елементи, auto-fill залишає порожні треки",
+            "Це повні синоніми",
+            "auto-fill працює лише з flexbox",
+            "auto-fit підтримує менше браузерів",
+          ],
+          correctAnswer: "auto-fit розтягує наявні елементи, auto-fill залишає порожні треки",
+          explanation: "auto-fit майже завжди зручніший вибір для типової адаптивної сітки карток.",
+        },
+        {
+          id: "css-grid-columns-count-code",
+          type: "code",
+          question: "Скільки колонок буде в контейнері шириною 900px?",
+          codeSnippet: `grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));`,
+          options: ["3 колонки по 300px (900/300=3)", "1 колонка", "9 колонок", "Неможливо визначити"],
+          correctAnswer: "3 колонки по 300px (900/300=3)",
+          explanation: "auto-fit підбирає максимальну кількість колонок мінімум по 300px.",
+        },
+      ],
+    },
   },
 
   "Галерея кав'ярні на Grid": {
@@ -348,5 +480,162 @@ export const cssGridOverrides: Record<string, LessonOverride> = {
       { id: "css-grid-layout-shift-predict", kind: "predict", prompt: "Галерея без aspect-ratio на <img>. Що станеться на повільному інтернеті, поки фото ще завантажуються?", solution: "Місце під кожне фото визначиться лише після завантаження — сторінка \"стрибне\" (layout shift), коли зображення з'являться і займуть свій природний розмір, зсуваючи контент нижче на екрані." },
       { id: "css-grid-alt-text-find-bug", kind: "find-the-bug", prompt: "Усі 6 фото галереї мають alt=\"фото кав'ярні\". У чому проблема?", solution: "Однаковий, загальний alt на всіх картках марний для користувачів скрінрідерів — вони почують ідентичний текст 6 разів і не зрозуміють, чим фото відрізняються одне від одного. Кожен alt має описувати саме те, що на конкретному фото (\"Латте з малюнком серця\", \"Круасан на дерев'яній дошці\" тощо)." },
     ],
+    quiz: {
+      id: "css-grid-gallery-quiz",
+      title: "Галерея кав'ярні на Grid: перевір себе",
+      questions: [
+        {
+          id: "css-grid-gallery-cover-vs-fill",
+          type: "single",
+          question: "Чому object-fit: cover зазвичай кращий вибір за object-fit: fill для галереї фото?",
+          options: [
+            "cover зберігає пропорції зображення, обрізаючи зайве; fill спотворює пропорції",
+            "fill швидше завантажує фото",
+            "cover не підтримується старими браузерами",
+            "Різниці немає",
+          ],
+          correctAnswer: "cover зберігає пропорції зображення, обрізаючи зайве; fill спотворює пропорції",
+          explanation: "fill розтягує зображення під задані розміри, ігноруючи оригінальне співвідношення сторін.",
+        },
+        {
+          id: "css-grid-gallery-aspect-ratio-shift",
+          type: "true-false",
+          question: "aspect-ratio на <img> допомагає уникнути layout shift під час завантаження зображень.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "aspect-ratio резервує правильну висоту елемента ще до того, як зображення повністю завантажилось.",
+        },
+        {
+          id: "css-grid-gallery-fill-code",
+          type: "code",
+          question: "Яка проблема цього правила?",
+          codeSnippet: `.gallery img { width: 100%; height: 200px; object-fit: fill; }`,
+          options: [
+            "fill розтягує зображення, спотворюючи пропорції (обличчя й предмети виглядають стиснутими)",
+            "height: 200px — недопустиме значення",
+            "object-fit: fill взагалі не існує",
+            "Тут усе правильно",
+          ],
+          correctAnswer: "fill розтягує зображення, спотворюючи пропорції (обличчя й предмети виглядають стиснутими)",
+          explanation: "cover — безпечніший вибір за замовчуванням.",
+        },
+        {
+          id: "css-grid-gallery-figure-vs-div",
+          type: "single",
+          question: "Чим <figure>/<figcaption> краще за <div> з <img> і <span> поруч?",
+          options: [
+            "Семантично зв'язує зображення й підпис в одну смислову одиницю для скрінрідерів",
+            "figure швидше рендериться браузером",
+            "div не можна використовувати з img",
+            "Різниці немає",
+          ],
+          correctAnswer: "Семантично зв'язує зображення й підпис в одну смислову одиницю для скрінрідерів",
+          explanation: "Скрінрідери й пошукові системи розуміють, що figcaption належить саме цьому фото.",
+        },
+        {
+          id: "css-grid-gallery-overflow-hidden-code",
+          type: "code",
+          question: "Чому цей hover-ефект майже завжди потребує overflow: hidden на батьківському елементі?",
+          codeSnippet: `.gallery-item:hover img { transform: scale(1.05); }`,
+          options: [
+            "scale() збільшує фото відносно власних меж, і без overflow: hidden воно вилазить за заокруглені кути картки",
+            "transform не працює без overflow",
+            "scale() ламає layout сторінки",
+            "Це не має значення",
+          ],
+          correctAnswer: "scale() збільшує фото відносно власних меж, і без overflow: hidden воно вилазить за заокруглені кути картки",
+          explanation: "overflow: hidden обрізає все, що виходить за межі картки, включно зі збільшеним фото.",
+        },
+      ],
+    },
   },
+};
+
+export const cssGridModuleQuiz: QuizData = {
+  id: "css-grid-module-quiz",
+  title: "Grid: контрольний тест",
+  questions: [
+    {
+      id: "css-grid-module-fr-meaning",
+      type: "single",
+      question: "Що означає одиниця fr у grid-template-columns?",
+      options: [
+        "Частку доступного вільного простору контейнера",
+        "Фіксовану кількість пікселів",
+        "Відсоток від висоти екрана",
+        "Кількість символів шрифту",
+      ],
+      correctAnswer: "Частку доступного вільного простору контейнера",
+      explanation: "1fr 1fr 1fr ділить простір на три рівні частини, автоматично підлаштовуючись під ширину контейнера.",
+    },
+    {
+      id: "css-grid-module-autofit-risk",
+      type: "true-false",
+      question: "auto-fit без minmax може стиснути колонки до нечитабельно малого розміру на вузьких екранах.",
+      options: ["Так", "Ні"],
+      correctAnswer: true,
+      explanation: "Без нижньої межі браузеру нема на що орієнтуватись, коли зупинити додавання нових колонок.",
+    },
+    {
+      id: "css-grid-module-object-fit-code",
+      type: "code",
+      question: "Яка проблема цього правила?",
+      codeSnippet: `.gallery img { width: 100%; height: 200px; object-fit: fill; }`,
+      options: [
+        "fill розтягує зображення, спотворюючи пропорції (обличчя й предмети виглядають стиснутими)",
+        "height: 200px — недопустиме значення",
+        "object-fit: fill взагалі не існує",
+        "Тут усе правильно",
+      ],
+      correctAnswer: "fill розтягує зображення, спотворюючи пропорції (обличчя й предмети виглядають стиснутими)",
+      explanation: "cover — безпечніший вибір: заповнює область, обрізаючи зайве, але зберігаючи пропорції.",
+    },
+    {
+      id: "css-grid-module-2d-vs-1d",
+      type: "single",
+      question: "У чому головна відмінність Grid від Flexbox?",
+      options: [
+        "Grid — двовимірний (рядки Й колонки одночасно), Flexbox — одновимірний (лише один напрямок)",
+        "Grid підтримується лише в Chrome",
+        "Flexbox новіший за Grid",
+        "Різниці немає, це синоніми",
+      ],
+      correctAnswer: "Grid — двовимірний (рядки Й колонки одночасно), Flexbox — одновимірний (лише один напрямок)",
+      explanation: "Це потрібно для справжніх сіток (галерея, дашборд), а не просто ряду елементів.",
+    },
+    {
+      id: "css-grid-module-autofit-vs-autofill",
+      type: "code",
+      question: "У чому різниця між auto-fit і auto-fill у цьому контексті?",
+      codeSnippet: `grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));`,
+      options: [
+        "auto-fit розтягує наявні елементи на весь простір; auto-fill залишив би порожні треки",
+        "Це повні синоніми",
+        "auto-fill працює лише з flexbox",
+        "auto-fit підтримує менше браузерів",
+      ],
+      correctAnswer: "auto-fit розтягує наявні елементи на весь простір; auto-fill залишив би порожні треки",
+      explanation: "auto-fill зберігає порожні (невидимі) треки, коли елементів менше за можливу кількість колонок.",
+    },
+    {
+      id: "css-grid-module-facts",
+      type: "multiple",
+      question: "Які з цих тверджень про Grid правильні?",
+      options: [
+        "aspect-ratio на <img> допомагає уникнути layout shift під час завантаження",
+        "<figure>/<figcaption> семантично зв'язує зображення й підпис для скрінрідерів",
+        "hover-ефект зі scale() на фото не потребує overflow: hidden на батьківському елементі",
+        "grid-template-areas дозволяє описати макет сторінки \"малюнком\" з назв областей",
+      ],
+      correctAnswer: [
+        "aspect-ratio на <img> допомагає уникнути layout shift під час завантаження",
+        "<figure>/<figcaption> семантично зв'язує зображення й підпис для скрінрідерів",
+        "grid-template-areas дозволяє описати макет сторінки \"малюнком\" з назв областей",
+      ],
+      explanation: "Навпаки — scale() майже завжди потребує overflow: hidden на батьківському елементі, інакше збільшене фото вилазить за заокруглені кути картки.",
+      optionExplanations: {
+        "hover-ефект зі scale() на фото не потребує overflow: hidden на батьківському елементі": "Потребує: без overflow: hidden збільшене фото виходить за межі заокруглених кутів картки.",
+      },
+    },
+  ],
 };
