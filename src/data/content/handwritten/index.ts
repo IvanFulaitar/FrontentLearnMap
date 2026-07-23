@@ -32,7 +32,7 @@ import { jsLanguageBasicsOverrides, jsLanguageBasicsModuleQuiz } from "./jsLangu
 import { jsControlFlowOverrides, jsControlFlowModuleQuiz } from "./jsControlFlow";
 import { jsFunctionsOverrides, jsFunctionsModuleQuiz } from "./jsFunctions";
 import { jsArraysOverrides, jsArraysModuleQuiz } from "./jsArrays";
-import { jsObjectsOverrides } from "./jsObjects";
+import { jsObjectsOverrides, jsObjectsModuleQuiz } from "./jsObjects";
 import { jsDomOverrides } from "./jsDom";
 import { jsEventsOverrides } from "./jsEvents";
 import { jsAsyncOverrides } from "./jsAsync";
@@ -148,6 +148,7 @@ const moduleQuizOverrides: Record<string, QuizData> = {
   "js-control-flow": jsControlFlowModuleQuiz,
   "js-functions": jsFunctionsModuleQuiz,
   "js-arrays": jsArraysModuleQuiz,
+  "js-objects": jsObjectsModuleQuiz,
 };
 
 export const getModuleQuizOverride = (moduleId: string): QuizData | undefined => moduleQuizOverrides[moduleId];
