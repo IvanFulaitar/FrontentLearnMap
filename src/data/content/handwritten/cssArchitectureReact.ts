@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Архітектура і React" (css-architecture-react). Cheat-sheet format.
@@ -87,6 +88,73 @@ export function Button() {
       { id: "css-modules-choice", kind: "choice", prompt: "Що станеться, якщо написати className=\"card\" замість className={styles.card} у файлі, що використовує CSS Modules?", options: ["Нічого, це те саме", "Стилі не застосуються — рядок \"card\" не існує в браузері", "Буде помилка збірки", "CSS Modules ігноруються автоматично"], correctAnswer: "Стилі не застосуються — рядок \"card\" не існує в браузері", solution: "CSS Modules генерують унікальне ім'я класу; звертатись потрібно через об'єкт styles, а не рядком." },
       { id: "css-modules-globals-choice", kind: "choice", prompt: "Де правильно тримати CSS-змінні теми (--color-primary, --space-md), спільні для всього застосунку?", options: ["У кожному *.module.css компонента окремо", "В одному глобальному globals.css/variables.css", "У styles-об'єкті кожного компонента", "У атрибуті style напряму на елементах"], correctAnswer: "В одному глобальному globals.css/variables.css", solution: "CSS Modules призначені для ізоляції стилів КОМПОНЕНТА, а не для глобальних токенів дизайну — токени, спільні для всього застосунку, тримають в одному глобальному файлі, щоб не дублювати значення в кожному модулі." },
     ],
+    quiz: {
+      id: "css-architecture-react-css-modules-quiz",
+      title: "Швидка перевірка: CSS Modules",
+      questions: [
+        {
+          id: "css-arch-q1-classname-string-bug",
+          type: "code",
+          question: "У чому проблема цього коду в проєкті з CSS Modules?",
+          codeSnippet: '<button className="button">Купити</button>',
+          options: [
+            "Рядок \"button\" не збігається зі згенерованим CSS Modules ім'ям класу — стилі не застосуються",
+            "className взагалі не можна використовувати з рядком",
+            "Потрібен ще атрибут id",
+            "button не може бути класом кнопки",
+          ],
+          correctAnswer: "Рядок \"button\" не збігається зі згенерованим CSS Modules ім'ям класу — стилі не застосуються",
+          explanation: "CSS Modules генерують унікальне ім'я класу (наприклад, Button_button_a1b2c). Потрібен className={styles.button}, щоб React підставив реальне згенероване ім'я.",
+        },
+        {
+          id: "css-arch-q2-conflict-isolation",
+          type: "single",
+          question: "Чим CSS Modules відрізняються від звичайного CSS-файлу щодо конфлікту класів?",
+          options: [
+            "CSS Modules гарантовано ізолюють класи компонента — конфлікт неможливий",
+            "Різниці немає, обидва підходи глобальні",
+            "CSS Modules працюють лише з inline-стилями",
+            "Звичайний CSS автоматично ізолює класи так само",
+          ],
+          correctAnswer: "CSS Modules гарантовано ізолюють класи компонента — конфлікт неможливий",
+          explanation: "У звичайному CSS усі класи глобальні й можуть конфліктувати між файлами. CSS Modules автоматично генерують унікальне ім'я під час збірки.",
+        },
+        {
+          id: "css-arch-q3-globals-placement",
+          type: "single",
+          question: "Де правильно тримати CSS-змінні теми (--color-primary, --space-md), спільні для всього застосунку?",
+          options: [
+            "У кожному *.module.css компонента окремо",
+            "В одному глобальному globals.css/variables.css",
+            "У styles-об'єкті кожного компонента",
+            "У атрибуті style напряму на елементах",
+          ],
+          correctAnswer: "В одному глобальному globals.css/variables.css",
+          explanation: "CSS Modules призначені для ізоляції стилів компонента, а не для глобальних токенів — токени тримають в одному файлі, щоб не дублювати значення.",
+        },
+        {
+          id: "css-arch-q4-module-css-suffix",
+          type: "true-false",
+          question: "Суфікс .module.css у назві файлу вмикає автоматичну ізоляцію (унікалізацію) імен класів.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Саме суфікс .module.css сигналізує збірнику (Vite/Webpack), що файл потрібно обробити як CSS Modules з генерацією унікальних імен класів.",
+        },
+        {
+          id: "css-arch-q5-styles-object",
+          type: "single",
+          question: "Що таке styles у import styles from \"./Button.module.css\"?",
+          options: [
+            "Звичайний JS-об'єкт, де кожен ключ — це назва класу, а значення — реальне згенероване ім'я",
+            "Рядок з усім вмістом CSS-файлу",
+            "React-компонент",
+            "Масив усіх класів файлу",
+          ],
+          correctAnswer: "Звичайний JS-об'єкт, де кожен ключ — це назва класу, а значення — реальне згенероване ім'я",
+          explanation: "styles.button повертає рядок з реальним, унікальним ім'ям класу, яке справді існує в застосованому CSS.",
+        },
+      ],
+    },
   },
 
   "Умовні класи в React": {
@@ -152,6 +220,73 @@ export function Button() {
       { id: "css-conditional-bug", kind: "find-the-bug", prompt: "Чому клас не застосовується?", code: `className={\`\${styles.tab}\${isActive ? styles.active : ""}\`}`, correctAnswer: "Немає пробілу між styles.tab і наступним виразом — класи зливаються в один неіснуючий рядок.", solution: "Потрібен пробіл: `${styles.tab} ${isActive ? styles.active : \"\"}`." },
       { id: "css-conditional-approach-choice", kind: "choice", prompt: "Компонент картки товару має 4 незалежні умовні класи (обраний, у наявності, зі знижкою, новинка). Який підхід читабельніший за шаблонний рядок із чотирма тернарниками?", options: ["Ще довший шаблонний рядок з усіма 4 умовами", "Масив + filter(Boolean).join(\" \") або бібліотека clsx", "Inline style замість класів", "Окремий компонент для кожної комбінації станів"], correctAnswer: "Масив + filter(Boolean).join(\" \") або бібліотека clsx", solution: "Для 3+ умовних класів шаблонний рядок стає важким для читання; масив з filter/join чи clsx() масштабується набагато чистіше." },
     ],
+    quiz: {
+      id: "css-architecture-react-conditional-classes-quiz",
+      title: "Швидка перевірка: Умовні класи в React",
+      questions: [
+        {
+          id: "css-arch-q1-missing-space-bug",
+          type: "code",
+          question: "Клас .active не застосовується, навіть коли isActive true. У чому причина?",
+          codeSnippet: 'className={`${styles.tab}${isActive ? styles.active : ""}`}',
+          options: [
+            "Немає пробілу між styles.tab і наступним виразом — класи зливаються в один неіснуючий рядок",
+            "Потрійний оператор не можна використовувати в шаблонному рядку",
+            "styles.active не існує в CSS Modules",
+            "backticks не підтримуються в className",
+          ],
+          correctAnswer: "Немає пробілу між styles.tab і наступним виразом — класи зливаються в один неіснуючий рядок",
+          explanation: "Без пробілу два реальні класи склеюються в один суцільний рядок, якого немає в застосованому CSS.",
+        },
+        {
+          id: "css-arch-q2-conditional-mechanism",
+          type: "single",
+          question: "Як у React зробити так, щоб клас .active додавався лише коли вкладка активна?",
+          options: [
+            "className приймає звичайний рядок — можна побудувати його динамічно через шаблонний рядок з умовою",
+            "Потрібен окремий CSS-файл для кожного стану",
+            "React сам визначає активний стан за назвою пропса",
+            "Це можливо лише через inline style",
+          ],
+          correctAnswer: "className приймає звичайний рядок — можна побудувати його динамічно через шаблонний рядок з умовою",
+          explanation: "className={`${styles.tab} ${isActive ? styles.active : \"\"}`} — коли isActive true, додається styles.active, інакше порожній рядок.",
+        },
+        {
+          id: "css-arch-q3-many-conditions",
+          type: "single",
+          question: "Компонент картки товару має 4 незалежні умовні класи. Який підхід читабельніший за шаблонний рядок із чотирма тернарниками?",
+          options: [
+            "Ще довший шаблонний рядок з усіма 4 умовами",
+            "Масив + filter(Boolean).join(\" \") або бібліотека clsx",
+            "Inline style замість класів",
+            "Окремий компонент для кожної комбінації станів",
+          ],
+          correctAnswer: "Масив + filter(Boolean).join(\" \") або бібліотека clsx",
+          explanation: "Для 3+ умовних класів шаблонний рядок стає важким для читання; масив з filter/join чи clsx() масштабується чистіше.",
+        },
+        {
+          id: "css-arch-q4-nested-ternary",
+          type: "true-false",
+          question: "Глибоко вкладені потрійні оператори прямо в className у JSX вважаються хорошою практикою.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Вкладені тернарники важко читати й дебажити — логіку варто винести в змінну чи функцію перед return.",
+        },
+        {
+          id: "css-arch-q5-className-is-string",
+          type: "single",
+          question: "Що по суті є className у React?",
+          options: [
+            "Звичайний JS-рядок — умовна логіка це просто конкатенація рядків",
+            "Спеціальний React-об'єкт зі своїм API",
+            "Функція, яка викликається браузером",
+            "Масив CSS-правил",
+          ],
+          correctAnswer: "Звичайний JS-рядок — умовна логіка це просто конкатенація рядків",
+          explanation: "className приймає звичайний рядок, тому будь-яка умовна логіка (тернарники, шаблонні рядки, clsx) зрештою просто будує потрібний рядок класів.",
+        },
+      ],
+    },
   },
 
   "БЕМ проти CSS Modules проти utility-first": {
@@ -221,5 +356,145 @@ export function Button() {
       { id: "css-approach-choice", kind: "choice", prompt: "Команда працює над React-проєктом на Vite без Tailwind. Який підхід найпростіше застосувати без додаткових інструментів?", options: ["БЕМ", "CSS Modules", "Utility-first (Tailwind)", "Inline-стилі для всього"], correctAnswer: "CSS Modules", solution: "Vite підтримує CSS Modules із коробки (файли *.module.css) — не потрібно встановлювати жодних додаткових інструментів." },
       { id: "css-approach-bem-html-choice", kind: "choice", prompt: "Простий лендінг на чистому HTML+CSS, без збірки, без React. Який із трьох підходів підходить без жодних додаткових інструментів?", options: ["CSS Modules", "БЕМ", "Utility-first (Tailwind)", "Жоден не підходить без збірки"], correctAnswer: "БЕМ", solution: "БЕМ — це лише дисципліна іменування класів вручну, без потреби в інструментах збірки; CSS Modules і Tailwind у своєму стандартному вигляді потребують збірки (Vite/Webpack) чи власного інструментарію." },
     ],
+    quiz: {
+      id: "css-architecture-react-naming-approach-quiz",
+      title: "Швидка перевірка: БЕМ проти CSS Modules проти utility-first",
+      questions: [
+        {
+          id: "css-arch-q1-vite-no-tailwind",
+          type: "single",
+          question: "Команда працює над React-проєктом на Vite без Tailwind. Який підхід найпростіше застосувати без додаткових інструментів?",
+          options: ["БЕМ", "CSS Modules", "Utility-first (Tailwind)", "Inline-стилі для всього"],
+          correctAnswer: "CSS Modules",
+          explanation: "Vite підтримує CSS Modules із коробки (файли *.module.css) — не потрібно встановлювати жодних додаткових інструментів.",
+        },
+        {
+          id: "css-arch-q2-plain-html-no-build",
+          type: "single",
+          question: "Простий лендінг на чистому HTML+CSS, без збірки, без React. Який підхід підходить без жодних додаткових інструментів?",
+          options: ["CSS Modules", "БЕМ", "Utility-first (Tailwind)", "Жоден не підходить без збірки"],
+          correctAnswer: "БЕМ",
+          explanation: "БЕМ — це лише дисципліна іменування класів вручну, без потреби в інструментах збірки. CSS Modules і Tailwind потребують збірки чи власного інструментарію.",
+        },
+        {
+          id: "css-arch-q3-redundant-bem-in-modules",
+          type: "code",
+          question: "У чому недолік цього підходу?",
+          codeSnippet: "/* CSS Modules файл */\n.card__title--large { }",
+          options: [
+            "БЕМ-іменування зайве всередині CSS Modules — ізоляція вже гарантована суфіксом .module.css",
+            "БЕМ і CSS Modules технічно несумісні й викличуть помилку",
+            "Подвійне підкреслення не можна використовувати в CSS-класах",
+            "Це найкраща практика для React-проєктів",
+          ],
+          correctAnswer: "БЕМ-іменування зайве всередині CSS Modules — ізоляція вже гарантована суфіксом .module.css",
+          explanation: "БЕМ і CSS Modules вирішують ту саму проблему (конфлікт імен) двома різними способами. Використовувати обидва одночасно — платити подвійну складність за вже наявний захист.",
+        },
+        {
+          id: "css-arch-q4-no-single-correct",
+          type: "true-false",
+          question: "Один із трьох підходів (БЕМ, CSS Modules, utility-first) вважається завжди правильним, а решта — поганими практиками.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Усі три активно використовуються в реальних проєктах — вибір залежить від контексту команди й інструментів, а не від того, який підхід \"правильний\".",
+        },
+        {
+          id: "css-arch-q5-why-modules-popular-react",
+          type: "single",
+          question: "Чому в React-проєктах CSS Modules зазвичай популярніші за БЕМ?",
+          options: [
+            "CSS Modules вирішують конфлікт імен автоматично на рівні збірки, а не дисципліною розробника",
+            "БЕМ технічно несумісний з React",
+            "CSS Modules швидші за БЕМ у продуктивності рендерингу",
+            "БЕМ застарів і більше не підтримується браузерами",
+          ],
+          correctAnswer: "CSS Modules вирішують конфлікт імен автоматично на рівні збірки, а не дисципліною розробника",
+          explanation: "БЕМ вирішує проблему конфлікту імен лише дисципліною (довгі унікальні імена), а CSS Modules — автоматично, з меншою кількістю людських помилок.",
+        },
+      ],
+    },
   },
+};
+
+export const cssArchitectureReactModuleQuiz: QuizData = {
+  id: "css-architecture-react-module-quiz",
+  title: "Контрольний тест: Архітектура і React",
+  questions: [
+    {
+      id: "css-arch-mod-q1-modules-purpose",
+      type: "single",
+      question: "Яку проблему вирішують CSS Modules?",
+      options: [
+        "Конфлікт імен класів між компонентами",
+        "Повільне завантаження сторінки",
+        "Відсутність підтримки flexbox у старих браузерах",
+        "Необхідність писати JavaScript замість CSS",
+      ],
+      correctAnswer: "Конфлікт імен класів між компонентами",
+      explanation: "У звичайному CSS усі класи глобальні й можуть конфліктувати. CSS Modules автоматично генерують унікальне ім'я для кожного класу.",
+    },
+    {
+      id: "css-arch-mod-q2-string-classname-bug",
+      type: "code",
+      question: "Чому стилі не застосовуються до цієї кнопки в проєкті з CSS Modules?",
+      codeSnippet: '<button className="button">Купити</button>',
+      options: [
+        "Рядок \"button\" не збігається зі згенерованим ім'ям класу — потрібен className={styles.button}",
+        "button — зарезервоване слово в React",
+        "Потрібна ще властивість style",
+        "CSS Modules не підтримують кнопки",
+      ],
+      correctAnswer: "Рядок \"button\" не збігається зі згенерованим ім'ям класу — потрібен className={styles.button}",
+      explanation: "CSS Modules генерують унікальне ім'я класу (наприклад, Button_button_a1b2c), яке не збігається з буквальним рядком \"button\".",
+    },
+    {
+      id: "css-arch-mod-q3-space-bug",
+      type: "true-false",
+      question: "У шаблонному рядку className={`${styles.tab}${isActive ? styles.active : \"\"}`} відсутність пробілу між виразами не впливає на результат.",
+      options: ["Так", "Ні"],
+      correctAnswer: false,
+      explanation: "Без пробілу два реальні класи склеюються в один суцільний неіснуючий рядок класу.",
+    },
+    {
+      id: "css-arch-mod-q4-bem-no-build",
+      type: "single",
+      question: "Який підхід до організації CSS підходить для простого HTML+CSS лендінгу без жодного інструменту збірки?",
+      options: ["БЕМ", "CSS Modules", "Utility-first (Tailwind) у стандартному вигляді", "Жоден без збірки"],
+      correctAnswer: "БЕМ",
+      explanation: "БЕМ — це дисципліна іменування класів вручну, без потреби в інструментах збірки на кшталт Vite чи Webpack.",
+    },
+    {
+      id: "css-arch-mod-q5-globals-vs-modules",
+      type: "single",
+      question: "Де правильно тримати CSS-змінні теми, спільні для всього застосунку (--color-primary тощо)?",
+      options: [
+        "В одному глобальному globals.css/variables.css",
+        "У кожному *.module.css компонента окремо",
+        "У styles-об'єкті кожного компонента",
+        "Безпосередньо в атрибуті style кожного елемента",
+      ],
+      correctAnswer: "В одному глобальному globals.css/variables.css",
+      explanation: "CSS Modules призначені для ізоляції стилів компонента, а не глобальних токенів дизайну — токени тримають в одному місці, щоб не дублювати.",
+    },
+    {
+      id: "css-arch-mod-q6-true-statements",
+      type: "multiple",
+      question: "Які з тверджень про організацію CSS у React правильні?",
+      options: [
+        "CSS Modules гарантують ізоляцію класів автоматично на рівні збірки",
+        "Вкладені потрійні оператори прямо в className вважаються найчитабельнішим підходом для 4+ умовних класів",
+        "БЕМ вирішує конфлікт імен дисципліною іменування, а не інструментами збірки",
+        "Один із трьох підходів (БЕМ/CSS Modules/utility-first) завжди правильний, решта — помилка",
+      ],
+      correctAnswer: [
+        "CSS Modules гарантують ізоляцію класів автоматично на рівні збірки",
+        "БЕМ вирішує конфлікт імен дисципліною іменування, а не інструментами збірки",
+      ],
+      explanation: "Для 4+ умовних класів масив з filter/join чи clsx читабельніший за вкладені тернарники. Вибір підходу до CSS залежить від контексту команди, а не від абсолютної \"правильності\" одного з них.",
+      optionExplanations: {
+        "Вкладені потрійні оператори прямо в className вважаються найчитабельнішим підходом для 4+ умовних класів": "Навпаки: для 3+ умовних класів шаблонний рядок з тернарниками стає важким для читання — масив + filter/join чи clsx() масштабується чистіше.",
+        "Один із трьох підходів (БЕМ/CSS Modules/utility-first) завжди правильний, решта — помилка": "Невірно: усі три активно використовуються в реальних проєктах, вибір залежить від контексту команди й інструментів.",
+      },
+    },
+  ],
 };

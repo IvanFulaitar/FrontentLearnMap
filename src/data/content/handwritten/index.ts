@@ -26,7 +26,7 @@ import { cssRealFormsPricingOverrides, cssRealFormsPricingModuleQuiz } from "./c
 import { cssResponsiveOverrides, cssResponsiveModuleQuiz } from "./cssResponsive";
 import { cssVariablesDarkModeOverrides, cssVariablesDarkModeModuleQuiz } from "./cssVariablesDarkMode";
 import { cssAnimationsOverrides, cssAnimationsModuleQuiz } from "./cssAnimations";
-import { cssArchitectureReactOverrides } from "./cssArchitectureReact";
+import { cssArchitectureReactOverrides, cssArchitectureReactModuleQuiz } from "./cssArchitectureReact";
 import { cssFinalProjectOverrides } from "./cssFinalProject";
 import { jsLanguageBasicsOverrides } from "./jsLanguageBasics";
 import { jsControlFlowOverrides } from "./jsControlFlow";
@@ -142,6 +142,7 @@ const moduleQuizOverrides: Record<string, QuizData> = {
   "css-responsive": cssResponsiveModuleQuiz,
   "css-variables-dark-mode": cssVariablesDarkModeModuleQuiz,
   "css-animations": cssAnimationsModuleQuiz,
+  "css-architecture-react": cssArchitectureReactModuleQuiz,
 };
 
 export const getModuleQuizOverride = (moduleId: string): QuizData | undefined => moduleQuizOverrides[moduleId];
