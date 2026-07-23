@@ -39,7 +39,7 @@ import { jsAsyncOverrides } from "./jsAsync";
 import { jsNetworkStorageOverrides } from "./jsNetworkStorage";
 import { jsAppPatternsOverrides } from "./jsAppPatterns";
 import { vscodeSetupOverrides, vscodeSetupModuleQuiz } from "./vscodeSetup";
-import { tsBasicsOverrides } from "./tsBasics";
+import { tsBasicsOverrides, tsBasicsModuleQuiz } from "./tsBasics";
 import { tsObjectsOverrides } from "./tsObjects";
 import { tsFunctionsOverrides } from "./tsFunctions";
 import { tsGenericsOverrides } from "./tsGenerics";
@@ -150,6 +150,7 @@ const moduleQuizOverrides: Record<string, QuizData> = {
   "js-arrays": jsArraysModuleQuiz,
   "js-objects": jsObjectsModuleQuiz,
   "js-dom": jsDomModuleQuiz,
+  "ts-basics": tsBasicsModuleQuiz,
 };
 
 export const getModuleQuizOverride = (moduleId: string): QuizData | undefined => moduleQuizOverrides[moduleId];
