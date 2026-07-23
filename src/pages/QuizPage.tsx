@@ -21,7 +21,15 @@ export function QuizPage() {
   const [isQuizDone, setQuizDone] = useState(false);
   const course = courses.find((item) => item.id === courseId);
   const currentModule = course?.modules.find((item) => item.id === moduleId);
-  const quiz = currentModule && currentModule.quiz.id === quizId ? currentModule.quiz : null;
+  // A quiz URL can point either at the module's own "контрольний тест" or at
+  // one lesson's individual "швидка перевірка" — both live under the same
+  // /quiz/:quizId route, distinguished only by which id matches. Checking
+  // ONLY currentModule.quiz.id here (the previous behavior) meant every
+  // lesson-level quiz link 404'd silently to /courses, which is why lesson
+  // quizzes were unreachable and everyone ended up seeing just the one
+  // module test.
+  const lessonQuizMatch = currentModule?.lessons.find((item) => item.quiz.id === quizId);
+  const quiz = (currentModule && currentModule.quiz.id === quizId ? currentModule.quiz : null) ?? lessonQuizMatch?.quiz ?? null;
 
   if (!course || !currentModule || !quiz || !courseId || !moduleId || !quizId) return <Navigate to="/courses" replace />;
 
@@ -33,11 +41,13 @@ export function QuizPage() {
   // visited, so if it matches this course+module it's the real referrer;
   // otherwise (e.g. the quiz was opened directly/bookmarked) fall back to
   // the module's last lesson as a reasonable default.
+  // A lesson's own quiz always "belongs" to that exact lesson, so it takes
+  // priority over the referrer guess.
   const referrerLesson =
     lastOpenedLesson && lastOpenedLesson.courseId === course.id && lastOpenedLesson.moduleId === currentModule.id
       ? currentModule.lessons.find((item) => item.id === lastOpenedLesson.lessonId)
       : null;
-  const backLesson = referrerLesson ?? currentModule.lessons[currentModule.lessons.length - 1];
+  const backLesson = lessonQuizMatch ?? referrerLesson ?? currentModule.lessons[currentModule.lessons.length - 1];
   // "Next lesson" after finishing the quiz should be whatever comes right
   // after that same reference lesson in the course-wide sequence — the next
   // lesson in this module if the learner came from an earlier one, or the
@@ -57,7 +67,7 @@ export function QuizPage() {
         />
         <span className="eyebrow">{course.title} · {currentModule.title}</span>
         <h1>{quiz.title}</h1>
-        <p>Дай відповіді на 5 питань. Після перевірки побачиш відсоток і правильні відповіді.</p>
+        <p>Дай відповіді на {quiz.questions.length} питань. Після перевірки побачиш відсоток і правильні відповіді.</p>
         {backLesson ? (
           <div className={styles.headerActions}>
             <Link to={`/courses/${course.id}/modules/${currentModule.id}/lessons/${backLesson.id}`}>

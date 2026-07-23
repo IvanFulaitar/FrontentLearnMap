@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, Bookmark, CheckCircle2, ClipboardCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, Bookmark, CheckCircle2, ClipboardCheck, HelpCircle } from "lucide-react";
 import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../components/layout/Breadcrumbs";
@@ -127,6 +127,11 @@ export function LessonPage() {
               Почати урок
             </Button>
           ) : null}
+          <Link to={`/courses/${course.id}/modules/${module.id}/quiz/${lesson.quiz.id}`}>
+            <Button variant="ghost">
+              <HelpCircle size={18} /> Швидка перевірка
+            </Button>
+          </Link>
           <Link to={`/courses/${course.id}/modules/${module.id}/quiz/${module.quiz.id}`}>
             <Button variant="ghost">
               <ClipboardCheck size={18} /> Тест модуля
