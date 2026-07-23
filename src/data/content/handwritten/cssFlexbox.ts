@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Flexbox" (css-flexbox). Cheat-sheet format, deepened per the
@@ -126,6 +127,74 @@ export const cssFlexboxOverrides: Record<string, LessonOverride> = {
       { id: "css-flex-basic-predict", kind: "predict", prompt: "У .main-nav три <a>, задано display: flex. Як вони розташуються?", solution: "У горизонтальний ряд один за одним — це поведінка flex-direction: row за замовчуванням." },
       { id: "css-flex-vs-grid-choice", kind: "choice", prompt: "Потрібна галерея фото, де і колонки, і рядки мають вирівнюватись між собою (2D-сітка). Що обрати?", options: ["display: flex", "display: grid", "float: left на кожному фото", "display: inline-block"], correctAnswer: "display: grid", solution: "Flexbox — одновимірний інструмент; для справжньої 2D-сітки з вирівнюванням по рядках і колонках Grid дає точніший контроль." },
     ],
+    quiz: {
+      id: "css-flexbox-container-axis-quiz",
+      title: "Flex-контейнер і вісь: перевір себе",
+      questions: [
+        {
+          id: "css-flexbox-direct-children",
+          type: "single",
+          question: "На які елементи впливає display: flex, застосований до контейнера?",
+          options: [
+            "Тільки на прямих дітей контейнера",
+            "На всіх нащадків незалежно від глибини вкладеності",
+            "Тільки на текстові вузли",
+            "На сам контейнер, а не на дітей",
+          ],
+          correctAnswer: "Тільки на прямих дітей контейнера",
+          explanation: "Вкладені глибше елементи не стають flex-елементами автоматично.",
+        },
+        {
+          id: "css-flexbox-direction-column",
+          type: "true-false",
+          question: "flex-direction: column змінює головну вісь flex-контейнера з горизонтальної на вертикальну.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "За замовчуванням головна вісь горизонтальна (row); column перемикає її на вертикаль.",
+        },
+        {
+          id: "css-flexbox-grid-cards-code",
+          type: "code",
+          question: "Що станеться, якщо додати gap до цього контейнера?",
+          codeSnippet: `.grid-of-16-cards { display: flex; flex-wrap: wrap; }\n.card { width: 25%; }`,
+          options: [
+            "Сітка \"розповзеться\" — gap додає простір понад фіксовані 25%, і четверта картка в рядку вже не влазить",
+            "Нічого не зміниться",
+            "gap автоматично зменшить ширину карток",
+            "Це неможливо застосувати до flex",
+          ],
+          correctAnswer: "Сітка \"розповзеться\" — gap додає простір понад фіксовані 25%, і четверта картка в рядку вже не влазить",
+          explanation: "Для регулярної сітки з однаковими колонками краще display: grid, де ширина колонок і gap рахуються узгоджено.",
+        },
+        {
+          id: "css-flexbox-when-grid",
+          type: "single",
+          question: "Коли варто обрати Grid замість Flexbox?",
+          options: [
+            "Коли потрібне вирівнювання одночасно по рядках і колонках (2D-сітка)",
+            "Коли потрібен лише один ряд елементів",
+            "Завжди, Flexbox застарів",
+            "Коли елементів менше трьох",
+          ],
+          correctAnswer: "Коли потрібне вирівнювання одночасно по рядках і колонках (2D-сітка)",
+          explanation: "Flexbox — одновимірний інструмент; для справжньої 2D-сітки Grid дає точніший контроль.",
+        },
+        {
+          id: "css-flexbox-row-code",
+          type: "code",
+          question: "Як розташуються три <div> усередині цього контейнера?",
+          codeSnippet: `.row { display: flex; gap: 8px; }`,
+          options: [
+            "У горизонтальний ряд, з відступом 8px між ними",
+            "Один під одним, як завжди",
+            "Накладуться одне на одне",
+            "У випадковому порядку",
+          ],
+          correctAnswer: "У горизонтальний ряд, з відступом 8px між ними",
+          explanation: "display: flex за замовчуванням вишиковує прямих дітей у ряд (flex-direction: row).",
+        },
+      ],
+    },
   },
 
   "Вирівнювання, перенос і gap": {
@@ -232,6 +301,74 @@ export const cssFlexboxOverrides: Record<string, LessonOverride> = {
       { id: "css-flex-align-choice", kind: "choice", prompt: "Потрібен однаковий відступ між 4 картками в ряду, без відступу з країв ряду. Що обрати?", options: ["margin на кожній картці", "gap на контейнері", "padding на контейнері", "text-align: justify"], correctAnswer: "gap на контейнері", solution: "gap додає простір лише між елементами, без зайвого відступу з країв." },
       { id: "css-flex-axis-predict", kind: "predict", prompt: "Контейнер має flex-direction: column і align-items: center. По якій ширині центруються діти?", solution: "По горизонтальній ширині — коли вісь перемкнена на column, поперечна вісь стає горизонтальною, тож align-items тепер центрує саме по ширині, а не по висоті." },
     ],
+    quiz: {
+      id: "css-flexbox-align-gap-quiz",
+      title: "Вирівнювання, перенос і gap: перевір себе",
+      questions: [
+        {
+          id: "css-flexbox-justify-vs-align",
+          type: "single",
+          question: "justify-content вирівнює елементи вздовж якої осі, а align-items — вздовж якої?",
+          options: [
+            "justify-content — головна вісь, align-items — поперечна",
+            "justify-content — поперечна, align-items — головна",
+            "Обидві вздовж головної осі",
+            "Обидві вздовж поперечної осі",
+          ],
+          correctAnswer: "justify-content — головна вісь, align-items — поперечна",
+          explanation: "Це найчастіша плутанина новачків — властивості відповідають за різні осі.",
+        },
+        {
+          id: "css-flexbox-gap-better",
+          type: "true-false",
+          question: "gap кращий за margin для відступів між елементами flex-ряду, бо не вимагає хака \"прибрати margin в останнього елемента\".",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "gap додає простір лише між елементами, незалежно від того, який з них зараз останній.",
+        },
+        {
+          id: "css-flexbox-margin-hack-code",
+          type: "code",
+          question: "Чому це крихке рішення?",
+          codeSnippet: `.main-nav a { margin-right: 20px; }\n.main-nav a:last-child { margin-right: 0; }`,
+          options: [
+            "Якщо порядок елементів зміниться (JS сховає/додасть пункт), :last-child вкаже не на той елемент",
+            "margin-right не можна використовувати на a",
+            "Це найкращий спосіб зробити відступи",
+            ":last-child не підтримується браузерами",
+          ],
+          correctAnswer: "Якщо порядок елементів зміниться (JS сховає/додасть пункт), :last-child вкаже не на той елемент",
+          explanation: "gap: 20px на контейнері вирішує це без жодних припущень про порядок елементів.",
+        },
+        {
+          id: "css-flexbox-space-between-around",
+          type: "single",
+          question: "У чому різниця між justify-content: space-between і space-around?",
+          options: [
+            "space-between не додає простір з зовнішніх країв, space-around додає",
+            "Це синоніми",
+            "space-around працює лише вертикально",
+            "space-between додає подвійний простір скрізь",
+          ],
+          correctAnswer: "space-between не додає простір з зовнішніх країв, space-around додає",
+          explanation: "space-around додає простір навколо кожного елемента, включно з краями, але вдвічі менший, ніж між елементами.",
+        },
+        {
+          id: "css-flexbox-column-align-code",
+          type: "code",
+          question: "По якій ширині/висоті центруються діти цього контейнера?",
+          codeSnippet: `.container { display: flex; flex-direction: column; align-items: center; }`,
+          options: [
+            "По горизонтальній ширині — поперечна вісь стала горизонтальною",
+            "По вертикальній висоті, як завжди",
+            "Діти взагалі не центруються",
+            "align-items не працює з flex-direction: column",
+          ],
+          correctAnswer: "По горизонтальній ширині — поперечна вісь стала горизонтальною",
+          explanation: "Зміна flex-direction на column змінює, що саме вважається поперечною віссю для align-items.",
+        },
+      ],
+    },
   },
 
   "Навігація кав'ярні на Flexbox": {
@@ -368,5 +505,162 @@ export const cssFlexboxOverrides: Record<string, LessonOverride> = {
       { id: "css-nav-flex-nowrap-predict", kind: "predict", prompt: "Header без flex-wrap (тобто nowrap за замовчуванням) на дуже вузькому екрані. Що станеться з кнопкою \"Забронювати\"?", solution: "Елементи спробують втиснутись в один рядок будь-якою ціною — кнопка може стиснутись разом з іншими елементами або вилізти за межі видимої області, замість акуратного переносу на новий рядок." },
       { id: "css-nav-focus-find-bug", kind: "find-the-bug", prompt: ".nav-link:focus { outline: none; } — і більше нічого. У чому проблема?", solution: "Outline прибрано без жодної заміни — користувач, що йде по сайту клавішею Tab, більше не бачить, який пункт меню зараз у фокусі. Потрібно або лишити outline, або замінити його власним видимим стилем (:focus-visible з рамкою чи фоном)." },
     ],
+    quiz: {
+      id: "css-flexbox-nav-quiz",
+      title: "Навігація кав'ярні на Flexbox: перевір себе",
+      questions: [
+        {
+          id: "css-flexbox-nav-wrap-purpose",
+          type: "single",
+          question: "Навіщо додають flex-wrap: wrap на header ще до написання медіазапитів?",
+          options: [
+            "Дає базовий захист від \"поламаного\" вигляду на вужчих екранах — елементи переносяться замість стиснення",
+            "Це прискорює рендеринг сторінки",
+            "Без нього flexbox взагалі не працює",
+            "Це потрібно лише для мобільних пристроїв",
+          ],
+          correctAnswer: "Дає базовий захист від \"поламаного\" вигляду на вужчих екранах — елементи переносяться замість стиснення",
+          explanation: "Це базовий рівень захисту ще до повноцінних медіазапитів.",
+        },
+        {
+          id: "css-flexbox-nesting-true-false",
+          type: "true-false",
+          question: "Flex-контейнер можна вкласти всередину іншого flex-контейнера (наприклад, .main-nav усередині .header-inner).",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Кожен flex-контейнер керує розташуванням лише своїх прямих дітей, тож вкладені контейнери не заважають один одному.",
+        },
+        {
+          id: "css-flexbox-list-style-code",
+          type: "code",
+          question: "Чому перед пунктами меню все ще видно крапки-маркери?",
+          codeSnippet: `.main-nav { display: flex; }\n/* list-style залишено за замовчуванням */`,
+          options: [
+            "display: flex керує лише розташуванням дітей, а не стилями списку — потрібен окремий рядок list-style: none",
+            "flex автоматично повинен прибирати маркери, це баг",
+            "Маркери можна прибрати лише через JavaScript",
+            "Тут усе правильно, маркери потрібні",
+          ],
+          correctAnswer: "display: flex керує лише розташуванням дітей, а не стилями списку — потрібен окремий рядок list-style: none",
+          explanation: "list-style і flex — дві незалежні властивості.",
+        },
+        {
+          id: "css-flexbox-outline-no-replacement",
+          type: "single",
+          question: "Чому не можна просто прибрати outline: none на посиланнях навігації без заміни?",
+          options: [
+            "Це єдина стандартна візуальна підказка для користувачів клавіатурної навігації (Tab)",
+            "outline уповільнює рендеринг",
+            "outline обов'язковий за стандартом HTML і його не можна прибирати ніколи",
+            "Це впливає на SEO",
+          ],
+          correctAnswer: "Це єдина стандартна візуальна підказка для користувачів клавіатурної навігації (Tab)",
+          explanation: "Якщо outline не пасує дизайну, його замінюють власним видимим стилем (:focus-visible), а не прибирають зовсім.",
+        },
+        {
+          id: "css-flexbox-nowrap-narrow-code",
+          type: "code",
+          question: "Що станеться з header на дуже вузькому екрані без flex-wrap?",
+          codeSnippet: `.header-inner { display: flex; justify-content: space-between; gap: 12px; /* flex-wrap: nowrap за замовчуванням */ }`,
+          options: [
+            "Елементи спробують втиснутись в один рядок і можуть стиснутись чи вилізти за межі екрана",
+            "Елементи автоматично перенесуться на новий рядок",
+            "Сторінка не завантажиться",
+            "gap збільшиться автоматично",
+          ],
+          correctAnswer: "Елементи спробують втиснутись в один рядок і можуть стиснутись чи вилізти за межі екрана",
+          explanation: "flex-wrap: nowrap — поведінка за замовчуванням; браузер намагається втиснути все в один рядок будь-якою ціною.",
+        },
+      ],
+    },
   },
+};
+
+export const cssFlexboxModuleQuiz: QuizData = {
+  id: "css-flexbox-module-quiz",
+  title: "Flexbox: контрольний тест",
+  questions: [
+    {
+      id: "css-flexbox-module-direct-children",
+      type: "single",
+      question: "На які елементи впливає display: flex, застосований до контейнера?",
+      options: [
+        "Тільки на прямих дітей контейнера",
+        "На всіх нащадків незалежно від глибини вкладеності",
+        "Тільки на текстові вузли",
+        "На сам контейнер, а не на дітей",
+      ],
+      correctAnswer: "Тільки на прямих дітей контейнера",
+      explanation: "Вкладені глибше елементи не стають flex-елементами автоматично — для них потрібен власний display: flex.",
+    },
+    {
+      id: "css-flexbox-module-gap-vs-margin",
+      type: "true-false",
+      question: "gap кращий за margin для відступів між елементами flex-ряду, бо не вимагає хака \"прибрати margin в останнього елемента\".",
+      options: ["Так", "Ні"],
+      correctAnswer: true,
+      explanation: "gap додає простір лише між елементами, незалежно від того, який з них зараз останній.",
+    },
+    {
+      id: "css-flexbox-module-list-style-code",
+      type: "code",
+      question: "Чому перед пунктами меню все ще видно крапки-маркери?",
+      codeSnippet: `.main-nav { display: flex; }\n/* list-style залишено за замовчуванням */`,
+      options: [
+        "display: flex керує лише розташуванням дітей, а не стилями списку — потрібен окремий рядок list-style: none",
+        "flex автоматично повинен прибирати маркери, це баг",
+        "Маркери можна прибрати лише через JavaScript",
+        "Тут усе правильно, маркери потрібні",
+      ],
+      correctAnswer: "display: flex керує лише розташуванням дітей, а не стилями списку — потрібен окремий рядок list-style: none",
+      explanation: "list-style і flex — дві незалежні властивості, ніяк не пов'язані одна з одною.",
+    },
+    {
+      id: "css-flexbox-module-flex-vs-grid",
+      type: "single",
+      question: "Коли варто обрати Grid замість Flexbox?",
+      options: [
+        "Коли потрібне вирівнювання одночасно по рядках і колонках (2D-сітка)",
+        "Коли потрібен лише один ряд елементів",
+        "Завжди, Flexbox застарів",
+        "Коли елементів менше трьох",
+      ],
+      correctAnswer: "Коли потрібне вирівнювання одночасно по рядках і колонках (2D-сітка)",
+      explanation: "Flexbox — одновимірний інструмент (ряд або колонка); для справжньої 2D-сітки потрібен Grid.",
+    },
+    {
+      id: "css-flexbox-module-margin-hack-code",
+      type: "code",
+      question: "Чому це крихке рішення для відступів між пунктами меню?",
+      codeSnippet: `.main-nav a { margin-right: 20px; }\n.main-nav a:last-child { margin-right: 0; }`,
+      options: [
+        "Якщо порядок елементів зміниться (JS сховає/додасть пункт), :last-child вкаже не на той елемент",
+        "margin-right не можна використовувати на a",
+        "Це найкращий спосіб зробити відступи",
+        ":last-child не підтримується браузерами",
+      ],
+      correctAnswer: "Якщо порядок елементів зміниться (JS сховає/додасть пункт), :last-child вкаже не на той елемент",
+      explanation: "gap на контейнері вирішує цю проблему без жодних припущень про порядок елементів.",
+    },
+    {
+      id: "css-flexbox-module-facts",
+      type: "multiple",
+      question: "Які з цих тверджень про Flexbox правильні?",
+      options: [
+        "flex-контейнер можна вкладати всередину іншого flex-контейнера",
+        "flex-wrap: wrap додають лише після того, як щось вже зламалось на вузькому екрані",
+        "justify-content керує головною віссю, align-items — поперечною",
+        "outline: none на :focus без заміни ламає навігацію клавіатурою",
+      ],
+      correctAnswer: [
+        "flex-контейнер можна вкладати всередину іншого flex-контейнера",
+        "justify-content керує головною віссю, align-items — поперечною",
+        "outline: none на :focus без заміни ламає навігацію клавіатурою",
+      ],
+      explanation: "flex-wrap: wrap варто додавати одразу, ще до написання медіазапитів, як базовий захист — а не чекати, доки щось зламається.",
+      optionExplanations: {
+        "flex-wrap: wrap додають лише після того, як щось вже зламалось на вузькому екрані": "Навпаки — досвідчені розробники додають flex-wrap: wrap одразу, як превентивний захист, а не реагують постфактум.",
+      },
+    },
+  ],
 };
