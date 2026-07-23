@@ -17,7 +17,7 @@ import { htmlMistakesOverrides, htmlMistakesModuleQuiz } from "./htmlMistakes";
 import { htmlMiniProjectsOverrides, htmlMiniProjectsModuleQuiz } from "./htmlMiniProjects";
 import { cssFoundationsOverrides, cssFoundationsModuleQuiz } from "./cssFoundations";
 import { cssBoxModelOverrides, cssBoxModelModuleQuiz } from "./cssBoxModel";
-import { cssTypographyOverrides } from "./cssTypography";
+import { cssTypographyOverrides, cssTypographyModuleQuiz } from "./cssTypography";
 import { cssFlexboxOverrides } from "./cssFlexbox";
 import { cssGridOverrides } from "./cssGrid";
 import { cssRealHeaderHeroOverrides } from "./cssRealHeaderHero";
@@ -133,6 +133,7 @@ const moduleQuizOverrides: Record<string, QuizData> = {
   "html-mini-projects": htmlMiniProjectsModuleQuiz,
   "css-foundations": cssFoundationsModuleQuiz,
   "css-box-model": cssBoxModelModuleQuiz,
+  "css-typography": cssTypographyModuleQuiz,
 };
 
 export const getModuleQuizOverride = (moduleId: string): QuizData | undefined => moduleQuizOverrides[moduleId];
