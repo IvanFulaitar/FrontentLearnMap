@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Анімації" (css-animations). Cheat-sheet format. Continues
@@ -71,6 +72,68 @@ export const cssAnimationsOverrides: Record<string, LessonOverride> = {
       { id: "css-transition-choice", kind: "choice", prompt: "Потрібно анімувати лише колір фону кнопки при hover, максимально ефективно. Що обрати?", options: ["transition: all 300ms;", "transition: background-color 200ms ease;", "animation: color 1s;", "Нічого, це станеться само"], correctAnswer: "transition: background-color 200ms ease;", solution: "Конкретна властивість замість all — точніше й дешевше для браузера." },
       { id: "css-transition-duration-explain", kind: "explain", prompt: "Чому 150-250ms вважається комфортним діапазоном для hover-ефектів, а не, наприклад, 50ms чи 1000ms?", solution: "Занадто коротка тривалість (50ms) майже непомітна оком — ефект здається різким, мов його й немає. Занадто довга (1000ms) відчувається повільною й \"липкою\", особливо якщо користувач рухає мишкою швидко між кількома елементами. 150-250ms — той діапазон, де людське око встигає помітити плавність, але не встигає відчути затримку." },
     ],
+    quiz: {
+      id: "css-animations-transition-hover-quiz",
+      title: "Швидка перевірка: Transition і hover-ефекти",
+      questions: [
+        {
+          id: "css-anim-q1-specific-property",
+          type: "single",
+          question: "Потрібно анімувати лише колір фону кнопки при hover, максимально ефективно. Що обрати?",
+          options: ["transition: all 300ms;", "transition: background-color 200ms ease;", "animation: color 1s;", "Нічого, це станеться само"],
+          correctAnswer: "transition: background-color 200ms ease;",
+          explanation: "Конкретна властивість замість all — точніше й дешевше для браузера.",
+        },
+        {
+          id: "css-anim-q2-all-slow-bug",
+          type: "code",
+          question: "У чому проблема цього стилю картки?",
+          codeSnippet: ".menu-card {\n  transition: all 600ms ease;\n}",
+          options: [
+            "all стежить за зайвими властивостями, а 600ms відчувається млявим для дрібної UI-взаємодії",
+            "transition: all не підтримується браузерами",
+            "600ms — занадто коротко для hover-ефекту",
+            "Синтаксична помилка в значенні all",
+          ],
+          correctAnswer: "all стежить за зайвими властивостями, а 600ms відчувається млявим для дрібної UI-взаємодії",
+          explanation: "all змушує браузер відстежувати зміни всіх властивостей без користі, а 600ms — удвічі-тричі довше за комфортні 150-250ms для дрібних взаємодій.",
+        },
+        {
+          id: "css-anim-q3-transform-vs-margin",
+          type: "single",
+          question: "Чому transform: translateY() зазвичай кращий вибір для анімації \"підняття\" картки, ніж зміна margin-top?",
+          options: [
+            "transform обробляється на рівні композитора й не викликає перерахунку макета",
+            "margin-top взагалі не можна анімувати",
+            "translateY() працює лише в Chrome",
+            "Різниці немає, це питання особистого стилю",
+          ],
+          correctAnswer: "transform обробляється на рівні композитора й не викликає перерахунку макета",
+          explanation: "Зміна margin впливає на розташування сусідніх елементів і змушує браузер перераховувати макет (reflow) — це дорожче для продуктивності, ніж transform.",
+        },
+        {
+          id: "css-anim-q4-duration-range",
+          type: "true-false",
+          question: "150-250ms вважається комфортним діапазоном тривалості для hover-ефектів.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Занадто коротка тривалість (50ms) майже непомітна, занадто довга (1000ms) відчувається \"липкою\" — 150-250ms дає баланс плавності й швидкості реакції.",
+        },
+        {
+          id: "css-anim-q5-transition-anatomy",
+          type: "single",
+          question: "Які три частини складають правило transition?",
+          options: [
+            "Властивість, тривалість, функція часу",
+            "Колір, розмір, позиція",
+            "from, to, via",
+            "hover, focus, active",
+          ],
+          correctAnswer: "Властивість, тривалість, функція часу",
+          explanation: "Наприклад, transition: background-color 200ms ease — властивість (що анімується), тривалість (як довго) і функція часу (як змінюється швидкість).",
+        },
+      ],
+    },
   },
 
   "Keyframe-анімації": {
@@ -143,6 +206,69 @@ export const cssAnimationsOverrides: Record<string, LessonOverride> = {
       { id: "css-keyframes-choice", kind: "choice", prompt: "Потрібен спінер завантаження, що крутиться безкінечно. Що використати?", options: ["transition", "@keyframes + animation: ... infinite;", "hover-ефект", "clamp()"], correctAnswer: "@keyframes + animation: ... infinite;", solution: "Безкінечний самостійний рух — це задача keyframes з infinite, а не transition, який потребує зміни стану." },
       { id: "css-keyframes-vs-transition-explain", kind: "explain", prompt: "Чому поява картки меню при завантаженні сторінки реалізується через @keyframes, а не через transition?", solution: "transition анімує перехід МІЖ двома станами, і для його запуску потрібна подія — зміна класу, hover, фокус. Поява елемента при завантаженні сторінки не пов'язана з жодною такою подією взаємодії користувача, тож потрібен самостійний рух, який @keyframes + animation можуть запустити одразу, без зовнішнього тригера." },
     ],
+    quiz: {
+      id: "css-animations-keyframe-quiz",
+      title: "Швидка перевірка: Keyframe-анімації",
+      questions: [
+        {
+          id: "css-anim-q1-infinite-spinner",
+          type: "single",
+          question: "Потрібен спінер завантаження, що крутиться безкінечно. Що використати?",
+          options: ["transition", "@keyframes + animation: ... infinite;", "hover-ефект", "clamp()"],
+          correctAnswer: "@keyframes + animation: ... infinite;",
+          explanation: "Безкінечний самостійний рух — це задача keyframes з infinite, а не transition, який потребує зміни стану для запуску.",
+        },
+        {
+          id: "css-anim-q2-fade-in-code",
+          type: "code",
+          question: "Що відбувається з карткою в цьому CSS?",
+          codeSnippet: "@keyframes fade-in-up {\n  from {\n    opacity: 0;\n    transform: translateY(12px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n\n.menu-card {\n  animation: fade-in-up 400ms ease-out;\n}",
+          options: [
+            "Картка плавно з'являється, рухаючись знизу вгору, при завантаженні сторінки",
+            "Картка постійно рухається вгору-вниз",
+            "Картка зникає при наведенні миші",
+            "Анімація спрацює лише при кліку",
+          ],
+          correctAnswer: "Картка плавно з'являється, рухаючись знизу вгору, при завантаженні сторінки",
+          explanation: "from/to описують початковий (невидимий, зсунутий вниз) і кінцевий (видимий, на місці) стан — animation застосовує це один раз без потреби в hover чи кліку.",
+        },
+        {
+          id: "css-anim-q3-shake-infinite-bug",
+          type: "code",
+          question: "У чому проблема цього коду?",
+          codeSnippet: "@keyframes shake {\n  0%, 100% { transform: translateX(0); }\n  50% { transform: translateX(10px); }\n}\nh1 { animation: shake 1s infinite; }",
+          explanation: "infinite означає рух без кінця — постійна тряска головного заголовка відволікає від контенту й дратує, а не привертає увагу.",
+          options: [
+            "Нескінченна тряска головного заголовка постійно відволікає від читання контенту",
+            "shake — зарезервоване слово, яке не можна використовувати як ім'я keyframes",
+            "translateX не можна використовувати в keyframes",
+            "1s — занадто коротка тривалість для keyframes",
+          ],
+          correctAnswer: "Нескінченна тряска головного заголовка постійно відволікає від читання контенту",
+        },
+        {
+          id: "css-anim-q4-keyframes-vs-transition",
+          type: "single",
+          question: "Коли варто використовувати @keyframes замість transition?",
+          options: [
+            "Коли потрібна анімація з кількома етапами, що запускається самостійно, без hover/focus",
+            "Завжди — keyframes універсально кращі за transition",
+            "Тільки для зміни кольору тексту",
+            "Ніколи, transition покриває всі випадки",
+          ],
+          correctAnswer: "Коли потрібна анімація з кількома етапами, що запускається самостійно, без hover/focus",
+          explanation: "Наприклад, поява елемента при завантаженні сторінки чи безкінечний спінер — обидва не залежать від взаємодії користувача.",
+        },
+        {
+          id: "css-anim-q5-transition-two-states",
+          type: "true-false",
+          question: "transition може описувати анімацію з кількома проміжними етапами (0%, 25%, 50%, 100%), як @keyframes.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "transition анімує лише перехід МІЖ двома станами (початок → кінець). Багатоетапні анімації — це задача @keyframes.",
+        },
+      ],
+    },
   },
 
   "prefers-reduced-motion": {
@@ -210,5 +336,161 @@ export const cssAnimationsOverrides: Record<string, LessonOverride> = {
       { id: "css-reduced-motion-choice", kind: "choice", prompt: "Навіщо потрібен @media (prefers-reduced-motion: reduce)?", options: ["Щоб анімації виглядали красивіше", "Щоб поважати користувачів, для яких рух викликає дискомфорт", "Щоб прискорити завантаження сторінки", "Це застаріла, непотрібна властивість"], correctAnswer: "Щоб поважати користувачів, для яких рух викликає дискомфорт", solution: "Це питання доступності — для частини користувачів анімація не естетична дрібниця, а реальна проблема." },
       { id: "css-reduced-motion-find-bug", kind: "find-the-bug", prompt: "@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; } } — тільки це правило, без transition-duration. Чому цього не завжди достатньо?", solution: "Правило скорочує лише keyframe-анімації (animation-duration), але не hover-переходи й інші transition-ефекти (transition-duration) — обидва типи руху можуть викликати дискомфорт, тож потрібно перевизначити й transition-duration поруч з animation-duration." },
     ],
+    quiz: {
+      id: "css-animations-reduced-motion-quiz",
+      title: "Швидка перевірка: prefers-reduced-motion",
+      questions: [
+        {
+          id: "css-anim-q1-reduced-motion-purpose",
+          type: "single",
+          question: "Навіщо потрібен @media (prefers-reduced-motion: reduce)?",
+          options: [
+            "Щоб анімації виглядали красивіше",
+            "Щоб поважати користувачів, для яких рух викликає дискомфорт",
+            "Щоб прискорити завантаження сторінки",
+            "Це застаріла, непотрібна властивість",
+          ],
+          correctAnswer: "Щоб поважати користувачів, для яких рух викликає дискомфорт",
+          explanation: "Це питання доступності — для частини користувачів (вестибулярні розлади, чутливість до анімації) рух не естетична дрібниця, а реальна проблема здоров'я.",
+        },
+        {
+          id: "css-anim-q2-missing-transition-duration",
+          type: "code",
+          question: "Чого не вистачає цьому правилу?",
+          codeSnippet: "@media (prefers-reduced-motion: reduce) {\n  * {\n    animation-duration: 0.01ms !important;\n  }\n}",
+          options: [
+            "transition-duration поряд з animation-duration — обидва типи руху потребують перевизначення",
+            "Селектор * потрібно замінити на body",
+            "!important тут заборонений",
+            "Значення 0.01ms некоректне",
+          ],
+          correctAnswer: "transition-duration поряд з animation-duration — обидва типи руху потребують перевизначення",
+          explanation: "Це правило скорочує лише keyframe-анімації, але не hover-переходи й інші transition-ефекти — обидва типи можуть заважати користувачам.",
+        },
+        {
+          id: "css-anim-q3-no-check-bug",
+          type: "true-false",
+          question: "Сайт з паралакс-ефектами й автокаруселями без жодної перевірки prefers-reduced-motion — це лише питання естетики, не доступності.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Для користувача, що явно увімкнув системну опцію \"зменшити рух\", ігнорування цього сигналу може викликати реальний фізичний дискомфорт — нудоту, запаморочення. Це питання доступності.",
+        },
+        {
+          id: "css-anim-q4-important-justified",
+          type: "single",
+          question: "Чому !important виправданий у правилі prefers-reduced-motion?",
+          options: [
+            "Це навмисне, системне перевизначення заради доступності, а не звичайний CSS-хак",
+            "!important завжди обов'язковий у медіазапитах",
+            "Без !important селектор * не працює",
+            "Це вимога специфікації CSS",
+          ],
+          correctAnswer: "Це навмисне, системне перевизначення заради доступності, а не звичайний CSS-хак",
+          explanation: "Мета — гарантовано перекрити будь-які тривалості анімацій і переходів по всьому сайту одним універсальним правилом, тому !important тут доречний.",
+        },
+        {
+          id: "css-anim-q5-when-to-add",
+          type: "single",
+          question: "Коли варто додавати перевірку prefers-reduced-motion у проєкт?",
+          options: [
+            "Одразу, коли додається перша keyframe-анімація",
+            "Тільки в кінці проєкту, якщо залишиться час",
+            "Лише якщо користувач поскаржиться",
+            "Це не обов'язково для невеликих сайтів",
+          ],
+          correctAnswer: "Одразу, коли додається перша keyframe-анімація",
+          explanation: "Найкраща практика — додавати цю перевірку одразу з першою анімацією, а не відкладати \"на потім\".",
+        },
+      ],
+    },
   },
+};
+
+export const cssAnimationsModuleQuiz: QuizData = {
+  id: "css-animations-module-quiz",
+  title: "Контрольний тест: Анімації",
+  questions: [
+    {
+      id: "css-anim-mod-q1-transition-all-bug",
+      type: "code",
+      question: "У чому проблема цього transition?",
+      codeSnippet: ".card {\n  transition: all 600ms ease;\n}",
+      options: [
+        "all стежить за зайвими властивостями, а 600ms завелика тривалість для UI-взаємодії",
+        "600ms — недостатня тривалість",
+        "all — синтаксична помилка",
+        "Це найкращий варіант для будь-якого hover-ефекту",
+      ],
+      correctAnswer: "all стежить за зайвими властивостями, а 600ms завелика тривалість для UI-взаємодії",
+      explanation: "Конкретні властивості замість all і тривалість 150-250ms — стандартна практика для дрібних UI-взаємодій.",
+    },
+    {
+      id: "css-anim-mod-q2-transform-perf",
+      type: "single",
+      question: "Чому transform і opacity вважаються найдешевшими властивостями для анімації?",
+      options: [
+        "Вони обробляються на рівні композитора браузера без перерахунку макета",
+        "Вони єдині властивості, які взагалі можна анімувати",
+        "Вони автоматично оптимізуються GPU без жодних інших властивостей",
+        "Різниці з іншими властивостями немає",
+      ],
+      correctAnswer: "Вони обробляються на рівні композитора браузера без перерахунку макета",
+      explanation: "На відміну від властивостей на кшталт margin чи width, transform/opacity не викликають layout/reflow.",
+    },
+    {
+      id: "css-anim-mod-q3-keyframes-self-running",
+      type: "true-false",
+      question: "@keyframes-анімація потребує події (hover, фокус) для запуску, так само як transition.",
+      options: ["Так", "Ні"],
+      correctAnswer: false,
+      explanation: "@keyframes + animation можуть запускатись самостійно (наприклад, одразу при завантаженні сторінки), без жодної взаємодії користувача — на відміну від transition.",
+    },
+    {
+      id: "css-anim-mod-q4-infinite-shake-bug",
+      type: "code",
+      question: "У чому проблема цього коду?",
+      codeSnippet: "h1 { animation: shake 1s infinite; }",
+      options: [
+        "Нескінченна тряска головного заголовка постійно відволікає від читання контенту",
+        "h1 не можна анімувати",
+        "1s — занадто коротка тривалість для keyframes",
+        "infinite працює лише для spinner-елементів",
+      ],
+      correctAnswer: "Нескінченна тряска головного заголовка постійно відволікає від читання контенту",
+      explanation: "infinite-тряска на постійно видимому елементі виснажує й дратує, замість привертати увагу один раз.",
+    },
+    {
+      id: "css-anim-mod-q5-reduced-motion-accessibility",
+      type: "single",
+      question: "Чому prefers-reduced-motion вважається питанням доступності, а не просто налаштуванням стилю?",
+      options: [
+        "Для користувачів із вестибулярними розладами рух на екрані може викликати реальний фізичний дискомфорт",
+        "Це впливає лише на швидкість завантаження сторінки",
+        "Це стосується лише естетичних переваг користувача",
+        "Браузери взагалі ігнорують цю настройку",
+      ],
+      correctAnswer: "Для користувачів із вестибулярними розладами рух на екрані може викликати реальний фізичний дискомфорт",
+      explanation: "Ігнорування цієї системної настройки робить сайт фактично недоступним для частини аудиторії.",
+    },
+    {
+      id: "css-anim-mod-q6-true-statements",
+      type: "multiple",
+      question: "Які з тверджень про CSS-анімації правильні?",
+      options: [
+        "transition — найкращий вибір для нескінченного спінера завантаження",
+        "prefers-reduced-motion: reduce стосується і animation-duration, і transition-duration",
+        "150-250ms — комфортна тривалість для дрібних hover-ефектів",
+        "@keyframes завжди потребує події hover для запуску",
+      ],
+      correctAnswer: [
+        "prefers-reduced-motion: reduce стосується і animation-duration, і transition-duration",
+        "150-250ms — комфортна тривалість для дрібних hover-ефектів",
+      ],
+      explanation: "Нескінченний спінер — задача @keyframes + animation: infinite, а не transition. @keyframes може запускатись самостійно, без hover.",
+      optionExplanations: {
+        "transition — найкращий вибір для нескінченного спінера завантаження": "Невірно: transition анімує лише перехід між двома станами й потребує події. Нескінченний рух — задача @keyframes + animation: infinite.",
+        "@keyframes завжди потребує події hover для запуску": "Невірно: саме перевага @keyframes у тому, що вони можуть запускатись самостійно, без жодної взаємодії користувача (наприклад, одразу при завантаженні сторінки).",
+      },
+    },
+  ],
 };
