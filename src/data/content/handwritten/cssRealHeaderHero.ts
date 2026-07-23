@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Header і Hero" (css-real-header-hero). Cheat-sheet format.
@@ -88,6 +89,74 @@ html {
       { id: "css-sticky-find-bug", kind: "find-the-bug", prompt: "position: sticky; top: 0; заданий на header, але він не прилипає. Батьківський div має overflow: hidden. Чому це проблема?", solution: "overflow: hidden на батьківському елементі обриває контекст прокрутки, і sticky-поведінка ламається." },
       { id: "css-sticky-vs-fixed-choice", kind: "choice", prompt: "Потрібен header, що спочатку прокручується разом зі сторінкою, а потім \"прилипає\" вгорі. Що обрати?", options: ["position: fixed", "position: sticky", "position: absolute", "position: relative"], correctAnswer: "position: sticky", solution: "fixed завжди поза потоком (прилипає одразу, з самого початку сторінки); sticky спочатку веде себе як звичайний елемент і прилипає лише після досягнення заданого краю — саме ця поведінка потрібна тут." },
     ],
+    quiz: {
+      id: "css-header-hero-sticky-quiz",
+      title: "Header і sticky-навігація: перевір себе",
+      questions: [
+        {
+          id: "css-header-sticky-vs-fixed",
+          type: "single",
+          question: "Чим position: sticky відрізняється від position: fixed?",
+          options: [
+            "sticky спочатку веде себе як звичайний елемент і прилипає лише після досягнення заданого краю; fixed завжди поза потоком",
+            "Це синоніми",
+            "fixed працює лише для header",
+            "sticky не підтримується в сучасних браузерах",
+          ],
+          correctAnswer: "sticky спочатку веде себе як звичайний елемент і прилипає лише після досягнення заданого краю; fixed завжди поза потоком",
+          explanation: "fixed завжди позиціонований відносно вікна, поза звичайним потоком макета.",
+        },
+        {
+          id: "css-header-sticky-needs-edge",
+          type: "true-false",
+          question: "position: sticky вимагає задання хоча б однієї властивості краю (top/left/right/bottom), інакше не спрацює.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "sticky сам по собі лише вмикає режим прилипання; точку задає top (чи інший край).",
+        },
+        {
+          id: "css-header-missing-top-code",
+          type: "code",
+          question: "Чому header не прилипає під час прокрутки?",
+          codeSnippet: `.site-header {\n  position: sticky;\n  /* без top */\n}`,
+          options: [
+            "Без top браузер не знає точку, де елемент має \"зупинитись\"",
+            "position: sticky написаний з помилкою",
+            "Потрібен ще z-index, інакше sticky взагалі не діє",
+            "Тут усе правильно, це нормальна поведінка",
+          ],
+          correctAnswer: "Без top браузер не знає точку, де елемент має \"зупинитись\"",
+          explanation: "top: 0 задає точку, де header має зупинитись і прилипнути.",
+        },
+        {
+          id: "css-header-overflow-breaks-sticky",
+          type: "single",
+          question: "Чому sticky header може \"не працювати\", хоча CSS написаний правильно?",
+          options: [
+            "overflow: hidden/auto/scroll на батьківському елементі обриває контекст прокрутки",
+            "sticky ніколи не працює з header",
+            "Потрібен обов'язково JavaScript",
+            "background не можна задавати на sticky-елементі",
+          ],
+          correctAnswer: "overflow: hidden/auto/scroll на батьківському елементі обриває контекст прокрутки",
+          explanation: "Це найчастіша причина \"чому sticky не працює\" на практиці.",
+        },
+        {
+          id: "css-header-scroll-padding-top-code",
+          type: "code",
+          question: "Навіщо потрібен цей рядок разом зі sticky header?",
+          codeSnippet: `html {\n  scroll-padding-top: 80px;\n}`,
+          options: [
+            "Щоб заголовок секції не ховався під sticky header після переходу по anchor-посиланню",
+            "Щоб прискорити прокрутку сторінки",
+            "Щоб header завжди був прозорим",
+            "Це впливає лише на мобільні пристрої",
+          ],
+          correctAnswer: "Щоб заголовок секції не ховався під sticky header після переходу по anchor-посиланню",
+          explanation: "scroll-padding-top додає невидимий відступ зверху при прокрутці до якоря.",
+        },
+      ],
+    },
   },
 
   "Мобільне меню без JavaScript": {
@@ -173,6 +242,74 @@ html {
       { id: "css-checkbox-hack-predict", kind: "predict", prompt: "Чекбокс НЕ позначений. Що показує .menu-toggle-input:checked ~ .mobile-menu { display: block; }?", solution: "Нічого — правило застосовується тільки коли чекбокс :checked, тобто позначений." },
       { id: "css-checkbox-hack-find-bug", kind: "find-the-bug", prompt: "Розмітка: <nav class=\"mobile-menu\">...</nav> йде ПЕРЕД <input type=\"checkbox\" id=\"menu-toggle\" />. CSS: .menu-toggle-input:checked ~ .mobile-menu { display: block; }. Чекбокс позначений, але меню не з'являється. Чому?", solution: "Комбінатор ~ (сусідній елемент) працює тільки \"вперед\" по розмітці — він застосовує стиль до елементів, що йдуть ПІСЛЯ вказаного в HTML. Якщо .mobile-menu стоїть перед чекбоксом, ~ його не бачить; потрібно поставити чекбокс першим у розмітці." },
     ],
+    quiz: {
+      id: "css-header-hero-mobile-menu-quiz",
+      title: "Мобільне меню без JavaScript: перевір себе",
+      questions: [
+        {
+          id: "css-mobile-menu-checkbox-hack",
+          type: "single",
+          question: "Як працює \"checkbox hack\" для мобільного меню без JavaScript?",
+          options: [
+            "Прихований input[type=checkbox] + label + CSS-селектор :checked показує/ховає меню",
+            "Через JavaScript addEventListener на кнопці",
+            "Через HTML-атрибут hidden на меню",
+            "Це неможливо реалізувати без JS",
+          ],
+          correctAnswer: "Прихований input[type=checkbox] + label + CSS-селектор :checked показує/ховає меню",
+          explanation: "Це чисто CSS-рішення, яке пізніше природно заміниться на useState у React.",
+        },
+        {
+          id: "css-mobile-menu-display-none-keyboard",
+          type: "true-false",
+          question: "display: none на самому чекбоксі прибирає його з порядку табуляції клавіатурою, роблячи меню недоступним без миші.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Потрібен клас .visually-hidden замість display: none, щоб зберегти доступність з клавіатури.",
+        },
+        {
+          id: "css-mobile-menu-display-none-code",
+          type: "code",
+          question: "Чому це погане рішення для приховування чекбокса?",
+          codeSnippet: `.menu-toggle-input { display: none; }`,
+          options: [
+            "Прибирає елемент з табуляції — користувачі клавіатури не можуть дістатись перемикача меню",
+            "display: none не працює на input",
+            "Це найкраща практика приховування",
+            "Це впливає лише на зовнішній вигляд",
+          ],
+          correctAnswer: "Прибирає елемент з табуляції — користувачі клавіатури не можуть дістатись перемикача меню",
+          explanation: "Замінити на клас .visually-hidden (position: absolute, розмір 1×1px, overflow: hidden).",
+        },
+        {
+          id: "css-mobile-menu-markup-order",
+          type: "single",
+          question: "Чому важливо, щоб чекбокс у розмітці йшов ПЕРЕД меню при використанні комбінатора ~?",
+          options: [
+            "~ (сусідній елемент) застосовує стиль лише до елементів, що йдуть ПІСЛЯ вказаного в HTML",
+            "Порядок елементів у HTML не має значення для CSS",
+            "~ працює лише з input",
+            "Це стосується лише label",
+          ],
+          correctAnswer: "~ (сусідній елемент) застосовує стиль лише до елементів, що йдуть ПІСЛЯ вказаного в HTML",
+          explanation: "Якщо меню стоїть перед чекбоксом у розмітці, ~ його не побачить.",
+        },
+        {
+          id: "css-mobile-menu-unchecked-code",
+          type: "code",
+          question: "Чекбокс НЕ позначений. Що відбувається з меню?",
+          codeSnippet: `.menu-toggle-input:checked ~ .mobile-menu { display: block; }`,
+          options: [
+            "Нічого не показується — правило діє лише коли чекбокс :checked",
+            "Меню показується завжди",
+            "Виникає помилка CSS",
+            "Меню миготить",
+          ],
+          correctAnswer: "Нічого не показується — правило діє лише коли чекбокс :checked",
+          explanation: "Меню лишається display: none (базове правило), доки чекбокс не позначений.",
+        },
+      ],
+    },
   },
 
   "Hero-секція": {
@@ -286,6 +423,74 @@ html {
       { id: "css-hero-choice", kind: "choice", prompt: "Hero-секція має адаптуватись до тексту різної довжини на різних мовах сайту. Що обрати?", options: ["height: 500px", "min-height: 70vh", "height: 100%", "max-height: 400px"], correctAnswer: "min-height: 70vh", solution: "min-height дозволяє секції рости, якщо перекладений текст довший за оригінал." },
       { id: "css-hero-grid-vs-flex-explain", kind: "explain", prompt: "Для hero без фото (лише центрований текст) обрали flex-колонку, а для hero з фото поруч із текстом — grid у дві колонки. Чому саме так, а не навпаки чи однаково?", solution: "Flex-колонка ідеально центрує один потік елементів по вертикалі (заголовок, опис, кнопка одне під одним) — тут потрібен лише один напрямок. Hero з фото має ДВІ незалежні колонки (текст і зображення), що мають вирівнюватись між собою по ширині, — це вже двовимірна задача, для якої grid-template-columns: 1fr 1fr зрозуміліший і коротший за ручні flex-basis." },
     ],
+    quiz: {
+      id: "css-header-hero-hero-section-quiz",
+      title: "Hero-секція: перевір себе",
+      questions: [
+        {
+          id: "css-hero-min-height-vs-height",
+          type: "single",
+          question: "Чому для hero-секції зазвичай обирають min-height, а не height?",
+          options: [
+            "min-height дозволяє блоку вирости, якщо реального контенту більше, ніж очікувалось",
+            "height взагалі не підтримується для секцій",
+            "min-height швидше рендериться",
+            "Різниці немає",
+          ],
+          correctAnswer: "min-height дозволяє блоку вирости, якщо реального контенту більше, ніж очікувалось",
+          explanation: "height жорстко фіксує розмір і обрізає контент, який не влазить.",
+        },
+        {
+          id: "css-hero-flex-vs-grid-true-false",
+          type: "true-false",
+          question: "Для hero без фото (лише центрований текст) природніше використати flex-колонку, а для hero з фото поруч із текстом — grid у дві колонки.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Flex — одновимірний потік елементів; grid — дві незалежні колонки, що мають вирівнюватись між собою.",
+        },
+        {
+          id: "css-hero-100vh-overflow-code",
+          type: "code",
+          question: "Що станеться, якщо текст hero стане довшим (наприклад, через переклад)?",
+          codeSnippet: `.hero {\n  height: 100vh;\n  overflow: hidden;\n}`,
+          options: [
+            "Нижня частина контенту (опис чи кнопка) обріжеться і зникне з очей",
+            "Секція автоматично виросте",
+            "Текст автоматично зменшиться",
+            "Нічого не зміниться",
+          ],
+          correctAnswer: "Нижня частина контенту (опис чи кнопка) обріжеться і зникне з очей",
+          explanation: "min-height без overflow: hidden дозволяє секції рости під реальний обсяг контенту.",
+        },
+        {
+          id: "css-hero-title-max-width-ch",
+          type: "single",
+          question: "Навіщо задають max-width у ch-одиницях на заголовку двоколонкового hero?",
+          options: [
+            "Обмежує ширину, щоб рядки переносились красиво, а не розтягувались на всю ширину колонки",
+            "Це впливає на колір заголовка",
+            "ch — єдина одиниця, яку підтримують всі браузери",
+            "Прибирає перенос рядків узагалі",
+          ],
+          correctAnswer: "Обмежує ширину, щоб рядки переносились красиво, а не розтягувались на всю ширину колонки",
+          explanation: "Без max-width довгий заголовок розтягується на всю ширину колонки й виглядає негарно.",
+        },
+        {
+          id: "css-hero-image-clamp-code",
+          type: "code",
+          question: "Для чого тут використано clamp() замість фіксованої висоти?",
+          codeSnippet: `.hero-image {\n  height: clamp(320px, 45vw, 560px);\n}`,
+          options: [
+            "Адаптивна висота фото з жорсткими межами замість фіксованого пікселя",
+            "Щоб фото завжди мало висоту рівно 45vw",
+            "clamp() потрібен лише для розміру шрифту",
+            "Це вимикає object-fit",
+          ],
+          correctAnswer: "Адаптивна висота фото з жорсткими межами замість фіксованого пікселя",
+          explanation: "Разом з object-fit: cover фото завжди виглядає акуратно на будь-якому екрані.",
+        },
+      ],
+    },
   },
 
   "Фонові зображення і object-fit": {
@@ -372,5 +577,162 @@ html {
       { id: "css-bg-image-find-bug", kind: "find-the-bug", prompt: "background-image: url(\"interior.jpg\"); заданий на великому блоці, але фото виглядає як дрібний повторюваний патерн. Чому?", solution: "Відсутній background-size: cover — за замовчуванням фото повторюється (repeat) в оригінальному розмірі." },
       { id: "css-bg-vs-img-choice", kind: "choice", prompt: "Потрібно показати фото конкретної страви в картці меню, щоб користувачі скрінрідерів почули, що це за страва. Що обрати?", options: ["background-image на картці", "<img> з описовим alt", "background-image + aria-label на картці", "CSS-фон без додаткових атрибутів"], correctAnswer: "<img> з описовим alt", solution: "Змістовне фото (не декоративне) завжди має бути реальним <img> з alt — background-image не має alt і не сприймається як контент скрінрідером чи пошуковиком." },
     ],
+    quiz: {
+      id: "css-header-hero-background-quiz",
+      title: "Фонові зображення і object-fit: перевір себе",
+      questions: [
+        {
+          id: "css-background-cover-purpose",
+          type: "single",
+          question: "Навіщо потрібен background-size: cover разом з background-image?",
+          options: [
+            "Масштабує зображення, щоб заповнити блок без повторів і спотворення",
+            "Прискорює завантаження фото",
+            "Додає alt до фонового зображення",
+            "Це обов'язковий синтаксис CSS, без нього фон не застосується взагалі",
+          ],
+          correctAnswer: "Масштабує зображення, щоб заповнити блок без повторів і спотворення",
+          explanation: "Без нього фото показується в оригінальному розмірі й може повторюватись плиткою.",
+        },
+        {
+          id: "css-background-content-image-true-false",
+          type: "true-false",
+          question: "Змістовні фото (наприклад, фото товару) варто реалізовувати через <img> з alt, а не через background-image.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "background-image не сприймається скрінрідером чи пошуковиком як контент.",
+        },
+        {
+          id: "css-background-missing-size-code",
+          type: "code",
+          question: "Що станеться з фото на екрані?",
+          codeSnippet: `.hero {\n  background-image: url("interior.jpg");\n  /* без background-size */\n}`,
+          options: [
+            "Фото повториться дрібним патерном (repeat) замість заповнення блоку",
+            "Фото автоматично розтягнеться на весь блок",
+            "Виникне помилка завантаження",
+            "Нічого, це нормальна поведінка",
+          ],
+          correctAnswer: "Фото повториться дрібним патерном (repeat) замість заповнення блоку",
+          explanation: "За замовчуванням background-size: auto показує фото в оригінальному розмірі файлу.",
+        },
+        {
+          id: "css-background-object-position-purpose",
+          type: "single",
+          question: "Для чого потрібен object-position (чи background-position), якщо object-fit: cover уже заповнює блок?",
+          options: [
+            "Вказує, яку саме частину фото зберегти видимою після обрізання, якщо головний об'єкт не в центрі",
+            "Змінює формат файлу зображення",
+            "Прискорює рендеринг",
+            "Це стосується лише відео, не фото",
+          ],
+          correctAnswer: "Вказує, яку саме частину фото зберегти видимою після обрізання, якщо головний об'єкт не в центрі",
+          explanation: "cover сам вирішує обрізати по центру — object-position дозволяє змінити цю точку.",
+        },
+        {
+          id: "css-background-content-photo-code",
+          type: "code",
+          question: "Чому змістовне фото товару не варто робити через background-image?",
+          codeSnippet: `.product-card {\n  background-image: url("latte.jpg");\n}`,
+          options: [
+            "background-image не має атрибута alt і не сприймається скрінрідером чи пошуковиком як контент",
+            "background-image повільніше завантажується",
+            "background-image не підтримує JPG",
+            "Це насправді нормальна практика для фото товару",
+          ],
+          correctAnswer: "background-image не має атрибута alt і не сприймається скрінрідером чи пошуковиком як контент",
+          explanation: "Змістовне фото завжди має бути реальним <img> тегом з alt.",
+        },
+      ],
+    },
   },
+};
+
+export const cssRealHeaderHeroModuleQuiz: QuizData = {
+  id: "css-real-header-hero-module-quiz",
+  title: "Header і Hero: контрольний тест",
+  questions: [
+    {
+      id: "css-header-hero-module-sticky-vs-fixed",
+      type: "single",
+      question: "Чим position: sticky відрізняється від position: fixed?",
+      options: [
+        "sticky спочатку веде себе як звичайний елемент і прилипає лише після досягнення заданого краю; fixed завжди поза потоком",
+        "Це синоніми",
+        "fixed працює лише для header",
+        "sticky не підтримується в сучасних браузерах",
+      ],
+      correctAnswer: "sticky спочатку веде себе як звичайний елемент і прилипає лише після досягнення заданого краю; fixed завжди поза потоком",
+      explanation: "fixed завжди позиціонований відносно вікна, поза звичайним потоком макета.",
+    },
+    {
+      id: "css-header-hero-module-checkbox-keyboard",
+      type: "true-false",
+      question: "display: none на самому чекбоксі мобільного меню прибирає його з порядку табуляції клавіатурою.",
+      options: ["Так", "Ні"],
+      correctAnswer: true,
+      explanation: "Потрібен клас .visually-hidden замість display: none, щоб зберегти доступність з клавіатури.",
+    },
+    {
+      id: "css-header-hero-module-height-100vh-code",
+      type: "code",
+      question: "Що станеться, якщо текст hero стане довшим (наприклад, через переклад)?",
+      codeSnippet: `.hero {\n  height: 100vh;\n  overflow: hidden;\n}`,
+      options: [
+        "Нижня частина контенту (опис чи кнопка) обріжеться і зникне з очей",
+        "Секція автоматично виросте",
+        "Текст автоматично зменшиться",
+        "Нічого не зміниться",
+      ],
+      correctAnswer: "Нижня частина контенту (опис чи кнопка) обріжеться і зникне з очей",
+      explanation: "min-height замість height + без overflow: hidden дозволяє секції рости під реальний обсяг контенту.",
+    },
+    {
+      id: "css-header-hero-module-bg-cover",
+      type: "single",
+      question: "Навіщо потрібен background-size: cover разом з background-image?",
+      options: [
+        "Масштабує зображення, щоб заповнити блок без повторів і спотворення",
+        "Прискорює завантаження фото",
+        "Додає alt до фонового зображення",
+        "Це обов'язковий синтаксис CSS, без нього фон не застосується взагалі",
+      ],
+      correctAnswer: "Масштабує зображення, щоб заповнити блок без повторів і спотворення",
+      explanation: "Без нього фото показується в оригінальному розмірі й може повторюватись плиткою.",
+    },
+    {
+      id: "css-header-hero-module-missing-top-code",
+      type: "code",
+      question: "Чому header не прилипає під час прокрутки?",
+      codeSnippet: `.site-header {\n  position: sticky;\n  /* без top */\n}`,
+      options: [
+        "Без top браузер не знає точку, де елемент має \"зупинитись\"",
+        "position: sticky написаний з помилкою",
+        "Потрібен ще z-index, інакше sticky взагалі не діє",
+        "Тут усе правильно, це нормальна поведінка",
+      ],
+      correctAnswer: "Без top браузер не знає точку, де елемент має \"зупинитись\"",
+      explanation: "position: sticky вмикає лише режим прилипання; конкретну точку задає top/left/right/bottom.",
+    },
+    {
+      id: "css-header-hero-module-facts",
+      type: "multiple",
+      question: "Які з цих тверджень про header і hero правильні?",
+      options: [
+        "overflow: hidden на батьківському елементі може зламати position: sticky",
+        "Змістовні фото (товару, страви) варто реалізовувати через background-image, а не <img>",
+        "min-height безпечніший за height для блоків зі змінним контентом",
+        "Комбінатор ~ у checkbox hack застосовує стиль лише до елементів, що йдуть після вказаного в HTML",
+      ],
+      correctAnswer: [
+        "overflow: hidden на батьківському елементі може зламати position: sticky",
+        "min-height безпечніший за height для блоків зі змінним контентом",
+        "Комбінатор ~ у checkbox hack застосовує стиль лише до елементів, що йдуть після вказаного в HTML",
+      ],
+      explanation: "Навпаки — змістовні фото мають бути <img> з alt, а не background-image, з міркувань доступності й SEO.",
+      optionExplanations: {
+        "Змістовні фото (товару, страви) варто реалізовувати через background-image, а не <img>": "Навпаки: background-image не має alt і не сприймається скрінрідером чи пошуковиком як контент — змістовні фото завжди мають бути <img>.",
+      },
+    },
+  ],
 };
