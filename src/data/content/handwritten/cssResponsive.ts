@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Адаптивний дизайн" (css-responsive). Cheat-sheet format, written
@@ -151,6 +152,74 @@ export const cssResponsiveOverrides: Record<string, LessonOverride> = {
       { id: "css-mobile-first-choice", kind: "choice", prompt: "Що таке mobile-first підхід?", options: ["Спочатку стилі для десктопа, потім max-width для мобільного", "Спочатку стилі для телефону, потім min-width для ширших екранів", "Писати CSS тільки для мобільних пристроїв", "Використовувати лише flexbox"], correctAnswer: "Спочатку стилі для телефону, потім min-width для ширших екранів", solution: "Mobile-first — базові стилі для вузького екрана, а min-width медіазапити додають стилі для ширших." },
       { id: "css-mobile-first-viewport", kind: "explain", prompt: "Чому медіазапити можуть \"не спрацьовувати\" на реальному телефоні, хоча в DevTools усе виглядає правильно?", solution: "Найчастіше причина — відсутній <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> у head: без нього мобільний браузер рендерить сторінку в масштабі десктопа (~980px) і лише потім стискає картинку, тож медіазапити рахуються від неправильної ширини." },
     ],
+    quiz: {
+      id: "css-responsive-mobile-first-quiz",
+      title: "Швидка перевірка: Mobile-first і медіазапити",
+      questions: [
+        {
+          id: "css-resp-q1-mobile-first-def",
+          type: "single",
+          question: "Що таке mobile-first підхід?",
+          options: [
+            "Спочатку стилі для десктопа, потім max-width для мобільного",
+            "Спочатку стилі для телефону, потім min-width для ширших екранів",
+            "Писати CSS тільки для мобільних пристроїв",
+            "Використовувати лише flexbox",
+          ],
+          correctAnswer: "Спочатку стилі для телефону, потім min-width для ширших екранів",
+          explanation: "Mobile-first — базові стилі для вузького екрана, а min-width медіазапити додають стилі для ширших екранів.",
+        },
+        {
+          id: "css-resp-q2-desktop-first-bug",
+          type: "code",
+          question: "У чому недолік цього підходу?",
+          codeSnippet: ".menu-grid {\n  grid-template-columns: repeat(3, 1fr);\n}\n\n@media (max-width: 767px) {\n  .menu-grid { grid-template-columns: 1fr; }\n}",
+          options: [
+            "Це desktop-first: кожен новий breakpoint \"віднімає\" складність замість додавання, важче підтримувати",
+            "grid-template-columns не можна перевизначати в медіазапиті",
+            "Синтаксична помилка в repeat()",
+            "max-width медіазапити взагалі не підтримуються",
+          ],
+          correctAnswer: "Це desktop-first: кожен новий breakpoint \"віднімає\" складність замість додавання, важче підтримувати",
+          explanation: "Базові стилі розраховані на найширший, найскладніший випадок, а кожен медіазапит змушений \"розбирати\" цю складність назад — логіка йде проти природного напрямку від простого до складного.",
+        },
+        {
+          id: "css-resp-q3-viewport-meta",
+          type: "true-false",
+          question: "Без <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> у head медіазапити на мобільному працюють правильно.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Без цього тега мобільний браузер вважає сторінку десктопною (~980px), і медіазапити рахуються від цієї фальшивої ширини, а не від реального екрана.",
+        },
+        {
+          id: "css-resp-q4-breakpoint-choice",
+          type: "single",
+          question: "За чим варто обирати breakpoint для медіазапиту?",
+          options: [
+            "За конкретною моделлю телефону (наприклад, \"як в iPhone\")",
+            "За реальним вмістом — коли текст чи картки самі починають виглядати тісно",
+            "Кожні 20-30px різниці ширини",
+            "За кольором дизайну",
+          ],
+          correctAnswer: "За реальним вмістом — коли текст чи картки самі починають виглядати тісно",
+          explanation: "Моделей пристроїв існують сотні — орієнтуватись варто на вміст, а не на конкретні розміри екранів.",
+        },
+        {
+          id: "css-resp-q5-nav-hamburger",
+          type: "code",
+          question: "Що відбувається в цьому CSS для навігації?",
+          codeSnippet: ".nav-links {\n  display: none;\n}\n\n.nav-toggle {\n  display: block;\n}\n\n@media (min-width: 768px) {\n  .nav-links {\n    display: flex;\n  }\n\n  .nav-toggle {\n    display: none;\n  }\n}",
+          options: [
+            "На телефоні видно лише кнопку-гамбургер; від 768px посилання показуються в рядок, а гамбургер ховається",
+            "Навігація завжди прихована",
+            "Гамбургер видно лише на десктопі",
+            "nav-links і nav-toggle показуються одночасно на всіх екранах",
+          ],
+          correctAnswer: "На телефоні видно лише кнопку-гамбургер; від 768px посилання показуються в рядок, а гамбургер ховається",
+          explanation: "Базові (мобільні) стилі приховують посилання й показують гамбургер; медіазапит від 768px інвертує обидва правила для ширших екранів.",
+        },
+      ],
+    },
   },
 
   "Container queries": {
@@ -280,6 +349,73 @@ export const cssResponsiveOverrides: Record<string, LessonOverride> = {
       { id: "css-container-query-find-bug", kind: "find-the-bug", prompt: "@container (min-width: 400px) { .card { display: flex; } } не спрацьовує. Чого бракує?", solution: "container-type на батьківському контейнері — без нього @container-правила ігноруються." },
       { id: "css-container-query-cqw-predict", kind: "predict", prompt: "font-size: clamp(1rem, 5cqw, 1.5rem); контейнер картки — 300px завширшки. Приблизно яким буде розмір шрифту?", solution: "5cqw ≈ 5% від 300px = 15px (≈0.94rem) — це проміжне значення потрапляє між мінімумом (1rem) і максимумом (1.5rem), тож саме воно й застосується." },
     ],
+    quiz: {
+      id: "css-responsive-container-queries-quiz",
+      title: "Швидка перевірка: Container queries",
+      questions: [
+        {
+          id: "css-resp-q1-container-vs-media",
+          type: "single",
+          question: "У чому головна відмінність container query від медіазапиту?",
+          options: [
+            "Container query реагує на ширину батьківського контейнера, медіазапит — на все вікно браузера",
+            "Container query працює лише в Safari",
+            "Медіазапит реагує на контейнер, а container query — на вікно",
+            "Різниці немає, це синоніми",
+          ],
+          correctAnswer: "Container query реагує на ширину батьківського контейнера, медіазапит — на все вікно браузера",
+          explanation: "Це дозволяє компоненту адаптуватись залежно від того, де саме на сторінці він розміщений, а не від загальної ширини екрана.",
+        },
+        {
+          id: "css-resp-q2-missing-container-type",
+          type: "code",
+          question: "Картка не змінює вигляд, коли контейнер стає ширшим за 400px. У чому причина?",
+          codeSnippet: "@container (min-width: 400px) {\n  .menu-card { display: flex; }\n}\n/* container-type ніде не заданий */",
+          options: [
+            "Відсутній container-type на батьківському елементі — @container не знає, який контейнер слухати",
+            "min-width не підтримується в @container",
+            "display: flex не можна використовувати в @container",
+            "Потрібен !important",
+          ],
+          correctAnswer: "Відсутній container-type на батьківському елементі — @container не знає, який контейнер слухати",
+          explanation: "@container сам по собі нічого не знає, який контейнер слухати. Цю прив'язку створює container-type на батьківському елементі — без неї браузер тихо ігнорує все правило.",
+        },
+        {
+          id: "css-resp-q3-container-type-placement",
+          type: "true-false",
+          question: "container-type має стояти на тому самому елементі, який стилізується всередині @container-правила.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "container-type ставиться на БАТЬКІВСЬКОМУ елементі, а @container-стилі пишуться для елементів усередині нього — контейнер описує розмір своїх дітей, а не себе самого.",
+        },
+        {
+          id: "css-resp-q4-container-name-purpose",
+          type: "single",
+          question: "Навіщо потрібен container-name?",
+          options: [
+            "Щоб звернутись саме до конкретного, іменованого контейнера, коли їх на сторінці кілька вкладених",
+            "Щоб зробити контейнер видимим у DevTools",
+            "Це обов'язковий атрибут, без якого container-type не працює взагалі",
+            "Щоб задати колір фону контейнера",
+          ],
+          correctAnswer: "Щоб звернутись саме до конкретного, іменованого контейнера, коли їх на сторінці кілька вкладених",
+          explanation: "Без імені @container звертається до першого-ліпшого контейнера-предка — ім'я усуває цю неоднозначність.",
+        },
+        {
+          id: "css-resp-q5-use-case-choice",
+          type: "single",
+          question: "Коли варто використовувати container query замість звичайного медіазапиту?",
+          options: [
+            "Коли потрібно показати/сховати сайдбар для всієї сторінки",
+            "Коли той самий компонент (картка) використовується в різних за шириною місцях сторінки",
+            "Завжди, container query повністю замінює медіазапити",
+            "Тільки для темної теми",
+          ],
+          correctAnswer: "Коли той самий компонент (картка) використовується в різних за шириною місцях сторінки",
+          explanation: "Для адаптивності всієї сторінки цілком (макет, сайдбар) звичайного медіазапиту все ще достатньо і простіше.",
+        },
+      ],
+    },
   },
 
   "clamp, min і max": {
@@ -385,5 +521,152 @@ export const cssResponsiveOverrides: Record<string, LessonOverride> = {
       { id: "css-clamp-min-choice", kind: "choice", prompt: "Ширина контейнера має бути 90% екрана на телефоні, але не більше 600px на десктопі. Яку функцію використати?", options: ["max(90%, 600px)", "min(90%, 600px)", "clamp(90%, 600px, 100%)"], correctAnswer: "min(90%, 600px)", solution: "min(90%, 600px) — обирає МЕНШЕ з двох значень: на вузькому екрані спрацює 90%, на широкому — 600px." },
       { id: "css-clamp-find-bug", kind: "find-the-bug", prompt: "h1 { font-size: 6vw; } — без clamp(). У чому проблема на дуже широкому екрані (наприклад, 4K-монітор)?", solution: "6vw ніяк не обмежене зверху, тож на дуже широкому екрані заголовок стане величезним. Потрібен clamp(мінімум, 6vw, максимум), щоб обмежити розмір з обох боків." },
     ],
+    quiz: {
+      id: "css-responsive-clamp-min-max-quiz",
+      title: "Швидка перевірка: clamp, min і max",
+      questions: [
+        {
+          id: "css-resp-q1-clamp-max-cap",
+          type: "code",
+          question: "На дуже широкому екрані, де 10vw = 300px, який реальний розмір шрифту?",
+          codeSnippet: "font-size: clamp(1rem, 10vw, 2rem);",
+          options: ["1rem", "2rem", "300px", "10vw"],
+          correctAnswer: "2rem",
+          explanation: "Максимум обмежує значення, навіть якщо \"бажане\" (10vw = 300px) набагато більше за нього.",
+        },
+        {
+          id: "css-resp-q2-min-container-width",
+          type: "single",
+          question: "Ширина контейнера має бути 90% екрана на телефоні, але не більше 600px на десктопі. Яку функцію використати?",
+          options: ["max(90%, 600px)", "min(90%, 600px)", "clamp(90%, 600px, 100%)"],
+          correctAnswer: "min(90%, 600px)",
+          explanation: "min(90%, 600px) обирає МЕНШЕ з двох значень: на вузькому екрані спрацює 90%, на широкому — 600px.",
+        },
+        {
+          id: "css-resp-q3-vw-without-clamp",
+          type: "code",
+          question: "У чому проблема цього заголовка на 4K-моніторі?",
+          codeSnippet: "h1 {\n  font-size: 6vw;\n}",
+          options: [
+            "6vw нічим не обмежене зверху — на дуже широкому екрані текст стане величезним",
+            "vw взагалі не підтримується для font-size",
+            "6vw завжди дає 6px незалежно від екрана",
+            "Потрібен clamp() лише для кольору, не для розміру",
+          ],
+          correctAnswer: "6vw нічим не обмежене зверху — на дуже широкому екрані текст стане величезним",
+          explanation: "vw масштабується лінійно й необмежено. Потрібен clamp(мінімум, 6vw, максимум), щоб обмежити розмір з обох боків.",
+        },
+        {
+          id: "css-resp-q4-clamp-argument-order",
+          type: "code",
+          question: "У чому проблема цього clamp()?",
+          codeSnippet: "h1 { font-size: clamp(3rem, 1.75rem, 5vw); }",
+          options: [
+            "Аргументи переплутані місцями — clamp() очікує порядок мінімум, бажане, максимум",
+            "clamp() не приймає одиниці rem",
+            "5vw не можна використовувати як третій аргумент",
+            "Потрібно додати четвертий аргумент",
+          ],
+          correctAnswer: "Аргументи переплутані місцями — clamp() очікує порядок мінімум, бажане, максимум",
+          explanation: "Браузер не перевіряє логічність порядку аргументів — він застосовує їх буквально. Тут 1.75rem (мало бути мінімумом) стоїть як \"бажане\", а 5vw (мало бути бажаним) — як максимум.",
+        },
+        {
+          id: "css-resp-q5-arithmetic-in-clamp",
+          type: "true-false",
+          question: "Арифметичні вирази (наприклад, 5vw + 1rem) можна писати прямо всередині clamp() без окремого calc().",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "CSS дозволяє арифметику прямо всередині clamp()/min()/max(), що робить формули компактнішими без окремого виклику calc().",
+        },
+      ],
+    },
   },
+};
+
+export const cssResponsiveModuleQuiz: QuizData = {
+  id: "css-responsive-module-quiz",
+  title: "Контрольний тест: Адаптивний дизайн",
+  questions: [
+    {
+      id: "css-resp-mod-q1-mobile-first",
+      type: "single",
+      question: "Чому mobile-first (min-width медіазапити) вважається кращим за desktop-first (max-width)?",
+      options: [
+        "Змушує спочатку продумати найпростіший варіант і поступово додавати складність для ширших екранів",
+        "Це єдиний підхід, який взагалі підтримують браузери",
+        "Desktop-first взагалі не працює на мобільних пристроях",
+        "Mobile-first не потребує медіазапитів",
+      ],
+      correctAnswer: "Змушує спочатку продумати найпростіший варіант і поступово додавати складність для ширших екранів",
+      explanation: "Це зазвичай дає простіший, легший для підтримки CSS, ніж \"віднімання\" стилів для вужчих екранів при desktop-first підході.",
+    },
+    {
+      id: "css-resp-mod-q2-viewport-meta",
+      type: "true-false",
+      question: "Без <meta name=\"viewport\"> у head медіазапити на мобільних пристроях працюють коректно.",
+      options: ["Так", "Ні"],
+      correctAnswer: false,
+      explanation: "Без viewport meta-тега мобільний браузер рендерить сторінку в масштабі десктопа (~980px), і медіазапити рахуються від фальшивої ширини.",
+    },
+    {
+      id: "css-resp-mod-q3-container-query-purpose",
+      type: "single",
+      question: "Коли container query — правильний вибір замість медіазапиту?",
+      options: [
+        "Коли той самий компонент використовується в різних за шириною місцях сторінки",
+        "Коли треба показати/сховати весь сайдбар сторінки",
+        "Завжди — container query повністю замінює медіазапити",
+        "Тільки для друкованих стилів (print)",
+      ],
+      correctAnswer: "Коли той самий компонент використовується в різних за шириною місцях сторінки",
+      explanation: "Container query реагує на ширину реального контейнера компонента, а не на весь екран — ідеально для повторно використовуваних компонентів.",
+    },
+    {
+      id: "css-resp-mod-q4-container-type-missing",
+      type: "code",
+      question: "Чому це @container-правило не спрацює?",
+      codeSnippet: "@container (min-width: 400px) {\n  .card { display: flex; }\n}",
+      options: [
+        "Немає жодного елемента з container-type — @container не має контексту, який контейнер слухати",
+        "min-width не підтримується для контейнерів",
+        ".card не можна стилізувати всередині @container",
+        "Потрібен !important",
+      ],
+      correctAnswer: "Немає жодного елемента з container-type — @container не має контексту, який контейнер слухати",
+      explanation: "container-type на батьківському елементі обов'язковий — без нього браузер тихо ігнорує все @container-правило, без помилок у консолі.",
+    },
+    {
+      id: "css-resp-mod-q5-clamp-purpose",
+      type: "single",
+      question: "У чому головна перевага clamp() над кількома окремими медіазапитами для розміру шрифту?",
+      options: [
+        "Плавне, безперервне масштабування замість стрибків на конкретних breakpoint-ах",
+        "clamp() працює швидше за браузером на рівні продуктивності рендерингу",
+        "clamp() автоматично додає viewport meta-тег",
+        "Медіазапити взагалі не можуть змінювати font-size",
+      ],
+      correctAnswer: "Плавне, безперервне масштабування замість стрибків на конкретних breakpoint-ах",
+      explanation: "Медіазапити змінюють значення стрибками на конкретних точках, тоді як clamp() дає плавне масштабування для будь-якої ширини між межами.",
+    },
+    {
+      id: "css-resp-mod-q6-true-statements",
+      type: "multiple",
+      question: "Які з тверджень про адаптивний дизайн правильні?",
+      options: [
+        "min(90%, 600px) обирає більше з двох значень",
+        "container-type ставиться на батьківський елемент, а не на той, що стилізується всередині @container",
+        "clamp(min, ideal, max) вимагає одиницю vw чи cqw у середньому значенні, щоб масштабуватись",
+        "Breakpoint-и варто обирати навмання, орієнтуючись на конкретні моделі телефонів",
+      ],
+      correctAnswer: [
+        "container-type ставиться на батьківський елемент, а не на той, що стилізується всередині @container",
+        "clamp(min, ideal, max) вимагає одиницю vw чи cqw у середньому значенні, щоб масштабуватись",
+      ],
+      explanation: "min() обирає МЕНШЕ з двох значень, а не більше. Breakpoint-и варто обирати за реальним вмістом, а не навмання за моделями пристроїв.",
+      optionExplanations: {
+        "min(90%, 600px) обирає більше з двох значень": "Невірно: min() обирає МЕНШЕ з двох значень. max() обирає більше.",
+        "Breakpoint-и варто обирати навмання, орієнтуючись на конкретні моделі телефонів": "Невірно: breakpoint-и варто обирати за реальним вмістом (там, де текст чи картки починають виглядати тісно), а не за моделями пристроїв, яких існують сотні.",
+      },
+    },
+  ],
 };
