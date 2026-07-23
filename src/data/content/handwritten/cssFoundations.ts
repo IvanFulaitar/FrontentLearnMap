@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Основи CSS" (css-foundations). Cheat-sheet format, same as the
@@ -132,6 +133,69 @@ export const cssFoundationsOverrides: Record<string, LessonOverride> = {
       { id: "css-apply-choice", kind: "choice", prompt: "У розмітці на 50 елементах потрібен однаковий колір тексту. Найкращий спосіб?", options: ["style=\"color: ...\" на кожному", "Один клас у зовнішньому styles.css", "<style> в head кожної сторінки окремо", "Немає різниці"], correctAnswer: "Один клас у зовнішньому styles.css", solution: "Один клас у зовнішньому файлі — зміниш колір в одному місці для всіх 50 елементів." },
       { id: "css-apply-methods-find-bug", kind: "find-the-bug", prompt: "Сайт з трьох сторінок (index.html, menu.html, about.html) стилізований так: на кожній сторінці всередині <head> є свій окремий блок <style> з однаковими правилами для h1 і навігації. Що тут не так?", solution: "Правила скопійовані у internal <style> на кожній сторінці окремо — якщо потрібно змінити колір заголовка, доведеться правити всі три файли. Правильне рішення — один зовнішній styles.css, підключений через <link> на кожній сторінці: зміна в одному файлі одразу оновить усі три." },
     ],
+    quiz: {
+      id: "css-foundations-css-applied-quiz",
+      title: "Як CSS застосовується до HTML: перевір себе",
+      questions: [
+        {
+          id: "css-applied-link-standard",
+          type: "single",
+          question: "Який спосіб підключення CSS є стандартом для реального проєкту?",
+          options: [
+            "Зовнішній файл через <link rel=\"stylesheet\">",
+            "Тег <style> у head",
+            "Атрибут style на кожному елементі",
+            "Усі три однаково хороші",
+          ],
+          correctAnswer: "Зовнішній файл через <link rel=\"stylesheet\">",
+          explanation: "Один styles.css можна підключити до всіх сторінок сайту — зміниш стиль в одному місці, він оновиться всюди.",
+        },
+        {
+          id: "css-applied-inline-priority",
+          type: "true-false",
+          question: "При однаковій специфічності inline style завжди переможе стиль із зовнішнього файлу.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "inline style — найвищий рівень у каскаді, крім !important.",
+        },
+        {
+          id: "css-applied-inline-repeat-code",
+          type: "code",
+          question: "Чому це не найкращий підхід, якщо на сторінці ще 10 таких заголовків мають виглядати так само?",
+          codeSnippet: `<h1 style="color: coral; font-size: 32px;">Кав'ярня «Аромат»</h1>`,
+          options: [
+            "Inline style довелося б повторювати на кожному з них",
+            "style не можна використовувати на h1",
+            "color і font-size не можна писати разом",
+            "Тут усе правильно",
+          ],
+          correctAnswer: "Inline style довелося б повторювати на кожному з них",
+          explanation: "Клас у зовнішньому файлі перевикористовується на скількох завгодно елементах — inline style довелося б копіювати щоразу.",
+        },
+        {
+          id: "css-applied-rule-anatomy",
+          type: "single",
+          question: "У правилі h1 { color: blue; } що є \"властивістю\"?",
+          options: ["color", "h1", "blue", "{ }"],
+          correctAnswer: "color",
+          explanation: "h1 — селектор, color — властивість, blue — значення.",
+        },
+        {
+          id: "css-applied-class-syntax-code",
+          type: "code",
+          question: "У чому помилка цього рядка?",
+          codeSnippet: `<p class=".intro">Текст</p>`,
+          options: [
+            "У HTML клас пишеться без крапки: class=\"intro\"",
+            "class не можна використовувати на p",
+            "Текст занадто короткий",
+            "Тут усе правильно",
+          ],
+          correctAnswer: "У HTML клас пишеться без крапки: class=\"intro\"",
+          explanation: "Крапка перед назвою класу належить лише CSS-селектору (.intro), а не атрибуту class у HTML.",
+        },
+      ],
+    },
   },
 
   "Селектори та специфічність": {
@@ -242,6 +306,73 @@ h1, h2, h3 {
       { id: "css-specificity-predict", kind: "predict", prompt: "Є h2 { color: black; } і .title { color: coral; }. Елемент <h2 class=\"title\">. Якого кольору текст?", solution: "Coral — клас важчий за селектор тегу, незалежно від порядку в файлі." },
       { id: "css-specificity-nesting-find-bug", kind: "find-the-bug", prompt: "Стиль кнопки написаний так: header nav ul li a.button { color: white; }. Розробник скаржиться, що щоразу, коли верстальник трохи змінює структуру навігації, кнопка \"губить\" колір. У чому проблема?", solution: "Селектор на 6 рівнів залежить від точної вкладеності HTML — будь-яка зміна структури (прибрали ul, замінили на nav > a) ламає збіг. Рішення — один клас безпосередньо на елементі, наприклад .nav-button, без прив'язки до батьківських тегів." },
     ],
+    quiz: {
+      id: "css-foundations-selectors-quiz",
+      title: "Селектори та специфічність: перевір себе",
+      questions: [
+        {
+          id: "css-selectors-class-vs-tag",
+          type: "single",
+          question: "Два правила: h2 { color: black; } і .menu-heading { color: coral; }, застосовані до <h2 class=\"menu-heading\">. Який колір переможе?",
+          options: [
+            "coral — клас важчий за тег",
+            "black — тег написаний першим",
+            "Обидва застосуються одночасно",
+            "Жоден, потрібен id",
+          ],
+          correctAnswer: "coral — клас важчий за тег",
+          explanation: "Клас має вищу специфічність, ніж селектор за тегом, незалежно від порядку в файлі.",
+        },
+        {
+          id: "css-selectors-direct-child",
+          type: "true-false",
+          question: ".menu > li вибирає лише прямих дітей .menu, ігноруючи глибше вкладені елементи.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "> — комбінатор прямого нащадка; пробіл (нащадок) ловить елемент на будь-якій глибині.",
+        },
+        {
+          id: "css-selectors-important-code",
+          type: "code",
+          question: "Якого кольору буде текст?",
+          codeSnippet: `#main-text { color: green; }\np { color: red !important; }`,
+          options: [
+            "Червоного — !important перебиває навіть id",
+            "Зеленого — id завжди сильніший",
+            "Тексту взагалі не буде видно",
+            "Кольори застосуються почергово",
+          ],
+          correctAnswer: "Червоного — !important перебиває навіть id",
+          explanation: "!important стоїть вище за звичайну специфічність, включно з id.",
+        },
+        {
+          id: "css-selectors-id-bad-practice",
+          type: "single",
+          question: "Чому стилізація через id вважається поганою практикою?",
+          options: [
+            "Дуже висока специфічність — перебити пізніше можна лише ще важчим селектором чи !important",
+            "id не підтримується в CSS",
+            "id можна використовувати лише раз на весь сайт",
+            "Це уповільнює завантаження сторінки",
+          ],
+          correctAnswer: "Дуже висока специфічність — перебити пізніше можна лише ще важчим селектором чи !important",
+          explanation: "Це ускладнює підтримку стилів у міру росту проєкту — краще стилізувати через класи.",
+        },
+        {
+          id: "css-selectors-nth-child",
+          type: "single",
+          question: "Для чого зазвичай використовують :nth-child(even)?",
+          options: [
+            "\"Зебра\"-забарвлення парних рядків списку чи таблиці",
+            "Стилізація елемента при наведенні мишкою",
+            "Додавання декоративного контенту",
+            "Вибір лише останнього елемента",
+          ],
+          correctAnswer: "\"Зебра\"-забарвлення парних рядків списку чи таблиці",
+          explanation: ":nth-child(even)/:nth-child(odd) — типовий спосіб виділити парні чи непарні елементи в списку.",
+        },
+      ],
+    },
   },
 
   "Каскад та успадкування": {
@@ -346,6 +477,74 @@ h1, h2, h3 {
       { id: "css-inheritance-choice", kind: "choice", prompt: "Яка властивість НЕ успадковується від батьківського елемента?", options: ["color", "font-family", "border", "line-height"], correctAnswer: "border", solution: "border завжди задається явно на кожному елементі — вона не передається дітям." },
       { id: "css-cascade-order-find-bug", kind: "find-the-bug", prompt: "У styles.css написано:\n\n.button { color: blue; }\n.button { color: red; }\n\nОбидва правила мають однаковий селектор .button. Розробник очікував синій колір, а побачив червоний. Це баг браузера?", solution: "Ні — це саме каскад: при однаковій специфічності (обидва правила — один клас) перемагає те, що написане нижче в файлі, незалежно від того, яке з них 'мало' спрацювати за задумом. Щоб уникнути плутанини, варто уникати повторення того самого селектора в різних місцях файлу." },
     ],
+    quiz: {
+      id: "css-foundations-cascade-quiz",
+      title: "Каскад та успадкування: перевір себе",
+      questions: [
+        {
+          id: "css-cascade-color-inherited",
+          type: "true-false",
+          question: "color успадковується від батьківського елемента до дочірніх, а border — ні.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "color, font-family, line-height успадковуються; box-модель (border, padding, margin) — ніколи.",
+        },
+        {
+          id: "css-cascade-priority-order",
+          type: "single",
+          question: "У якому порядку каскад визначає переможця серед конкуруючих правил?",
+          options: [
+            "!important → специфічність → порядок у файлі",
+            "Порядок у файлі → специфічність → !important",
+            "Специфічність → порядок у файлі → !important",
+            "Лише порядок у файлі має значення",
+          ],
+          correctAnswer: "!important → специфічність → порядок у файлі",
+          explanation: "Спочатку враховується !important, потім специфічність селектора, і лише при однаковій вазі — порядок у файлі.",
+        },
+        {
+          id: "css-cascade-inherit-code",
+          type: "code",
+          question: "Навіщо тут потрібен inherit?",
+          codeSnippet: `.footer-text {\n  color: gray;\n}\n\n.footer-text a {\n  color: inherit;\n}`,
+          options: [
+            "Без нього посилання отримало б стандартний синій колір браузера замість сірого",
+            "inherit прибирає колір повністю",
+            "inherit працює лише для border",
+            "Тут inherit зайвий",
+          ],
+          correctAnswer: "Без нього посилання отримало б стандартний синій колір браузера замість сірого",
+          explanation: "inherit примусово бере значення властивості від батька, навіть якщо вона зазвичай не успадковується автоматично для цього елемента.",
+        },
+        {
+          id: "css-cascade-files-order",
+          type: "single",
+          question: "У якому порядку логічно підключати CSS-файли реального проєкту?",
+          options: [
+            "reset → base → layout → components → pages",
+            "pages → components → layout → base → reset",
+            "Порядок не має значення",
+            "components → reset → pages → base → layout",
+          ],
+          correctAnswer: "reset → base → layout → components → pages",
+          explanation: "Кожен наступний файл уточнює попередній: reset скидає стилі браузера, pages — найконкретніші стилі сторінки.",
+        },
+        {
+          id: "css-cascade-same-specificity-code",
+          type: "code",
+          question: "Обидва правила мають однакову специфічність. Якого кольору буде кнопка?",
+          codeSnippet: `.button { color: blue; }\n.button { color: red; }`,
+          options: [
+            "Червоного — перемагає правило, написане нижче в файлі",
+            "Синього — перемагає перше правило",
+            "Кольори змішаються",
+            "Це помилка синтаксису",
+          ],
+          correctAnswer: "Червоного — перемагає правило, написане нижче в файлі",
+          explanation: "При повністю однаковій специфічності каскад віддає перевагу правилу, написаному пізніше.",
+        },
+      ],
+    },
   },
 
   "Одиниці виміру та CSS-змінні": {
@@ -477,5 +676,161 @@ body {
       { id: "css-units-choice", kind: "choice", prompt: "Товщину рамки картки (1px) варто задавати через:", options: ["rem", "px", "%", "vw"], correctAnswer: "px", solution: "Тонкі фіксовані деталі на кшталт рамки зазвичай залишають у px — 1px має бути 1px незалежно від шрифту." },
       { id: "css-variables-find-bug", kind: "find-the-bug", prompt: "У styles.css написано:\n\n.card { background-color: --color-background; }\n\nКолір картки не змінюється, хоча --color-background оголошена в :root. Що не так?", solution: "Пропущено функцію var() навколо назви змінної — потрібно background-color: var(--color-background);. Без var() браузер сприймає --color-background як недійсне значення властивості й ігнорує все правило." },
     ],
+    quiz: {
+      id: "css-foundations-units-quiz",
+      title: "Одиниці виміру та CSS-змінні: перевір себе",
+      questions: [
+        {
+          id: "css-units-rem-accessibility",
+          type: "single",
+          question: "Чому rem краще за px для розміру шрифту з погляду доступності?",
+          options: [
+            "rem масштабується, якщо користувач збільшує шрифт у налаштуваннях браузера",
+            "rem завжди менший за px",
+            "px взагалі не підтримується браузерами",
+            "Різниці немає",
+          ],
+          correctAnswer: "rem масштабується, якщо користувач збільшує шрифт у налаштуваннях браузера",
+          explanation: "px — фіксований розмір, який не реагує на налаштування доступності браузера.",
+        },
+        {
+          id: "css-units-em-compound",
+          type: "true-false",
+          question: "em компаундиться при вкладеності (кожен рівень множить на батьківський font-size), а rem — ні.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "rem завжди рахується від кореневого html, незалежно від глибини вкладеності — тому передбачуваніший за em.",
+        },
+        {
+          id: "css-units-missing-var-code",
+          type: "code",
+          question: "Чому колір не застосовується?",
+          codeSnippet: `.card { background-color: --color-primary; }`,
+          options: [
+            "Пропущено функцію var() навколо назви змінної",
+            "Назва змінної написана з помилкою",
+            "background-color не підтримує змінні",
+            "Тут усе правильно",
+          ],
+          correctAnswer: "Пропущено функцію var() навколо назви змінної",
+          explanation: "Потрібно background-color: var(--color-primary); — без var() браузер ігнорує все правило.",
+        },
+        {
+          id: "css-units-clamp-purpose",
+          type: "single",
+          question: "Для чого потрібна функція clamp(2rem, 6vw, 5rem)?",
+          options: [
+            "Адаптивний розмір із жорсткими мінімальною і максимальною межами",
+            "Фіксований розмір незалежно від екрана",
+            "Анімація розміру шрифту",
+            "Обмеження кольору тексту",
+          ],
+          correctAnswer: "Адаптивний розмір із жорсткими мінімальною і максимальною межами",
+          explanation: "6vw плавно масштабується з екраном, але ніколи не виходить за межі 2rem і 5rem.",
+        },
+        {
+          id: "css-units-ch-readability",
+          type: "single",
+          question: "Чому текстовий блок краще обмежити через max-width: 65ch, а не робити на всю ширину екрана?",
+          options: [
+            "Довгі рядки тексту важко читати",
+            "65ch — це вимога стандарту HTML",
+            "Це прискорює завантаження сторінки",
+            "ch — єдина одиниця, яку підтримують усі браузери",
+          ],
+          correctAnswer: "Довгі рядки тексту важко читати",
+          explanation: "ch — приблизно ширина символу \"0\" поточного шрифту, зручна одиниця для обмеження ширини тексту для комфортного читання.",
+        },
+      ],
+    },
   },
+};
+
+export const cssFoundationsModuleQuiz: QuizData = {
+  id: "css-foundations-module-quiz",
+  title: "Основи CSS: контрольний тест",
+  questions: [
+    {
+      id: "css-foundations-module-link-standard",
+      type: "single",
+      question: "Який спосіб підключення CSS є стандартом для реального багатосторінкового проєкту?",
+      options: [
+        "Зовнішній файл через <link rel=\"stylesheet\">",
+        "Тег <style> на кожній сторінці окремо",
+        "Атрибут style на кожному елементі",
+        "Усі три однаково хороші для реального проєкту",
+      ],
+      correctAnswer: "Зовнішній файл через <link rel=\"stylesheet\">",
+      explanation: "Один styles.css можна підключити до всіх сторінок сайту — зміна в одному місці оновлює все.",
+    },
+    {
+      id: "css-foundations-module-id-specificity",
+      type: "true-false",
+      question: "Селектор за id має вищу специфічність, ніж селектор за класом.",
+      options: ["Так", "Ні"],
+      correctAnswer: true,
+      explanation: "Специфічність зростає так: тег < клас/атрибут/псевдоклас < id < inline style < !important.",
+    },
+    {
+      id: "css-foundations-module-inherit-example",
+      type: "code",
+      question: "Чому <p> усередині <body> з правилом body { color: #333; } теж отримує сірий текст, хоча для p окремого правила немає?",
+      codeSnippet: `body {\n  color: #333;\n}`,
+      options: [
+        "color — успадковувана властивість, вона переходить від батька до нащадків",
+        "Це помилка браузера",
+        "p завжди чорний за замовчуванням, і color тут ні до чого",
+        "Потрібен окремий рядок p { color: inherit; }",
+      ],
+      correctAnswer: "color — успадковувана властивість, вона переходить від батька до нащадків",
+      explanation: "color, font-family, line-height та інші текстові властивості успадковуються автоматично, без окремого правила.",
+    },
+    {
+      id: "css-foundations-module-rem-accessibility",
+      type: "single",
+      question: "Чому rem краще за px для розміру шрифту тексту сайту?",
+      options: [
+        "rem масштабується, якщо користувач збільшує шрифт у налаштуваннях браузера",
+        "rem завжди дає менший розмір, ніж px",
+        "px не підтримується в сучасних браузерах",
+        "Різниці між ними немає",
+      ],
+      correctAnswer: "rem масштабується, якщо користувач збільшує шрифт у налаштуваннях браузера",
+      explanation: "px — фіксований розмір, який не реагує на налаштування доступності браузера.",
+    },
+    {
+      id: "css-foundations-module-important-code",
+      type: "code",
+      question: "Якого кольору буде текст?",
+      codeSnippet: `#main-text { color: green; }\np { color: red !important; }`,
+      options: [
+        "Червоного — !important перебиває навіть id",
+        "Зеленого — id завжди сильніший за тег",
+        "Кольори змішаються",
+        "Жодного, це помилка синтаксису",
+      ],
+      correctAnswer: "Червоного — !important перебиває навіть id",
+      explanation: "!important стоїть вище за звичайну специфічність у каскаді — його варто використовувати вкрай рідко.",
+    },
+    {
+      id: "css-foundations-module-facts",
+      type: "multiple",
+      question: "Які з цих тверджень про основи CSS правильні?",
+      options: [
+        "У HTML клас пишеться без крапки, а в CSS-селекторі — з крапкою",
+        "border — успадковувана властивість, як і color",
+        "CSS-змінні оголошують зазвичай у :root, щоб вони діяли глобально",
+        "clamp(min, бажане, max) дає адаптивний розмір із жорсткими межами",
+      ],
+      correctAnswer: [
+        "У HTML клас пишеться без крапки, а в CSS-селекторі — з крапкою",
+        "CSS-змінні оголошують зазвичай у :root, щоб вони діяли глобально",
+        "clamp(min, бажане, max) дає адаптивний розмір із жорсткими межами",
+      ],
+      explanation: "border, на відміну від color, ніколи не успадковується — його завжди задають явно на кожному елементі.",
+      optionExplanations: {
+        "border — успадковувана властивість, як і color": "border не успадковується — на відміну від color, font-family чи line-height, box-модель завжди задається явно.",
+      },
+    },
+  ],
 };
