@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Форми, ціни і footer" (css-real-forms-pricing). Cheat-sheet
@@ -125,6 +126,64 @@ export const cssRealFormsPricingOverrides: Record<string, LessonOverride> = {
       { id: "css-form-placeholder-find-bug", kind: "find-the-bug", prompt: "<input placeholder=\"Ваше ім'я\"> без жодного <label>. У чому проблема?", solution: "Placeholder зникає, щойно користувач починає вводити текст, і не є надійною заміною <label> для асистивних технологій. Потрібен справжній <label for=\"...\">, навіть якщо він візуально прихований." },
       { id: "css-form-textarea-choice", kind: "choice", prompt: "Textarea для коментаря до бронювання не повинна ламати layout форми, розтягуючись убік, але користувач має змогу зробити її вищою. Що обрати?", options: ["resize: none", "resize: both", "resize: vertical", "resize: horizontal"], correctAnswer: "resize: vertical", solution: "resize: vertical дозволяє змінювати тільки висоту, лишаючи ширину (і layout форми) незмінною." },
     ],
+    quiz: {
+      id: "css-real-forms-pricing-field-styling-quiz",
+      title: "Швидка перевірка: Стилізація форми бронювання",
+      questions: [
+        {
+          id: "css-rfp-q1-font-inherit",
+          type: "single",
+          question: "Поле input виглядає іншим шрифтом, ніж решта сайту. Що додати?",
+          options: ["border: none", "font: inherit", "color: inherit", "outline: none"],
+          correctAnswer: "font: inherit",
+          explanation: "Браузери часто застосовують до полів системний шрифт замість успадкованого від сторінки. font: inherit синхронізує вигляд поля з рештою дизайну.",
+        },
+        {
+          id: "css-rfp-q2-select-arrow",
+          type: "code",
+          question: "Що робить appearance: none на select, і чого не вистачає для завершення стилізації?",
+          codeSnippet: `.form-field select {\n  appearance: none;\n}`,
+          options: [
+            "Прибирає системну стрілку select; потрібно додати власну через background-image",
+            "Повністю ховає select зі сторінки",
+            "Робить select нередагованим",
+            "Нічого не змінює без vendor-префіксів",
+          ],
+          correctAnswer: "Прибирає системну стрілку select; потрібно додати власну через background-image",
+          explanation: "appearance: none прибирає стандартний, системний вигляд select разом зі стрілкою ОС. Без власної іконки select виглядатиме як звичайний div без індикатора випадаючого списку.",
+        },
+        {
+          id: "css-rfp-q3-placeholder-not-label",
+          type: "true-false",
+          question: "placeholder можна використовувати замість <label> — це рівноцінна заміна.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Placeholder зникає, щойно користувач починає вводити текст, і не так надійно читається асистивними технологіями, як справжній <label>.",
+        },
+        {
+          id: "css-rfp-q4-border-outline-bug",
+          type: "code",
+          question: "У чому проблема цього стилю для полів форми?",
+          codeSnippet: "input {\n  border: none;\n  outline: none;\n}",
+          options: [
+            "Користувач більше не бачить межі поля — незрозуміло, куди клікати",
+            "Поле стане недоступним для введення тексту",
+            "border і outline не можна прибирати одночасно синтаксично",
+            "Форма перестане відправлятись",
+          ],
+          correctAnswer: "Користувач більше не бачить межі поля — незрозуміло, куди клікати",
+          explanation: "border і outline — основний візуальний сигнал \"тут є поле вводу\". Прибираючи обидва без заміни, поле зливається з фоном сторінки.",
+        },
+        {
+          id: "css-rfp-q5-textarea-resize",
+          type: "single",
+          question: "Textarea для коментаря не повинна ламати layout форми, розтягуючись убік, але користувач має змогу зробити її вищою. Що обрати?",
+          options: ["resize: none", "resize: both", "resize: vertical", "resize: horizontal"],
+          correctAnswer: "resize: vertical",
+          explanation: "resize: vertical дозволяє змінювати тільки висоту, лишаючи ширину (і layout форми) незмінною.",
+        },
+      ],
+    },
   },
 
   "Стани валідації полів": {
@@ -246,6 +305,63 @@ export const cssRealFormsPricingOverrides: Record<string, LessonOverride> = {
       { id: "css-invalid-predict", kind: "predict", prompt: "input:invalid { border-color: red; } без :not(:placeholder-shown). Як виглядає порожнє обов'язкове поле при завантаженні форми?", solution: "Одразу з червоною рамкою, хоча користувач ще нічого не вводив, — це виглядає як передчасна помилка." },
       { id: "css-readonly-vs-disabled-choice", kind: "choice", prompt: "Поле з уже підтвердженим email користувача не можна редагувати, але значення має піти разом із формою на сервер. Що обрати?", options: ["disabled", "readonly", "required", "hidden"], correctAnswer: "readonly", solution: "readonly не редагується, але лишається частиною даних форми при відправці; disabled повністю виключив би його зі значень, що відправляються." },
     ],
+    quiz: {
+      id: "css-real-forms-pricing-validation-states-quiz",
+      title: "Швидка перевірка: Стани валідації полів",
+      questions: [
+        {
+          id: "css-rfp-q1-invalid-premature",
+          type: "code",
+          question: "Порожнє обов'язкове поле виглядає \"помилковим\" одразу при завантаженні форми. У чому причина?",
+          codeSnippet: "input:invalid {\n  border-color: red;\n}",
+          options: [
+            "Відсутній :not(:placeholder-shown) — :invalid спрацьовує для порожнього required-поля одразу",
+            "border-color не може бути red",
+            ":invalid працює лише для type=\"email\"",
+            "Потрібен !important",
+          ],
+          correctAnswer: "Відсутній :not(:placeholder-shown) — :invalid спрацьовує для порожнього required-поля одразу",
+          explanation: "Браузер вважає порожнє обов'язкове поле технічно \"невалідним\" з першої секунди. :not(:placeholder-shown) відкладає стиль помилки, доки користувач не почне вводити текст.",
+        },
+        {
+          id: "css-rfp-q2-disabled-vs-readonly",
+          type: "single",
+          question: "Поле з уже підтвердженим email користувача не можна редагувати, але значення має піти разом із формою на сервер. Що обрати?",
+          options: ["disabled", "readonly", "required", "hidden"],
+          correctAnswer: "readonly",
+          explanation: "readonly не редагується, але лишається частиною даних форми при відправці; disabled повністю виключив би його зі значень, що відправляються.",
+        },
+        {
+          id: "css-rfp-q3-color-only-error",
+          type: "true-false",
+          question: "Червоної рамки (border-color: red) достатньо як єдиного сигналу помилки поля, без тексту пояснення.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Частина користувачів не розрізняє кольори — колір ніколи не має бути єдиним сигналом. Текст помилки обов'язковий.",
+        },
+        {
+          id: "css-rfp-q4-focus-visible-purpose",
+          type: "single",
+          question: "Яке призначення :focus-visible серед станів поля форми?",
+          options: [
+            "Показує, яке поле активне зараз (отримало фокус)",
+            "Показує, що поле містить помилку",
+            "Показує, що поле недоступне для редагування",
+            "Змінює тип поля на email",
+          ],
+          correctAnswer: "Показує, яке поле активне зараз (отримало фокус)",
+          explanation: ":focus-visible — індикатор поточного фокусу, окремий від :invalid (помилка) чи :disabled (недоступність).",
+        },
+        {
+          id: "css-rfp-q5-frontend-validation-enough",
+          type: "true-false",
+          question: "HTML5-атрибутів валідації (required, type=\"email\") достатньо без перевірки на backend.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Користувач може вимкнути JavaScript чи відправити запит напряму, обходячи frontend-перевірку. Backend завжди має самостійно перевіряти отримані дані.",
+        },
+      ],
+    },
   },
 
   "Прайс-таблиця як картки": {
@@ -413,6 +529,70 @@ export const cssRealFormsPricingOverrides: Record<string, LessonOverride> = {
       { id: "css-price-cards-choice", kind: "choice", prompt: "Потрібно виділити один із трьох варіантів прайсу як \"рекомендований\". Найкращий спосіб?", options: ["Зробити текст трохи більшим", "Додати рамку кольору бренду й значок", "Нічого не робити, це й так зрозуміло", "Написати CAPS LOCK"], correctAnswer: "Додати рамку кольору бренду й значок", solution: "Явний візуальний акцент (рамка + значок) — найзрозуміліший спосіб виділити рекомендований варіант." },
       { id: "css-price-cards-badge-find-bug", kind: "find-the-bug", prompt: "Бейдж \"Хіт продажів\" (position: absolute, top: -12px) накладається на довгу назву картки \"Фірмовий раф з корицею\". Чого бракує в CSS заголовка?", solution: "padding-right на заголовку картки — без нього довгий текст назви заходить прямо під бейдж, що виступає над карткою." },
     ],
+    quiz: {
+      id: "css-real-forms-pricing-price-cards-quiz",
+      title: "Швидка перевірка: Прайс-таблиця як картки",
+      questions: [
+        {
+          id: "css-rfp-q1-table-to-div",
+          type: "code",
+          question: "У чому проблема цього переходу від таблиці до картки?",
+          codeSnippet: '<div class="price-row">Еспресо — 45 грн</div>',
+          options: [
+            "Втрачається семантична структура (табличний зв'язок назви й ціни) для скрінрідерів",
+            "div не можна стилізувати через CSS Grid",
+            "Текст перестане відображатись",
+            "Це швидше за table у продуктивності рендерингу",
+          ],
+          correctAnswer: "Втрачається семантична структура (табличний зв'язок назви й ціни) для скрінрідерів",
+          explanation: "table/th/scope описують структуру даних, а CSS — лише вигляд. Заміна table на div заради картки губить доступну структуру без потреби — CSS міг би змінити вигляд, зберігши table.",
+        },
+        {
+          id: "css-rfp-q2-recommended-highlight",
+          type: "single",
+          question: "Потрібно виділити один із трьох варіантів прайсу як \"рекомендований\". Найкращий спосіб?",
+          options: ["Зробити текст трохи більшим", "Додати рамку кольору бренду й текстовий бейдж", "Нічого не робити, це й так зрозуміло", "Написати CAPS LOCK"],
+          correctAnswer: "Додати рамку кольору бренду й текстовий бейдж",
+          explanation: "Явний візуальний акцент і рамкою, і текстовим бейджем — найзрозуміліший спосіб, бо не покладається лише на колір.",
+        },
+        {
+          id: "css-rfp-q3-flex-grow-button",
+          type: "code",
+          question: "Навіщо тут flex-grow: 1 на .price-card-content?",
+          codeSnippet: ".price-card {\n  display: flex;\n  flex-direction: column;\n}\n\n.price-card-content {\n  flex-grow: 1;\n}",
+          options: [
+            "Щоб кнопка після контенту завжди притискалась донизу картки, незалежно від довжини опису",
+            "Щоб текст опису центрувався",
+            "Щоб картка стала ширшою",
+            "flex-grow тут нічого не робить без flex-wrap",
+          ],
+          correctAnswer: "Щоб кнопка після контенту завжди притискалась донизу картки, незалежно від довжини опису",
+          explanation: "flex-grow: 1 на блоці контенту займає весь вільний простір картки — кнопка після нього природно опиняється внизу, навіть якщо сусідні картки мають коротший опис.",
+        },
+        {
+          id: "css-rfp-q4-badge-padding-bug",
+          type: "code",
+          question: "Бейдж «Хіт продажів» (position: absolute; top: -12px) накладається на довгу назву картки. Чого бракує?",
+          codeSnippet: ".price-card--recommended .price-card-title {\n  /* немає padding-right */\n}",
+          options: [
+            "padding-right на заголовку картки, щоб текст не заходив під бейдж",
+            "z-index на заголовку",
+            "border-radius на бейджі",
+            "font-weight на заголовку",
+          ],
+          correctAnswer: "padding-right на заголовку картки, щоб текст не заходив під бейдж",
+          explanation: "Без padding-right довгий текст назви заходить прямо під бейдж, що виступає над карткою.",
+        },
+        {
+          id: "css-rfp-q5-price-emphasis",
+          type: "single",
+          question: "Яка інформація в картці прайсу найважливіша й має бути виділена найпомітніше (розмір, вага шрифту)?",
+          options: ["Назва напою", "Ціна", "Опис", "Кнопка \"Замовити\""],
+          correctAnswer: "Ціна",
+          explanation: "Ціна — найважливіша інформація картки прайсу, тому її варто виділяти найбільшим розміром і вагою шрифту серед решти тексту.",
+        },
+      ],
+    },
   },
 
   "Footer-макет на Grid": {
@@ -545,5 +725,156 @@ export const cssRealFormsPricingOverrides: Record<string, LessonOverride> = {
       { id: "css-footer-tel-find-bug", kind: "find-the-bug", prompt: "<p>+380 00 000 00 00</p> у колонці контактів footer. У чому проблема?", solution: "Це звичайний текст, а не посилання — користувач не може натиснути й одразу зателефонувати. Потрібно <a href=\"tel:+380000000000\">." },
       { id: "css-footer-autofit-vs-autofill-choice", kind: "choice", prompt: "Footer завжди має рівно 4 розділи (бренд, контакти, посилання, підписка). Що обрати для grid-template-columns?", options: ["repeat(auto-fill, minmax(200px, 1fr))", "repeat(auto-fit, minmax(200px, 1fr))", "repeat(4, 1fr) без minmax", "display: inline"], correctAnswer: "repeat(auto-fit, minmax(200px, 1fr))", solution: "auto-fit розтягує наявні 4 розділи на все вільне місце, коли колонок поміщається менше 4; auto-fill замість цього залишив би порожні невидимі колонки-заглушки." },
     ],
+    quiz: {
+      id: "css-real-forms-pricing-footer-grid-quiz",
+      title: "Швидка перевірка: Footer-макет на Grid",
+      questions: [
+        {
+          id: "css-rfp-q1-autofit-narrow",
+          type: "single",
+          question: "Footer з grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) переглядають на екрані шириною 380px. Скільки колонок?",
+          options: ["Чотири", "Дві", "Одна", "Нуль — сітка ламається"],
+          correctAnswer: "Одна",
+          explanation: "380px замало для двох колонок по 200px з gap, тому auto-fit складає все в один стовпчик.",
+        },
+        {
+          id: "css-rfp-q2-tel-link",
+          type: "code",
+          question: "У чому проблема цього контакту у footer?",
+          codeSnippet: "<p>+380 00 000 00 00</p>",
+          options: [
+            "Це звичайний текст, а не клікабельне посилання tel:",
+            "Номер телефону написано в неправильному форматі",
+            "<p> не можна використовувати у footer",
+            "Потрібен clas=\"phone\"",
+          ],
+          correctAnswer: "Це звичайний текст, а не клікабельне посилання tel:",
+          explanation: "Користувач очікує можливості натиснути й одразу зателефонувати. Потрібен <a href=\"tel:+380000000000\">.",
+        },
+        {
+          id: "css-rfp-q3-autofit-vs-autofill-fixed",
+          type: "single",
+          question: "Footer завжди має рівно 4 розділи (бренд, контакти, посилання, підписка). Що обрати для grid-template-columns?",
+          options: [
+            "repeat(auto-fill, minmax(200px, 1fr))",
+            "repeat(auto-fit, minmax(200px, 1fr))",
+            "repeat(4, 1fr) без minmax",
+            "display: inline",
+          ],
+          correctAnswer: "repeat(auto-fit, minmax(200px, 1fr))",
+          explanation: "auto-fit розтягує наявні 4 розділи на все вільне місце, коли колонок поміщається менше 4; auto-fill залишив би порожні невидимі колонки-заглушки.",
+        },
+        {
+          id: "css-rfp-q4-contrast-bug",
+          type: "code",
+          question: "У чому проблема цього стилю footer?",
+          codeSnippet: ".site-footer {\n  color: #374151;\n  background: #1f2937;\n}",
+          options: [
+            "Недостатній контраст — обидва кольори темні, текст ледь помітний на фоні",
+            "color і background не можна задавати разом",
+            "Значення HEX некоректні",
+            "Потрібен !important",
+          ],
+          correctAnswer: "Недостатній контраст — обидва кольори темні, текст ледь помітний на фоні",
+          explanation: "#374151 і #1f2937 — обидва темні кольори з близькою яскравістю. Контраст визначається різницею яскравості; текст footer потрібно робити явно світлим (white/#f3f4f6).",
+        },
+        {
+          id: "css-rfp-q5-nav-aria-label",
+          type: "single",
+          question: "На сторінці вже є головна навігація <nav>. Навіщо додавати aria-label=\"Footer\" до <nav> у футері?",
+          options: [
+            "Щоб скрінрідер міг розрізнити цю навігацію від головного меню сайту",
+            "Це обов'язковий синтаксис HTML для будь-якого <nav>",
+            "Щоб посилання footer стали клікабельними",
+            "Щоб footer виглядав по-іншому візуально",
+          ],
+          correctAnswer: "Щоб скрінрідер міг розрізнити цю навігацію від головного меню сайту",
+          explanation: "Без aria-label обидва <nav> звучать для скрінрідера однаково — просто \"навігація\". aria-label=\"Footer\" дає їм окремі, зрозумілі назви.",
+        },
+      ],
+    },
   },
+};
+
+export const cssRealFormsPricingModuleQuiz: QuizData = {
+  id: "css-real-forms-pricing-module-quiz",
+  title: "Контрольний тест: Форми, ціни і footer",
+  questions: [
+    {
+      id: "css-rfp-mod-q1-font-inherit",
+      type: "single",
+      question: "Чому варто задавати font: inherit для input/textarea/select?",
+      options: [
+        "Браузери часто застосовують до полів системний шрифт замість успадкованого від сторінки",
+        "Це обов'язковий атрибут для валідної форми",
+        "Без нього форма не відправляється",
+        "Це прибирає системну стрілку select",
+      ],
+      correctAnswer: "Браузери часто застосовують до полів системний шрифт замість успадкованого від сторінки",
+      explanation: "font: inherit синхронізує вигляд полів форми з рештою дизайну сайту.",
+    },
+    {
+      id: "css-rfp-mod-q2-invalid-placeholder-shown",
+      type: "true-false",
+      question: ":invalid без :not(:placeholder-shown) показує помилку одразу для порожнього обов'язкового поля при завантаженні форми.",
+      options: ["Так", "Ні"],
+      correctAnswer: true,
+      explanation: "Браузер вважає порожнє required-поле технічно невалідним з першої секунди — без додаткової умови це виглядає як передчасна помилка.",
+    },
+    {
+      id: "css-rfp-mod-q3-table-preserved",
+      type: "single",
+      question: "Прайс кав'ярні стилізовано як картки через CSS Grid. Що при цьому має залишитись незмінним у HTML?",
+      options: [
+        "Семантична розмітка table/th/scope",
+        "Клас .price-row",
+        "Порядок колонок у файлі CSS",
+        "Кількість карток на екрані",
+      ],
+      correctAnswer: "Семантична розмітка table/th/scope",
+      explanation: "CSS повністю змінює вигляд, але семантична структура (table/th/scope) має зберігатись для доступності — вигляд і структура даних незалежні одне від одного.",
+    },
+    {
+      id: "css-rfp-mod-q4-autofit-footer",
+      type: "code",
+      question: "Footer завжди має рівно 4 розділи. Чому тут краще auto-fit, а не auto-fill?",
+      codeSnippet: ".site-footer {\n  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n}",
+      options: [
+        "auto-fit розтягує наявні розділи на вільне місце; auto-fill залишив би порожні колонки-заглушки",
+        "auto-fill взагалі не підтримується в footer",
+        "auto-fit працює лише з фіксованою кількістю колонок",
+        "Різниці немає — вони ідентичні",
+      ],
+      correctAnswer: "auto-fit розтягує наявні розділи на вільне місце; auto-fill залишив би порожні колонки-заглушки",
+      explanation: "Коли реальних елементів менше, ніж могло б поміститись колонок, auto-fit схлопує порожні місця й розтягує наявні елементи, а auto-fill залишає невидимі порожні колонки.",
+    },
+    {
+      id: "css-rfp-mod-q5-disabled-vs-readonly-mod",
+      type: "true-false",
+      question: "disabled-поле відправляється разом із формою так само, як readonly-поле.",
+      options: ["Так", "Ні"],
+      correctAnswer: false,
+      explanation: "readonly-поле лишається частиною даних форми при відправці. disabled-поле повністю виключається зі значень, що відправляються.",
+    },
+    {
+      id: "css-rfp-mod-q6-true-statements",
+      type: "multiple",
+      question: "Які з тверджень про форми, ціни і footer правильні?",
+      options: [
+        "placeholder є надійною заміною <label>, тому справжній label необов'язковий",
+        "flex-grow: 1 на блоці контенту картки притискає кнопку донизу незалежно від довжини опису",
+        "Колір — не єдиний допустимий сигнал помилки поля, текст пояснення теж потрібен",
+        "grid-column: 1 / -1 розтягує елемент на всю ширину сітки",
+      ],
+      correctAnswer: [
+        "flex-grow: 1 на блоці контенту картки притискає кнопку донизу незалежно від довжини опису",
+        "Колір — не єдиний допустимий сигнал помилки поля, текст пояснення теж потрібен",
+        "grid-column: 1 / -1 розтягує елемент на всю ширину сітки",
+      ],
+      explanation: "placeholder зникає, щойно користувач починає вводити текст, і не є надійною заміною справжнього <label>.",
+      optionExplanations: {
+        "placeholder є надійною заміною <label>, тому справжній label необов'язковий": "Невірно: placeholder — лише тимчасова підказка, вона зникає при введенні тексту і ненадійно читається асистивними технологіями. Справжній <label> завжди потрібен.",
+      },
+    },
+  ],
 };
