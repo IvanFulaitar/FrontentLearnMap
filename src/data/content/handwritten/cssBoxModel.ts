@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Box-модель і відступи" (css-box-model). Cheat-sheet format.
@@ -140,6 +141,73 @@ body {
       { id: "css-box-model-predict", kind: "predict", prompt: "width: 100px, padding: 10px, box-sizing: border-box. Яка реальна ширина елемента?", solution: "100px — border-box рахує padding усередині заданої ширини, тож зовнішній розмір лишається 100px." },
       { id: "css-box-model-outline-choice", kind: "choice", prompt: "Потрібно додати видиму рамку фокуса на кнопку так, щоб вона НЕ зсувала сусідні елементи і не впливала на загальний розмір кнопки. Що обрати?", options: ["border", "padding", "outline", "margin"], correctAnswer: "outline", solution: "outline не входить у box-модель — на відміну від border, він не впливає на розмір елемента і не зсуває сусідні елементи." },
     ],
+    quiz: {
+      id: "css-box-model-basics-quiz",
+      title: "Box-модель на практиці: перевір себе",
+      questions: [
+        {
+          id: "css-box-model-layer-order",
+          type: "single",
+          question: "У якому порядку йдуть шари box-моделі, рахуючи від вмісту назовні?",
+          options: [
+            "content → padding → border → margin",
+            "margin → border → padding → content",
+            "padding → content → margin → border",
+            "border → padding → margin → content",
+          ],
+          correctAnswer: "content → padding → border → margin",
+          explanation: "content — сам вміст, далі padding, потім border, і зовні margin.",
+        },
+        {
+          id: "css-box-model-border-box-true-false",
+          type: "true-false",
+          question: "box-sizing: border-box рахує padding і border усередині заданого width, а не поверх нього.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Без border-box (стандартний content-box) padding і border додаються поверх заданої ширини.",
+        },
+        {
+          id: "css-box-model-width-code",
+          type: "code",
+          question: "Яка реальна ширина цієї картки?",
+          codeSnippet: `.card {\n  width: 300px;\n  padding: 24px;\n  /* без box-sizing: border-box */\n}`,
+          options: [
+            "348px — padding додається поверх заданих 300px",
+            "300px — padding завжди входить у width",
+            "276px",
+            "Неможливо визначити",
+          ],
+          correctAnswer: "348px — padding додається поверх заданих 300px",
+          explanation: "300 + 24 зліва + 24 справа = 348px за замовчуванням (content-box).",
+        },
+        {
+          id: "css-box-model-outline-vs-border",
+          type: "single",
+          question: "Чому outline краще за border для стилів :focus?",
+          options: [
+            "outline не входить у box-модель і не зсуває сусідні елементи",
+            "outline виглядає красивіше",
+            "border не можна анімувати",
+            "Різниці немає",
+          ],
+          correctAnswer: "outline не входить у box-модель і не зсуває сусідні елементи",
+          explanation: "border впливає на розмір і розташування елемента, outline — ні.",
+        },
+        {
+          id: "css-box-model-min-height",
+          type: "single",
+          question: "Чому для карток із текстом, що може змінюватись у довжині, краще використовувати min-height, а не height?",
+          options: [
+            "min-height дозволяє картці вирости, якщо тексту стане більше",
+            "min-height швидше рендериться",
+            "height взагалі не підтримується для div",
+            "Різниці немає",
+          ],
+          correctAnswer: "min-height дозволяє картці вирости, якщо тексту стане більше",
+          explanation: "Фіксована height може обрізати чи зламати довший текст (переклад, більший шрифт).",
+        },
+      ],
+    },
   },
 
   "Margin проти padding": {
@@ -267,6 +335,74 @@ body {
       { id: "css-margin-padding-find-bug", kind: "find-the-bug", prompt: "Кнопка виглядає притиснутою (текст торкається країв), хоча є margin: 12px 24px. Що не так?", solution: "Потрібен padding, а не margin — margin відсуває кнопку від сусідів, але не додає простору між текстом і краєм самої кнопки." },
       { id: "css-margin-collapse-predict", kind: "predict", prompt: "Заголовок має margin-bottom: 30px, абзац під ним — margin-top: 20px. Яка реальна відстань між ними в звичайному потоці документа?", solution: "30px, а не 50px — вертикальні margin сусідніх елементів схлопуються (margin collapse), і фактична відстань дорівнює більшому з двох значень." },
     ],
+    quiz: {
+      id: "css-box-model-margin-padding-quiz",
+      title: "Margin проти padding: перевір себе",
+      questions: [
+        {
+          id: "css-margin-padding-background",
+          type: "single",
+          question: "Чому для секції з кольоровим фоном використовують padding-block, а не margin-block?",
+          options: [
+            "Фон елемента поширюється на padding, але не на margin",
+            "padding швидше застосовується браузером",
+            "margin не підтримується для секцій",
+            "Різниці немає",
+          ],
+          correctAnswer: "Фон елемента поширюється на padding, але не на margin",
+          explanation: "Якби замість padding-block був margin-block, фон не покривав би цей простір — з'явилась би \"дірка\" в кольорі.",
+        },
+        {
+          id: "css-margin-padding-collapse",
+          type: "true-false",
+          question: "Вертикальні margin двох сусідніх елементів у звичайному потоці документа можуть схлопуватись в один, більший за два.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Це називається margin collapse — фактична відстань дорівнює більшому з двох значень, а не їхній сумі.",
+        },
+        {
+          id: "css-margin-padding-button-code",
+          type: "code",
+          question: "Чому текст усередині кнопки лишається притиснутим до країв?",
+          codeSnippet: `.button {\n  margin: 12px 24px; /* мало бути padding */\n}`,
+          options: [
+            "margin відсуває кнопку від сусідів, а не додає простір усередині — потрібен padding",
+            "Значення 12px 24px написані в неправильному порядку",
+            "margin не можна використовувати на кнопках",
+            "Тут усе правильно",
+          ],
+          correctAnswer: "margin відсуває кнопку від сусідів, а не додає простір усередині — потрібен padding",
+          explanation: "padding — простір усередині елемента; margin — простір зовні, до сусідів.",
+        },
+        {
+          id: "css-margin-padding-inline-auto",
+          type: "single",
+          question: "Що робить margin-inline: auto на блоці з max-width?",
+          options: [
+            "Центрує блок по горизонталі",
+            "Центрує текст усередині блока",
+            "Додає відступ лише зверху",
+            "Прибирає блок з макета",
+          ],
+          correctAnswer: "Центрує блок по горизонталі",
+          explanation: "Для центрування тексту всередині елемента потрібен text-align: center, а не margin: auto.",
+        },
+        {
+          id: "css-margin-padding-collapse-code",
+          type: "code",
+          question: "Яка реальна відстань між заголовком і текстом у звичайному потоці документа?",
+          codeSnippet: `.title {\n  margin-bottom: 30px;\n}\n\n.text {\n  margin-top: 20px;\n}`,
+          options: [
+            "30px — вертикальні margin схлопуються, перемагає більше значення",
+            "50px — margin складаються",
+            "20px — перемагає менше значення",
+            "0px",
+          ],
+          correctAnswer: "30px — вертикальні margin схлопуються, перемагає більше значення",
+          explanation: "Margin collapse: фактична відстань дорівнює більшому з двох значень, а не сумі.",
+        },
+      ],
+    },
   },
 
   "Display: block, inline, none": {
@@ -392,5 +528,157 @@ body {
       { id: "css-display-choice", kind: "choice", prompt: "Потрібно приховати блок так, щоб він зовсім не займав місця в макеті. Що обрати?", options: ["visibility: hidden", "opacity: 0", "display: none", "color: transparent"], correctAnswer: "display: none", solution: "Тільки display: none прибирає елемент з макета повністю — решта варіантів лишають зайняте місце." },
       { id: "css-display-menu-find-bug", kind: "find-the-bug", prompt: "Пункт меню зверстаний так: <li><a href=\"/menu\">Меню</a></li>, без жодних додаткових CSS-правил на a. Користувачі скаржаться, що клікати можна лише по самому слову \"Меню\", а не по всій ширині пункту. У чому причина?", solution: "<a> — inline за замовчуванням, тому займає рівно стільки місця, скільки займає текст. Потрібен display: block (і padding) на посиланні, щоб клікабельною стала вся прямокутна область пункту меню." },
     ],
+    quiz: {
+      id: "css-box-model-display-quiz",
+      title: "Display: block, inline, none: перевір себе",
+      questions: [
+        {
+          id: "css-display-default-inline",
+          type: "single",
+          question: "Який display мають <span>, <a>, <strong> за замовчуванням?",
+          options: ["inline", "block", "inline-block", "none"],
+          correctAnswer: "inline",
+          explanation: "Це базові inline-елементи — вони течуть у рядку тексту й ігнорують width/height.",
+        },
+        {
+          id: "css-display-none-removes-layout",
+          type: "true-false",
+          question: "display: none повністю прибирає елемент з макета — місце під нього не резервується.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "На відміну від visibility: hidden, яка лишає місце зарезервованим.",
+        },
+        {
+          id: "css-display-span-code",
+          type: "code",
+          question: "Чому span не стає прямокутником 200×50 з кораловим фоном?",
+          codeSnippet: `span { width: 200px; height: 50px; background: coral; }`,
+          options: [
+            "span — inline за замовчуванням і ігнорує width/height",
+            "Синтаксична помилка в правилі",
+            "background не можна задавати на span",
+            "Тут усе працює правильно",
+          ],
+          correctAnswer: "span — inline за замовчуванням і ігнорує width/height",
+          explanation: "Потрібен display: inline-block або block, щоб width/height почали діяти.",
+        },
+        {
+          id: "css-display-none-vs-visibility",
+          type: "single",
+          question: "У чому різниця між display: none і visibility: hidden?",
+          options: [
+            "display: none прибирає елемент з макета повністю, visibility: hidden лишає місце зарезервованим",
+            "Це синоніми",
+            "visibility: hidden прибирає елемент з DOM",
+            "display: none лишає елемент клікабельним",
+          ],
+          correctAnswer: "display: none прибирає елемент з макета повністю, visibility: hidden лишає місце зарезервованим",
+          explanation: "При display: none сусідні елементи зсуваються на звільнене місце; при visibility: hidden — ні.",
+        },
+        {
+          id: "css-display-menu-link-code",
+          type: "code",
+          question: "Користувачі можуть клікнути лише по слову «Меню», а не по всій ширині пункту. Що виправить проблему?",
+          codeSnippet: `<li><a href="/menu">Меню</a></li>`,
+          options: [
+            "display: block на посиланні всередині li",
+            "Заміна li на div",
+            "Видалення href",
+            "Додавання id на li",
+          ],
+          correctAnswer: "display: block на посиланні всередині li",
+          explanation: "display: block розширює клікабельну область на весь прямокутник пункту меню, включно з padding.",
+        },
+      ],
+    },
   },
+};
+
+export const cssBoxModelModuleQuiz: QuizData = {
+  id: "css-box-model-module-quiz",
+  title: "Box-модель і відступи: контрольний тест",
+  questions: [
+    {
+      id: "css-box-model-module-border-box",
+      type: "single",
+      question: "Що робить box-sizing: border-box?",
+      options: [
+        "Рахує padding і border усередині заданого width, а не поверх нього",
+        "Додає рамку до кожного елемента автоматично",
+        "Прибирає padding у всіх елементів",
+        "Вмикає адаптивність без медіа-запитів",
+      ],
+      correctAnswer: "Рахує padding і border усередині заданого width, а не поверх нього",
+      explanation: "Без border-box padding і border додаються поверх заданої ширини, і елемент стає ширшим за очікуване.",
+    },
+    {
+      id: "css-box-model-module-margin-collapse",
+      type: "true-false",
+      question: "Вертикальні margin двох сусідніх елементів у звичайному потоці документа можуть схлопуватись в один, більший за два.",
+      options: ["Так", "Ні"],
+      correctAnswer: true,
+      explanation: "Це називається margin collapse — фактична відстань дорівнює більшому з двох значень, а не їхній сумі.",
+    },
+    {
+      id: "css-box-model-module-span-code",
+      type: "code",
+      question: "Чому span не стає прямокутником 200×50 з кораловим фоном?",
+      codeSnippet: `span { width: 200px; height: 50px; background: coral; }`,
+      options: [
+        "span — inline за замовчуванням і ігнорує width/height",
+        "Синтаксична помилка в правилі",
+        "background не можна задавати на span",
+        "Тут усе працює правильно",
+      ],
+      correctAnswer: "span — inline за замовчуванням і ігнорує width/height",
+      explanation: "Потрібен display: inline-block або block, щоб width/height почали діяти.",
+    },
+    {
+      id: "css-box-model-module-outline",
+      type: "single",
+      question: "Чому outline краще за border для стилів :focus?",
+      options: [
+        "outline не входить у box-модель і не зсуває сусідні елементи",
+        "outline виглядає красивіше за border",
+        "border не можна анімувати",
+        "Різниці між ними немає",
+      ],
+      correctAnswer: "outline не входить у box-модель і не зсуває сусідні елементи",
+      explanation: "border, на відміну від outline, впливає на розмір і розташування елемента.",
+    },
+    {
+      id: "css-box-model-module-button-code",
+      type: "code",
+      question: "Чому текст усередині кнопки лишається притиснутим до країв?",
+      codeSnippet: `.button {\n  margin: 12px 24px; /* мало бути padding */\n}`,
+      options: [
+        "margin відсуває кнопку від сусідів, а не додає простір усередині — потрібен padding",
+        "Значення 12px 24px написані в неправильному порядку",
+        "margin не можна використовувати на кнопках",
+        "Тут усе правильно",
+      ],
+      correctAnswer: "margin відсуває кнопку від сусідів, а не додає простір усередині — потрібен padding",
+      explanation: "padding — простір усередині елемента; margin — простір зовні, до сусідів.",
+    },
+    {
+      id: "css-box-model-module-facts",
+      type: "multiple",
+      question: "Які з цих тверджень про box-модель і display правильні?",
+      options: [
+        "Фон елемента поширюється на padding, але не на margin",
+        "display: none лишає місце під елемент зарезервованим у макеті",
+        "inline-block тече в рядку тексту, але поважає width і height",
+        "min-height безпечніший за height для блоків із текстом, що може вирости",
+      ],
+      correctAnswer: [
+        "Фон елемента поширюється на padding, але не на margin",
+        "inline-block тече в рядку тексту, але поважає width і height",
+        "min-height безпечніший за height для блоків із текстом, що може вирости",
+      ],
+      explanation: "display: none, навпаки, повністю прибирає елемент з макета — місце під нього не резервується (на відміну від visibility: hidden).",
+      optionExplanations: {
+        "display: none лишає місце під елемент зарезервованим у макеті": "Це поведінка visibility: hidden, а не display: none — display: none прибирає елемент з макета повністю.",
+      },
+    },
+  ],
 };
