@@ -21,7 +21,7 @@ import { cssTypographyOverrides, cssTypographyModuleQuiz } from "./cssTypography
 import { cssFlexboxOverrides, cssFlexboxModuleQuiz } from "./cssFlexbox";
 import { cssGridOverrides, cssGridModuleQuiz } from "./cssGrid";
 import { cssRealHeaderHeroOverrides, cssRealHeaderHeroModuleQuiz } from "./cssRealHeaderHero";
-import { cssRealButtonsCardsOverrides } from "./cssRealButtonsCards";
+import { cssRealButtonsCardsOverrides, cssRealButtonsCardsModuleQuiz } from "./cssRealButtonsCards";
 import { cssRealFormsPricingOverrides } from "./cssRealFormsPricing";
 import { cssResponsiveOverrides } from "./cssResponsive";
 import { cssVariablesDarkModeOverrides } from "./cssVariablesDarkMode";
@@ -137,6 +137,7 @@ const moduleQuizOverrides: Record<string, QuizData> = {
   "css-flexbox": cssFlexboxModuleQuiz,
   "css-grid": cssGridModuleQuiz,
   "css-real-header-hero": cssRealHeaderHeroModuleQuiz,
+  "css-real-buttons-cards": cssRealButtonsCardsModuleQuiz,
 };
 
 export const getModuleQuizOverride = (moduleId: string): QuizData | undefined => moduleQuizOverrides[moduleId];

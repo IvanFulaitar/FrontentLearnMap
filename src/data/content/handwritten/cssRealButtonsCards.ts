@@ -1,4 +1,5 @@
 import type { LessonOverride } from "./htmlFoundations";
+import type { QuizData } from "../../../types/course";
 
 /**
  * Module "Кнопки і картки" (css-real-buttons-cards). Cheat-sheet format.
@@ -125,6 +126,64 @@ export const cssRealButtonsCardsOverrides: Record<string, LessonOverride> = {
       { id: "css-button-vs-link-choice", kind: "choice", prompt: "Елемент має вести користувача до секції #contacts на тій самій сторінці. Що обрати?", options: ["<button>", "<a href=\"#contacts\">", "<div onclick>", "<span onclick>"], correctAnswer: "<a href=\"#contacts\">", solution: "Це перехід, а не дія на місці — семантично правильний елемент саме <a> з href." },
       { id: "css-button-transition-all-explain", kind: "explain", prompt: "Чому transition: all вважається гіршою практикою за transition: background-color, transform, навіть якщо результат виглядає однаково?", solution: "transition: all змушує браузер стежити за ЗМІНОЮ УСІХ CSS-властивостей елемента (навіть тих, що ніколи не змінюються) на кожному кадрі анімації — це зайве навантаження на продуктивність. Вказавши конкретні властивості, браузер відстежує лише те, що справді анімується." },
     ],
+    quiz: {
+      id: "css-real-buttons-cards-hover-focus-quiz",
+      title: "Швидка перевірка: Кнопки та стани :hover/:focus",
+      questions: [
+        {
+          id: "css-rbc-q1-focus-visible",
+          type: "single",
+          question: "Користувач переміщається сторінкою лише клавіатурою (Tab). Який стан кнопки для нього найважливіший?",
+          options: [":hover", ":focus-visible", ":active", ":visited"],
+          correctAnswer: ":focus-visible",
+          explanation: ":hover взагалі не спрацює без миші. Саме :focus-visible показує клавіатурному користувачу, на якому елементі він зараз перебуває.",
+        },
+        {
+          id: "css-rbc-q2-transition-all",
+          type: "true-false",
+          question: "transition: all — краща практика, ніж вказання конкретних властивостей (наприклад, background-color, transform), бо код коротший.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "transition: all змушує браузер відстежувати зміни УСІХ CSS-властивостей елемента на кожному кадрі — це зайве навантаження. Вказання конкретних властивостей ефективніше для продуктивності.",
+        },
+        {
+          id: "css-rbc-q3-outline-none",
+          type: "code",
+          question: "У чому проблема цього коду?",
+          codeSnippet: ".button:focus {\n  outline: none;\n}",
+          options: [
+            "Кнопка стає непомітною для навігації клавіатурою — фокус зникає без заміни",
+            "Код має синтаксичну помилку",
+            "outline не впливає на кнопки",
+            "Стиль спрацює лише в Safari",
+          ],
+          correctAnswer: "Кнопка стає непомітною для навігації клавіатурою — фокус зникає без заміни",
+          explanation: "outline — це стандартна вбудована браузером підказка про фокус. Прибираючи її без заміни, ми позбавляємо клавіатурного користувача будь-якого індикатора, на якому елементі він перебуває.",
+        },
+        {
+          id: "css-rbc-q4-icon-button-aria",
+          type: "code",
+          question: "Чого не вистачає цій кнопці для доступності?",
+          codeSnippet: '<button class="icon-button" type="button">\n  ×\n</button>',
+          options: [
+            "aria-label з описом дії кнопки",
+            "додаткового класу",
+            "атрибута type",
+            "властивості transition",
+          ],
+          correctAnswer: "aria-label з описом дії кнопки",
+          explanation: "Кнопка містить лише символ × без тексту — без aria-label скрінрідер не зможе повідомити користувачу, що робить ця кнопка.",
+        },
+        {
+          id: "css-rbc-q5-button-vs-link",
+          type: "single",
+          question: "Елемент повинен переводити користувача до секції #contacts на тій самій сторінці. Який тег обрати?",
+          options: ["<button>", '<a href="#contacts">', "<div onclick>", "<span onclick>"],
+          correctAnswer: '<a href="#contacts">',
+          explanation: "Це перехід (навігація) до іншої частини сторінки, а не дія на місці — семантично правильний елемент саме <a href>.",
+        },
+      ],
+    },
   },
 
   "Тіні та радіуси": {
@@ -216,6 +275,74 @@ export const cssRealButtonsCardsOverrides: Record<string, LessonOverride> = {
       { id: "css-shadow-choice", kind: "choice", prompt: "Яка тінь виглядатиме найприродніше для звичайної картки в списку?", options: ["box-shadow: 0 20px 40px black;", "box-shadow: 0 4px 12px rgba(0,0,0,0.08);", "box-shadow: 0 0 0 5px red;", "box-shadow: none;"], correctAnswer: "box-shadow: 0 4px 12px rgba(0,0,0,0.08);", solution: "М'яка, напівпрозора тінь виглядає природніше за різкий чорний чи повну відсутність тіні." },
       { id: "css-shadow-inset-predict", kind: "predict", prompt: "На полі <input> задали box-shadow: inset 0 2px 6px rgba(0,0,0,0.08). Яке враження це створює порівняно зі звичайною (без inset) тінню?", solution: "Враження заглиблення/\"втопленості\" поля, а не підняття над фоном — inset розвертає тінь усередину елемента, це протилежний ефект до звичайної зовнішньої тіні картки." },
     ],
+    quiz: {
+      id: "css-real-buttons-cards-shadows-radius-quiz",
+      title: "Швидка перевірка: Тіні та радіуси",
+      questions: [
+        {
+          id: "css-rbc-q1-natural-shadow",
+          type: "single",
+          question: "Яка тінь виглядатиме найприродніше для звичайної картки в списку?",
+          options: [
+            "box-shadow: 0 20px 40px black;",
+            "box-shadow: 0 4px 12px rgba(0,0,0,0.08);",
+            "box-shadow: 0 0 0 5px red;",
+            "box-shadow: none;",
+          ],
+          correctAnswer: "box-shadow: 0 4px 12px rgba(0,0,0,0.08);",
+          explanation: "М'яка, напівпрозора тінь виглядає природніше за різкий суцільний чорний колір чи повну відсутність тіні.",
+        },
+        {
+          id: "css-rbc-q2-inset-vs-normal",
+          type: "true-false",
+          question: "inset-тінь створює таке саме враження «піднятості» елемента над фоном, як і звичайна (без inset) тінь.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Навпаки: inset розвертає тінь усередину елемента, створюючи враження заглиблення чи \"втопленості\" — протилежний ефект до звичайної зовнішньої тіні, яка піднімає елемент над фоном.",
+        },
+        {
+          id: "css-rbc-q3-dark-shadow-bug",
+          type: "code",
+          question: "У чому проблема цього стилю?",
+          codeSnippet: ".menu-card {\n  box-shadow: 0 10px 30px black;\n}",
+          options: [
+            "Тінь надто темна і непрозора — виглядає як важка пляма, а не природна глибина",
+            "border-radius обов'язково потрібен разом з box-shadow",
+            "Тінь не спрацює без заданого background",
+            "Синтаксис box-shadow невалідний",
+          ],
+          correctAnswer: "Тінь надто темна і непрозора — виглядає як важка пляма, а не природна глибина",
+          explanation: "black — суцільний непрозорий колір, тоді як справжні тіні від світла завжди напівпрозорі й м'які. rgba(0,0,0,0.1) виглядає природніше.",
+        },
+        {
+          id: "css-rbc-q4-multiple-shadows",
+          type: "single",
+          question: "Навіщо задавати кілька box-shadow через кому (наприклад, близьку різку + далеку м'яку)?",
+          options: [
+            "Щоб імітувати природніше, багатошарове освітлення",
+            "Це обов'язковий синтаксис CSS для карток",
+            "Щоб тінь працювала лише в Firefox",
+            "Щоб прибрати border-radius",
+          ],
+          correctAnswer: "Щоб імітувати природніше, багатошарове освітлення",
+          explanation: "Реальне освітлення складається з контактної тіні (близько, різкіше) і розсіяного світла (далі, м'якше) — комбінація двох тіней імітує це природніше за одну.",
+        },
+        {
+          id: "css-rbc-q5-input-inset",
+          type: "code",
+          question: "Яке враження створює ця тінь на полі вводу?",
+          codeSnippet: ".input {\n  box-shadow: inset 0 2px 6px rgba(0,0,0,0.08);\n}",
+          options: [
+            "Поле вводу виглядає заглибленим / \"втопленим\"",
+            "Поле вводу виглядає піднятим над фоном",
+            "Тінь взагалі не буде видно",
+            "Поле стане прозорим",
+          ],
+          correctAnswer: "Поле вводу виглядає заглибленим / \"втопленим\"",
+          explanation: "inset розвертає тінь усередину елемента — типовий вибір саме для полів вводу чи натиснутого стану.",
+        },
+      ],
+    },
   },
 
   "Картки меню": {
@@ -315,6 +442,69 @@ export const cssRealButtonsCardsOverrides: Record<string, LessonOverride> = {
       { id: "css-menu-cards-predict", kind: "predict", prompt: "У ряду Grid дві картки: одна з коротким текстом, інша з довгим. Якої вони будуть висоти?", solution: "Однакової — обидві розтягнуться до висоти найвищої картки завдяки align-items: stretch за замовчуванням." },
       { id: "css-menu-cards-semantic-choice", kind: "choice", prompt: "Секція меню кав'ярні вже має заголовок <h2>Наші напої</h2>. Яким має бути заголовок назви напою всередині кожної картки?", options: ["<h1>", "<h2>", "<h3>", "звичайний <p> без заголовка"], correctAnswer: "<h3>", solution: "Картка — під-блок секції з h2, тож її заголовок логічно на рівень нижче — h3. Це важливо для правильної ієрархії заголовків для скрінрідерів і пошукових систем." },
     ],
+    quiz: {
+      id: "css-real-buttons-cards-menu-cards-quiz",
+      title: "Швидка перевірка: Картки меню",
+      questions: [
+        {
+          id: "css-rbc-q1-grid-stretch-height",
+          type: "single",
+          question: "У ряду Grid дві картки: одна з коротким текстом, інша з довгим. Якої вони будуть висоти без додаткового CSS?",
+          options: [
+            "Однакової — обидві розтягнуться до висоти найвищої",
+            "Різної — кожна за своїм вмістом",
+            "Grid не підтримує вирівнювання висоти карток",
+            "Потрібен JavaScript, щоб вирівняти висоту",
+          ],
+          correctAnswer: "Однакової — обидві розтягнуться до висоти найвищої",
+          explanation: "align-items: stretch — значення за замовчуванням у Grid і Flexbox — розтягує всі елементи одного рядка/колонки до висоти найвищого серед них.",
+        },
+        {
+          id: "css-rbc-q2-stretch-default",
+          type: "true-false",
+          question: "Grid вирівнює елементи одного рядка до однакової висоти автоматично, без додаткового CSS.",
+          options: ["Так", "Ні"],
+          correctAnswer: true,
+          explanation: "Це відбувається завдяки align-items: stretch — значенню за замовчуванням у Grid.",
+        },
+        {
+          id: "css-rbc-q3-fixed-height-bug",
+          type: "code",
+          question: "У картці з довгою назвою напою («Фільтр-кава з м'ятним сиропом і корицею») текст обрізається посередині слова. У чому причина?",
+          codeSnippet: ".menu-card {\n  height: 200px;\n  overflow: hidden;\n}",
+          options: [
+            "Фіксована height обрізає вміст, що не влазить, замість природного вирівнювання Grid",
+            "border-radius конфліктує з height",
+            "overflow: hidden не підтримується в картках",
+            "Потрібно додати ще один div навколо тексту",
+          ],
+          correctAnswer: "Фіксована height обрізає вміст, що не влазить, замість природного вирівнювання Grid",
+          explanation: "height задає жорсткий розмір незалежно від контенту, а overflow: hidden ховає все зайве. Grid і так вирівнює висоту карток одного рядка автоматично — height тут лише заважає.",
+        },
+        {
+          id: "css-rbc-q4-card-heading-level",
+          type: "single",
+          question: "Секція меню кав'ярні вже має <h2>Наші напої</h2>. Яким має бути заголовок назви напою всередині кожної картки?",
+          options: ["<h1>", "<h2>", "<h3>", "звичайний <p> без заголовка"],
+          correctAnswer: "<h3>",
+          explanation: "Картка — під-блок секції з h2, тож її заголовок логічно на рівень нижче — h3, для правильної ієрархії заголовків.",
+        },
+        {
+          id: "css-rbc-q5-grid-flex-combo",
+          type: "code",
+          question: "Яку роль виконує display: flex; flex-direction: column у цьому CSS?",
+          codeSnippet: ".menu-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));\n}\n\n.menu-card {\n  display: flex;\n  flex-direction: column;\n}",
+          options: [
+            "Впорядковує назву, опис і ціну вертикально всередині кожної картки",
+            "Розкладає картки в сітку по горизонталі",
+            "Робить картку клікабельним посиланням",
+            "Задає фіксовану висоту картки",
+          ],
+          correctAnswer: "Впорядковує назву, опис і ціну вертикально всередині кожної картки",
+          explanation: "Grid відповідає за сітку карток на контейнері .menu-grid, а Flex-колонка всередині .menu-card впорядковує вміст картки вертикально — стандартна комбінація Grid + Flexbox.",
+        },
+      ],
+    },
   },
 
   "Псевдоелементи ::before/::after": {
@@ -453,5 +643,151 @@ export const cssRealButtonsCardsOverrides: Record<string, LessonOverride> = {
       { id: "css-pseudo-find-bug", kind: "find-the-bug", prompt: ".badge::after { position: absolute; background: red; } — значок не з'являється. Чому?", solution: "Відсутня властивість content — без неї псевдоелемент не рендериться взагалі, навіть з рештою стилів." },
       { id: "css-pseudo-position-find-bug", kind: "find-the-bug", prompt: ".menu-card--popular::after { content: \"Хіт\"; position: absolute; top: -8px; right: -8px; } — значок «Хіт» опиняється в кутку всієї сторінки, а не картки. На .menu-card--popular немає position: relative. У чому проблема?", solution: "position: absolute позиціонується відносно найближчого позиціонованого предка (з position: relative/absolute/fixed); якщо такого немає, елемент орієнтується на найближчий такий предок аж до самої сторінки. Потрібен position: relative на .menu-card--popular, щоб ::after позиціонувався саме відносно картки." },
     ],
+    quiz: {
+      id: "css-real-buttons-cards-pseudo-elements-quiz",
+      title: "Швидка перевірка: Псевдоелементи ::before/::after",
+      questions: [
+        {
+          id: "css-rbc-q1-missing-content",
+          type: "code",
+          question: "Значок не з'являється на сторінці. У чому проблема?",
+          codeSnippet: ".badge::after {\n  position: absolute;\n  background: red;\n}",
+          options: [
+            "Відсутня властивість content — без неї псевдоелемент не рендериться взагалі",
+            "background має бути в hex-форматі",
+            "position: absolute не підтримується на псевдоелементах",
+            "Потрібен клас .badge::before замість ::after",
+          ],
+          correctAnswer: "Відсутня властивість content — без неї псевдоелемент не рендериться взагалі",
+          explanation: "content — не звичайна стилістична властивість, а та, що \"вмикає\" сам псевдоелемент. Без неї браузер взагалі не створює ::before/::after, незалежно від решти стилів.",
+        },
+        {
+          id: "css-rbc-q2-pseudo-semantic-content",
+          type: "true-false",
+          question: "::before/::after підходять для важливого смислового тексту, який обов'язково має бути доступний скрінрідерам.",
+          options: ["Так", "Ні"],
+          correctAnswer: false,
+          explanation: "Псевдоелементи призначені для суто декоративних деталей — вони не завжди читаються скрінрідерами передбачувано, тому важливий контент туди класти не варто.",
+        },
+        {
+          id: "css-rbc-q3-position-relative-missing",
+          type: "code",
+          question: "Значок «Хіт» опиняється в кутку всієї сторінки, а не картки. У чому причина?",
+          codeSnippet: '.menu-card--popular::after {\n  content: "Хіт";\n  position: absolute;\n  top: -8px;\n  right: -8px;\n}',
+          options: [
+            "На .menu-card--popular відсутній position: relative",
+            "content має бути порожнім рядком",
+            "top і right не можна використовувати разом",
+            "Потрібен z-index",
+          ],
+          correctAnswer: "На .menu-card--popular відсутній position: relative",
+          explanation: "position: absolute позиціонується відносно найближчого позиціонованого предка. Без position: relative на батьківському елементі ::after орієнтується аж на сторінку.",
+        },
+        {
+          id: "css-rbc-q4-transform-hover",
+          type: "single",
+          question: "Чому transform — кращий вибір за left/width для hover-анімації стрілки чи підкреслення на ::after?",
+          options: [
+            "transform не змушує браузер перераховувати layout — анімується плавніше й дешевше",
+            "left/width взагалі не працюють на псевдоелементах",
+            "transform — єдина властивість, яку підтримують ::before/::after",
+            "Різниці немає, це лише питання стилю коду",
+          ],
+          correctAnswer: "transform не змушує браузер перераховувати layout — анімується плавніше й дешевше",
+          explanation: "transform анімується на рівні композитора без reflow, тоді як left/width/margin тригерять перерахунок макета на кожному кадрі.",
+        },
+        {
+          id: "css-rbc-q5-decorative-only",
+          type: "single",
+          question: "Яка з деталей інтерфейсу НЕ підходить для реалізації через ::before/::after?",
+          options: [
+            "Обов'язковий текст помилки форми, який має прочитати скрінрідер",
+            "Декоративна стрілка → в посиланні «Детальніше»",
+            "Значок «Хіт» у кутку картки меню",
+            "Overlay поверх фонового фото",
+          ],
+          correctAnswer: "Обов'язковий текст помилки форми, який має прочитати скрінрідер",
+          explanation: "Псевдоелементи — для декору. Смисловий, важливий для розуміння текст (як помилка форми) має бути в самому HTML, а не в CSS-псевдоелементі.",
+        },
+      ],
+    },
   },
+};
+
+export const cssRealButtonsCardsModuleQuiz: QuizData = {
+  id: "css-real-buttons-cards-module-quiz",
+  title: "Контрольний тест: Кнопки і картки",
+  questions: [
+    {
+      id: "css-rbc-mod-q1-focus-visible-purpose",
+      type: "single",
+      question: "Яке призначення саме у :focus-visible, на відміну від :focus?",
+      options: [
+        "Показувати індикатор фокуса переважно для клавіатурної навігації, не заважаючи мишці",
+        "Працює лише в мобільних браузерах",
+        "Замінює :hover повністю",
+        "Стилізує лише посилання, не кнопки",
+      ],
+      correctAnswer: "Показувати індикатор фокуса переважно для клавіатурної навігації, не заважаючи мишці",
+      explanation: ":focus-visible показує кільце фокуса переважно коли фокус отримано з клавіатури, тоді як :focus спрацьовує при будь-якому отриманні фокусу, включно з кліком миші.",
+    },
+    {
+      id: "css-rbc-mod-q2-shadow-rgba",
+      type: "true-false",
+      question: "box-shadow з суцільним чорним кольором (black) виглядає природніше, ніж з напівпрозорим rgba(0,0,0,0.1).",
+      options: ["Так", "Ні"],
+      correctAnswer: false,
+      explanation: "Реальні тіні напівпрозорі й м'які. rgba з низькою альфа імітує це, тоді як суцільний чорний дає різкий, неприродний ефект.",
+    },
+    {
+      id: "css-rbc-mod-q3-grid-stretch",
+      type: "code",
+      question: "Чому картки одного рядка в цій сітці автоматично мають однакову висоту?",
+      codeSnippet: ".menu-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));\n}",
+      options: [
+        "align-items: stretch — значення за замовчуванням у Grid",
+        "Потрібно додати JavaScript для вирівнювання",
+        "auto-fit сам по собі задає фіксовану висоту",
+        "Це працює лише якщо картки мають однаковий текст",
+      ],
+      correctAnswer: "align-items: stretch — значення за замовчуванням у Grid",
+      explanation: "Grid розтягує елементи одного рядка до висоти найвищого серед них завдяки align-items: stretch за замовчуванням.",
+    },
+    {
+      id: "css-rbc-mod-q4-pseudo-content-required",
+      type: "single",
+      question: "Що обов'язково потрібно вказати, щоб ::after взагалі з'явився на сторінці?",
+      options: ["content (навіть порожній content: \"\")", "position: absolute", "z-index", "border-radius"],
+      correctAnswer: "content (навіть порожній content: \"\")",
+      explanation: "Без властивості content браузер не створює псевдоелемент взагалі, незалежно від решти стилів.",
+    },
+    {
+      id: "css-rbc-mod-q5-disabled-anchor",
+      type: "true-false",
+      question: "Атрибут disabled працює на <a href> так само, як на <button>.",
+      options: ["Так", "Ні"],
+      correctAnswer: false,
+      explanation: "disabled — властивість форм-елементів, яку браузер підтримує нативно лише для них (button, input тощо). На <a> цей атрибут просто ігнорується — посилання лишається клікабельним.",
+    },
+    {
+      id: "css-rbc-mod-q6-true-statements",
+      type: "multiple",
+      question: "Які з тверджень про кнопки і картки правильні?",
+      options: [
+        "transition: all відстежує зміни всіх властивостей і тому дорожчий за продуктивністю, ніж вказання конкретних властивостей",
+        "Фіксована height на картці з текстом змінної довжини безпечніша за природне вирівнювання Grid",
+        "position: relative на батьківському елементі потрібен, щоб position: absolute на псевдоелементі позиціонувався відносно нього, а не сторінки",
+        "Іконкова кнопка (лише символ) не потребує aria-label, якщо в неї є hover-ефект",
+      ],
+      correctAnswer: [
+        "transition: all відстежує зміни всіх властивостей і тому дорожчий за продуктивністю, ніж вказання конкретних властивостей",
+        "position: relative на батьківському елементі потрібен, щоб position: absolute на псевдоелементі позиціонувався відносно нього, а не сторінки",
+      ],
+      explanation: "Фіксована height обрізає довгий текст замість природного вирівнювання Grid — це гірша практика. aria-label потрібен незалежно від hover-ефекту, бо hover не допомагає користувачам скрінрідерів.",
+      optionExplanations: {
+        "Фіксована height на картці з текстом змінної довжини безпечніша за природне вирівнювання Grid": "Навпаки — фіксована height обрізає довгий текст (overflow: hidden), тоді як Grid сам вирівнює висоту карток одного рядка природно, без обрізання.",
+        "Іконкова кнопка (лише символ) не потребує aria-label, якщо в неї є hover-ефект": "hover-ефект не допомагає користувачам скрінрідерів чи клавіатурної навігації — aria-label потрібен незалежно від візуальних ефектів.",
+      },
+    },
+  ],
 };
